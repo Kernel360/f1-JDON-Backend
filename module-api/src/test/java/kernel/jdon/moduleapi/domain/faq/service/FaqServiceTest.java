@@ -38,6 +38,27 @@ class FaqServiceTest {
 	}
 
 	@Test
+	@DisplayName("faq를 수정한다.")
+	void updateFaqTest() {
+		// given
+		Faq faq = Faq.builder()
+			.title("제목")
+			.content("내용")
+			.build();
+		Faq savedFaq = faqRepository.save(faq);
+		Long faqId = 1L;
+		String title = "수정된 제목";
+		String content = "수정된 내용";
+
+		// when
+		FindFaqResponse findFaqResponse = faqService.find(faqId);
+
+		// then
+		assertThat(findFaqResponse).isNotNull();
+		assertThat(findFaqResponse.getTitle()).isEqualTo(title);
+		assertThat(findFaqResponse.getContent()).isEqualTo(content);
+	}
+	@Test
 	@DisplayName("faq 삭제를 확인한다.")
 	public void removeFaqTest() {
 
