@@ -1,6 +1,7 @@
 package kernel.jdon.moduleapi.domain.faq.service;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -8,6 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import kernel.jdon.moduleapi.domain.faq.dto.CreateFaqRequest;
+import kernel.jdon.moduleapi.domain.faq.dto.CreateFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.dto.FindFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.dto.request.ModifyFaqRequest;
 import kernel.jdon.moduleapi.domain.faq.dto.response.ModifyFaqResponse;
@@ -15,7 +18,7 @@ import kernel.jdon.moduleapi.domain.faq.entity.Faq;
 import kernel.jdon.moduleapi.domain.faq.repository.FaqRepository;
 
 @SpringBootTest
-class FaqServiceTest {
+public class FaqServiceTest {
 
 	@Autowired
 	private FaqService faqService;
@@ -27,9 +30,9 @@ class FaqServiceTest {
 	void getFaqDetailTest() {
 		// given
 		Faq faq = Faq.builder()
-			.title("제목")
-			.content("내용")
-			.build();
+				.title("제목")
+				.content("내용")
+				.build();
 		Faq savedFaq = faqRepository.save(faq);
 
 		// when
@@ -37,6 +40,27 @@ class FaqServiceTest {
 
 		// then
 		assertThat(findFaqResponse).isNotNull();
+	}
+
+	@Test
+	@DisplayName("faq 등록한다.")
+	void createFaqTest() {
+		// given
+		CreateFaqRequest createFaqRequest = CreateFaqRequest.builder()
+				.title("FAQ 제목 생성 테스트")
+				.content("FAQ content 생성 테스트")
+				.build();
+
+		// when
+		CreateFaqResponse createFaqResponse = faqService.create(createFaqRequest);
+		Long faqId = createFaqResponse.getId();
+		FindFaqResponse findFaqResponse = faqService.find(faqId);
+
+		// then
+		assertNotNull(findFaqResponse);
+		assertThat("FAQ 제목 생성 테스트").isEqualTo(findFaqResponse.getTitle());
+		assertThat("FAQ content 생성 테스트").isEqualTo(findFaqResponse.getContent());
+
 	}
 
 	@Test
