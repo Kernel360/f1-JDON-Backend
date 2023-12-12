@@ -1,9 +1,9 @@
 spring:
   datasource:
-    url: ${DB_URL} # jdbc:mysql://localhost:3306/jdon?serverTimezone=UTC&characterEncoding=UTF-8
+    url: ${DB_URL}
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: ${DB_USERNAME} #root
-    password: ${DB_PASSWORD} #1234
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
 
   jpa:
     hibernate:
