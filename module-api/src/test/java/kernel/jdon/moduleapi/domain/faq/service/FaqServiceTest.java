@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import kernel.jdon.moduleapi.domain.faq.dto.FindFaqResponse;
+import kernel.jdon.moduleapi.domain.faq.dto.request.ModifyFaqRequest;
+import kernel.jdon.moduleapi.domain.faq.dto.response.ModifyFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.entity.Faq;
 import kernel.jdon.moduleapi.domain.faq.repository.FaqRepository;
 
@@ -51,12 +53,18 @@ class FaqServiceTest {
 		String content = "수정된 내용";
 
 		// when
-		FindFaqResponse findFaqResponse = faqService.find(faqId);
+		ModifyFaqRequest modifyFaqRequest = ModifyFaqRequest.builder()
+			.faqId(faqId)
+			.title(title)
+			.content(content)
+			.build();
+		ModifyFaqResponse modifyFaqResponse = faqService.update(modifyFaqRequest);
 
 		// then
-		assertThat(findFaqResponse).isNotNull();
-		assertThat(findFaqResponse.getTitle()).isEqualTo(title);
-		assertThat(findFaqResponse.getContent()).isEqualTo(content);
+		Faq modifiedFaq = faqRepository.findById(faqId).get();
+		assertThat(modifyFaqResponse).isNotNull();
+		assertThat(modifiedFaq.getTitle()).isEqualTo(title);
+		assertThat(modifiedFaq.getContent()).isEqualTo(content);
 	}
 	@Test
 	@DisplayName("faq 삭제를 확인한다.")
