@@ -12,7 +12,7 @@ import kernel.jdon.moduleapi.domain.faq.entity.Faq;
 import kernel.jdon.moduleapi.domain.faq.repository.FaqRepository;
 
 @SpringBootTest
-public class FaqServiceTest {
+class FaqServiceTest {
 
 	@Autowired
 	private FaqService faqService;
@@ -28,10 +28,9 @@ public class FaqServiceTest {
 			.content("내용")
 			.build();
 		Faq savedFaq = faqRepository.save(faq);
-		Long faqId = 1L;
 
 		// when
-		FindFaqResponse findFaqResponse = faqService.find(faqId);
+		FindFaqResponse findFaqResponse = faqService.find(savedFaq.getId());
 
 		// then
 		assertThat(findFaqResponse).isNotNull();
