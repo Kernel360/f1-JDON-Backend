@@ -14,8 +14,8 @@ public class FindFaqResponse {
 
 	public static FindFaqResponse of(Faq faq) {
 		return FindFaqResponse.builder()
-			.title(faq.getTitle())
-			.content(faq.getContent())
-			.build();
+				.title(faq.getTitle())
+				.content(faq.getContent())
+				.build();
 	}
 }

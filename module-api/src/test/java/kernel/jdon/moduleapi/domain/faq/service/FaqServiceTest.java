@@ -43,12 +43,15 @@ public class FaqServiceTest {
 	}
 
 	@Test
-	@DisplayName("faq 등록한다.")
+	@DisplayName("faq를 등록한다.")
 	void createFaqTest() {
 		// given
+		String createTitle = "FAQ 제목 생성 테스트";
+		String createContent = "FAQ content 생성 테스트";
+
 		CreateFaqRequest createFaqRequest = CreateFaqRequest.builder()
-				.title("FAQ 제목 생성 테스트")
-				.content("FAQ content 생성 테스트")
+				.title(createTitle)
+				.content(createContent)
 				.build();
 
 		// when
@@ -58,8 +61,8 @@ public class FaqServiceTest {
 
 		// then
 		assertNotNull(findFaqResponse);
-		assertThat("FAQ 제목 생성 테스트").isEqualTo(findFaqResponse.getTitle());
-		assertThat("FAQ content 생성 테스트").isEqualTo(findFaqResponse.getContent());
+		assertThat(createTitle).isEqualTo(findFaqResponse.getTitle());
+		assertThat(createContent).isEqualTo(findFaqResponse.getContent());
 
 	}
 
