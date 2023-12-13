@@ -1,6 +1,7 @@
 package kernel.jdon.moduleapi.domain.faq.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import kernel.jdon.moduleapi.domain.faq.dto.FindFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.entity.Faq;
@@ -21,5 +22,11 @@ public class FaqService {
 	private Faq findById(Long faqId) {
 		return faqRepository.findById(faqId)
 			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 Faq 입니다."));
+	}
+
+	@Transactional
+	public void delete(Long faqId) {
+		Faq findFaq = findById(faqId);
+		faqRepository.delete(findFaq);
 	}
 }
