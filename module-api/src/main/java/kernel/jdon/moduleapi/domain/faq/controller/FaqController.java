@@ -9,10 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 import kernel.jdon.moduleapi.domain.faq.dto.FindFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.service.FaqService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @RestController
-@Slf4j
 @RequiredArgsConstructor
 public class FaqController {
 	private final FaqService faqService;
@@ -27,6 +25,7 @@ public class FaqController {
 	@DeleteMapping("/api/v1/faqs/{faqId}")
 	public ResponseEntity<Long> remove(@PathVariable(name = "faqId") Long faqId) {
 		faqService.delete(faqId);
+
 		return ResponseEntity.ok(faqId);
 	}
 
