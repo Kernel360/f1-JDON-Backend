@@ -48,23 +48,24 @@ class FaqServiceTest {
 			.content("내용")
 			.build();
 		Faq savedFaq = faqRepository.save(faq);
-		Long faqId = 1L;
-		String title = "수정된 제목";
-		String content = "수정된 내용";
+		Long faqId = savedFaq.getId();
 
-		// when
+		String newTitle = "수정된 제목";
+		String newContent = "수정된 내용";
 		ModifyFaqRequest modifyFaqRequest = ModifyFaqRequest.builder()
 			.faqId(faqId)
-			.title(title)
-			.content(content)
+			.title(newTitle)
+			.content(newContent)
 			.build();
+
+		// when
 		ModifyFaqResponse modifyFaqResponse = faqService.update(modifyFaqRequest);
 
 		// then
 		Faq modifiedFaq = faqRepository.findById(faqId).get();
 		assertThat(modifyFaqResponse).isNotNull();
-		assertThat(modifiedFaq.getTitle()).isEqualTo(title);
-		assertThat(modifiedFaq.getContent()).isEqualTo(content);
+		assertThat(modifiedFaq.getTitle()).isEqualTo(newTitle);
+		assertThat(modifiedFaq.getContent()).isEqualTo(newContent);
 	}
 	@Test
 	@DisplayName("faq 삭제를 확인한다.")
