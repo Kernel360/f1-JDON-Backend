@@ -1,4 +1,4 @@
-package kernel.jdon.moduleapi.domain.faq.dto;
+package kernel.jdon.moduleapi.domain.faq.dto.response;
 
 import kernel.jdon.moduleapi.domain.faq.entity.Faq;
 import lombok.AllArgsConstructor;

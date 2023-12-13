@@ -1,6 +1,7 @@
 package kernel.jdon.moduleapi.domain.faq.service;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -8,14 +9,16 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import kernel.jdon.moduleapi.domain.faq.dto.FindFaqResponse;
+import kernel.jdon.moduleapi.domain.faq.dto.request.CreateFaqRequest;
 import kernel.jdon.moduleapi.domain.faq.dto.request.ModifyFaqRequest;
+import kernel.jdon.moduleapi.domain.faq.dto.response.CreateFaqResponse;
+import kernel.jdon.moduleapi.domain.faq.dto.response.FindFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.dto.response.ModifyFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.entity.Faq;
 import kernel.jdon.moduleapi.domain.faq.repository.FaqRepository;
 
 @SpringBootTest
-class FaqServiceTest {
+public class FaqServiceTest {
 
 	@Autowired
 	private FaqService faqService;
@@ -37,6 +40,30 @@ class FaqServiceTest {
 
 		// then
 		assertThat(findFaqResponse).isNotNull();
+	}
+
+	@Test
+	@DisplayName("faq를 등록한다.")
+	void createFaqTest() {
+		// given
+		String createTitle = "FAQ 제목 생성 테스트";
+		String createContent = "FAQ content 생성 테스트";
+
+		CreateFaqRequest createFaqRequest = CreateFaqRequest.builder()
+			.title(createTitle)
+			.content(createContent)
+			.build();
+
+		// when
+		CreateFaqResponse createFaqResponse = faqService.create(createFaqRequest);
+		Long faqId = createFaqResponse.getId();
+		FindFaqResponse findFaqResponse = faqService.find(faqId);
+
+		// then
+		assertNotNull(findFaqResponse);
+		assertThat(createTitle).isEqualTo(findFaqResponse.getTitle());
+		assertThat(createContent).isEqualTo(findFaqResponse.getContent());
+
 	}
 
 	@Test
@@ -67,6 +94,7 @@ class FaqServiceTest {
 		assertThat(modifiedFaq.getTitle()).isEqualTo(newTitle);
 		assertThat(modifiedFaq.getContent()).isEqualTo(newContent);
 	}
+
 	@Test
 	@DisplayName("faq 삭제를 확인한다.")
 	public void removeFaqTest() {
