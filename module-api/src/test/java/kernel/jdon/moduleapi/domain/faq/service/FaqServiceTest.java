@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import kernel.jdon.moduleapi.domain.faq.dto.FindFaqResponse;
+import kernel.jdon.moduleapi.domain.faq.dto.request.ModifyFaqRequest;
+import kernel.jdon.moduleapi.domain.faq.dto.response.ModifyFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.entity.Faq;
 import kernel.jdon.moduleapi.domain.faq.repository.FaqRepository;
 
@@ -37,6 +39,34 @@ class FaqServiceTest {
 		assertThat(findFaqResponse).isNotNull();
 	}
 
+	@Test
+	@DisplayName("faq를 수정한다.")
+	void updateFaqTest() {
+		// given
+		Faq faq = Faq.builder()
+			.title("제목")
+			.content("내용")
+			.build();
+		Faq savedFaq = faqRepository.save(faq);
+		Long faqId = savedFaq.getId();
+
+		String newTitle = "수정된 제목";
+		String newContent = "수정된 내용";
+		ModifyFaqRequest modifyFaqRequest = ModifyFaqRequest.builder()
+			.faqId(faqId)
+			.title(newTitle)
+			.content(newContent)
+			.build();
+
+		// when
+		ModifyFaqResponse modifyFaqResponse = faqService.update(modifyFaqRequest);
+
+		// then
+		Faq modifiedFaq = faqRepository.findById(faqId).get();
+		assertThat(modifyFaqResponse).isNotNull();
+		assertThat(modifiedFaq.getTitle()).isEqualTo(newTitle);
+		assertThat(modifiedFaq.getContent()).isEqualTo(newContent);
+	}
 	@Test
 	@DisplayName("faq 삭제를 확인한다.")
 	public void removeFaqTest() {
