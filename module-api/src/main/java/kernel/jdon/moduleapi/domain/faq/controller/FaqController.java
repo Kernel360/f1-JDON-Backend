@@ -2,21 +2,20 @@ package kernel.jdon.moduleapi.domain.faq.controller;
 
 import java.net.URI;
 
-import kernel.jdon.moduleapi.domain.faq.dto.request.ModifyFaqRequest;
-import kernel.jdon.moduleapi.domain.faq.dto.response.ModifyFaqResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import kernel.jdon.moduleapi.domain.faq.dto.CreateFaqRequest;
-import kernel.jdon.moduleapi.domain.faq.dto.CreateFaqResponse;
-import kernel.jdon.moduleapi.domain.faq.dto.FindFaqResponse;
+import kernel.jdon.moduleapi.domain.faq.dto.request.CreateFaqRequest;
+import kernel.jdon.moduleapi.domain.faq.dto.request.ModifyFaqRequest;
+import kernel.jdon.moduleapi.domain.faq.dto.response.CreateFaqResponse;
+import kernel.jdon.moduleapi.domain.faq.dto.response.FindFaqResponse;
+import kernel.jdon.moduleapi.domain.faq.dto.response.ModifyFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.service.FaqService;
 import lombok.RequiredArgsConstructor;
 
@@ -47,7 +46,6 @@ public class FaqController {
 
 		return ResponseEntity.ok(faqId);
 	}
-
 
 	@PutMapping("/api/v1/faqs")
 	public ResponseEntity<ModifyFaqResponse> modify(@RequestBody ModifyFaqRequest modifyFaqRequest) {

@@ -1,13 +1,13 @@
 package kernel.jdon.moduleapi.domain.faq.service;
 
-import kernel.jdon.moduleapi.domain.faq.dto.request.ModifyFaqRequest;
-import kernel.jdon.moduleapi.domain.faq.dto.response.ModifyFaqResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import kernel.jdon.moduleapi.domain.faq.dto.CreateFaqRequest;
-import kernel.jdon.moduleapi.domain.faq.dto.CreateFaqResponse;
-import kernel.jdon.moduleapi.domain.faq.dto.FindFaqResponse;
+import kernel.jdon.moduleapi.domain.faq.dto.request.CreateFaqRequest;
+import kernel.jdon.moduleapi.domain.faq.dto.request.ModifyFaqRequest;
+import kernel.jdon.moduleapi.domain.faq.dto.response.CreateFaqResponse;
+import kernel.jdon.moduleapi.domain.faq.dto.response.FindFaqResponse;
+import kernel.jdon.moduleapi.domain.faq.dto.response.ModifyFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.entity.Faq;
 import kernel.jdon.moduleapi.domain.faq.repository.FaqRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,14 +20,13 @@ public class FaqService {
 
 	public FindFaqResponse find(Long faqId) {
 		Faq findFaq = findById(faqId);
-		System.out.println(findFaq);
 
 		return FindFaqResponse.of(findFaq);
 	}
 
 	private Faq findById(Long faqId) {
 		return faqRepository.findById(faqId)
-				.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 Faq 입니다."));
+			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 Faq 입니다."));
 	}
 
 	@Transactional

@@ -9,10 +9,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import kernel.jdon.moduleapi.domain.faq.dto.CreateFaqRequest;
-import kernel.jdon.moduleapi.domain.faq.dto.CreateFaqResponse;
-import kernel.jdon.moduleapi.domain.faq.dto.FindFaqResponse;
+import kernel.jdon.moduleapi.domain.faq.dto.request.CreateFaqRequest;
 import kernel.jdon.moduleapi.domain.faq.dto.request.ModifyFaqRequest;
+import kernel.jdon.moduleapi.domain.faq.dto.response.CreateFaqResponse;
+import kernel.jdon.moduleapi.domain.faq.dto.response.FindFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.dto.response.ModifyFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.entity.Faq;
 import kernel.jdon.moduleapi.domain.faq.repository.FaqRepository;
@@ -94,6 +94,7 @@ public class FaqServiceTest {
 		assertThat(modifiedFaq.getTitle()).isEqualTo(newTitle);
 		assertThat(modifiedFaq.getContent()).isEqualTo(newContent);
 	}
+
 	@Test
 	@DisplayName("faq 삭제를 확인한다.")
 	public void removeFaqTest() {
