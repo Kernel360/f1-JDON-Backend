@@ -28,10 +28,10 @@ public class FaqService {
 
 	@Transactional
 	public ModifyFaqResponse update(ModifyFaqRequest modifyFaqRequest) {
-		Faq faq = findById(modifyFaqRequest.getFaqId());
-		faq.update(modifyFaqRequest.getTitle(), modifyFaqRequest.getContent());
+		Faq findFaq = findById(modifyFaqRequest.getFaqId());
+		findFaq.update(modifyFaqRequest.getTitle(), modifyFaqRequest.getContent());
 
-		return ModifyFaqResponse.of(faq);
+		return ModifyFaqResponse.of(findFaq);
 	}
 
 	@Transactional
