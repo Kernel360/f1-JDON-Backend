@@ -1,5 +1,7 @@
 package kernel.jdon.moduleapi.domain.faq.service;
 
+import kernel.jdon.moduleapi.domain.faq.dto.request.ModifyFaqRequest;
+import kernel.jdon.moduleapi.domain.faq.dto.response.ModifyFaqResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +24,14 @@ public class FaqService {
 	private Faq findById(Long faqId) {
 		return faqRepository.findById(faqId)
 			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 Faq 입니다."));
+	}
+
+	@Transactional
+	public ModifyFaqResponse update(ModifyFaqRequest modifyFaqRequest) {
+		Faq findFaq = findById(modifyFaqRequest.getFaqId());
+		findFaq.update(modifyFaqRequest.getTitle(), modifyFaqRequest.getContent());
+
+		return ModifyFaqResponse.of(findFaq);
 	}
 
 	@Transactional
