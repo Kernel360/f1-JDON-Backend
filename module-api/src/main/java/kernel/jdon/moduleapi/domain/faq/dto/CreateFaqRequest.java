@@ -12,8 +12,8 @@ public class CreateFaqRequest {
 
 	public static Faq toEntity(CreateFaqRequest createFaqRequest) {
 		return Faq.builder()
-				.title(createFaqRequest.title)
-				.content(createFaqRequest.content)
-				.build();
+			.title(createFaqRequest.title)
+			.content(createFaqRequest.content)
+			.build();
 	}
 }

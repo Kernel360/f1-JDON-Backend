@@ -13,9 +13,9 @@ public class CreateFaqResponse {
 
 	public static CreateFaqResponse of(Faq faq) {
 		return CreateFaqResponse.builder()
-				.id(faq.getId())
-				.title(faq.getTitle())
-				.content(faq.getContent())
-				.build();
+			.id(faq.getId())
+			.title(faq.getTitle())
+			.content(faq.getContent())
+			.build();
 	}
 }

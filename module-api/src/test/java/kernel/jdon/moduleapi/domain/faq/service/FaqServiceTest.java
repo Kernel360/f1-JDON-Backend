@@ -30,9 +30,9 @@ public class FaqServiceTest {
 	void getFaqDetailTest() {
 		// given
 		Faq faq = Faq.builder()
-				.title("제목")
-				.content("내용")
-				.build();
+			.title("제목")
+			.content("내용")
+			.build();
 		Faq savedFaq = faqRepository.save(faq);
 
 		// when
@@ -50,9 +50,9 @@ public class FaqServiceTest {
 		String createContent = "FAQ content 생성 테스트";
 
 		CreateFaqRequest createFaqRequest = CreateFaqRequest.builder()
-				.title(createTitle)
-				.content(createContent)
-				.build();
+			.title(createTitle)
+			.content(createContent)
+			.build();
 
 		// when
 		CreateFaqResponse createFaqResponse = faqService.create(createFaqRequest);
