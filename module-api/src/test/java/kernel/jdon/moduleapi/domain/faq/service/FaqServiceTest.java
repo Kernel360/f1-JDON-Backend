@@ -2,6 +2,7 @@ package kernel.jdon.moduleapi.domain.faq.service;
 
 import static org.assertj.core.api.Assertions.*;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,4 +37,23 @@ class FaqServiceTest {
 		assertThat(findFaqResponse).isNotNull();
 	}
 
+	@Test
+	@DisplayName("faq 삭제를 확인한다.")
+	public void removeFaqTest() {
+
+		//given
+		Faq faq = Faq.builder()
+			.title("title")
+			.content("content")
+			.build();
+		Faq savedFaq = faqRepository.save(faq);
+
+		//when
+		faqService.delete(savedFaq.getId());
+
+		//then
+		Assertions.assertThrows(IllegalArgumentException.class,
+			() -> faqService.find(savedFaq.getId()));
+
+	}
 }
