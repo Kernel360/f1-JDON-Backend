@@ -2,6 +2,7 @@ package kernel.jdon.moduleapi.domain.faq.service;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.util.ReflectionTestUtils.*;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -49,11 +50,9 @@ public class FaqServiceTest {
 		String createTitle = "FAQ 제목 생성 테스트";
 		String createContent = "FAQ content 생성 테스트";
 
-		CreateFaqRequest createFaqRequest = CreateFaqRequest.builder()
-			.title(createTitle)
-			.content(createContent)
-			.build();
-
+		CreateFaqRequest createFaqRequest = new CreateFaqRequest();
+		setField(createFaqRequest, "title", createTitle);
+		setField(createFaqRequest, "content", createContent);
 		// when
 		CreateFaqResponse createFaqResponse = faqService.create(createFaqRequest);
 		Long faqId = createFaqResponse.getId();
