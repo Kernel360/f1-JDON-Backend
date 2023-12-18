@@ -6,17 +6,8 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-@Builder
-@AllArgsConstructor
-public class ModifyFaqRequest {
+public class UpdateFaqRequest {
 	private Long faqId;
 	private String title;
 	private String content;
-
-	public Faq toEntity() {
-		return Faq.builder()
-			.title(title)
-			.content(content)
-			.build();
-	}
 }

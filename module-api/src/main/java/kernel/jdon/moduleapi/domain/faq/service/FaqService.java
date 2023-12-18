@@ -4,10 +4,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import kernel.jdon.moduleapi.domain.faq.dto.request.CreateFaqRequest;
-import kernel.jdon.moduleapi.domain.faq.dto.request.ModifyFaqRequest;
+import kernel.jdon.moduleapi.domain.faq.dto.request.UpdateFaqRequest;
 import kernel.jdon.moduleapi.domain.faq.dto.response.CreateFaqResponse;
+import kernel.jdon.moduleapi.domain.faq.dto.response.DeleteFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.dto.response.FindFaqResponse;
-import kernel.jdon.moduleapi.domain.faq.dto.response.ModifyFaqResponse;
+import kernel.jdon.moduleapi.domain.faq.dto.response.UpdateFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.entity.Faq;
 import kernel.jdon.moduleapi.domain.faq.repository.FaqRepository;
 import lombok.RequiredArgsConstructor;
@@ -33,20 +34,22 @@ public class FaqService {
 	public CreateFaqResponse create(CreateFaqRequest createFaqRequest) {
 		Faq savedFaq = faqRepository.save(CreateFaqRequest.toEntity(createFaqRequest));
 
-		return CreateFaqResponse.of(savedFaq);
+		return CreateFaqResponse.of(savedFaq.getId());
 	}
 
 	@Transactional
-	public ModifyFaqResponse update(ModifyFaqRequest modifyFaqRequest) {
-		Faq findFaq = findById(modifyFaqRequest.getFaqId());
-		findFaq.update(modifyFaqRequest.getTitle(), modifyFaqRequest.getContent());
+	public UpdateFaqResponse update(UpdateFaqRequest updateFaqRequest) {
+		Faq findFaq = findById(updateFaqRequest.getFaqId());
+		findFaq.update(updateFaqRequest.getTitle(), updateFaqRequest.getContent());
 
-		return ModifyFaqResponse.of(findFaq);
+		return UpdateFaqResponse.of(findFaq.getId());
 	}
 
 	@Transactional
-	public void delete(Long faqId) {
+	public DeleteFaqResponse delete(Long faqId) {
 		Faq findFaq = findById(faqId);
 		faqRepository.delete(findFaq);
+
+		return DeleteFaqResponse.of(findFaq.getId());
 	}
 }
