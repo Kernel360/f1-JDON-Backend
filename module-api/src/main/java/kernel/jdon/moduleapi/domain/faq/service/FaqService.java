@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import kernel.jdon.moduleapi.domain.faq.dto.request.CreateFaqRequest;
-import kernel.jdon.moduleapi.domain.faq.dto.request.ModifyFaqRequest;
+import kernel.jdon.moduleapi.domain.faq.dto.request.UpdateFaqRequest;
 import kernel.jdon.moduleapi.domain.faq.dto.response.CreateFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.dto.response.DeleteFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.dto.response.FindFaqResponse;
@@ -38,9 +38,9 @@ public class FaqService {
 	}
 
 	@Transactional
-	public UpdateFaqResponse update(ModifyFaqRequest modifyFaqRequest) {
-		Faq findFaq = findById(modifyFaqRequest.getFaqId());
-		findFaq.update(modifyFaqRequest.getTitle(), modifyFaqRequest.getContent());
+	public UpdateFaqResponse update(UpdateFaqRequest updateFaqRequest) {
+		Faq findFaq = findById(updateFaqRequest.getFaqId());
+		findFaq.update(updateFaqRequest.getTitle(), updateFaqRequest.getContent());
 
 		return UpdateFaqResponse.of(findFaq);
 	}

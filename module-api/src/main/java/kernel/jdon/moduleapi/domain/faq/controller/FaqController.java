@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import kernel.jdon.moduleapi.domain.faq.dto.request.CreateFaqRequest;
-import kernel.jdon.moduleapi.domain.faq.dto.request.ModifyFaqRequest;
+import kernel.jdon.moduleapi.domain.faq.dto.request.UpdateFaqRequest;
 import kernel.jdon.moduleapi.domain.faq.dto.response.CreateFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.dto.response.DeleteFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.dto.response.FindFaqResponse;
@@ -50,8 +50,8 @@ public class FaqController {
 	}
 
 	@PutMapping("/api/v1/faqs")
-	public ResponseEntity<CommonResponse> modify(@RequestBody ModifyFaqRequest modifyFaqRequest) {
-		UpdateFaqResponse updateFaqResponse = faqService.update(modifyFaqRequest);
+	public ResponseEntity<CommonResponse> modify(@RequestBody UpdateFaqRequest updateFaqRequest) {
+		UpdateFaqResponse updateFaqResponse = faqService.update(updateFaqRequest);
 
 		return ResponseEntity.ok().body(CommonResponse.of(updateFaqResponse));
 	}

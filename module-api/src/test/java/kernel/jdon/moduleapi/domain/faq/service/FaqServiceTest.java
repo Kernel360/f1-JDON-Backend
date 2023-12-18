@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import kernel.jdon.moduleapi.domain.faq.dto.request.CreateFaqRequest;
-import kernel.jdon.moduleapi.domain.faq.dto.request.ModifyFaqRequest;
+import kernel.jdon.moduleapi.domain.faq.dto.request.UpdateFaqRequest;
 import kernel.jdon.moduleapi.domain.faq.dto.response.CreateFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.dto.response.FindFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.dto.response.UpdateFaqResponse;
@@ -53,6 +53,7 @@ public class FaqServiceTest {
 		CreateFaqRequest createFaqRequest = new CreateFaqRequest();
 		setField(createFaqRequest, "title", createTitle);
 		setField(createFaqRequest, "content", createContent);
+
 		// when
 		CreateFaqResponse createFaqResponse = faqService.create(createFaqRequest);
 		Long faqId = createFaqResponse.getFaqId();
@@ -78,14 +79,14 @@ public class FaqServiceTest {
 
 		String newTitle = "수정된 제목";
 		String newContent = "수정된 내용";
-		ModifyFaqRequest modifyFaqRequest = ModifyFaqRequest.builder()
-			.faqId(faqId)
-			.title(newTitle)
-			.content(newContent)
-			.build();
+
+		UpdateFaqRequest updateFaqRequest = new UpdateFaqRequest();
+		setField(updateFaqRequest, "faqId", faqId);
+		setField(updateFaqRequest, "title", newTitle);
+		setField(updateFaqRequest, "content", newContent);
 
 		// when
-		UpdateFaqResponse updateFaqResponse = faqService.update(modifyFaqRequest);
+		UpdateFaqResponse updateFaqResponse = faqService.update(updateFaqRequest);
 
 		// then
 		Faq modifiedFaq = faqRepository.findById(faqId).get();
