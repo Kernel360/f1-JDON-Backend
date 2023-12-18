@@ -12,11 +12,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import kernel.jdon.moduleapi.domain.faq.dto.request.CreateFaqRequest;
-import kernel.jdon.moduleapi.domain.faq.dto.request.ModifyFaqRequest;
+import kernel.jdon.moduleapi.domain.faq.dto.request.UpdateFaqRequest;
 import kernel.jdon.moduleapi.domain.faq.dto.response.CreateFaqResponse;
+import kernel.jdon.moduleapi.domain.faq.dto.response.DeleteFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.dto.response.FindFaqResponse;
-import kernel.jdon.moduleapi.domain.faq.dto.response.ModifyFaqResponse;
+import kernel.jdon.moduleapi.domain.faq.dto.response.UpdateFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.service.FaqService;
+import kernel.jdon.moduleapi.global.common.dto.response.CommonResponse;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -33,24 +35,24 @@ public class FaqController {
 	}
 
 	@PostMapping("/api/v1/faqs")
-	public ResponseEntity<CreateFaqResponse> save(@RequestBody CreateFaqRequest createFaqRequest) {
+	public ResponseEntity<CommonResponse> save(@RequestBody CreateFaqRequest createFaqRequest) {
 		CreateFaqResponse createFaqResponse = faqService.create(createFaqRequest);
-		URI uri = URI.create("/api/v1/faqs/" + createFaqResponse.getId());
+		URI uri = URI.create("/api/v1/faqs/" + createFaqResponse.getFaqId());
 
-		return ResponseEntity.created(uri).body(createFaqResponse);
+		return ResponseEntity.created(uri).body(CommonResponse.of(createFaqResponse));
 	}
 
 	@DeleteMapping("/api/v1/faqs/{faqId}")
-	public ResponseEntity<Long> remove(@PathVariable(name = "faqId") Long faqId) {
-		faqService.delete(faqId);
+	public ResponseEntity<CommonResponse> remove(@PathVariable(name = "faqId") Long faqId) {
+		DeleteFaqResponse deleteFaqResponse = faqService.delete(faqId);
 
-		return ResponseEntity.ok(faqId);
+		return ResponseEntity.ok(CommonResponse.of(deleteFaqResponse));
 	}
 
 	@PutMapping("/api/v1/faqs")
-	public ResponseEntity<ModifyFaqResponse> modify(@RequestBody ModifyFaqRequest modifyFaqRequest) {
-		ModifyFaqResponse modifyFaqResponse = faqService.update(modifyFaqRequest);
+	public ResponseEntity<CommonResponse> modify(@RequestBody UpdateFaqRequest updateFaqRequest) {
+		UpdateFaqResponse updateFaqResponse = faqService.update(updateFaqRequest);
 
-		return ResponseEntity.ok().body(modifyFaqResponse);
+		return ResponseEntity.ok().body(CommonResponse.of(updateFaqResponse));
 	}
 }
