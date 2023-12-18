@@ -1,9 +1,7 @@
 package kernel.jdon.moduleapi.domain.faq.dto.response;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-import kernel.jdon.moduleapi.domain.faq.dto.object.FindFaqDto;
 import kernel.jdon.moduleapi.domain.faq.entity.Faq;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,15 +9,15 @@ import lombok.Getter;
 @Getter
 @Builder
 public class FindListFaqResponse {
-	private List<FindFaqDto> faqList;
+	private List<FindFaqResponse> faqList;
 
 	public static FindListFaqResponse of(List<Faq> faqList) {
-		List<FindFaqDto> faqDtoList = faqList.stream()
-			.map(FindFaqDto::of)
-			.collect(Collectors.toList());
+		List<FindFaqResponse> findFaqResponseList = faqList.stream()
+			.map(FindFaqResponse::of)
+			.toList();
 
 		return FindListFaqResponse.builder()
-			.faqList(faqDtoList)
+			.faqList(findFaqResponseList)
 			.build();
 	}
 }
