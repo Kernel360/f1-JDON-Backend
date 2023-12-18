@@ -15,7 +15,6 @@ import kernel.jdon.moduleapi.domain.faq.dto.request.CreateFaqRequest;
 import kernel.jdon.moduleapi.domain.faq.dto.request.UpdateFaqRequest;
 import kernel.jdon.moduleapi.domain.faq.dto.response.CreateFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.dto.response.DeleteFaqResponse;
-import kernel.jdon.moduleapi.domain.faq.dto.response.FindFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.dto.response.FindListFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.dto.response.UpdateFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.service.FaqService;
@@ -27,13 +26,6 @@ import lombok.RequiredArgsConstructor;
 public class FaqController {
 
 	private final FaqService faqService;
-
-	@GetMapping("/api/v1/faqs/{faqId}")
-	public ResponseEntity<FindFaqResponse> get(@PathVariable(name = "faqId") Long faqId) {
-		FindFaqResponse findFaqResponse = faqService.find(faqId);
-
-		return ResponseEntity.ok().body(findFaqResponse);
-	}
 
 	@PostMapping("/api/v1/faqs")
 	public ResponseEntity<CommonResponse> save(@RequestBody CreateFaqRequest createFaqRequest) {
@@ -59,9 +51,9 @@ public class FaqController {
 
 	@GetMapping("/api/v1/faqs")
 	public ResponseEntity<CommonResponse> getList() {
-		FindListFaqResponse findListFaqResponseList = faqService.findList();
+		FindListFaqResponse findListFaqResponse = faqService.findList();
 
-		return ResponseEntity.ok().body(CommonResponse.of(findListFaqResponseList));
+		return ResponseEntity.ok().body(CommonResponse.of(findListFaqResponse));
 	}
 
 }

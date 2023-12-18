@@ -9,7 +9,6 @@ import kernel.jdon.moduleapi.domain.faq.dto.request.CreateFaqRequest;
 import kernel.jdon.moduleapi.domain.faq.dto.request.UpdateFaqRequest;
 import kernel.jdon.moduleapi.domain.faq.dto.response.CreateFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.dto.response.DeleteFaqResponse;
-import kernel.jdon.moduleapi.domain.faq.dto.response.FindFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.dto.response.FindListFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.dto.response.UpdateFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.entity.Faq;
@@ -21,12 +20,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class FaqService {
 	private final FaqRepository faqRepository;
-
-	public FindFaqResponse find(Long faqId) {
-		Faq findFaq = findById(faqId);
-
-		return FindFaqResponse.of(findFaq);
-	}
 
 	private Faq findById(Long faqId) {
 		return faqRepository.findById(faqId)
