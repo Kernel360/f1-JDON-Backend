@@ -6,11 +6,11 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class ModifyFaqResponse {
+public class UpdateFaqResponse {
 
 	private Long faqId;
 
-	public static ModifyFaqResponse of(Faq faq) {
-		return new ModifyFaqResponse(faq.getId());
+	public static UpdateFaqResponse of(Faq faq) {
+		return new UpdateFaqResponse(faq.getId());
 	}
 }

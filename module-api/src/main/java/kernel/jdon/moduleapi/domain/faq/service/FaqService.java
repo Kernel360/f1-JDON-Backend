@@ -8,7 +8,7 @@ import kernel.jdon.moduleapi.domain.faq.dto.request.ModifyFaqRequest;
 import kernel.jdon.moduleapi.domain.faq.dto.response.CreateFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.dto.response.DeleteFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.dto.response.FindFaqResponse;
-import kernel.jdon.moduleapi.domain.faq.dto.response.ModifyFaqResponse;
+import kernel.jdon.moduleapi.domain.faq.dto.response.UpdateFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.entity.Faq;
 import kernel.jdon.moduleapi.domain.faq.repository.FaqRepository;
 import lombok.RequiredArgsConstructor;
@@ -38,11 +38,11 @@ public class FaqService {
 	}
 
 	@Transactional
-	public ModifyFaqResponse update(ModifyFaqRequest modifyFaqRequest) {
+	public UpdateFaqResponse update(ModifyFaqRequest modifyFaqRequest) {
 		Faq findFaq = findById(modifyFaqRequest.getFaqId());
 		findFaq.update(modifyFaqRequest.getTitle(), modifyFaqRequest.getContent());
 
-		return ModifyFaqResponse.of(findFaq);
+		return UpdateFaqResponse.of(findFaq);
 	}
 
 	@Transactional

@@ -14,7 +14,7 @@ import kernel.jdon.moduleapi.domain.faq.dto.request.CreateFaqRequest;
 import kernel.jdon.moduleapi.domain.faq.dto.request.ModifyFaqRequest;
 import kernel.jdon.moduleapi.domain.faq.dto.response.CreateFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.dto.response.FindFaqResponse;
-import kernel.jdon.moduleapi.domain.faq.dto.response.ModifyFaqResponse;
+import kernel.jdon.moduleapi.domain.faq.dto.response.UpdateFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.entity.Faq;
 import kernel.jdon.moduleapi.domain.faq.repository.FaqRepository;
 
@@ -85,11 +85,11 @@ public class FaqServiceTest {
 			.build();
 
 		// when
-		ModifyFaqResponse modifyFaqResponse = faqService.update(modifyFaqRequest);
+		UpdateFaqResponse updateFaqResponse = faqService.update(modifyFaqRequest);
 
 		// then
 		Faq modifiedFaq = faqRepository.findById(faqId).get();
-		assertThat(modifyFaqResponse).isNotNull();
+		assertThat(updateFaqResponse).isNotNull();
 		assertThat(modifiedFaq.getTitle()).isEqualTo(newTitle);
 		assertThat(modifiedFaq.getContent()).isEqualTo(newContent);
 	}
