@@ -13,6 +13,8 @@ import kernel.jdon.moduleapi.domain.faq.dto.response.FindListFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.dto.response.UpdateFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.entity.Faq;
 import kernel.jdon.moduleapi.domain.faq.repository.FaqRepository;
+import kernel.jdon.modulecommon.error.code.FaqErrorCode;
+import kernel.jdon.modulecommon.error.exception.api.ApiException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -23,7 +25,7 @@ public class FaqService {
 
 	private Faq findById(Long faqId) {
 		return faqRepository.findById(faqId)
-			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 Faq 입니다."));
+			.orElseThrow(() -> new ApiException(FaqErrorCode.NOT_FOUND_FAQ));
 	}
 
 	@Transactional
