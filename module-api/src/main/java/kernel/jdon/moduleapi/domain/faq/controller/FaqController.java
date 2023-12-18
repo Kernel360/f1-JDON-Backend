@@ -58,10 +58,10 @@ public class FaqController {
 	}
 
 	@GetMapping("/api/v1/faqs")
-	public ResponseEntity<FindAllFaqResponse> getList() {
+	public ResponseEntity<CommonResponse> getList() {
 		FindAllFaqResponse findAllFaqResponseList = faqService.findAll();
 
-		return ResponseEntity.ok().body(findAllFaqResponseList);
+		return ResponseEntity.ok().body(CommonResponse.of(findAllFaqResponseList));
 	}
 
 }
