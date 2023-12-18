@@ -9,8 +9,8 @@ import kernel.jdon.moduleapi.domain.faq.dto.request.CreateFaqRequest;
 import kernel.jdon.moduleapi.domain.faq.dto.request.UpdateFaqRequest;
 import kernel.jdon.moduleapi.domain.faq.dto.response.CreateFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.dto.response.DeleteFaqResponse;
-import kernel.jdon.moduleapi.domain.faq.dto.response.FindAllFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.dto.response.FindFaqResponse;
+import kernel.jdon.moduleapi.domain.faq.dto.response.FindListFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.dto.response.UpdateFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.entity.Faq;
 import kernel.jdon.moduleapi.domain.faq.repository.FaqRepository;
@@ -56,9 +56,9 @@ public class FaqService {
 		return DeleteFaqResponse.of(findFaq.getId());
 	}
 
-	public FindAllFaqResponse findAll() {
+	public FindListFaqResponse findList() {
 		List<Faq> findFaqList = faqRepository.findAll();
 
-		return FindAllFaqResponse.of(findFaqList);
+		return FindListFaqResponse.of(findFaqList);
 	}
 }

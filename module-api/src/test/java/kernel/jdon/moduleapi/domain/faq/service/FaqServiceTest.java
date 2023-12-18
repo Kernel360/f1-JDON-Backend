@@ -13,8 +13,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import kernel.jdon.moduleapi.domain.faq.dto.request.CreateFaqRequest;
 import kernel.jdon.moduleapi.domain.faq.dto.request.UpdateFaqRequest;
 import kernel.jdon.moduleapi.domain.faq.dto.response.CreateFaqResponse;
-import kernel.jdon.moduleapi.domain.faq.dto.response.FindAllFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.dto.response.FindFaqResponse;
+import kernel.jdon.moduleapi.domain.faq.dto.response.FindListFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.dto.response.UpdateFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.entity.Faq;
 import kernel.jdon.moduleapi.domain.faq.repository.FaqRepository;
@@ -137,14 +137,14 @@ public class FaqServiceTest {
 		Faq savedFaq2 = faqRepository.save(faq2);
 
 		// when
-		FindAllFaqResponse findAllFaqResponse = faqService.findAll();
+		FindListFaqResponse findListFaqResponse = faqService.findAll();
 
 		// then
-		assertNotNull(findAllFaqResponse);
-		assertThat(createTitle1).isEqualTo(findAllFaqResponse.getFaqList().get(0).getTitle());
-		assertThat(createContent1).isEqualTo(findAllFaqResponse.getFaqList().get(0).getContent());
-		assertThat(createTitle2).isEqualTo(findAllFaqResponse.getFaqList().get(1).getTitle());
-		assertThat(createContent2).isEqualTo(findAllFaqResponse.getFaqList().get(1).getContent());
+		assertNotNull(findListFaqResponse);
+		assertThat(createTitle1).isEqualTo(findListFaqResponse.getFaqList().get(0).getTitle());
+		assertThat(createContent1).isEqualTo(findListFaqResponse.getFaqList().get(0).getContent());
+		assertThat(createTitle2).isEqualTo(findListFaqResponse.getFaqList().get(1).getTitle());
+		assertThat(createContent2).isEqualTo(findListFaqResponse.getFaqList().get(1).getContent());
 
 	}
 }

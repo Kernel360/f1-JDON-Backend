@@ -15,8 +15,8 @@ import kernel.jdon.moduleapi.domain.faq.dto.request.CreateFaqRequest;
 import kernel.jdon.moduleapi.domain.faq.dto.request.UpdateFaqRequest;
 import kernel.jdon.moduleapi.domain.faq.dto.response.CreateFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.dto.response.DeleteFaqResponse;
-import kernel.jdon.moduleapi.domain.faq.dto.response.FindAllFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.dto.response.FindFaqResponse;
+import kernel.jdon.moduleapi.domain.faq.dto.response.FindListFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.dto.response.UpdateFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.service.FaqService;
 import kernel.jdon.moduleapi.global.common.dto.response.CommonResponse;
@@ -59,9 +59,9 @@ public class FaqController {
 
 	@GetMapping("/api/v1/faqs")
 	public ResponseEntity<CommonResponse> getList() {
-		FindAllFaqResponse findAllFaqResponseList = faqService.findAll();
+		FindListFaqResponse findListFaqResponseList = faqService.findList();
 
-		return ResponseEntity.ok().body(CommonResponse.of(findAllFaqResponseList));
+		return ResponseEntity.ok().body(CommonResponse.of(findListFaqResponseList));
 	}
 
 }
