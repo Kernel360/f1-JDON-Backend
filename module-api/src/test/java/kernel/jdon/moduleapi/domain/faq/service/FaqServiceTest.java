@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.util.ReflectionTestUtils.*;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import kernel.jdon.moduleapi.domain.faq.dto.request.CreateFaqRequest;
 import kernel.jdon.moduleapi.domain.faq.dto.request.UpdateFaqRequest;
 import kernel.jdon.moduleapi.domain.faq.dto.response.CreateFaqResponse;
-import kernel.jdon.moduleapi.domain.faq.dto.response.FindFaqResponse;
+import kernel.jdon.moduleapi.domain.faq.dto.response.DeleteFaqResponse;
+import kernel.jdon.moduleapi.domain.faq.dto.response.FindListFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.dto.response.UpdateFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.entity.Faq;
 import kernel.jdon.moduleapi.domain.faq.repository.FaqRepository;
@@ -25,23 +25,6 @@ public class FaqServiceTest {
 	private FaqService faqService;
 	@Autowired
 	private FaqRepository faqRepository;
-
-	@Test
-	@DisplayName("faq를 상세조회 한다.")
-	void getFaqDetailTest() {
-		// given
-		Faq faq = Faq.builder()
-			.title("제목")
-			.content("내용")
-			.build();
-		Faq savedFaq = faqRepository.save(faq);
-
-		// when
-		FindFaqResponse findFaqResponse = faqService.find(savedFaq.getId());
-
-		// then
-		assertThat(findFaqResponse).isNotNull();
-	}
 
 	@Test
 	@DisplayName("faq를 등록한다.")
@@ -56,13 +39,13 @@ public class FaqServiceTest {
 
 		// when
 		CreateFaqResponse createFaqResponse = faqService.create(createFaqRequest);
-		Long faqId = createFaqResponse.getFaqId();
-		FindFaqResponse findFaqResponse = faqService.find(faqId);
+		Long savedFaqId = createFaqResponse.getFaqId();
+		Faq savedFaq = faqRepository.findById(savedFaqId).get();
 
 		// then
-		assertNotNull(findFaqResponse);
-		assertThat(createTitle).isEqualTo(findFaqResponse.getTitle());
-		assertThat(createContent).isEqualTo(findFaqResponse.getContent());
+		assertNotNull(createFaqResponse);
+		assertThat(createTitle).isEqualTo(savedFaq.getTitle());
+		assertThat(createContent).isEqualTo(savedFaq.getContent());
 
 	}
 
@@ -98,20 +81,55 @@ public class FaqServiceTest {
 	@Test
 	@DisplayName("faq 삭제를 확인한다.")
 	public void removeFaqTest() {
-
 		//given
+		String deleteTitle = "title";
+		String deleteContent = "content";
+
 		Faq faq = Faq.builder()
-			.title("title")
-			.content("content")
+			.title(deleteTitle)
+			.content(deleteContent)
 			.build();
 		Faq savedFaq = faqRepository.save(faq);
+		Long savedFaqId = savedFaq.getId();
 
 		//when
-		faqService.delete(savedFaq.getId());
+		DeleteFaqResponse deleteFaqResponse = faqService.delete(savedFaq.getId());
+		Long deletedFaqId = deleteFaqResponse.getFaqId();
 
 		//then
-		Assertions.assertThrows(IllegalArgumentException.class,
-			() -> faqService.find(savedFaq.getId()));
+		assertNotNull(deleteFaqResponse);
+		assertThat(deletedFaqId).isEqualTo(savedFaqId);
+	}
+
+	@Test
+	@DisplayName("faq 목록을 조회한다.")
+	public void getFaqListTest() {
+		// given
+		String createTitle1 = "제목1";
+		String createTitle2 = "제목2";
+		String createContent1 = "내용1";
+		String createContent2 = "내용2";
+
+		Faq faq1 = Faq.builder()
+			.title(createTitle1)
+			.content(createContent1)
+			.build();
+		Faq faq2 = Faq.builder()
+			.title(createTitle2)
+			.content(createContent2)
+			.build();
+		Faq savedFaq1 = faqRepository.save(faq1);
+		Faq savedFaq2 = faqRepository.save(faq2);
+
+		// when
+		FindListFaqResponse findListFaqResponse = faqService.findList();
+
+		// then
+		assertNotNull(findListFaqResponse);
+		assertThat(createTitle1).isEqualTo(findListFaqResponse.getFaqList().get(0).getTitle());
+		assertThat(createContent1).isEqualTo(findListFaqResponse.getFaqList().get(0).getContent());
+		assertThat(createTitle2).isEqualTo(findListFaqResponse.getFaqList().get(1).getTitle());
+		assertThat(createContent2).isEqualTo(findListFaqResponse.getFaqList().get(1).getContent());
 
 	}
 }

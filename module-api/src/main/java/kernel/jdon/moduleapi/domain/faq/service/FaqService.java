@@ -1,5 +1,7 @@
 package kernel.jdon.moduleapi.domain.faq.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -7,7 +9,7 @@ import kernel.jdon.moduleapi.domain.faq.dto.request.CreateFaqRequest;
 import kernel.jdon.moduleapi.domain.faq.dto.request.UpdateFaqRequest;
 import kernel.jdon.moduleapi.domain.faq.dto.response.CreateFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.dto.response.DeleteFaqResponse;
-import kernel.jdon.moduleapi.domain.faq.dto.response.FindFaqResponse;
+import kernel.jdon.moduleapi.domain.faq.dto.response.FindListFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.dto.response.UpdateFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.entity.Faq;
 import kernel.jdon.moduleapi.domain.faq.repository.FaqRepository;
@@ -18,12 +20,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class FaqService {
 	private final FaqRepository faqRepository;
-
-	public FindFaqResponse find(Long faqId) {
-		Faq findFaq = findById(faqId);
-
-		return FindFaqResponse.of(findFaq);
-	}
 
 	private Faq findById(Long faqId) {
 		return faqRepository.findById(faqId)
@@ -51,5 +47,11 @@ public class FaqService {
 		faqRepository.delete(findFaq);
 
 		return DeleteFaqResponse.of(findFaq.getId());
+	}
+
+	public FindListFaqResponse findList() {
+		List<Faq> findFaqList = faqRepository.findAll();
+
+		return FindListFaqResponse.of(findFaqList);
 	}
 }
