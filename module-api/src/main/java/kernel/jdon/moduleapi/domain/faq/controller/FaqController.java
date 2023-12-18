@@ -1,7 +1,5 @@
 package kernel.jdon.moduleapi.domain.faq.controller;
 
-import java.net.URI;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import kernel.jdon.moduleapi.domain.faq.dto.request.CreateFaqRequest;
 import kernel.jdon.moduleapi.domain.faq.dto.request.ModifyFaqRequest;
-import kernel.jdon.moduleapi.domain.faq.dto.response.CreateFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.dto.response.FindFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.dto.response.ModifyFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.service.FaqService;
@@ -33,11 +30,10 @@ public class FaqController {
 	}
 
 	@PostMapping("/api/v1/faqs")
-	public ResponseEntity<CreateFaqResponse> save(@RequestBody CreateFaqRequest createFaqRequest) {
-		CreateFaqResponse createFaqResponse = faqService.create(createFaqRequest);
-		URI uri = URI.create("/api/v1/faqs/" + createFaqResponse.getId());
+	public ResponseEntity<Long> save(@RequestBody CreateFaqRequest createFaqRequest) {
+		Long savedFaqId = faqService.create(createFaqRequest);
 
-		return ResponseEntity.created(uri).body(createFaqResponse);
+		return ResponseEntity.ok(savedFaqId);
 	}
 
 	@DeleteMapping("/api/v1/faqs/{faqId}")

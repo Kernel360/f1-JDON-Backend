@@ -12,7 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import kernel.jdon.moduleapi.domain.faq.dto.request.CreateFaqRequest;
 import kernel.jdon.moduleapi.domain.faq.dto.request.ModifyFaqRequest;
-import kernel.jdon.moduleapi.domain.faq.dto.response.CreateFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.dto.response.FindFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.dto.response.ModifyFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.entity.Faq;
@@ -54,9 +53,8 @@ public class FaqServiceTest {
 		setField(createFaqRequest, "title", createTitle);
 		setField(createFaqRequest, "content", createContent);
 		// when
-		CreateFaqResponse createFaqResponse = faqService.create(createFaqRequest);
-		Long faqId = createFaqResponse.getId();
-		FindFaqResponse findFaqResponse = faqService.find(faqId);
+		Long createFaqId = faqService.create(createFaqRequest);
+		FindFaqResponse findFaqResponse = faqService.find(createFaqId);
 
 		// then
 		assertNotNull(findFaqResponse);

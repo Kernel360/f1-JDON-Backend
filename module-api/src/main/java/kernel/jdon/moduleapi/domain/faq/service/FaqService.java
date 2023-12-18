@@ -5,7 +5,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kernel.jdon.moduleapi.domain.faq.dto.request.CreateFaqRequest;
 import kernel.jdon.moduleapi.domain.faq.dto.request.ModifyFaqRequest;
-import kernel.jdon.moduleapi.domain.faq.dto.response.CreateFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.dto.response.FindFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.dto.response.ModifyFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.entity.Faq;
@@ -30,10 +29,10 @@ public class FaqService {
 	}
 
 	@Transactional
-	public CreateFaqResponse create(CreateFaqRequest createFaqRequest) {
+	public Long create(CreateFaqRequest createFaqRequest) {
 		Faq savedFaq = faqRepository.save(CreateFaqRequest.toEntity(createFaqRequest));
 
-		return CreateFaqResponse.of(savedFaq);
+		return savedFaq.getId();
 	}
 
 	@Transactional
