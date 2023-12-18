@@ -23,6 +23,7 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
 
     compileOnly 'org.projectlombok:lombok'
 
@@ -34,3 +35,8 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+jar {
+    enabled = true
+}
+
