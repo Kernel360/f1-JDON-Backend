@@ -34,7 +34,7 @@ public class FaqService {
 	public CreateFaqResponse create(CreateFaqRequest createFaqRequest) {
 		Faq savedFaq = faqRepository.save(CreateFaqRequest.toEntity(createFaqRequest));
 
-		return CreateFaqResponse.of(savedFaq);
+		return CreateFaqResponse.of(savedFaq.getId());
 	}
 
 	@Transactional
@@ -42,7 +42,7 @@ public class FaqService {
 		Faq findFaq = findById(updateFaqRequest.getFaqId());
 		findFaq.update(updateFaqRequest.getTitle(), updateFaqRequest.getContent());
 
-		return UpdateFaqResponse.of(findFaq);
+		return UpdateFaqResponse.of(findFaq.getId());
 	}
 
 	@Transactional
@@ -50,6 +50,6 @@ public class FaqService {
 		Faq findFaq = findById(faqId);
 		faqRepository.delete(findFaq);
 
-		return DeleteFaqResponse.of(findFaq);
+		return DeleteFaqResponse.of(findFaq.getId());
 	}
 }
