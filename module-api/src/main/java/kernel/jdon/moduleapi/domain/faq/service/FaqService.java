@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import kernel.jdon.moduleapi.domain.faq.dto.request.CreateFaqRequest;
 import kernel.jdon.moduleapi.domain.faq.dto.request.ModifyFaqRequest;
 import kernel.jdon.moduleapi.domain.faq.dto.response.CreateFaqResponse;
+import kernel.jdon.moduleapi.domain.faq.dto.response.DeleteFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.dto.response.FindFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.dto.response.ModifyFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.entity.Faq;
@@ -45,8 +46,10 @@ public class FaqService {
 	}
 
 	@Transactional
-	public void delete(Long faqId) {
+	public DeleteFaqResponse delete(Long faqId) {
 		Faq findFaq = findById(faqId);
 		faqRepository.delete(findFaq);
+
+		return DeleteFaqResponse.of(findFaq);
 	}
 }

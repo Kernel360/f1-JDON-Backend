@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import kernel.jdon.moduleapi.domain.faq.dto.request.CreateFaqRequest;
 import kernel.jdon.moduleapi.domain.faq.dto.request.ModifyFaqRequest;
 import kernel.jdon.moduleapi.domain.faq.dto.response.CreateFaqResponse;
+import kernel.jdon.moduleapi.domain.faq.dto.response.DeleteFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.dto.response.FindFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.dto.response.ModifyFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.service.FaqService;
@@ -42,10 +43,10 @@ public class FaqController {
 	}
 
 	@DeleteMapping("/api/v1/faqs/{faqId}")
-	public ResponseEntity<Long> remove(@PathVariable(name = "faqId") Long faqId) {
-		faqService.delete(faqId);
+	public ResponseEntity<CommonResponse> remove(@PathVariable(name = "faqId") Long faqId) {
+		DeleteFaqResponse deleteFaqResponse = faqService.delete(faqId);
 
-		return ResponseEntity.ok(faqId);
+		return ResponseEntity.ok(CommonResponse.of(deleteFaqResponse));
 	}
 
 	@PutMapping("/api/v1/faqs")
