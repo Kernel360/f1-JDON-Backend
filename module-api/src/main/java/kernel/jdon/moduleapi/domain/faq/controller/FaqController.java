@@ -17,6 +17,7 @@ import kernel.jdon.moduleapi.domain.faq.dto.response.CreateFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.dto.response.FindFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.dto.response.ModifyFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.service.FaqService;
+import kernel.jdon.moduleapi.global.common.dto.response.CommonResponse;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -48,9 +49,9 @@ public class FaqController {
 	}
 
 	@PutMapping("/api/v1/faqs")
-	public ResponseEntity<ModifyFaqResponse> modify(@RequestBody ModifyFaqRequest modifyFaqRequest) {
+	public ResponseEntity<CommonResponse> modify(@RequestBody ModifyFaqRequest modifyFaqRequest) {
 		ModifyFaqResponse modifyFaqResponse = faqService.update(modifyFaqRequest);
 
-		return ResponseEntity.ok().body(modifyFaqResponse);
+		return ResponseEntity.ok().body(CommonResponse.of(modifyFaqResponse));
 	}
 }
