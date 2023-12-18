@@ -1,5 +1,6 @@
 package kernel.jdon.moduleapi.domain.faq.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,7 +34,7 @@ public class FaqController {
 	public ResponseEntity<Long> save(@RequestBody CreateFaqRequest createFaqRequest) {
 		Long savedFaqId = faqService.create(createFaqRequest);
 
-		return ResponseEntity.ok(savedFaqId);
+		return ResponseEntity.status(HttpStatus.CREATED).body(savedFaqId);
 	}
 
 	@DeleteMapping("/api/v1/faqs/{faqId}")
