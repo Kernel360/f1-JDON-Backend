@@ -35,11 +35,11 @@ public class FaqController {
 	}
 
 	@PostMapping("/api/v1/faqs")
-	public ResponseEntity<CreateFaqResponse> save(@RequestBody CreateFaqRequest createFaqRequest) {
+	public ResponseEntity<CommonResponse> save(@RequestBody CreateFaqRequest createFaqRequest) {
 		CreateFaqResponse createFaqResponse = faqService.create(createFaqRequest);
 		URI uri = URI.create("/api/v1/faqs/" + createFaqResponse.getFaqId());
 
-		return ResponseEntity.created(uri).body(createFaqResponse);
+		return ResponseEntity.created(uri).body(CommonResponse.of(createFaqResponse));
 	}
 
 	@DeleteMapping("/api/v1/faqs/{faqId}")
