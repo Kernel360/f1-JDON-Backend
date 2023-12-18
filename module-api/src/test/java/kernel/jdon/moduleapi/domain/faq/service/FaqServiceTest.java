@@ -137,7 +137,7 @@ public class FaqServiceTest {
 		Faq savedFaq2 = faqRepository.save(faq2);
 
 		// when
-		FindListFaqResponse findListFaqResponse = faqService.findAll();
+		FindListFaqResponse findListFaqResponse = faqService.findList();
 
 		// then
 		assertNotNull(findListFaqResponse);
