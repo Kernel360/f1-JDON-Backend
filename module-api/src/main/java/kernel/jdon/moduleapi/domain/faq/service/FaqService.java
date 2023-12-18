@@ -1,5 +1,7 @@
 package kernel.jdon.moduleapi.domain.faq.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -7,6 +9,7 @@ import kernel.jdon.moduleapi.domain.faq.dto.request.CreateFaqRequest;
 import kernel.jdon.moduleapi.domain.faq.dto.request.UpdateFaqRequest;
 import kernel.jdon.moduleapi.domain.faq.dto.response.CreateFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.dto.response.DeleteFaqResponse;
+import kernel.jdon.moduleapi.domain.faq.dto.response.FindAllFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.dto.response.FindFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.dto.response.UpdateFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.entity.Faq;
@@ -51,5 +54,11 @@ public class FaqService {
 		faqRepository.delete(findFaq);
 
 		return DeleteFaqResponse.of(findFaq.getId());
+	}
+
+	public FindAllFaqResponse findAll() {
+		List<Faq> findFaqList = faqRepository.findAll();
+
+		return FindAllFaqResponse.of(findFaqList);
 	}
 }
