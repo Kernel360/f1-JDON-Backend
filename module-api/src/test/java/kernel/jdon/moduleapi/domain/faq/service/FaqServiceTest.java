@@ -55,7 +55,7 @@ public class FaqServiceTest {
 		setField(createFaqRequest, "content", createContent);
 		// when
 		CreateFaqResponse createFaqResponse = faqService.create(createFaqRequest);
-		Long faqId = createFaqResponse.getId();
+		Long faqId = createFaqResponse.getFaqId();
 		FindFaqResponse findFaqResponse = faqService.find(faqId);
 
 		// then

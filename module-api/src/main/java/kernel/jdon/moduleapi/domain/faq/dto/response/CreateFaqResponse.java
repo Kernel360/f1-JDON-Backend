@@ -1,21 +1,17 @@
 package kernel.jdon.moduleapi.domain.faq.dto.response;
 
 import kernel.jdon.moduleapi.domain.faq.entity.Faq;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-@Builder
+@AllArgsConstructor
 public class CreateFaqResponse {
-	private Long id;
-	private String title;
-	private String content;
+
+	private Long faqId;
 
 	public static CreateFaqResponse of(Faq faq) {
-		return CreateFaqResponse.builder()
-			.id(faq.getId())
-			.title(faq.getTitle())
-			.content(faq.getContent())
-			.build();
+		return new CreateFaqResponse(faq.getId());
 	}
 }
