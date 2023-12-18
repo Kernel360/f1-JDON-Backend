@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import kernel.jdon.moduleapi.domain.faq.dto.request.CreateFaqRequest;
 import kernel.jdon.moduleapi.domain.faq.dto.request.UpdateFaqRequest;
 import kernel.jdon.moduleapi.domain.faq.dto.response.CreateFaqResponse;
+import kernel.jdon.moduleapi.domain.faq.dto.response.FindAllFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.dto.response.FindFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.dto.response.UpdateFaqResponse;
 import kernel.jdon.moduleapi.domain.faq.entity.Faq;
@@ -112,6 +113,38 @@ public class FaqServiceTest {
 		//then
 		Assertions.assertThrows(IllegalArgumentException.class,
 			() -> faqService.find(savedFaq.getId()));
+
+	}
+
+	@Test
+	@DisplayName("faq 목록을 조회한다.")
+	public void getFaqListTest() {
+		// given
+		String createTitle1 = "제목1";
+		String createTitle2 = "제목2";
+		String createContent1 = "내용1";
+		String createContent2 = "내용2";
+
+		Faq faq1 = Faq.builder()
+			.title(createTitle1)
+			.content(createContent1)
+			.build();
+		Faq faq2 = Faq.builder()
+			.title(createTitle2)
+			.content(createContent2)
+			.build();
+		Faq savedFaq1 = faqRepository.save(faq1);
+		Faq savedFaq2 = faqRepository.save(faq2);
+
+		// when
+		FindAllFaqResponse findAllFaqResponse = faqService.findAll();
+
+		// then
+		assertNotNull(findAllFaqResponse);
+		assertThat(createTitle1).isEqualTo(findAllFaqResponse.getFaqList().get(0).getTitle());
+		assertThat(createContent1).isEqualTo(findAllFaqResponse.getFaqList().get(0).getContent());
+		assertThat(createTitle2).isEqualTo(findAllFaqResponse.getFaqList().get(1).getTitle());
+		assertThat(createContent2).isEqualTo(findAllFaqResponse.getFaqList().get(1).getContent());
 
 	}
 }
