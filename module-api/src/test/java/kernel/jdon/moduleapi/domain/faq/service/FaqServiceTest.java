@@ -127,10 +127,11 @@ public class FaqServiceTest {
 
 		// then
 		assertNotNull(findListFaqResponse);
+		assertThat(savedFaq1.getId()).isEqualTo(findListFaqResponse.getFaqList().get(0).getFaqId());
 		assertThat(createTitle1).isEqualTo(findListFaqResponse.getFaqList().get(0).getTitle());
 		assertThat(createContent1).isEqualTo(findListFaqResponse.getFaqList().get(0).getContent());
+		assertThat(savedFaq2.getId()).isEqualTo(findListFaqResponse.getFaqList().get(1).getFaqId());
 		assertThat(createTitle2).isEqualTo(findListFaqResponse.getFaqList().get(1).getTitle());
 		assertThat(createContent2).isEqualTo(findListFaqResponse.getFaqList().get(1).getContent());
-
 	}
 }
