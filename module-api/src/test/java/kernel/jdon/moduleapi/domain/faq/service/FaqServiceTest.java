@@ -9,14 +9,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import kernel.jdon.moduleapi.domain.faq.dto.request.CreateFaqRequest;
-import kernel.jdon.moduleapi.domain.faq.dto.request.UpdateFaqRequest;
-import kernel.jdon.moduleapi.domain.faq.dto.response.CreateFaqResponse;
-import kernel.jdon.moduleapi.domain.faq.dto.response.DeleteFaqResponse;
-import kernel.jdon.moduleapi.domain.faq.dto.response.FindListFaqResponse;
-import kernel.jdon.moduleapi.domain.faq.dto.response.UpdateFaqResponse;
-import kernel.jdon.moduleapi.domain.faq.entity.Faq;
-import kernel.jdon.moduleapi.domain.faq.repository.FaqRepository;
+import kernel.jdon.faq.dto.request.CreateFaqRequest;
+import kernel.jdon.faq.dto.request.UpdateFaqRequest;
+import kernel.jdon.faq.dto.response.CreateFaqResponse;
+import kernel.jdon.faq.dto.response.DeleteFaqResponse;
+import kernel.jdon.faq.dto.response.FindListFaqResponse;
+import kernel.jdon.faq.dto.response.UpdateFaqResponse;
+import kernel.jdon.faq.domain.Faq;
+import kernel.jdon.faq.repository.FaqRepository;
+import kernel.jdon.faq.service.FaqService;
 
 @SpringBootTest
 public class FaqServiceTest {
