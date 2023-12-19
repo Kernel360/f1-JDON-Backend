@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import kernel.jdon.dto.response.CommonResponse;
 import kernel.jdon.faq.dto.request.CreateFaqRequest;
 import kernel.jdon.faq.dto.request.UpdateFaqRequest;
 import kernel.jdon.faq.dto.response.CreateFaqResponse;
@@ -18,7 +19,6 @@ import kernel.jdon.faq.dto.response.DeleteFaqResponse;
 import kernel.jdon.faq.dto.response.FindListFaqResponse;
 import kernel.jdon.faq.dto.response.UpdateFaqResponse;
 import kernel.jdon.faq.service.FaqService;
-import kernel.jdon.global.common.dto.response.CommonResponse;
 import lombok.RequiredArgsConstructor;
 
 @RestController
