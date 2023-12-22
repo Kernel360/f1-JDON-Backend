@@ -31,6 +31,8 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
+tasks.register("prepareKotlinBuildScriptModel") {}
+
 tasks.named('test') {
     useJUnitPlatform()
 }
