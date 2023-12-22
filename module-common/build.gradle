@@ -30,6 +30,8 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
 }
 
+tasks.register("prepareKotlinBuildScriptModel") {}
+
 tasks.named('test') {
     useJUnitPlatform()
 }
