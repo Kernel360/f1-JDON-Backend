@@ -1,4 +1,8 @@
+server:
+  port: 1221
+
 spring:
+
   datasource:
     url: ${DB_URL}
     driver-class-name: com.mysql.cj.jdbc.Driver
