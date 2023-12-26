@@ -1,17 +1,14 @@
-server:
-  port: 1221
-
 spring:
 
   datasource:
-    url: ${DB_URL}
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    url: jdbc:h2:mem:test-crawler
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: create-drop
 
     properties:
       hibernate:
@@ -19,7 +16,6 @@ spring:
         format_sql: true
 
 logging.level:
-  root: info
-
   org.hibernate.SQL: debug
   #  org.hibernate.type: trace
+  org.springframework.security: debug

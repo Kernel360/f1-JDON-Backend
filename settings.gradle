@@ -1,5 +1,6 @@
 rootProject.name = 'jdon'
 
 include 'module-api'
+include 'module-crawler'
 include 'module-common'
 include 'module-domain'
