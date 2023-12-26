@@ -29,11 +29,11 @@ public class Favorite {
 	private LocalDateTime createdDate;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "member_id", columnDefinition = "BIGINT(50)")
+	@JoinColumn(name = "member_id", columnDefinition = "BIGINT")
 	private Member member;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "inflearn_id", columnDefinition = "BIGINT(50)")
+	@JoinColumn(name = "inflearn_id", columnDefinition = "BIGINT")
 	private Inflearn inflearn;
 
 }
