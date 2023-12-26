@@ -1,0 +1,25 @@
+server:
+  port: 1222
+
+spring:
+
+  datasource:
+    url: ${DB_URL}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+    properties:
+      hibernate:
+        #        show-sql: true
+        format_sql: true
+
+logging.level:
+  root: info
+
+  org.hibernate.SQL: debug
+  #  org.hibernate.type: trace
