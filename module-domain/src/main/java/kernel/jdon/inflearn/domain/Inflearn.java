@@ -24,7 +24,7 @@ public class Inflearn {
 	@Column(name = "instructor", columnDefinition = "VARCHAR(50)", nullable = false)
 	private String instructor;
 
-	@Column(name = "student_count", columnDefinition = "BIGINT(50)", nullable = false)
+	@Column(name = "student_count", columnDefinition = "BIGINT", nullable = false)
 	private Long studentCount;
 
 	@Column(name = "image_url", columnDefinition = "TEXT", nullable = false)

@@ -28,10 +28,10 @@ public class CoffeeChatMember {
 	private LocalDateTime createdDate;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "created_by", columnDefinition = "BIGINT(50)")
+	@JoinColumn(name = "created_by", columnDefinition = "BIGINT")
 	private Member member;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "coffee_chat_id", columnDefinition = "BIGINT(50)")
+	@JoinColumn(name = "coffee_chat_id", columnDefinition = "BIGINT")
 	private CoffeeChat coffeeChat;
 }
