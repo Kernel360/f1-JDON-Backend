@@ -23,7 +23,7 @@ public class JobCategory extends BaseEntity {
 	@Column(name = "name", columnDefinition = "VARCHAR(255)", nullable = false)
 	private String name;
 
-	@Column(name = "parent_id", columnDefinition = "BIGINT(50)")
+	@Column(name = "parent_id", columnDefinition = "BIGINT")
 	private Long parentId;
 
 	@OneToMany(mappedBy = "jobCategory")

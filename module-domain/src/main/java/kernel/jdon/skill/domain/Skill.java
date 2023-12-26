@@ -30,6 +30,6 @@ public class Skill {
 	private ArrayList<WantedJdSkill> wantedJdSkillList = new ArrayList<>();
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "job_category_id", columnDefinition = "BIGINT(50)")
+	@JoinColumn(name = "job_category_id", columnDefinition = "BIGINT")
 	private JobCategory jobCategory;
 }

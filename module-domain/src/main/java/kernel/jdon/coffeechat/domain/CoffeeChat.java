@@ -30,7 +30,7 @@ public class CoffeeChat extends BaseEntity {
 	@Column(name = "content", columnDefinition = "TEXT")
 	private String content;
 
-	@Column(name = "view_count", columnDefinition = "BIGINT(50)", nullable = false)
+	@Column(name = "view_count", columnDefinition = "BIGINT", nullable = false)
 	private Long viewCount;
 
 	@Column(name = "is_deleted", columnDefinition = "BOOLEAN", nullable = false)
@@ -46,14 +46,14 @@ public class CoffeeChat extends BaseEntity {
 	@Column(name = "open_chat_url", columnDefinition = "VARCHAR(255)", nullable = false)
 	private String openChatUrl;
 
-	@Column(name = "total_recruit_count", columnDefinition = "BIGINT(50)")
+	@Column(name = "total_recruit_count", columnDefinition = "BIGINT")
 	private Long totalRecruitCount;
 
-	@Column(name = "current_recruit_count", columnDefinition = "BIGINT(50)")
+	@Column(name = "current_recruit_count", columnDefinition = "BIGINT")
 	private Long currentRecruitCount;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "created_by", columnDefinition = "BIGINT(50)")
+	@JoinColumn(name = "created_by", columnDefinition = "BIGINT")
 	private Member member;
 
 }
