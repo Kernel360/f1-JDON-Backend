@@ -31,13 +31,10 @@ public class Member {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "email", columnDefinition = "VARCHAR(255)", nullable = false)
+	@Column(name = "email", columnDefinition = "VARCHAR(255)", nullable = false, unique = true)
 	private String email;
 
-	@Column(name = "password", columnDefinition = "VARCHAR(255)", nullable = false)
-	private String password;
-
-	@Column(name = "nickname", columnDefinition = "VARCHAR(255)", nullable = false)
+	@Column(name = "nickname", columnDefinition = "VARCHAR(255)", nullable = false, unique = true)
 	private String nickname;
 
 	@Column(name = "birth", columnDefinition = "VARCHAR(11)", nullable = false)
@@ -64,6 +61,9 @@ public class Member {
 
 	@Column(name = "withdraw_date", columnDefinition = "DATETIME")
 	private LocalDateTime withdrawDate;
+
+	@Column(name = "social_provider", columnDefinition = "VARCHAR(20)", nullable = false)
+	private String socialProvider;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "job_category_id", columnDefinition = "BIGINT")
