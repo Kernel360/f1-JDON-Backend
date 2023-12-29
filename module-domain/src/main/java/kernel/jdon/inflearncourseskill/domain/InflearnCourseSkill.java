@@ -9,7 +9,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import kernel.jdon.inflearn.domain.InflearnCourse;
-import kernel.jdon.inflearnskill.domain.InflearnSkill;
+import kernel.jdon.skill.domain.Skill;
 
 @Entity
 @Table(name = "inflearn_course_skill")
@@ -21,8 +21,8 @@ public class InflearnCourseSkill {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "skill_id", columnDefinition = "BIGINT")
-	private InflearnSkill inflearnSkill;
-	
+	private Skill skill;
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "course_id", columnDefinition = "BIGINT")
 	private InflearnCourse inflearnCourse;
