@@ -13,7 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import kernel.jdon.inflearn.domain.Inflearn;
+import kernel.jdon.inflearn.domain.InflearnCourse;
 import kernel.jdon.member.domain.Member;
 
 @Entity
@@ -34,6 +34,6 @@ public class Favorite {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "inflearn_id", columnDefinition = "BIGINT")
-	private Inflearn inflearn;
+	private InflearnCourse inflearnCourse;
 
 }
