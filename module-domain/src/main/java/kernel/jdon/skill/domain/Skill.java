@@ -14,8 +14,13 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import kernel.jdon.jobcategory.domain.JobCategory;
 import kernel.jdon.wantedskill.domain.WantedJdSkill;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
+@Getter
+@NoArgsConstructor
 @Table(name = "skill")
 public class Skill {
 
@@ -25,6 +30,9 @@ public class Skill {
 
 	@Column(name = "keyword", columnDefinition = "VARCHAR(50)", nullable = false)
 	private String keyword;
+
+	@Column(name = "count", columnDefinition = "BIGINT", nullable = false)
+	private Long count;
 
 	@OneToMany(mappedBy = "skill")
 	private ArrayList<WantedJdSkill> wantedJdSkillList = new ArrayList<>();
