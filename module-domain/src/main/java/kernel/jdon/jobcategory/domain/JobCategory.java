@@ -20,7 +20,7 @@ public class JobCategory extends BaseEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "name", columnDefinition = "VARCHAR(255)", nullable = false)
+	@Column(name = "name", columnDefinition = "VARCHAR(255)", nullable = false, unique = true)
 	private String name;
 
 	@Column(name = "parent_id", columnDefinition = "BIGINT")
