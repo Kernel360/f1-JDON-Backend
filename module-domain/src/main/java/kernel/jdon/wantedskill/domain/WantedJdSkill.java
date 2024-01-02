@@ -20,11 +20,11 @@ public class WantedJdSkill {
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "skill_id", columnDefinition = "BIGINT")
+	@JoinColumn(name = "skill_id", columnDefinition = "BIGINT", nullable = false)
 	private Skill skill;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "wanted_jd_id", columnDefinition = "BIGINT")
+	@JoinColumn(name = "wanted_jd_id", columnDefinition = "BIGINT", nullable = false)
 	private WantedJd wantedJd;
 
 }

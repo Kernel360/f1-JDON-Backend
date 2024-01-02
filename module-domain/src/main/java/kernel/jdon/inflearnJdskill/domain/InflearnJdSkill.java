@@ -1,10 +1,5 @@
-package kernel.jdon.favorite.domain;
+package kernel.jdon.inflearnJdskill.domain;
 
-import java.time.LocalDateTime;
-
-import org.springframework.data.annotation.CreatedDate;
-
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -14,26 +9,21 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import kernel.jdon.inflearn.domain.InflearnCourse;
-import kernel.jdon.member.domain.Member;
+import kernel.jdon.wantedskill.domain.WantedJdSkill;
 
 @Entity
-@Table(name = "favorite")
-public class Favorite {
+@Table(name = "inflearn_jd_skill")
+public class InflearnJdSkill {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@CreatedDate
-	@Column(name = "created_date", columnDefinition = "DATETIME", nullable = false, updatable = false)
-	private LocalDateTime createdDate;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "wanted_jd_skill_id", columnDefinition = "BIGINT")
+	private WantedJdSkill wantedJdSkill;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "member_id", columnDefinition = "BIGINT")
-	private Member member;
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "inflearn_id", columnDefinition = "BIGINT")
+	@JoinColumn(name = "course_id", columnDefinition = "BIGINT")
 	private InflearnCourse inflearnCourse;
-
 }
