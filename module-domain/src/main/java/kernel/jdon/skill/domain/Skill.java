@@ -1,6 +1,7 @@
 package kernel.jdon.skill.domain;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,11 +15,15 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import kernel.jdon.jobcategory.domain.JobCategory;
 import kernel.jdon.wantedskill.domain.WantedJdSkill;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @NoArgsConstructor
 @Table(name = "skill")
@@ -35,9 +40,21 @@ public class Skill {
 	private Long count;
 
 	@OneToMany(mappedBy = "skill")
-	private ArrayList<WantedJdSkill> wantedJdSkillList = new ArrayList<>();
+	private List<WantedJdSkill> wantedJdSkillList = new ArrayList<>();
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "job_category_id", columnDefinition = "BIGINT")
 	private JobCategory jobCategory;
+
+	public void countPlus(Long plus) {
+		this.count += plus;
+	}
+	@Builder
+	public Skill(Long id, String keyword, Long count, JobCategory jobCategory) {
+		this.id = id;
+		this.keyword = keyword;
+		this.count = count;
+		this.jobCategory = jobCategory;
+	}
+
 }
