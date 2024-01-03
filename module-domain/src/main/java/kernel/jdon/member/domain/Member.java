@@ -69,8 +69,9 @@ public class Member {
 	@Column(name = "withdraw_date", columnDefinition = "DATETIME")
 	private LocalDateTime withdrawDate;
 
+	@Enumerated(EnumType.STRING)
 	@Column(name = "social_provider", columnDefinition = "VARCHAR(20)", nullable = false)
-	private String socialProvider;
+	private SocialProviderType socialProvider;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "job_category_id", columnDefinition = "BIGINT")
@@ -91,7 +92,7 @@ public class Member {
 	@Builder
 	public Member(Long id, String email, String nickname, String birth, Gender gender, LocalDateTime joinDate,
 		LocalDateTime lastLoginDate, MemberRole role, MemberAccountStatus accountStatus, LocalDateTime withdrawDate,
-		String socialProvider, JobCategory jobCategory) {
+		SocialProviderType socialProvider, JobCategory jobCategory) {
 		this.id = id;
 		this.email = email;
 		this.nickname = nickname;
