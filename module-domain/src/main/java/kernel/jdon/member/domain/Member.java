@@ -2,6 +2,7 @@ package kernel.jdon.member.domain;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.data.annotation.CreatedDate;
 
@@ -22,8 +23,10 @@ import kernel.jdon.coffeechatmember.domain.CoffeeChatMember;
 import kernel.jdon.jobcategory.domain.JobCategory;
 import kernel.jdon.memberskill.domain.MemberSkill;
 import kernel.jdon.favorite.domain.Favorite;
+import lombok.Getter;
 
 @Entity
+@Getter
 @Table(name = "member")
 public class Member {
 
@@ -70,15 +73,15 @@ public class Member {
 	private JobCategory jobCategory;
 
 	@OneToMany(mappedBy = "member")
-	private ArrayList<CoffeeChat> hostChatList = new ArrayList<>();
+	private List<CoffeeChat> hostChatList = new ArrayList<>();
 
 	@OneToMany(mappedBy = "member")
-	private ArrayList<CoffeeChatMember> guestChatList = new ArrayList<>();
+	private List<CoffeeChatMember> guestChatList = new ArrayList<>();
 
 	@OneToMany(mappedBy = "member")
-	private ArrayList<MemberSkill> memberSkillList = new ArrayList<>();
+	private List<MemberSkill> memberSkillList = new ArrayList<>();
 
 	@OneToMany(mappedBy = "member")
-	private ArrayList<Favorite> favoriteList = new ArrayList<>();
+	private List<Favorite> favoriteList = new ArrayList<>();
 
 }
