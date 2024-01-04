@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import kernel.jdon.config.UrlConfig;
-import kernel.jdon.crawler.wanted.converter.EntityFactory;
+import kernel.jdon.crawler.wanted.converter.EntityConverter;
 import kernel.jdon.crawler.wanted.dto.object.CreateSkillDto;
 import kernel.jdon.crawler.wanted.dto.response.WantedJobDetailResponse;
 import kernel.jdon.crawler.wanted.dto.response.WantedJobListResponse;
@@ -74,7 +74,7 @@ public class WantedCrawlerService {
 			WantedJobDetailResponse jobDetailResponse = fetchJobDetail(detailId);
 			jobDetailResponse.setDetailUrl(joinToString(urlConfig.getWantedJobDetailUrl(),detailId));
 			jobDetailResponse.setJobCategory(jobCategory);
-			WantedJd savedWantedJd = wantedJdRepository.save(EntityFactory.createWantedJd(jobDetailResponse));
+			WantedJd savedWantedJd = wantedJdRepository.save(EntityConverter.createWantedJd(jobDetailResponse));
 
 			wantedJdDetailSkillMap.put(savedWantedJd, jobDetailResponse.getJob().getSkill());
 
@@ -96,7 +96,8 @@ public class WantedCrawlerService {
 				Skill findSkill = findByJobCategoryIdAndKeyword(jobCategory.getId(), skillKeyword);
 				findSkill.countPlus(skillCount);
 			} else {
-				skillRepository.save(EntityFactory.createSkill(new CreateSkillDto(jobCategory, skillKeyword, skillCount)));
+				skillRepository.save(
+					EntityConverter.createSkill(new CreateSkillDto(jobCategory, skillKeyword, skillCount)));
 			}
 		}
 
@@ -106,7 +107,7 @@ public class WantedCrawlerService {
 			List<WantedJobDetailResponse.WantedSkill> targetJdSkillList= entry.getValue();
 			for (WantedJobDetailResponse.WantedSkill skill : targetJdSkillList) {
 				Skill findSkill = findByJobCategoryIdAndKeyword(jobCategory.getId(), skill.getKeyword());
-				wantedJdSkillRepository.save(EntityFactory.createWantedJdSkill(wantedJd, findSkill));
+				wantedJdSkillRepository.save(EntityConverter.createWantedJdSkill(wantedJd, findSkill));
 			}
 		}
 	}

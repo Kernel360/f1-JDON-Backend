@@ -3,7 +3,7 @@ package kernel.jdon.crawler.wanted.search;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public enum JobSearchJobCategory implements JobSearchCondition{
+public enum JobSearchJobCategory implements JobSearchCondition {
 	JOB_DEVELOPER("518", "개발");
 
 	public final static String SEARCH_KEY = "job_group_id";

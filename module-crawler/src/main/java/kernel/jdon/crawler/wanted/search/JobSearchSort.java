@@ -3,7 +3,7 @@ package kernel.jdon.crawler.wanted.search;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public enum JobSearchSort implements JobSearchCondition{
+public enum JobSearchSort implements JobSearchCondition {
 	SORT_LATEST("job.latest_order", "최신순"),
 	SORT_POPULARITY("job.popularity_order", "인기순");
 

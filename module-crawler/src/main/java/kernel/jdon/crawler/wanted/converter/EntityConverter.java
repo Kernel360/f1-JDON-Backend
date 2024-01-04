@@ -9,8 +9,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class EntityFactory {
-
+public class EntityConverter {
 	public static WantedJdSkill createWantedJdSkill(WantedJd wantedJd, Skill skill) {
 		return WantedJdSkill.builder()
 			.wantedJd(wantedJd)
