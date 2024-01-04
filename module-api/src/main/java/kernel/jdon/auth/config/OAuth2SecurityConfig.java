@@ -33,7 +33,9 @@ public class OAuth2SecurityConfig {
 		http//.cors().and()
 			.csrf().disable();
 
-		http.authorizeHttpRequests(config -> config.anyRequest().permitAll());
+		http.authorizeHttpRequests(config -> config
+			.requestMatchers("/oauth/**").authenticated()
+			.anyRequest().permitAll()); // .anyRequest().authenticated());
 		http.oauth2Login(oauth2Configurer -> oauth2Configurer
 			.successHandler(oAuth2AuthenticationSuccessHandler())
 			.userInfoEndpoint()
