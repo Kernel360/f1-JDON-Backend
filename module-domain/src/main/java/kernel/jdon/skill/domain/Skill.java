@@ -46,6 +46,7 @@ public class Skill {
 	public void countPlus(Long plus) {
 		this.count += plus;
 	}
+
 	@Builder
 	public Skill(Long id, String keyword, Long count, JobCategory jobCategory) {
 		this.id = id;

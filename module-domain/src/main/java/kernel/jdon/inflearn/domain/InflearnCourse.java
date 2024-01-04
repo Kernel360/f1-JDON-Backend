@@ -6,14 +6,21 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "inflearn_course")
 public class InflearnCourse {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
+	@Column(name = "course_id", columnDefinition = "BIGINT", nullable = false, unique = true)
+	private Long courseId;
 
 	@Column(name = "title", columnDefinition = "VARCHAR(100)", nullable = false)
 	private String title;
@@ -32,4 +39,16 @@ public class InflearnCourse {
 
 	@Column(name = "price", columnDefinition = "INT", nullable = false)
 	private int price;
+
+	@Builder
+	public InflearnCourse(Long courseId, String title, String lectureUrl, String instructor, Long studentCount,
+		String imageUrl, int price) {
+		this.courseId = courseId;
+		this.title = title;
+		this.lectureUrl = lectureUrl;
+		this.instructor = instructor;
+		this.studentCount = studentCount;
+		this.imageUrl = imageUrl;
+		this.price = price;
+	}
 }
