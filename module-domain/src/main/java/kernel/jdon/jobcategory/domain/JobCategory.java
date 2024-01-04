@@ -1,6 +1,7 @@
 package kernel.jdon.jobcategory.domain;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,8 +12,13 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import kernel.jdon.base.BaseEntity;
 import kernel.jdon.skill.domain.Skill;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "job_category")
 public class JobCategory extends BaseEntity {
 
@@ -26,6 +32,9 @@ public class JobCategory extends BaseEntity {
 	@Column(name = "parent_id", columnDefinition = "BIGINT")
 	private Long parentId;
 
+	@Column(name = "wanted_code", columnDefinition = "VARCHAR(255)", nullable = false)
+	private String wantedCode;
+
 	@OneToMany(mappedBy = "jobCategory")
-	private ArrayList<Skill> skillList = new ArrayList<>();
+	private List<Skill> skillList = new ArrayList<>();
 }

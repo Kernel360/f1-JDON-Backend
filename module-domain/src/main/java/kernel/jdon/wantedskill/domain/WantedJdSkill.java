@@ -10,8 +10,12 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import kernel.jdon.skill.domain.Skill;
 import kernel.jdon.wanted.domain.WantedJd;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "wanted_jd_skill")
 public class WantedJdSkill {
 
@@ -27,4 +31,9 @@ public class WantedJdSkill {
 	@JoinColumn(name = "wanted_jd_id", columnDefinition = "BIGINT", nullable = false)
 	private WantedJd wantedJd;
 
+	@Builder
+	public WantedJdSkill(Skill skill, WantedJd wantedJd) {
+		this.skill = skill;
+		this.wantedJd = wantedJd;
+	}
 }
