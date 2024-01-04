@@ -17,15 +17,12 @@ import kernel.jdon.jobcategory.domain.JobCategory;
 import kernel.jdon.wantedskill.domain.WantedJdSkill;
 import lombok.AccessLevel;
 import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@NoArgsConstructor
 @Table(name = "skill")
 public class Skill {
 
