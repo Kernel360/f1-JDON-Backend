@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import kernel.jdon.jobcategory.domain.JobCategory;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -18,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "wanted_jd")
+@Table(name = "wanted_jd", uniqueConstraints = @UniqueConstraint(columnNames = {"detail_id", "job_category_id"}))
 public class WantedJd {
 
 	@Id
@@ -28,7 +29,7 @@ public class WantedJd {
 	@Column(name = "company_name", columnDefinition = "VARCHAR(50)", nullable = false)
 	private String companyName;
 
-	@Column(name = "detail_id", columnDefinition = "BIGINT", nullable = false, unique = true)
+	@Column(name = "detail_id", columnDefinition = "BIGINT", nullable = false)
 	private Long detailId;
 
 	@Column(name = "detail_url", columnDefinition = "VARCHAR(255)", nullable = false)
