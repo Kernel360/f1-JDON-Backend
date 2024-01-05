@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class InflearnCrawlerService {
+public class InflearnCrawlerService implements CrawlerService {
 
 	private final UrlConfig urlConfig;
 	private final CourseScraperService courseScraperService;
@@ -26,6 +26,7 @@ public class InflearnCrawlerService {
 	private final CourseDuplicationCheckerService courseDuplicationCheckerService;
 
 	@Transactional
+	@Override
 	public void fetchCourseInfo() {
 		String lectureUrl = createInflearnListUrl(CourseDomain.DEVELOPMENT_PROGRAMMING,
 			DevelopmentProgrammingCategory.WEB_DEVELOPMENT, CourseSearchSort.SORT_POPULARITY, 1);
@@ -33,7 +34,7 @@ public class InflearnCrawlerService {
 		parseAndCreateCourses(courseElements, lectureUrl);
 	}
 
-	public void parseAndCreateCourses(Elements courseElements, String lectureUrl) {
+	private void parseAndCreateCourses(Elements courseElements, String lectureUrl) {
 		for (Element courseElement : courseElements) {
 			CourseAndSkillsDto courseAndSkillsDto = courseParserService.parseCourse(courseElement, lectureUrl);
 			InflearnCourse course = courseAndSkillsDto.getCourse();
