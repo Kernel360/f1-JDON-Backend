@@ -4,18 +4,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import kernel.jdon.crawler.inflearn.service.InflearnCrawlerService;
+import kernel.jdon.crawler.inflearn.service.CrawlerService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
 public class InflearnCrawlerController {
 
-	private final InflearnCrawlerService inflearnCrawlerService;
+	private final CrawlerService crawlerService;
 
 	@GetMapping("/api/v1/crawler/inflearn")
 	public ResponseEntity<Object> getInflearnData() {
-		inflearnCrawlerService.fetchCourseInfo();
+		crawlerService.fetchCourseInfo();
 
 		return ResponseEntity.noContent().build();
 	}
