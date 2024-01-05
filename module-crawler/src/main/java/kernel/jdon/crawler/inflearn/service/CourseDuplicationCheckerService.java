@@ -11,7 +11,7 @@ public class CourseDuplicationCheckerService {
 
 	private final InflearnCourseRepository inflearnCourseRepository;
 
-	public boolean isDuplicate(Long courseId) {
+	protected boolean isDuplicate(Long courseId) {
 		if (courseId == null) {
 			return false;
 		}

@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CourseParserService {
 
-	public CourseAndSkillsDto parseCourse(Element courseElement, String lectureUrl) {
+	protected CourseAndSkillsDto parseCourse(Element courseElement, String lectureUrl) {
 		Long courseId = Long.parseLong(courseElement.attr("data-productId"));
 		String title = getText(courseElement, "div.course_title");
 		long studentCount = parseStudentCount(courseElement);

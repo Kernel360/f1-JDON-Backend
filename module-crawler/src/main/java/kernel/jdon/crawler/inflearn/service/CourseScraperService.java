@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class CourseScraperService {
 
-	public Elements scrapeCourses(String url) {
+	protected Elements scrapeCourses(String url) {
 		// TODO: CrawlerException 커스텀 예러를 던져줘서 GlobalExceptionHandler에서 처리할 수 있도록 리팩토링 필요, 한꺼번에 리팩토링할 수 있도록 남겨뒀습니다
 		try {
 			Document doc = Jsoup.connect(url).get();

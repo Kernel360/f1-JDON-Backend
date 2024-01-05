@@ -26,7 +26,7 @@ public class CourseStorageService {
 	private final WantedJdSkillRepository wantedJdSkillRepository;
 	private final SkillRepository skillRepository;
 
-	public void createInflearnCourseAndInflearnJdSkill(InflearnCourse inflearnCourse, String skillTags) {
+	protected void createInflearnCourseAndInflearnJdSkill(InflearnCourse inflearnCourse, String skillTags) {
 		if (shouldCreateInflearnCourse(skillTags)) {
 			InflearnCourse savedCourse = inflearnCourseRepository.save(inflearnCourse);
 			processAndCreateInflearnJdSKill(savedCourse, skillTags);
@@ -48,7 +48,7 @@ public class CourseStorageService {
 		return false;
 	}
 
-	public void processAndCreateInflearnJdSKill(InflearnCourse inflearnCourse, String skillTags) {
+	private void processAndCreateInflearnJdSKill(InflearnCourse inflearnCourse, String skillTags) {
 		String[] skillList = skillTags.split(", ");
 		for (String skill : skillList) {
 			associateWantedJdSkillWithInflearnCourse(inflearnCourse, skill);
