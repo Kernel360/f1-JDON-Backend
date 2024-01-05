@@ -14,7 +14,7 @@ public class WantedCrawlerController {
 	private final WantedCrawlerService wantedCrawlerService;
 
 	@GetMapping("/api/v1/crawler/wanted")
-	public ResponseEntity<Object> getWantedData() {
+	public ResponseEntity<Void> getWantedData() {
 		wantedCrawlerService.fetchJd();
 		return ResponseEntity.noContent().build();
 	}
