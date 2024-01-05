@@ -36,14 +36,14 @@ import lombok.RequiredArgsConstructor;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class WantedCrawlerService {
+	private static final int MAX_FETCH_JD_LIST_SIZE = 10; // 1000
+	private static final int MAX_FETCH_JD_LIST_OFFSET = 5; // 100
 	private final RestTemplate restTemplate;
 	private final UrlConfig urlConfig;
 	private final WantedJdRepository wantedJdRepository;
 	private final WantedJdSkillRepository wantedJdSkillRepository;
 	private final SkillRepository skillRepository;
 	private final JobCategoryRepository jobCategoryRepository;
-	private static final int MAX_FETCH_JD_LIST_SIZE = 100; // 1000
-	private static final int MAX_FETCH_JD_LIST_OFFSET = 50; // 100
 
 	@Transactional
 	public void fetchJd() {
@@ -72,7 +72,7 @@ public class WantedCrawlerService {
 			}
 			/** 원티드 JD 상세 정보 등록 **/
 			WantedJobDetailResponse jobDetailResponse = fetchJobDetail(detailId);
-			jobDetailResponse.setDetailUrl(joinToString(urlConfig.getWantedJobDetailUrl(),detailId));
+			jobDetailResponse.setDetailUrl(joinToString(urlConfig.getWantedJobDetailUrl(), detailId));
 			jobDetailResponse.setJobCategory(jobCategory);
 			WantedJd savedWantedJd = wantedJdRepository.save(EntityConverter.createWantedJd(jobDetailResponse));
 
@@ -82,7 +82,8 @@ public class WantedCrawlerService {
 			for (WantedJobDetailResponse.WantedSkill wantedSkill : jobDetailResponse.getJob().getSkill()) {
 				wantedSkillAndCountMap.put(
 					new SkillVo(jobCategory.getId(), wantedSkill.getKeyword()),
-					wantedSkillAndCountMap.getOrDefault(new SkillVo(jobCategory.getId(), wantedSkill.getKeyword()),0L)+1L
+					wantedSkillAndCountMap.getOrDefault(new SkillVo(jobCategory.getId(), wantedSkill.getKeyword()), 0L)
+						+ 1L
 				);
 			}
 		}
@@ -104,7 +105,7 @@ public class WantedCrawlerService {
 		/** 원티드 JD 상세 - 기술 중간테이블 저장 **/
 		for (Map.Entry<WantedJd, List<WantedJobDetailResponse.WantedSkill>> entry : wantedJdDetailSkillMap.entrySet()) {
 			WantedJd wantedJd = entry.getKey();
-			List<WantedJobDetailResponse.WantedSkill> targetJdSkillList= entry.getValue();
+			List<WantedJobDetailResponse.WantedSkill> targetJdSkillList = entry.getValue();
 			for (WantedJobDetailResponse.WantedSkill skill : targetJdSkillList) {
 				Skill findSkill = findByJobCategoryIdAndKeyword(jobCategory.getId(), skill.getKeyword());
 				wantedJdSkillRepository.save(EntityConverter.createWantedJdSkill(wantedJd, findSkill));

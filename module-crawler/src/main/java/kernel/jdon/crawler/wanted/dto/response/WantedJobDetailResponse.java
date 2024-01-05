@@ -29,6 +29,8 @@ public class WantedJobDetailResponse {
 	@NoArgsConstructor(access = AccessLevel.PRIVATE)
 	public static class JobDetail {
 		private Long id;
+		@JsonProperty("position")
+		private String title;
 		private Detail detail;
 		private Company company;
 		@JsonProperty("skill_tags")
