@@ -1,7 +1,11 @@
 package kernel.jdon.inflearn.domain;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -14,6 +18,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "inflearn_course")
 public class InflearnCourse {
 
@@ -42,9 +47,13 @@ public class InflearnCourse {
 	@Column(name = "price", columnDefinition = "INT", nullable = false)
 	private int price;
 
+	@CreatedDate
+	@Column(name = "scraping_date", columnDefinition = "TEXT", nullable = false)
+	private String scrapingDate;
+
 	@Builder
 	public InflearnCourse(Long courseId, String title, String lectureUrl, String instructor, Long studentCount,
-		String imageUrl, int price) {
+		String imageUrl, int price, String scrapingDate) {
 		this.courseId = courseId;
 		this.title = title;
 		this.lectureUrl = lectureUrl;
@@ -52,5 +61,6 @@ public class InflearnCourse {
 		this.studentCount = studentCount;
 		this.imageUrl = imageUrl;
 		this.price = price;
+		this.scrapingDate = scrapingDate;
 	}
 }
