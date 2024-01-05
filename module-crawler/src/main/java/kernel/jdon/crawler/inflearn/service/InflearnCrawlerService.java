@@ -16,6 +16,7 @@ import kernel.jdon.inflearn.domain.InflearnCourse;
 import lombok.RequiredArgsConstructor;
 
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class InflearnCrawlerService implements CrawlerService {
 
