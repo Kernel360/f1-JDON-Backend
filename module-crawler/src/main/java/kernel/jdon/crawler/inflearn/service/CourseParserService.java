@@ -4,7 +4,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
-import kernel.jdon.crawler.inflearn.converter.EntityBuilder;
+import kernel.jdon.crawler.inflearn.converter.EntityConverter;
 import kernel.jdon.crawler.inflearn.dto.CourseAndSkillsDto;
 import kernel.jdon.crawler.inflearn.util.SkillStandardizer;
 import kernel.jdon.inflearn.domain.InflearnCourse;
@@ -24,7 +24,7 @@ public class CourseParserService {
 		String skillTags = getText(courseElement, "div.course_skills > span");
 		String standardizedSkillTags = SkillStandardizer.standardize(skillTags);
 
-		InflearnCourse inflearnCourse = EntityBuilder.createInflearnCourse(courseId, title, lectureUrl, instructor,
+		InflearnCourse inflearnCourse = EntityConverter.createInflearnCourse(courseId, title, lectureUrl, instructor,
 			studentCount, imageUrl, price);
 
 		return new CourseAndSkillsDto(inflearnCourse, standardizedSkillTags);

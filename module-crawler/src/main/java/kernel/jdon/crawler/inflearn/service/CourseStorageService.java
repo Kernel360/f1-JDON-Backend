@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import kernel.jdon.crawler.common.repository.SkillRepository;
 import kernel.jdon.crawler.common.repository.WantedJdSkillRepository;
-import kernel.jdon.crawler.inflearn.converter.EntityBuilder;
+import kernel.jdon.crawler.inflearn.converter.EntityConverter;
 import kernel.jdon.crawler.inflearn.repository.InflearnCourseRepository;
 import kernel.jdon.crawler.inflearn.repository.InflearnJdSkillRepository;
 import kernel.jdon.inflearn.domain.InflearnCourse;
@@ -71,7 +71,7 @@ public class CourseStorageService {
 
 	private void createInflearnJdSkillIfNotExists(InflearnCourse inflearnCourse, WantedJdSkill wantedJdSkill) {
 		if (!inflearnJdSkillRepository.existsByInflearnCourseAndWantedJdSkill(inflearnCourse, wantedJdSkill)) {
-			InflearnJdSkill inflearnJdSkill = EntityBuilder.createInflearnJdSkill(inflearnCourse, wantedJdSkill);
+			InflearnJdSkill inflearnJdSkill = EntityConverter.createInflearnJdSkill(inflearnCourse, wantedJdSkill);
 			inflearnJdSkillRepository.save(inflearnJdSkill);
 		}
 	}
