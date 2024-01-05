@@ -13,14 +13,14 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import kernel.jdon.config.UrlConfig;
+import kernel.jdon.crawler.common.repository.SkillRepository;
+import kernel.jdon.crawler.common.repository.WantedJdSkillRepository;
 import kernel.jdon.crawler.wanted.converter.EntityConverter;
 import kernel.jdon.crawler.wanted.dto.object.CreateSkillDto;
 import kernel.jdon.crawler.wanted.dto.response.WantedJobDetailResponse;
 import kernel.jdon.crawler.wanted.dto.response.WantedJobListResponse;
 import kernel.jdon.crawler.wanted.repository.JobCategoryRepository;
-import kernel.jdon.crawler.wanted.repository.SkillRepository;
 import kernel.jdon.crawler.wanted.repository.WantedJdRepository;
-import kernel.jdon.crawler.wanted.repository.WantedJdSkillRepository;
 import kernel.jdon.crawler.wanted.search.JobSearchExperience;
 import kernel.jdon.crawler.wanted.search.JobSearchJobCategory;
 import kernel.jdon.crawler.wanted.search.JobSearchJobPosition;
