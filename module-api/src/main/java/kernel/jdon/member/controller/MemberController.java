@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import kernel.jdon.dto.response.CommonResponse;
 import kernel.jdon.member.dto.request.ModifyMemberRequest;
+import kernel.jdon.member.dto.request.NicknameDuplicateRequest;
 import kernel.jdon.member.dto.request.SaveMemberRequest;
 import kernel.jdon.member.dto.response.GetMemberResponse;
 import kernel.jdon.member.dto.response.ModifyMemberResponse;
@@ -26,6 +27,7 @@ public class MemberController {
 
 	@PostMapping("/member")
 	public ResponseEntity<CommonResponse> save(@RequestBody SaveMemberRequest saveMemberRequest) {
+
 		return ResponseEntity.ok(CommonResponse.of(SaveMemberResponse.of(1L)));
 	}
 
@@ -39,6 +41,7 @@ public class MemberController {
 			.jobCategoryId(1L)
 			.skillList(List.of(1L, 2L, 3L))
 			.build();
+
 		return ResponseEntity.ok(CommonResponse.of(getMemberResponse));
 	}
 
@@ -52,11 +55,20 @@ public class MemberController {
 			.jobCategoryId(modifyMemberRequest.getJobCategoryId())
 			.skillList(modifyMemberRequest.getSkillList())
 			.build();
+
 		return ResponseEntity.ok(CommonResponse.of(modifyMemberResponse));
 	}
 
 	@DeleteMapping("/member")
 	public ResponseEntity<CommonResponse> remove() {
+
 		return ResponseEntity.ok(CommonResponse.of(RemoveMemberResponse.of(1L)));
+	}
+
+	@PostMapping("nickname/duplicate")
+	public ResponseEntity checkNicknameDuplicate(
+		@RequestBody NicknameDuplicateRequest nicknameDuplicateRequest) {
+
+		return ResponseEntity.noContent().build();
 	}
 }
