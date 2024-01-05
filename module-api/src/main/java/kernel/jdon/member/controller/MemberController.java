@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -16,6 +17,7 @@ import kernel.jdon.member.dto.request.ModifyMemberRequest;
 import kernel.jdon.member.dto.request.SaveMemberRequest;
 import kernel.jdon.member.dto.response.GetMemberResponse;
 import kernel.jdon.member.dto.response.ModifyMemberResponse;
+import kernel.jdon.member.dto.response.RemoveMemberResponse;
 import kernel.jdon.member.dto.response.SaveMemberResponse;
 
 @RestController
@@ -51,5 +53,10 @@ public class MemberController {
 			.skillList(modifyMemberRequest.getSkillList())
 			.build();
 		return ResponseEntity.ok(CommonResponse.of(modifyMemberResponse));
+	}
+
+	@DeleteMapping("/member")
+	public ResponseEntity<CommonResponse> remove() {
+		return ResponseEntity.ok(CommonResponse.of(RemoveMemberResponse.of(1L)));
 	}
 }
