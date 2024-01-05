@@ -23,10 +23,14 @@ import kernel.jdon.coffeechatmember.domain.CoffeeChatMember;
 import kernel.jdon.jobcategory.domain.JobCategory;
 import kernel.jdon.memberskill.domain.MemberSkill;
 import kernel.jdon.favorite.domain.Favorite;
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "member")
 public class Member {
 
@@ -84,4 +88,21 @@ public class Member {
 	@OneToMany(mappedBy = "member")
 	private List<Favorite> favoriteList = new ArrayList<>();
 
+	@Builder
+	public Member(Long id, String email, String nickname, String birth, Gender gender, LocalDateTime joinDate,
+		LocalDateTime lastLoginDate, MemberRole role, MemberAccountStatus accountStatus, LocalDateTime withdrawDate,
+		String socialProvider, JobCategory jobCategory) {
+		this.id = id;
+		this.email = email;
+		this.nickname = nickname;
+		this.birth = birth;
+		this.gender = gender;
+		this.joinDate = joinDate;
+		this.lastLoginDate = lastLoginDate;
+		this.role = role;
+		this.accountStatus = accountStatus;
+		this.withdrawDate = withdrawDate;
+		this.socialProvider = socialProvider;
+		this.jobCategory = jobCategory;
+	}
 }
