@@ -18,4 +18,4 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           # optional
           LANGUAGE: Korean
-          PROMPT:
+          PROMPT: 한국어로 작성할 것
