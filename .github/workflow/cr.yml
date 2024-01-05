@@ -10,7 +10,7 @@ on:
 
 jobs:
   test:
-    if: ${{ contains(github.event.pull_request.labels.*.name, '🤖 GPT-Review') }}
+    if: ${{ contains(github.event.*.labels.*.name, '🤖 GPT-Review') }}
     runs-on: ubuntu-latest
     steps:
       - name: Run Code Review Action
