@@ -21,6 +21,7 @@ public class EntityConverter {
 		return WantedJd.builder()
 			.jobCategory(wantedJobDetailResponse.getJobCategory())
 			.companyName(wantedJobDetailResponse.getJob().getCompany().getName())
+			.title(wantedJobDetailResponse.getJob().getTitle())
 			.detailId(wantedJobDetailResponse.getJob().getId())
 			.detailUrl(wantedJobDetailResponse.getDetailUrl())
 			.imageUrl(wantedJobDetailResponse.getJob().getCompanyImages())
