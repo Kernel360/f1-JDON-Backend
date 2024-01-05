@@ -61,13 +61,13 @@ public class MemberController {
 	}
 
 	@DeleteMapping("/api/v1/member")
-	public ResponseEntity<CommonResponse> remove() {
+	public ResponseEntity<CommonResponse> withdraw() {
 
 		return ResponseEntity.ok(CommonResponse.of(RemoveMemberResponse.of(1L)));
 	}
 
 	@PostMapping("nickname/duplicate")
-	public ResponseEntity checkNicknameDuplicate(
+	public ResponseEntity<Void> checkNicknameDuplicate(
 		@RequestBody NicknameDuplicateRequest nicknameDuplicateRequest) {
 
 		return ResponseEntity.noContent().build();
