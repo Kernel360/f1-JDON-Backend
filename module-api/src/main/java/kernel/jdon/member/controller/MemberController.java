@@ -1,5 +1,6 @@
 package kernel.jdon.member.controller;
 
+import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -25,8 +26,10 @@ public class MemberController {
 
 	@PostMapping("/api/v1/member")
 	public ResponseEntity<CommonResponse> save(@RequestBody SaveMemberRequest saveMemberRequest) {
+		Long memberId = 1L;
+		URI uri = URI.create("/api/v1/member/" + memberId);
 
-		return ResponseEntity.ok(CommonResponse.of(SaveMemberResponse.of(1L)));
+		return ResponseEntity.created(uri).body(CommonResponse.of(SaveMemberResponse.of(memberId)));
 	}
 
 	@GetMapping("/api/v1/member")
