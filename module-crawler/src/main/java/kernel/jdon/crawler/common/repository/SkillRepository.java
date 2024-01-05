@@ -1,4 +1,4 @@
-package kernel.jdon.crawler.wanted.repository;
+package kernel.jdon.crawler.common.repository;
 
 import java.util.Optional;
 
@@ -8,5 +8,8 @@ import kernel.jdon.skill.domain.Skill;
 
 public interface SkillRepository extends JpaRepository<Skill, Long> {
 	Optional<Skill> findByJobCategoryIdAndKeyword(Long jobCategoryId, String keyword);
+
 	boolean existsByJobCategoryIdAndKeyword(Long jobCategoryId, String keyword);
+
+	Optional<Skill> findByKeyword(String keyword);
 }

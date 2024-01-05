@@ -16,4 +16,6 @@ public class UrlConfig {
 	private String wantedApiJobListUrl;
 	@Value("${url.wanted.api.detail}")
 	private String wantedApiJobDetailUrl;
+	@Value("https://www.inflearn.com/courses")
+	private String inflearnCourseListUrl;
 }

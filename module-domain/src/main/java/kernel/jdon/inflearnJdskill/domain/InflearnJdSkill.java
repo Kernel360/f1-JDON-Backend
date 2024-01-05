@@ -10,8 +10,12 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import kernel.jdon.inflearn.domain.InflearnCourse;
 import kernel.jdon.wantedskill.domain.WantedJdSkill;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "inflearn_jd_skill")
 public class InflearnJdSkill {
 
@@ -26,4 +30,10 @@ public class InflearnJdSkill {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "course_id", columnDefinition = "BIGINT")
 	private InflearnCourse inflearnCourse;
+
+	@Builder
+	public InflearnJdSkill(WantedJdSkill wantedJdSkill, InflearnCourse inflearnCourse) {
+		this.wantedJdSkill = wantedJdSkill;
+		this.inflearnCourse = inflearnCourse;
+	}
 }

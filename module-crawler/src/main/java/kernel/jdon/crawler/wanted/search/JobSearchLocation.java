@@ -1,9 +1,10 @@
 package kernel.jdon.crawler.wanted.search;
 
+import kernel.jdon.crawler.common.search.SearchCondition;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public enum JobSearchLocation implements JobSearchCondition {
+public enum JobSearchLocation implements SearchCondition {
 	LOCATIONS_ALL("all", "전체");
 
 	public final static String SEARCH_KEY = "locations";

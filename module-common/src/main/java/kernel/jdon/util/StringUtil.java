@@ -11,6 +11,10 @@ public class StringUtil {
 		return joinToString(key, "=", value, "&");
 	}
 
+	public static String createPathString(String value) {
+		return joinToString("/", value);
+	}
+
 	public static String joinToString(Object... args) {
 		StringBuilder sb = new StringBuilder();
 		Arrays.stream(args).forEach(sb::append);
