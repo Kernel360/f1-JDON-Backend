@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import kernel.jdon.dto.response.CommonResponse;
@@ -22,16 +21,15 @@ import kernel.jdon.member.dto.response.RemoveMemberResponse;
 import kernel.jdon.member.dto.response.SaveMemberResponse;
 
 @RestController
-@RequestMapping("/api/v1")
 public class MemberController {
 
-	@PostMapping("/member")
+	@PostMapping("/api/v1/member")
 	public ResponseEntity<CommonResponse> save(@RequestBody SaveMemberRequest saveMemberRequest) {
 
 		return ResponseEntity.ok(CommonResponse.of(SaveMemberResponse.of(1L)));
 	}
 
-	@GetMapping("/member")
+	@GetMapping("/api/v1/member")
 	public ResponseEntity<CommonResponse> get() {
 		GetMemberResponse getMemberResponse = GetMemberResponse.builder()
 			.email("aaa@gmail.com")
@@ -45,7 +43,7 @@ public class MemberController {
 		return ResponseEntity.ok(CommonResponse.of(getMemberResponse));
 	}
 
-	@PutMapping("/member")
+	@PutMapping("/api/v1/member")
 	public ResponseEntity<CommonResponse> modify(@RequestBody ModifyMemberRequest modifyMemberRequest) {
 		ModifyMemberResponse modifyMemberResponse = ModifyMemberResponse.builder()
 			.email(modifyMemberRequest.getEmail())
@@ -59,7 +57,7 @@ public class MemberController {
 		return ResponseEntity.ok(CommonResponse.of(modifyMemberResponse));
 	}
 
-	@DeleteMapping("/member")
+	@DeleteMapping("/api/v1/member")
 	public ResponseEntity<CommonResponse> remove() {
 
 		return ResponseEntity.ok(CommonResponse.of(RemoveMemberResponse.of(1L)));
