@@ -25,6 +25,7 @@ public class CoffeeChatController {
 
 	@GetMapping("/v1/coffeechats/{id}")
 	public ResponseEntity<CommonResponse> get(@PathVariable(name = "id") Long coffeeChatId) {
+
 		return ResponseEntity.ok().body(CommonResponse.of(coffeeChatService.find(coffeeChatId)));
 	}
 
@@ -32,6 +33,7 @@ public class CoffeeChatController {
 	public ResponseEntity<CommonResponse> save(@RequestBody CreateCoffeeChatRequest request) {
 		CreateCoffeeChatResponse response = coffeeChatService.create(request);
 		URI uri = URI.create("/v1/coffeechats/" + response.getCoffeeChatId());
+
 		return ResponseEntity.created(uri).body(CommonResponse.of(response));
 	}
 }
