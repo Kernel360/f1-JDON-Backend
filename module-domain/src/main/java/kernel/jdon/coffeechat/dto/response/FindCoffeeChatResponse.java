@@ -24,9 +24,11 @@ public class FindCoffeeChatResponse {
 	private Long viewCount;
 	private String status;
 	private LocalDateTime meetDate;
+	private LocalDateTime createdDate;
 	private String openChatUrl;
 	private Long totalRecruitCount;
 	private Long currentRecruitCount;
+	private String job;
 
 	public static FindCoffeeChatResponse of(CoffeeChat coffeeChat) {
 		return FindCoffeeChatResponse.builder()
