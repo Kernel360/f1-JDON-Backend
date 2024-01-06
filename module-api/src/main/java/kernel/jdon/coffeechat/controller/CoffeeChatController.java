@@ -17,19 +17,18 @@ import kernel.jdon.dto.response.CommonResponse;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api")
 @RequiredArgsConstructor
 public class CoffeeChatController {
 
 	private final CoffeeChatService coffeeChatService;
 
-	@GetMapping("/v1/coffeechats/{id}")
+	@GetMapping("/api/v1/coffeechats/{id}")
 	public ResponseEntity<CommonResponse> get(@PathVariable(name = "id") Long coffeeChatId) {
 
 		return ResponseEntity.ok().body(CommonResponse.of(coffeeChatService.find(coffeeChatId)));
 	}
 
-	@PostMapping("/v1/coffeechats")
+	@PostMapping("/api/v1/coffeechats")
 	public ResponseEntity<CommonResponse> save(@RequestBody CreateCoffeeChatRequest request) {
 		CreateCoffeeChatResponse response = coffeeChatService.create(request);
 		URI uri = URI.create("/v1/coffeechats/" + response.getCoffeeChatId());
