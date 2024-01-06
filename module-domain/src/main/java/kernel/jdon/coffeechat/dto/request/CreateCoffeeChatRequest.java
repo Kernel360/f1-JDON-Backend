@@ -5,9 +5,12 @@ import java.time.LocalDateTime;
 import kernel.jdon.coffeechat.domain.CoffeeChat;
 import kernel.jdon.faq.dto.request.CreateFaqRequest;
 import kernel.jdon.member.domain.Member;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class CreateCoffeeChatRequest {
 
 	private String title;
