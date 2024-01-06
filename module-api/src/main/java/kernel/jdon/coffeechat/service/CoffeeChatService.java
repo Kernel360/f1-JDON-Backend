@@ -21,11 +21,15 @@ public class CoffeeChatService {
 
 	@Transactional
 	public FindCoffeeChatResponse find(Long coffeeChatId) {
-		CoffeeChat coffeeChat = coffeeChatRepository.findById(coffeeChatId)
+		CoffeeChat findCoffeeChat = coffeeChatRepository.findById(coffeeChatId)
 			.orElseThrow(() -> new ApiException(CoffeeChatErrorCode.NOT_FOUND_COFFEECHAT));
-		coffeeChat.increaseViewCount();
+		increaseViewCount(findCoffeeChat);
 
-		return FindCoffeeChatResponse.of(coffeeChat);
+		return FindCoffeeChatResponse.of(findCoffeeChat);
+	}
+
+	private void increaseViewCount(CoffeeChat coffeeChat) {
+		coffeeChat.increaseViewCount();
 	}
 
 	@Transactional
