@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import kernel.jdon.coffeechat.dto.request.CreateCoffeeChatRequest;
 import kernel.jdon.coffeechat.dto.response.CreateCoffeeChatResponse;
+import kernel.jdon.coffeechat.dto.response.FindCoffeeChatListResponse;
 import kernel.jdon.coffeechat.dto.response.FindCoffeeChatResponse;
 import kernel.jdon.coffeechat.service.CoffeeChatService;
 import kernel.jdon.dto.response.CommonResponse;
@@ -40,17 +41,17 @@ public class CoffeeChatController {
 		return ResponseEntity.created(uri).body(CommonResponse.of(response));
 	}
 
-	@GetMapping("/v1/coffeechats/me/apply")
+	@GetMapping("/api/v1/coffeechats/guest")
 	public ResponseEntity<CommonResponse> getGuestCoffeeChatList() {
-		List<FindCoffeeChatResponse> list = new ArrayList<>();
+		List<FindCoffeeChatListResponse> list = new ArrayList<>();
 		for (long i = 10; i <= 20; i++) {
-			FindCoffeeChatResponse response = FindCoffeeChatResponse.builder()
+			FindCoffeeChatListResponse response = FindCoffeeChatListResponse.builder()
 				.coffeeChatId(i)
 				.nickname("김영한" + i)
 				.job("backend")
-				.title("커피챗제목" + i)
+				.title("주니어 백엔드 개발자를 대상으로 커피챗을 엽니다." + i)
 				.status("모집중")
-				.meetDate(LocalDateTime.now())
+				.meetDate(LocalDateTime.now().plusMinutes(i))
 				.createdDate(LocalDateTime.now())
 				.currentRecruitCount(5L)
 				.totalRecruitCount(i)
@@ -61,14 +62,45 @@ public class CoffeeChatController {
 		return ResponseEntity.ok(CommonResponse.of(list));
 	}
 
-	// @GetMapping("/v1/coffeechats/me/open")
-	// public ResponseEntity<CommonResponse> getHostCoffeeChatList() {
-	//
-	// }
-	//
-	// @GetMapping("/v1/coffeechats")
-	// public ResponseEntity<CommonResponse> getCoffeeChatList() {
-	//
-	// }
+	@GetMapping("/api/v1/coffeechats/host")
+	public ResponseEntity<CommonResponse> getHostCoffeeChatList() {
+		List<FindCoffeeChatListResponse> list = new ArrayList<>();
+		for (long i = 10; i <= 20; i++) {
+			FindCoffeeChatListResponse response = FindCoffeeChatListResponse.builder()
+				.coffeeChatId(i)
+				.nickname("김영한")
+				.job("backend")
+				.title("주니어 백엔드 개발자를 대상으로 커피챗을 엽니다." + i)
+				.status("모집중")
+				.meetDate(LocalDateTime.now().plusMinutes(i))
+				.createdDate(LocalDateTime.now())
+				.currentRecruitCount(5L)
+				.totalRecruitCount(i)
+				.build();
+			list.add(response);
+		}
+
+		return ResponseEntity.ok(CommonResponse.of(list));
+	}
+	@GetMapping("/api/v1/coffeechats")
+	public ResponseEntity<CommonResponse> getCoffeeChatList() {
+		List<FindCoffeeChatListResponse> list = new ArrayList<>();
+		for (long i = 10; i <= 20; i++) {
+			FindCoffeeChatListResponse response = FindCoffeeChatListResponse.builder()
+				.coffeeChatId(i)
+				.nickname("김영한")
+				.job("backend")
+				.title("주니어 백엔드 개발자를 대상으로 커피챗을 엽니다." + i)
+				.status("모집중")
+				.meetDate(LocalDateTime.now().plusMinutes(i))
+				.createdDate(LocalDateTime.now())
+				.currentRecruitCount(5L)
+				.totalRecruitCount(i)
+				.build();
+			list.add(response);
+		}
+
+		return ResponseEntity.ok(CommonResponse.of(list));
+	}
 
 }
