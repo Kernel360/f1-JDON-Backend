@@ -88,7 +88,7 @@ public class CoffeeChatController {
 		for (long i = 10; i <= 20; i++) {
 			FindCoffeeChatListResponse response = FindCoffeeChatListResponse.builder()
 				.coffeeChatId(i)
-				.nickname("김영한")
+				.nickname("김영한" + i)
 				.job("backend")
 				.title("주니어 백엔드 개발자를 대상으로 커피챗을 엽니다." + i)
 				.status("모집중")
