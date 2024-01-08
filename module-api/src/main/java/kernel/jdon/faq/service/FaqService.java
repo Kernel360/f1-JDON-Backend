@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import kernel.jdon.error.code.FaqErrorCode;
+import kernel.jdon.error.code.api.FaqErrorCode;
 import kernel.jdon.error.exception.api.ApiException;
 import kernel.jdon.faq.domain.Faq;
 import kernel.jdon.faq.dto.request.CreateFaqRequest;

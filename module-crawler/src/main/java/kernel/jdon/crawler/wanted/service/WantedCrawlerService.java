@@ -27,6 +27,8 @@ import kernel.jdon.crawler.wanted.search.JobSearchJobCategory;
 import kernel.jdon.crawler.wanted.search.JobSearchJobPosition;
 import kernel.jdon.crawler.wanted.search.JobSearchLocation;
 import kernel.jdon.crawler.wanted.search.JobSearchSort;
+import kernel.jdon.error.code.crawler.WantedErrorCode;
+import kernel.jdon.error.exception.crawler.CrawlerException;
 import kernel.jdon.jobcategory.domain.JobCategory;
 import kernel.jdon.skill.domain.Skill;
 import kernel.jdon.wanted.domain.WantedJd;
@@ -65,7 +67,7 @@ public class WantedCrawlerService {
 
 	private JobCategory findByJobPosition(JobSearchJobPosition jobPosition) {
 		return jobCategoryRepository.findByWantedCode(jobPosition.getSearchValue())
-			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 직군 또는 직무 입니다."));
+			.orElseThrow(() -> new CrawlerException(WantedErrorCode.NOT_FOUNT_JOB_CATEGORY));
 	}
 
 	private void fetchJobDetail(JobCategory jobCategory, Set<Long> fetchJobIds) {
