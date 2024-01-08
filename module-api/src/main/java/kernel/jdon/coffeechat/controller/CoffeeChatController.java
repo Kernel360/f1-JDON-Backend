@@ -5,7 +5,11 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.stream.events.Comment;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import kernel.jdon.coffeechat.dto.request.CreateCoffeeChatRequest;
 import kernel.jdon.coffeechat.dto.request.UpdateCoffeeChatRequest;
 import kernel.jdon.coffeechat.dto.response.CreateCoffeeChatResponse;
+import kernel.jdon.coffeechat.dto.response.DeleteCoffeeChatResponse;
 import kernel.jdon.coffeechat.dto.response.FindCoffeeChatListResponse;
 import kernel.jdon.coffeechat.dto.response.FindCoffeeChatResponse;
 import kernel.jdon.coffeechat.dto.response.UpdateCoffeeChatResponse;
@@ -113,6 +118,12 @@ public class CoffeeChatController {
 		@RequestBody UpdateCoffeeChatRequest request) {
 
 		return ResponseEntity.ok().body(CommonResponse.of(UpdateCoffeeChatResponse.of(coffeeChatId)));
+	}
+
+	@DeleteMapping("/api/v1/coffeechats/{id}")
+	public ResponseEntity<CommonResponse> remove(@PathVariable Long coffeeChatId) {
+
+		return ResponseEntity.ok().body(CommonResponse.of(DeleteCoffeeChatResponse.of(coffeeChatId)));
 	}
 
 }
