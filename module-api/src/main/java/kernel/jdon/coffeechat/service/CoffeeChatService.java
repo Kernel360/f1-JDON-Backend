@@ -5,8 +5,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kernel.jdon.coffeechat.domain.CoffeeChat;
 import kernel.jdon.coffeechat.dto.request.CreateCoffeeChatRequest;
+import kernel.jdon.coffeechat.dto.request.UpdateCoffeeChatRequest;
 import kernel.jdon.coffeechat.dto.response.CreateCoffeeChatResponse;
 import kernel.jdon.coffeechat.dto.response.FindCoffeeChatResponse;
+import kernel.jdon.coffeechat.dto.response.UpdateCoffeeChatResponse;
 import kernel.jdon.coffeechat.repository.CoffeeChatRepository;
 import kernel.jdon.error.code.api.CoffeeChatErrorCode;
 import kernel.jdon.error.exception.api.ApiException;
@@ -37,6 +39,14 @@ public class CoffeeChatService {
 		CoffeeChat savedCoffeeChat = coffeeChatRepository.save(CreateCoffeeChatRequest.toEntity(request));
 
 		return CreateCoffeeChatResponse.of(savedCoffeeChat.getId());
+	}
+
+	@Transactional
+	public UpdateCoffeeChatResponse update(Long coffeeChatId, UpdateCoffeeChatRequest request) {
+		CoffeeChat findCoffeeChat = coffeeChatRepository.findById(coffeeChatId)
+			.orElseThrow(() -> new ApiException(CoffeeChatErrorCode.NOT_FOUND_COFFEECHAT));
+		findCoffeeChat.updateCoffeeChat(request);
+		return UpdateCoffeeChatResponse.of(findCoffeeChat.getId());
 	}
 
 }
