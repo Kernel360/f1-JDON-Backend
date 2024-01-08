@@ -43,6 +43,7 @@ public class FindCoffeeChatResponse {
 			.viewCount(coffeeChat.getViewCount())
 			.status(coffeeChat.getCoffeeChatStatus().getActiveStatus())
 			.meetDate(coffeeChat.getMeetDate())
+			.createdDate(coffeeChat.getCreatedDate())
 			.openChatUrl(coffeeChat.getOpenChatUrl())
 			.totalRecruitCount(coffeeChat.getTotalRecruitCount())
 			.currentRecruitCount(coffeeChat.getCurrentRecruitCount())
