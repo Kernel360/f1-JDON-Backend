@@ -9,14 +9,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import kernel.jdon.coffeechat.dto.request.CreateCoffeeChatRequest;
+import kernel.jdon.coffeechat.dto.request.UpdateCoffeeChatRequest;
 import kernel.jdon.coffeechat.dto.response.CreateCoffeeChatResponse;
 import kernel.jdon.coffeechat.dto.response.FindCoffeeChatListResponse;
 import kernel.jdon.coffeechat.dto.response.FindCoffeeChatResponse;
+import kernel.jdon.coffeechat.dto.response.UpdateCoffeeChatResponse;
 import kernel.jdon.coffeechat.service.CoffeeChatService;
 import kernel.jdon.dto.response.CommonResponse;
 import lombok.RequiredArgsConstructor;
@@ -82,6 +85,7 @@ public class CoffeeChatController {
 
 		return ResponseEntity.ok(CommonResponse.of(list));
 	}
+
 	@GetMapping("/api/v1/coffeechats")
 	public ResponseEntity<CommonResponse> getCoffeeChatList() {
 		List<FindCoffeeChatListResponse> list = new ArrayList<>();
@@ -101,6 +105,14 @@ public class CoffeeChatController {
 		}
 
 		return ResponseEntity.ok(CommonResponse.of(list));
+	}
+
+	@PutMapping("/api/v1/coffeechats/{id}")
+	public ResponseEntity<CommonResponse> modify(
+		@PathVariable Long coffeeChatId,
+		@RequestBody UpdateCoffeeChatRequest request) {
+
+		return ResponseEntity.ok().body(CommonResponse.of(UpdateCoffeeChatResponse.of(coffeeChatId)));
 	}
 
 }
