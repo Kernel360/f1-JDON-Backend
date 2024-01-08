@@ -27,6 +27,7 @@ public class FindCoffeeChatResponse {
 	private String status;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
 	private LocalDateTime meetDate;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
 	private LocalDateTime createdDate;
 	private String openChatUrl;
 	private Long totalRecruitCount;
