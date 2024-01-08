@@ -23,3 +23,7 @@ logging.level:
 
   org.hibernate.SQL: debug
   #  org.hibernate.type: trace
+
+max_fetch_jd_list:
+  size: 10
+  offset: 5

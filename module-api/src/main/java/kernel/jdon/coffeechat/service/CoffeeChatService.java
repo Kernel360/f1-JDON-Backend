@@ -8,7 +8,7 @@ import kernel.jdon.coffeechat.dto.request.CreateCoffeeChatRequest;
 import kernel.jdon.coffeechat.dto.response.CreateCoffeeChatResponse;
 import kernel.jdon.coffeechat.dto.response.FindCoffeeChatResponse;
 import kernel.jdon.coffeechat.repository.CoffeeChatRepository;
-import kernel.jdon.error.code.CoffeeChatErrorCode;
+import kernel.jdon.error.code.api.CoffeeChatErrorCode;
 import kernel.jdon.error.exception.api.ApiException;
 import lombok.RequiredArgsConstructor;
 

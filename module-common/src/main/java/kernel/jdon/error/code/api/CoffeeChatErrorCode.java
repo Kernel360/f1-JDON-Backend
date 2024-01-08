@@ -1,7 +1,8 @@
-package kernel.jdon.error.code;
+package kernel.jdon.error.code.api;
 
 import org.springframework.http.HttpStatus;
 
+import kernel.jdon.error.code.ErrorCode;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
