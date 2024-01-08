@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
@@ -26,24 +27,26 @@ import kernel.jdon.crawler.wanted.search.JobSearchJobCategory;
 import kernel.jdon.crawler.wanted.search.JobSearchJobPosition;
 import kernel.jdon.crawler.wanted.search.JobSearchLocation;
 import kernel.jdon.crawler.wanted.search.JobSearchSort;
-import kernel.jdon.crawler.wanted.vo.SkillVo;
 import kernel.jdon.jobcategory.domain.JobCategory;
 import kernel.jdon.skill.domain.Skill;
 import kernel.jdon.wanted.domain.WantedJd;
+import kernel.jdon.wantedskill.domain.WantedJdSkill;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class WantedCrawlerService {
-	private static final int MAX_FETCH_JD_LIST_SIZE = 10; // 1000
-	private static final int MAX_FETCH_JD_LIST_OFFSET = 5; // 100
 	private final RestTemplate restTemplate;
 	private final UrlConfig urlConfig;
 	private final WantedJdRepository wantedJdRepository;
 	private final WantedJdSkillRepository wantedJdSkillRepository;
 	private final SkillRepository skillRepository;
 	private final JobCategoryRepository jobCategoryRepository;
+	@Value("${max_fetch_jd_list.size}")
+	private int MAX_FETCH_JD_LIST_SIZE;
+	@Value("${max_fetch_jd_list.offset}")
+	private int MAX_FETCH_JD_LIST_OFFSET;
 
 	@Transactional
 	public void fetchJd() {
@@ -51,71 +54,71 @@ public class WantedCrawlerService {
 			JobSearchJobPosition.JOB_POSITION_FRONTEND,
 			JobSearchJobPosition.JOB_POSITION_SERVER
 		};
-
 		for (JobSearchJobPosition jobPosition : jobPositions) {
 			Set<Long> fetchJobIds = fetchJobIdList(jobPosition);
 
-			JobCategory findJobCategory = jobCategoryRepository.findByWantedCode(jobPosition.getSearchValue())
-				.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 직군 또는 직무 입니다."));
+			JobCategory findJobCategory = findByJobPosition(jobPosition);
 
 			fetchJobDetail(findJobCategory, fetchJobIds);
 		}
 	}
 
+	private JobCategory findByJobPosition(JobSearchJobPosition jobPosition) {
+		return jobCategoryRepository.findByWantedCode(jobPosition.getSearchValue())
+			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 직군 또는 직무 입니다."));
+	}
+
 	private void fetchJobDetail(JobCategory jobCategory, Set<Long> fetchJobIds) {
-		HashMap<SkillVo, Long> wantedSkillAndCountMap = new HashMap<>();
-		HashMap<WantedJd, List<WantedJobDetailResponse.WantedSkill>> wantedJdDetailSkillMap = new HashMap<>();
+		HashMap<WantedJd, List<Skill>> wantedJdSkillMap = new HashMap<>();
 		for (Long detailId : fetchJobIds) {
-			boolean isJobDetailExist = wantedJdRepository.existsByJobCategoryAndDetailId(jobCategory, detailId);
-			if (isJobDetailExist) {
+			if (isJobDetailExist(jobCategory, detailId)) {
 				continue;
 			}
-			/** 원티드 JD 상세 정보 등록 **/
-			WantedJobDetailResponse jobDetailResponse = fetchJobDetail(detailId);
-			jobDetailResponse.setDetailUrl(joinToString(urlConfig.getWantedJobDetailUrl(), detailId));
-			jobDetailResponse.setJobCategory(jobCategory);
-			WantedJd savedWantedJd = wantedJdRepository.save(EntityConverter.createWantedJd(jobDetailResponse));
-
-			wantedJdDetailSkillMap.put(savedWantedJd, jobDetailResponse.getJob().getSkill());
-
-			/** 원티드 JD 상세에서 추출된 기술스택 및 count를 임시 저장 **/
-			for (WantedJobDetailResponse.WantedSkill wantedSkill : jobDetailResponse.getJob().getSkill()) {
-				wantedSkillAndCountMap.put(
-					new SkillVo(jobCategory.getId(), wantedSkill.getKeyword()),
-					wantedSkillAndCountMap.getOrDefault(new SkillVo(jobCategory.getId(), wantedSkill.getKeyword()), 0L)
-						+ 1L
-				);
-			}
+			WantedJobDetailResponse jobDetailResponse = getJobDetail(jobCategory, detailId);
+			WantedJd savedWantedJd = createWantedJd(jobDetailResponse);
+			List<Skill> savedSkillList = createSkills(jobCategory, jobDetailResponse);
+			wantedJdSkillMap.put(savedWantedJd, savedSkillList);
 		}
+		createWantedJdSkill(wantedJdSkillMap);
+	}
 
-		/** 원티드 JD 상세에서 추출된 기술스택 저장 **/
-		for (Map.Entry<SkillVo, Long> entry : wantedSkillAndCountMap.entrySet()) {
-			String skillKeyword = entry.getKey().getKeyword();
-			Long skillCount = entry.getValue();
-			boolean isKeywordExist = skillRepository.existsByJobCategoryIdAndKeyword(jobCategory.getId(), skillKeyword);
-			if (isKeywordExist) {
-				Skill findSkill = findByJobCategoryIdAndKeyword(jobCategory.getId(), skillKeyword);
-				findSkill.countPlus(skillCount);
-			} else {
-				skillRepository.save(
-					EntityConverter.createSkill(new CreateSkillDto(jobCategory, skillKeyword, skillCount)));
-			}
-		}
+	private boolean isJobDetailExist(JobCategory jobCategory, Long detailId) {
+		return wantedJdRepository.existsByJobCategoryAndDetailId(jobCategory, detailId);
+	}
 
-		/** 원티드 JD 상세 - 기술 중간테이블 저장 **/
-		for (Map.Entry<WantedJd, List<WantedJobDetailResponse.WantedSkill>> entry : wantedJdDetailSkillMap.entrySet()) {
+	private void createWantedJdSkill(HashMap<WantedJd, List<Skill>> wantedJdSkillMap) {
+		for (Map.Entry<WantedJd, List<Skill>> entry : wantedJdSkillMap.entrySet()) {
 			WantedJd wantedJd = entry.getKey();
-			List<WantedJobDetailResponse.WantedSkill> targetJdSkillList = entry.getValue();
-			for (WantedJobDetailResponse.WantedSkill skill : targetJdSkillList) {
-				Skill findSkill = findByJobCategoryIdAndKeyword(jobCategory.getId(), skill.getKeyword());
-				wantedJdSkillRepository.save(EntityConverter.createWantedJdSkill(wantedJd, findSkill));
-			}
+			List<Skill> skillList = entry.getValue();
+			List<WantedJdSkill> wantedJdSkillList = skillList.stream()
+				.map(skill -> EntityConverter.createWantedJdSkill(wantedJd, skill))
+				.toList();
+			wantedJdSkillRepository.saveAll(wantedJdSkillList);
 		}
 	}
 
-	private Skill findByJobCategoryIdAndKeyword(Long jobCategoryId, String skillKeyword) {
-		return skillRepository.findByJobCategoryIdAndKeyword(jobCategoryId, skillKeyword)
-			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 기술스택 입니다."));
+	private List<Skill> createSkills(JobCategory jobCategory, WantedJobDetailResponse jobDetailResponse) {
+		return jobDetailResponse.getJob().getSkill().stream()
+			.map(wantedJdDetailSkill -> skillRepository.save(
+				EntityConverter.createSkill(new CreateSkillDto(jobCategory, wantedJdDetailSkill.getKeyword())))
+			)
+			.toList();
+	}
+
+	private WantedJobDetailResponse getJobDetail(JobCategory jobCategory, Long detailId) {
+		WantedJobDetailResponse wantedJobDetailResponse = fetchJobDetail(detailId);
+		addWantedJobDetailResponse(wantedJobDetailResponse, jobCategory, detailId);
+		return wantedJobDetailResponse;
+	}
+
+	private void addWantedJobDetailResponse(WantedJobDetailResponse jobDetailResponse, JobCategory jobCategory,
+		Long detailId) {
+		jobDetailResponse.setDetailUrl(joinToString(urlConfig.getWantedJobDetailUrl(), detailId));
+		jobDetailResponse.setJobCategory(jobCategory);
+	}
+
+	private WantedJd createWantedJd(WantedJobDetailResponse jobDetailResponse) {
+		return wantedJdRepository.save(EntityConverter.createWantedJd(jobDetailResponse));
 	}
 
 	private WantedJobDetailResponse fetchJobDetail(Long jobId) {
@@ -124,14 +127,17 @@ public class WantedCrawlerService {
 	}
 
 	private Set<Long> fetchJobIdList(JobSearchJobPosition jobPosition) {
-		int offset = 0;
 		Set<Long> fetchJobIds = new HashSet<>();
+		int offset = 0;
 
 		while (fetchJobIds.size() < MAX_FETCH_JD_LIST_SIZE) {
 			WantedJobListResponse jobListResponse = fetchJobList(jobPosition, offset);
 
-			jobListResponse.getData().stream()
-				.forEach(detail -> fetchJobIds.add(detail.getId()));
+			List<Long> jobIds = jobListResponse.getData().stream()
+				.map(WantedJobListResponse.Data::getId)
+				.toList();
+
+			fetchJobIds.addAll(jobIds);
 
 			offset += MAX_FETCH_JD_LIST_OFFSET;
 		}

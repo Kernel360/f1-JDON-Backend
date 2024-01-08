@@ -21,8 +21,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "skill")
 public class Skill {
 
@@ -33,25 +33,17 @@ public class Skill {
 	@Column(name = "keyword", columnDefinition = "VARCHAR(50)", nullable = false)
 	private String keyword;
 
-	@Column(name = "count", columnDefinition = "BIGINT", nullable = false)
-	private Long count;
-
 	@OneToMany(mappedBy = "skill")
-	private List<WantedJdSkill> wantedJdSkillList = new ArrayList<>();
+	private final List<WantedJdSkill> wantedJdSkillList = new ArrayList<>();
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "job_category_id", columnDefinition = "BIGINT")
 	private JobCategory jobCategory;
 
-	public void countPlus(Long plus) {
-		this.count += plus;
-	}
-
 	@Builder
-	public Skill(Long id, String keyword, Long count, JobCategory jobCategory) {
+	public Skill(Long id, String keyword, JobCategory jobCategory) {
 		this.id = id;
 		this.keyword = keyword;
-		this.count = count;
 		this.jobCategory = jobCategory;
 	}
 
