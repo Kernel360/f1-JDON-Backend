@@ -5,9 +5,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.stream.events.Comment;
-
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +12,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import kernel.jdon.coffeechat.dto.request.CreateCoffeeChatRequest;
@@ -24,7 +20,6 @@ import kernel.jdon.coffeechat.dto.response.ApplyCoffeeChatResponse;
 import kernel.jdon.coffeechat.dto.response.CreateCoffeeChatResponse;
 import kernel.jdon.coffeechat.dto.response.DeleteCoffeeChatResponse;
 import kernel.jdon.coffeechat.dto.response.FindCoffeeChatListResponse;
-import kernel.jdon.coffeechat.dto.response.FindCoffeeChatResponse;
 import kernel.jdon.coffeechat.dto.response.UpdateCoffeeChatResponse;
 import kernel.jdon.coffeechat.service.CoffeeChatService;
 import kernel.jdon.dto.response.CommonResponse;
@@ -115,20 +110,20 @@ public class CoffeeChatController {
 
 	@PutMapping("/api/v1/coffeechats/{id}")
 	public ResponseEntity<CommonResponse> modify(
-		@PathVariable Long coffeeChatId,
+		@PathVariable(name = "id") Long coffeeChatId,
 		@RequestBody UpdateCoffeeChatRequest request) {
 
 		return ResponseEntity.ok().body(CommonResponse.of(UpdateCoffeeChatResponse.of(coffeeChatId)));
 	}
 
 	@DeleteMapping("/api/v1/coffeechats/{id}")
-	public ResponseEntity<CommonResponse> remove(@PathVariable Long coffeeChatId) {
+	public ResponseEntity<CommonResponse> remove(@PathVariable(name = "id") Long coffeeChatId) {
 
 		return ResponseEntity.ok().body(CommonResponse.of(DeleteCoffeeChatResponse.of(coffeeChatId)));
 	}
 
 	@PostMapping("/api/v1/coffeechats/{id}")
-	public ResponseEntity<CommonResponse> apply(@PathVariable Long coffeeChatId) {
+	public ResponseEntity<CommonResponse> apply(@PathVariable(name = "id") Long coffeeChatId) {
 
 		return ResponseEntity.ok().body(CommonResponse.of(ApplyCoffeeChatResponse.of(coffeeChatId)));
 	}
