@@ -1,6 +1,7 @@
 package kernel.jdon.coffeechat.domain;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -18,10 +19,14 @@ import jakarta.persistence.Table;
 import kernel.jdon.base.BaseEntity;
 import kernel.jdon.coffeechatmember.domain.CoffeeChatMember;
 import kernel.jdon.member.domain.Member;
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "coffee_chat")
 public class CoffeeChat extends BaseEntity {
 
@@ -36,7 +41,7 @@ public class CoffeeChat extends BaseEntity {
 	private String content;
 
 	@Column(name = "view_count", columnDefinition = "BIGINT default 0", nullable = false)
-	private Long viewCount;
+	private Long viewCount = 0L;
 
 	@Column(name = "is_deleted", columnDefinition = "BOOLEAN", nullable = false)
 	private boolean isDeleted;
@@ -55,12 +60,27 @@ public class CoffeeChat extends BaseEntity {
 	private Long totalRecruitCount;
 
 	@Column(name = "current_recruit_count", columnDefinition = "BIGINT default 0", nullable = false)
-	private Long currentRecruitCount;
+	private Long currentRecruitCount = 0L;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "created_by", columnDefinition = "BIGINT")
 	private Member member;
 
 	@OneToMany(mappedBy = "coffeeChat")
-	private List<CoffeeChatMember> coffeeChatMemberList;
+	private List<CoffeeChatMember> coffeeChatMemberList = new ArrayList<>();
+
+	@Builder
+	public CoffeeChat(String title, String content, LocalDateTime meetDate, String openChatUrl,
+		Long totalRecruitCount, Member member) {
+		this.title = title;
+		this.content = content;
+		this.totalRecruitCount = totalRecruitCount;
+		this.meetDate = meetDate;
+		this.openChatUrl = openChatUrl;
+		this.member = member;
+	}
+
+	public void increaseViewCount() {
+		this.viewCount += 1;
+	}
 }
