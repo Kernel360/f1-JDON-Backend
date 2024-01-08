@@ -3,6 +3,8 @@ package kernel.jdon.auth.config;
 import static com.nimbusds.jose.util.StandardCharset.*;
 import static org.springframework.http.MediaType.*;
 
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,9 +32,7 @@ public class OAuth2SecurityConfig {
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		http//.cors().and()
-			.csrf().disable();
-
+		http.csrf().disable();
 		http.authorizeHttpRequests(config -> config
 			.requestMatchers("/oauth/**").authenticated()
 			.anyRequest().permitAll()); // .anyRequest().authenticated());
@@ -40,32 +40,37 @@ public class OAuth2SecurityConfig {
 			.successHandler(oAuth2AuthenticationSuccessHandler())
 			.userInfoEndpoint()
 			.userService(jdonOAuth2UserService));
+
 		return http.build();
 	}
 
 	@Bean
 	public AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler() {
 		return ((request, response, authentication) -> {
-
 			DefaultOAuth2User defaultOAuth2User = (DefaultOAuth2User)authentication.getPrincipal();
 			Map<String, Object> attributes = defaultOAuth2User.getAttributes();
-			String id = attributes.get("id").toString();
 			String email = ((Map<String, String>)attributes.get("kakao_account")).get("email");
 
 			log.info(defaultOAuth2User.getAttributes().toString());
 			log.info("successhandler | email : " + email);
 
 			Map<String, String> userInfo = new HashMap<>();
-			userInfo.put("id", id);
 			userInfo.put("email", email);
 
-			// JSON 응답 생성 및 전송
-			ObjectMapper objectMapper = new ObjectMapper();
-			String jsonUserInfo = objectMapper.writeValueAsString(userInfo);
+			String encodedEmail = Base64.getEncoder().encodeToString(email.getBytes(StandardCharsets.UTF_8));
+			String redirectUrl = "http://localhost:3000/oauth/kakao/info?email=" + encodedEmail;
+			log.info("redirectUrl: " + redirectUrl);
+			if (redirectUrl != null && !redirectUrl.isEmpty()) {
+				response.sendRedirect(redirectUrl);
+			} else {
+				// JSON 응답 생성 및 전송
+				ObjectMapper objectMapper = new ObjectMapper();
+				String jsonUserInfo = objectMapper.writeValueAsString(userInfo);
 
-			response.setContentType(APPLICATION_JSON_VALUE);
-			response.setCharacterEncoding(UTF_8.name());
-			response.getWriter().write(jsonUserInfo);
+				response.setContentType(APPLICATION_JSON_VALUE);
+				response.setCharacterEncoding(UTF_8.name());
+				response.getWriter().write(jsonUserInfo);
+			}
 		});
 	}
 }
