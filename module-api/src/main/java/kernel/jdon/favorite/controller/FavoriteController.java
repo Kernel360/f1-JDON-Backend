@@ -1,5 +1,6 @@
 package kernel.jdon.favorite.controller;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,10 +42,9 @@ public class FavoriteController {
 
 	@PostMapping("/api/v1/favorites")
 	public ResponseEntity<CommonResponse> save(@RequestBody CreateFavoriteRequest createFavoriteRequest) {
-		CreateFavoriteResponse createFavoriteResponse = CreateFavoriteResponse.builder()
-			.lectureId(createFavoriteRequest.getLectureId())
-			.build();
+		Long lectureId = createFavoriteRequest.getLectureId();
+		URI uri = URI.create("/api/v1/favorites/" + lectureId);
 
-		return ResponseEntity.ok(CommonResponse.of(createFavoriteResponse));
+		return ResponseEntity.created(uri).body(CommonResponse.of(CreateFavoriteResponse.of(lectureId)));
 	}
 }
