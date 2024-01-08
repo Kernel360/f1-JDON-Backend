@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import kernel.jdon.coffeechat.dto.request.CreateCoffeeChatRequest;
 import kernel.jdon.coffeechat.dto.request.UpdateCoffeeChatRequest;
+import kernel.jdon.coffeechat.dto.response.ApplyCoffeeChatResponse;
 import kernel.jdon.coffeechat.dto.response.CreateCoffeeChatResponse;
 import kernel.jdon.coffeechat.dto.response.DeleteCoffeeChatResponse;
 import kernel.jdon.coffeechat.dto.response.FindCoffeeChatListResponse;
@@ -124,6 +125,12 @@ public class CoffeeChatController {
 	public ResponseEntity<CommonResponse> remove(@PathVariable Long coffeeChatId) {
 
 		return ResponseEntity.ok().body(CommonResponse.of(DeleteCoffeeChatResponse.of(coffeeChatId)));
+	}
+
+	@PostMapping("/api/v1/coffeechats/{id}")
+	public ResponseEntity<CommonResponse> apply(@PathVariable Long coffeeChatId) {
+
+		return ResponseEntity.ok().body(CommonResponse.of(ApplyCoffeeChatResponse.of(coffeeChatId)));
 	}
 
 }
