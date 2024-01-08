@@ -17,7 +17,10 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import kernel.jdon.base.BaseEntity;
+import kernel.jdon.coffeechat.dto.request.UpdateCoffeeChatRequest;
 import kernel.jdon.coffeechatmember.domain.CoffeeChatMember;
+import kernel.jdon.error.code.CoffeeChatErrorCode;
+import kernel.jdon.error.exception.api.ApiException;
 import kernel.jdon.member.domain.Member;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -82,5 +85,41 @@ public class CoffeeChat extends BaseEntity {
 
 	public void increaseViewCount() {
 		this.viewCount += 1;
+	}
+
+	public void updateCoffeeChat(UpdateCoffeeChatRequest request) {
+		validateRecruitCount(request.getTotalRecruitCount());
+		validateMeetDate(request.getMeetDate());
+		this.title = request.getTitle();
+		this.content = request.getContent();
+		this.totalRecruitCount = request.getTotalRecruitCount();
+		this.meetDate = request.getMeetDate();
+		this.openChatUrl = request.getOpenChatUrl();
+		updateStatus();
+	}
+
+	private void validateMeetDate(LocalDateTime newMeetDate) {
+		if (this.meetDate.isBefore(LocalDateTime.now())) {
+			throw new ApiException(CoffeeChatErrorCode.EXPIRED_COFFEECHAT);
+		}
+		if (newMeetDate.isBefore(LocalDateTime.now())) {
+			throw new ApiException(CoffeeChatErrorCode.MEET_DATE_ISBEFORE_NOW);
+		}
+	}
+
+	private void validateRecruitCount(Long newTotalCount) {
+		if (newTotalCount <= 0 || newTotalCount < this.currentRecruitCount) {
+			throw new ApiException(CoffeeChatErrorCode.INVALID_RECRUIT_COUNT);
+		}
+	}
+
+	private void updateStatus() {
+		if (this.totalRecruitCount.equals(this.currentRecruitCount)) {
+			this.coffeeChatStatus = CoffeeChatActiveStatus.FULL;
+			return;
+		}
+		if (this.totalRecruitCount > this.currentRecruitCount) {
+			this.coffeeChatStatus = CoffeeChatActiveStatus.OPEN;
+		}
 	}
 }
