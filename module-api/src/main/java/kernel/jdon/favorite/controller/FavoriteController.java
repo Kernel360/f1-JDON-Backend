@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import kernel.jdon.dto.response.CommonResponse;
-import kernel.jdon.favorite.domain.dto.request.SaveFavoriteRequest;
+import kernel.jdon.favorite.domain.dto.request.CreateFavoriteRequest;
+import kernel.jdon.favorite.domain.dto.response.CreateFavoriteResponse;
 import kernel.jdon.favorite.domain.dto.response.FindFavoriteResponse;
-import kernel.jdon.favorite.domain.dto.response.SaveFavoriteResponse;
 
 @RestController
 public class FavoriteController {
@@ -40,11 +40,11 @@ public class FavoriteController {
 	}
 
 	@PostMapping("/api/v1/favorites")
-	public ResponseEntity<CommonResponse> save(@RequestBody SaveFavoriteRequest saveFavoriteRequest) {
-		SaveFavoriteResponse saveFavoriteResponse = SaveFavoriteResponse.builder()
-			.lectureId(saveFavoriteRequest.getLectureId())
+	public ResponseEntity<CommonResponse> save(@RequestBody CreateFavoriteRequest createFavoriteRequest) {
+		CreateFavoriteResponse createFavoriteResponse = CreateFavoriteResponse.builder()
+			.lectureId(createFavoriteRequest.getLectureId())
 			.build();
 
-		return ResponseEntity.ok(CommonResponse.of(saveFavoriteResponse));
+		return ResponseEntity.ok(CommonResponse.of(createFavoriteResponse));
 	}
 }

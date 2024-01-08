@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
-public class SaveFavoriteResponse {
+public class CreateFavoriteResponse {
 	private Long lectureId;
 }
