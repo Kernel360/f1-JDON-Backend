@@ -67,7 +67,7 @@ public class WantedCrawlerService {
 
 	private JobCategory findByJobPosition(JobSearchJobPosition jobPosition) {
 		return jobCategoryRepository.findByWantedCode(jobPosition.getSearchValue())
-			.orElseThrow(() -> new CrawlerException(WantedErrorCode.NOT_FOUNT_JOB_CATEGORY));
+			.orElseThrow(() -> new CrawlerException(WantedErrorCode.NOT_FOUND_JOB_CATEGORY));
 	}
 
 	private void fetchJobDetail(JobCategory jobCategory, Set<Long> fetchJobIds) {
@@ -78,7 +78,7 @@ public class WantedCrawlerService {
 			}
 			WantedJobDetailResponse jobDetailResponse = getJobDetail(jobCategory, detailId);
 			WantedJd savedWantedJd = createWantedJd(jobDetailResponse);
-			List<Skill> savedSkillList = createSkills(jobCategory, jobDetailResponse);
+			List<Skill> savedSkillList = createSkillList(jobCategory, jobDetailResponse);
 			wantedJdSkillMap.put(savedWantedJd, savedSkillList);
 		}
 		createWantedJdSkill(wantedJdSkillMap);
@@ -99,7 +99,7 @@ public class WantedCrawlerService {
 		}
 	}
 
-	private List<Skill> createSkills(JobCategory jobCategory, WantedJobDetailResponse jobDetailResponse) {
+	private List<Skill> createSkillList(JobCategory jobCategory, WantedJobDetailResponse jobDetailResponse) {
 		return jobDetailResponse.getJob().getSkill().stream()
 			.map(wantedJdDetailSkill -> skillRepository.save(
 				EntityConverter.createSkill(new CreateSkillDto(jobCategory, wantedJdDetailSkill.getKeyword())))
