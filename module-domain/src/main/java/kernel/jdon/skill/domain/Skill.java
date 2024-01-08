@@ -34,7 +34,7 @@ public class Skill {
 	private String keyword;
 
 	@OneToMany(mappedBy = "skill")
-	private final List<WantedJdSkill> wantedJdSkillList = new ArrayList<>();
+	private List<WantedJdSkill> wantedJdSkillList = new ArrayList<>();
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "job_category_id", columnDefinition = "BIGINT")
