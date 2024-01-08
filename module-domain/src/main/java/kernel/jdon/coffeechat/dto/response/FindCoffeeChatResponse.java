@@ -2,6 +2,8 @@ package kernel.jdon.coffeechat.dto.response;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import kernel.jdon.coffeechat.domain.CoffeeChat;
 import kernel.jdon.coffeechat.domain.CoffeeChatActiveStatus;
 import kernel.jdon.faq.dto.response.FindFaqResponse;
@@ -23,6 +25,7 @@ public class FindCoffeeChatResponse {
 	private String content;
 	private Long viewCount;
 	private String status;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
 	private LocalDateTime meetDate;
 	private LocalDateTime createdDate;
 	private String openChatUrl;

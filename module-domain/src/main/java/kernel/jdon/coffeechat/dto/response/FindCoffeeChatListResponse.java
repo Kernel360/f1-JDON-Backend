@@ -2,6 +2,8 @@ package kernel.jdon.coffeechat.dto.response;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import kernel.jdon.coffeechat.domain.CoffeeChat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,6 +19,7 @@ public class FindCoffeeChatListResponse {
 	private String job;
 	private String title;
 	private String status;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
 	private LocalDateTime meetDate;
 	private LocalDateTime createdDate;
 	private Long totalRecruitCount;

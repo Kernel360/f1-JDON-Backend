@@ -2,6 +2,8 @@ package kernel.jdon.coffeechat.dto.request;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import kernel.jdon.coffeechat.domain.CoffeeChat;
 import kernel.jdon.faq.dto.request.CreateFaqRequest;
 import kernel.jdon.member.domain.Member;
@@ -16,6 +18,7 @@ public class CreateCoffeeChatRequest {
 	private String title;
 	private String content;
 	private Long totalRecruitCount;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
 	private LocalDateTime meetDate;
 	private String openChatUrl;
 
