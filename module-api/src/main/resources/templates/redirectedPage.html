@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Redirected Page</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+</head>
+<body>
+<h1>Redirected Page</h1>
+<p id="decodedQueryString"></p>
+
+<script>
+    $(document).ready(function () {
+        // URL에서 쿼리스트링 값을 가져오기
+        var queryString = window.location.search.substring(1);
+
+        // Base64 디코딩
+        var decodedQueryString = atob(queryString);
+
+        // 화면에 출력
+        $("#decodedQueryString").text(decodedQueryString);
+
+        // 추가된 코드 시작
+        // Ajax를 사용하여 서버에서 데이터 가져오기
+        // $.ajax({
+        //     type: 'GET',
+        //     url: 'http://localhost:1221/your-endpoint',  // 서버의 엔드포인트를 수정해주세요
+        //     data: {email: decodedQueryString},
+        //     success: function (response) {
+        //         console.log('Data from server:', response);
+        //
+        //         // 추가로 처리할 코드 작성
+        //     },
+        //     error: function (error) {
+        //         console.error('Error:', error);
+        //     }
+        // });
+        // 추가된 코드 끝
+    });
+</script>
+</body>
+</html>
