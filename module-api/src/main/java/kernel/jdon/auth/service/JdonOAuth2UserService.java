@@ -51,6 +51,7 @@ public class JdonOAuth2UserService extends DefaultOAuth2UserService {
 			httpSession.setAttribute("USER", email);
 		} else {
 			httpSession.setAttribute("GUEST", new TemporaryUser(email, SocialProviderType.KAKAO));
+			httpSession.setMaxInactiveInterval(600);
 		}
 
 		return new JdonOAuth2User(user.getAuthorities(), attributes, userNameAttributeName, email,
