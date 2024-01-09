@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import kernel.jdon.skill.domain.Skill;
 import kernel.jdon.wantedskill.domain.WantedJdSkill;
 
-public interface WantedJdSkillRepository extends JpaRepository<WantedJdSkill, Long> {
+public interface WantedJdSkillRepository extends JpaRepository<WantedJdSkill, Long>, WantedJdSkillRepositoryCustom {
 
 	List<WantedJdSkill> findBySkill(Skill skill);
 
