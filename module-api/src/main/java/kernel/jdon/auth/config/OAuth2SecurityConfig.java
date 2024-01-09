@@ -1,8 +1,5 @@
 package kernel.jdon.auth.config;
 
-import static com.nimbusds.jose.util.StandardCharset.*;
-import static org.springframework.http.MediaType.*;
-
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.HashMap;
@@ -15,8 +12,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import kernel.jdon.auth.service.JdonOAuth2UserService;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +29,6 @@ public class OAuth2SecurityConfig {
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.csrf().disable();
 		http.authorizeHttpRequests(config -> config
-			.requestMatchers("/oauth/**").authenticated()
 			.anyRequest().permitAll()); // .anyRequest().authenticated());
 		http.oauth2Login(oauth2Configurer -> oauth2Configurer
 			.successHandler(oAuth2AuthenticationSuccessHandler())
@@ -59,18 +53,7 @@ public class OAuth2SecurityConfig {
 
 			String encodedEmail = Base64.getEncoder().encodeToString(email.getBytes(StandardCharsets.UTF_8));
 			String redirectUrl = "http://localhost:3000/oauth/kakao/info?email=" + encodedEmail;
-			log.info("redirectUrl: " + redirectUrl);
-			if (redirectUrl != null && !redirectUrl.isEmpty()) {
-				response.sendRedirect(redirectUrl);
-			} else {
-				// JSON 응답 생성 및 전송
-				ObjectMapper objectMapper = new ObjectMapper();
-				String jsonUserInfo = objectMapper.writeValueAsString(userInfo);
-
-				response.setContentType(APPLICATION_JSON_VALUE);
-				response.setCharacterEncoding(UTF_8.name());
-				response.getWriter().write(jsonUserInfo);
-			}
+			response.sendRedirect(redirectUrl);
 		});
 	}
 }
