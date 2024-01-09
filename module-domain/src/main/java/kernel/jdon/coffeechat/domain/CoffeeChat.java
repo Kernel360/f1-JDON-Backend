@@ -19,7 +19,7 @@ import jakarta.persistence.Table;
 import kernel.jdon.base.BaseEntity;
 import kernel.jdon.coffeechat.dto.request.UpdateCoffeeChatRequest;
 import kernel.jdon.coffeechatmember.domain.CoffeeChatMember;
-import kernel.jdon.error.code.CoffeeChatErrorCode;
+import kernel.jdon.error.code.api.CoffeeChatErrorCode;
 import kernel.jdon.error.exception.api.ApiException;
 import kernel.jdon.member.domain.Member;
 import lombok.AccessLevel;
