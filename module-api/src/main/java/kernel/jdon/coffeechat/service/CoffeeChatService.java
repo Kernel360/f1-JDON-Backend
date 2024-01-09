@@ -21,10 +21,15 @@ public class CoffeeChatService {
 
 	private final CoffeeChatRepository coffeeChatRepository;
 
-	@Transactional
-	public FindCoffeeChatResponse find(Long coffeeChatId) {
+	private CoffeeChat findById(Long coffeeChatId) {
 		CoffeeChat findCoffeeChat = coffeeChatRepository.findById(coffeeChatId)
 			.orElseThrow(() -> new ApiException(CoffeeChatErrorCode.NOT_FOUND_COFFEECHAT));
+		return findCoffeeChat;
+	}
+
+	@Transactional
+	public FindCoffeeChatResponse find(Long coffeeChatId) {
+		CoffeeChat findCoffeeChat = findById(coffeeChatId);
 		increaseViewCount(findCoffeeChat);
 
 		return FindCoffeeChatResponse.of(findCoffeeChat);
@@ -43,8 +48,7 @@ public class CoffeeChatService {
 
 	@Transactional
 	public UpdateCoffeeChatResponse update(Long coffeeChatId, UpdateCoffeeChatRequest request) {
-		CoffeeChat findCoffeeChat = coffeeChatRepository.findById(coffeeChatId)
-			.orElseThrow(() -> new ApiException(CoffeeChatErrorCode.NOT_FOUND_COFFEECHAT));
+		CoffeeChat findCoffeeChat = findById(coffeeChatId);
 		findCoffeeChat.updateCoffeeChat(request);
 		return UpdateCoffeeChatResponse.of(findCoffeeChat.getId());
 	}
