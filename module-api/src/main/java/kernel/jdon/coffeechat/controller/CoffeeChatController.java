@@ -113,7 +113,9 @@ public class CoffeeChatController {
 		@PathVariable(name = "id") Long coffeeChatId,
 		@RequestBody UpdateCoffeeChatRequest request) {
 
-		return ResponseEntity.ok().body(CommonResponse.of(UpdateCoffeeChatResponse.of(coffeeChatId)));
+		UpdateCoffeeChatResponse response = coffeeChatService.update(coffeeChatId, request);
+
+		return ResponseEntity.ok().body(CommonResponse.of(response));
 	}
 
 	@DeleteMapping("/api/v1/coffeechats/{id}")
