@@ -95,7 +95,7 @@ public class CoffeeChat extends BaseEntity {
 		this.totalRecruitCount = request.getTotalRecruitCount();
 		this.meetDate = request.getMeetDate();
 		this.openChatUrl = request.getOpenChatUrl();
-		updateStatus();
+		updateStatusByRecruitCount();
 	}
 
 	private void validateMeetDate(LocalDateTime newMeetDate) {
@@ -113,13 +113,20 @@ public class CoffeeChat extends BaseEntity {
 		}
 	}
 
-	private void updateStatus() {
-		if (this.totalRecruitCount.equals(this.currentRecruitCount)) {
-			this.coffeeChatStatus = CoffeeChatActiveStatus.FULL;
-			return;
-		}
+	private void updateStatusByRecruitCount() {
+		checkFullStatus();
+		checkOpenStatus();
+	}
+
+	private void checkOpenStatus() {
 		if (this.totalRecruitCount > this.currentRecruitCount) {
 			this.coffeeChatStatus = CoffeeChatActiveStatus.OPEN;
+		}
+	}
+
+	private void checkFullStatus() {
+		if (this.totalRecruitCount.equals(this.currentRecruitCount)) {
+			this.coffeeChatStatus = CoffeeChatActiveStatus.FULL;
 		}
 	}
 }
