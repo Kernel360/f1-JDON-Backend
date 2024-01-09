@@ -50,6 +50,7 @@ public class CoffeeChatService {
 	public UpdateCoffeeChatResponse update(Long coffeeChatId, UpdateCoffeeChatRequest request) {
 		CoffeeChat findCoffeeChat = findById(coffeeChatId);
 		findCoffeeChat.updateCoffeeChat(request);
+		
 		return UpdateCoffeeChatResponse.of(findCoffeeChat.getId());
 	}
 

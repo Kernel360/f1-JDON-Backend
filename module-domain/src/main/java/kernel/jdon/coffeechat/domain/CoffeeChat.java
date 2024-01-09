@@ -114,19 +114,12 @@ public class CoffeeChat extends BaseEntity {
 	}
 
 	private void updateStatusByRecruitCount() {
-		checkFullStatus();
-		checkOpenStatus();
-	}
-
-	private void checkOpenStatus() {
-		if (this.totalRecruitCount > this.currentRecruitCount) {
-			this.coffeeChatStatus = CoffeeChatActiveStatus.OPEN;
-		}
-	}
-
-	private void checkFullStatus() {
 		if (this.totalRecruitCount.equals(this.currentRecruitCount)) {
 			this.coffeeChatStatus = CoffeeChatActiveStatus.FULL;
+			return;
+		}
+		if (this.totalRecruitCount > this.currentRecruitCount) {
+			this.coffeeChatStatus = CoffeeChatActiveStatus.OPEN;
 		}
 	}
 }
