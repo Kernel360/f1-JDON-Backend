@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.annotations.SQLDelete;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -29,6 +31,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
+@SQLDelete(sql = "UPDATE coffee_chat SET is_deleted = true WHERE id = ?")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "coffee_chat")
 public class CoffeeChat extends BaseEntity {
@@ -47,7 +50,7 @@ public class CoffeeChat extends BaseEntity {
 	private Long viewCount = 0L;
 
 	@Column(name = "is_deleted", columnDefinition = "BOOLEAN", nullable = false)
-	private boolean isDeleted;
+	private boolean isDeleted = false;
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "active_status", columnDefinition = "VARCHAR(50)", nullable = false)
