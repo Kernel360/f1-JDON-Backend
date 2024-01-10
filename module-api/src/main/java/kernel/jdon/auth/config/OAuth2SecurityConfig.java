@@ -12,6 +12,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import kernel.jdon.auth.encrypt.AesUtil;
+import kernel.jdon.auth.encrypt.HmacUtil;
 import kernel.jdon.auth.service.JdonOAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -45,16 +46,17 @@ public class OAuth2SecurityConfig {
 				Map<String, Object> attributes = defaultOAuth2User.getAttributes();
 				String email = ((Map<String, String>)attributes.get("kakao_account")).get("email");
 
-				String encodedEmail = null;
+				String encoded = null;
 				try {
-					encodedEmail = AesUtil.encryptAESCBC("email=" + email + "&provider=kakao");
+					encoded = AesUtil.encryptAESCBC("email=" + email + "&provider=kakao");
 					log.info("email=" + email + "&provider=kakao");
-					log.info("encodedEmail : " + encodedEmail);
+					log.info("encoded : " + encoded);
+					log.info("hmac : " + HmacUtil.generateHMAC(encoded));
+					encoded = "value=" + encoded + "&hmac=" + HmacUtil.generateHMAC(encoded);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-
-				String redirectUrl = "http://localhost:3000/oauth/kakao/info?value=" + encodedEmail;
+				String redirectUrl = "http://localhost:3000/oauth/kakao/info?" + encoded;
 				response.sendRedirect(redirectUrl);
 			} else {
 				log.info("fuckfuckfuck");
