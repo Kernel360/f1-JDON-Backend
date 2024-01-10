@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import kernel.jdon.auth.dto.object.RegisterMemberDto;
 import kernel.jdon.auth.dto.request.RegisterRequest;
 import kernel.jdon.auth.encrypt.AesUtil;
-import kernel.jdon.auth.encrypt.HmacUtil;
 import kernel.jdon.error.code.api.MemberErrorCode;
 import kernel.jdon.error.exception.api.ApiException;
 import kernel.jdon.jobcategory.domain.JobCategory;
