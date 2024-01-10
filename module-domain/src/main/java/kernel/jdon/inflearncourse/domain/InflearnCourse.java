@@ -1,4 +1,4 @@
-package kernel.jdon.inflearn.domain;
+package kernel.jdon.inflearncourse.domain;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 

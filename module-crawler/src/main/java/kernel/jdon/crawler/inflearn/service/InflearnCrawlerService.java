@@ -12,7 +12,7 @@ import kernel.jdon.crawler.inflearn.dto.CourseAndSkillsDto;
 import kernel.jdon.crawler.inflearn.search.CourseDomain;
 import kernel.jdon.crawler.inflearn.search.CourseSearchSort;
 import kernel.jdon.crawler.inflearn.search.DevelopmentProgrammingCategory;
-import kernel.jdon.inflearn.domain.InflearnCourse;
+import kernel.jdon.inflearncourse.domain.InflearnCourse;
 import lombok.RequiredArgsConstructor;
 
 @Service

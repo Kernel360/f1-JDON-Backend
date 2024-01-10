@@ -1,4 +1,4 @@
-package kernel.jdon.crawler.wanted.repository;
+package kernel.jdon.jobcategory.repository;
 
 import java.util.Optional;
 

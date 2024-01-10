@@ -1,4 +1,4 @@
-package kernel.jdon.wanted.domain;
+package kernel.jdon.wantedjd.domain;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
