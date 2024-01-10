@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import jakarta.servlet.http.HttpSession;
 import kernel.jdon.auth.JdonOAuth2User;
 import kernel.jdon.auth.TemporaryUser;
+import kernel.jdon.member.domain.Member;
 import kernel.jdon.member.domain.SocialProviderType;
 import kernel.jdon.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -47,7 +48,9 @@ public class JdonOAuth2UserService extends DefaultOAuth2UserService {
 		Map<String, Object> attributes = user.getAttributes();
 		String email = ((Map<String, String>)attributes.get("kakao_account")).get("email");
 
-		if (memberRepository.existsByEmail(email)) {
+		Member findMember = memberRepository.findByEmail(email);
+		if (findMember.isActiveMember()) {
+			checkRightSocialProvider(findMember, SocialProviderType.KAKAO);
 			httpSession.setAttribute("USER", email);
 		} else {
 			httpSession.setAttribute("GUEST", new TemporaryUser(email, SocialProviderType.KAKAO));
@@ -56,5 +59,10 @@ public class JdonOAuth2UserService extends DefaultOAuth2UserService {
 
 		return new JdonOAuth2User(user.getAuthorities(), attributes, userNameAttributeName, email,
 			SocialProviderType.KAKAO);
+	}
+
+	private void checkRightSocialProvider(Member findMember, SocialProviderType socialProviderType) {
+		if (!findMember.isRightSocialProvider(socialProviderType))
+			throw new IllegalArgumentException("다른 소셜 로그인으로 가입된 이메일입니다.");
 	}
 }

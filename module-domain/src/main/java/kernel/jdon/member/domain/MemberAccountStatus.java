@@ -3,7 +3,7 @@ package kernel.jdon.member.domain;
 public enum MemberAccountStatus {
 
 	ACTIVE("활성계정"),
-	INACTIVE("휴면계정"),
+	// INACTIVE("휴면계정"),
 	WITHDRAW("탈퇴계정");
 
 	private final String status;
