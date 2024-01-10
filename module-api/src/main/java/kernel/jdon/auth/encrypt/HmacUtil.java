@@ -22,7 +22,7 @@ public class HmacUtil {
 		return Base64.getEncoder().encodeToString(hmacBytes);
 	}
 
-	public static boolean isValidHMAC(String receivedHMAC, String data) throws Exception {
+	public static boolean validateHMAC(String receivedHMAC, String data) throws Exception {
 		String calculatedHMAC = generateHMAC(data);
 		
 		return receivedHMAC.equals(calculatedHMAC);
