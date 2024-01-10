@@ -11,6 +11,7 @@ import lombok.Getter;
 @Builder
 @AllArgsConstructor
 public class RegisterMemberDto {
+	private String email;
 	private MemberRole memberRole;
 	private SocialProviderType socialProvider;
 	private JobCategory jobCategory;
