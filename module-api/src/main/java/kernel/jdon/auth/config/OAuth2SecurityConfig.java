@@ -48,7 +48,7 @@ public class OAuth2SecurityConfig {
 
 				String encoded = null;
 				try {
-					encoded = AesUtil.encryptAESCBC("email=" + email + "&provider=kakao");
+					encoded = AesUtil.encryptAESCBC(email + "&kakao");
 					log.info("email=" + email + "&provider=kakao");
 					log.info("encoded : " + encoded);
 					log.info("hmac : " + HmacUtil.generateHMAC(encoded));
@@ -58,8 +58,6 @@ public class OAuth2SecurityConfig {
 				}
 				String redirectUrl = "http://localhost:3000/oauth/kakao/info?" + encoded;
 				response.sendRedirect(redirectUrl);
-			} else {
-				log.info("fuckfuckfuck");
 			}
 		});
 	}

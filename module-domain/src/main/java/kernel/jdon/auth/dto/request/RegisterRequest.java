@@ -14,7 +14,8 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class RegisterRequest {
-	private String email;
+	private String encrypted;
+	private String hmac;
 	private String nickname;
 	private LocalDate birthday;
 	private String gender;
@@ -23,7 +24,7 @@ public class RegisterRequest {
 
 	public Member toEntity(RegisterMemberDto registerMemberDto) {
 		return Member.builder()
-			.email(email)
+			.email(registerMemberDto.getEmail())
 			.nickname(nickname)
 			.birth(birthday.toString())
 			.gender(Gender.valueOf(gender))
