@@ -4,7 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import kernel.jdon.inflearncourse.domain.InflearnCourse;
 import kernel.jdon.inflearnjdskill.domain.InflearnJdSkill;
-import kernel.jdon.wantedskill.domain.WantedJdSkill;
+import kernel.jdon.wantedjdskill.domain.WantedJdSkill;
 
 public interface InflearnJdSkillRepository extends JpaRepository<InflearnJdSkill, Long> {
 
