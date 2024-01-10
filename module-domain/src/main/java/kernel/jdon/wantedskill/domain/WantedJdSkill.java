@@ -9,7 +9,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import kernel.jdon.skill.domain.Skill;
-import kernel.jdon.wanted.domain.WantedJd;
+import kernel.jdon.wantedjd.domain.WantedJd;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.NoArgsConstructor;

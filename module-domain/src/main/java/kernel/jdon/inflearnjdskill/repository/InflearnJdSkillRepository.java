@@ -1,9 +1,9 @@
-package kernel.jdon.crawler.inflearn.repository;
+package kernel.jdon.inflearnjdskill.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import kernel.jdon.inflearn.domain.InflearnCourse;
-import kernel.jdon.inflearnJdskill.domain.InflearnJdSkill;
+import kernel.jdon.inflearncourse.domain.InflearnCourse;
+import kernel.jdon.inflearnjdskill.domain.InflearnJdSkill;
 import kernel.jdon.wantedskill.domain.WantedJdSkill;
 
 public interface InflearnJdSkillRepository extends JpaRepository<InflearnJdSkill, Long> {
