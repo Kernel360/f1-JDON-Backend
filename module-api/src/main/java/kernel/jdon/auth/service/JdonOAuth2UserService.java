@@ -1,7 +1,9 @@
 package kernel.jdon.auth.service;
 
+import java.util.List;
 import java.util.Map;
 
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
@@ -12,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.servlet.http.HttpSession;
 import kernel.jdon.auth.JdonOAuth2User;
-import kernel.jdon.auth.TemporaryUser;
 import kernel.jdon.member.domain.Member;
 import kernel.jdon.member.domain.SocialProviderType;
 import kernel.jdon.member.repository.MemberRepository;
@@ -40,7 +41,6 @@ public class JdonOAuth2UserService extends DefaultOAuth2UserService {
 		if (SocialProviderType.KAKAO == socialProvider) {
 			return getEmailFromKakao(user, userNameAttributeName);
 		}
-
 		return user;
 	}
 
@@ -49,16 +49,16 @@ public class JdonOAuth2UserService extends DefaultOAuth2UserService {
 		String email = ((Map<String, String>)attributes.get("kakao_account")).get("email");
 
 		Member findMember = memberRepository.findByEmail(email);
-		if (findMember.isActiveMember()) {
+		if (findMember != null && findMember.isActiveMember()) {
 			checkRightSocialProvider(findMember, SocialProviderType.KAKAO);
 			httpSession.setAttribute("USER", email);
+			return new JdonOAuth2User(user.getAuthorities(), attributes, userNameAttributeName, email,
+				SocialProviderType.KAKAO);
 		} else {
-			httpSession.setAttribute("GUEST", new TemporaryUser(email, SocialProviderType.KAKAO));
-			httpSession.setMaxInactiveInterval(600);
+			List<SimpleGrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_TEMPORARY_USER"));
+			return new JdonOAuth2User(authorities, attributes, userNameAttributeName, email,
+				SocialProviderType.KAKAO);
 		}
-
-		return new JdonOAuth2User(user.getAuthorities(), attributes, userNameAttributeName, email,
-			SocialProviderType.KAKAO);
 	}
 
 	private void checkRightSocialProvider(Member findMember, SocialProviderType socialProviderType) {
