@@ -22,15 +22,15 @@ public class CoffeeChatService {
 
 	private final CoffeeChatRepository coffeeChatRepository;
 
-	private CoffeeChat findById(Long coffeeChatId) {
+	private CoffeeChat findByIdIfNotDeleted(Long coffeeChatId) {
 
-		return coffeeChatRepository.findById(coffeeChatId)
+		return coffeeChatRepository.findByIdAndIsDeletedFalse(coffeeChatId)
 			.orElseThrow(() -> new ApiException(CoffeeChatErrorCode.NOT_FOUND_COFFEECHAT));
 	}
 
 	@Transactional
 	public FindCoffeeChatResponse find(Long coffeeChatId) {
-		CoffeeChat findCoffeeChat = findById(coffeeChatId);
+		CoffeeChat findCoffeeChat = findByIdIfNotDeleted(coffeeChatId);
 		increaseViewCount(findCoffeeChat);
 
 		return FindCoffeeChatResponse.of(findCoffeeChat);
@@ -49,7 +49,7 @@ public class CoffeeChatService {
 
 	@Transactional
 	public UpdateCoffeeChatResponse update(Long coffeeChatId, UpdateCoffeeChatRequest request) {
-		CoffeeChat findCoffeeChat = findById(coffeeChatId);
+		CoffeeChat findCoffeeChat = findByIdIfNotDeleted(coffeeChatId);
 		findCoffeeChat.updateCoffeeChat(request);
 
 		return UpdateCoffeeChatResponse.of(findCoffeeChat.getId());
@@ -57,9 +57,9 @@ public class CoffeeChatService {
 
 	@Transactional
 	public DeleteCoffeeChatResponse delete(Long coffeeChatId) {
-		CoffeeChat findCoffeeChat = findById(coffeeChatId);
+		CoffeeChat findCoffeeChat = findByIdIfNotDeleted(coffeeChatId);
 		coffeeChatRepository.deleteById(findCoffeeChat.getId());
-		
+
 		return DeleteCoffeeChatResponse.of(coffeeChatId);
 	}
 
