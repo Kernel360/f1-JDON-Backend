@@ -5,7 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kernel.jdon.auth.dto.object.RegisterMemberDto;
 import kernel.jdon.auth.dto.request.RegisterRequest;
-import kernel.jdon.error.code.JobCategoryErrorCode;
+import kernel.jdon.error.code.api.MemberErrorCode;
 import kernel.jdon.error.exception.api.ApiException;
 import kernel.jdon.jobcategory.domain.JobCategory;
 import kernel.jdon.jobcategory.repository.JobCategoryRepository;
@@ -25,7 +25,7 @@ public class MemberService {
 	@Transactional
 	public Long register(RegisterRequest registerRequest) {
 		JobCategory findJobCategory = jobCategoryRepository.findById(registerRequest.getJobCategoryId())
-			.orElseThrow(() -> new ApiException(JobCategoryErrorCode.NOT_FOUND_JOB_CATEGORY));
+			.orElseThrow(() -> new ApiException(MemberErrorCode.NOT_FOUND_JOB_CATEGORY));
 
 		RegisterMemberDto registerMemberDto = RegisterMemberDto.builder()
 			.jobCategory(findJobCategory)

@@ -1,12 +1,13 @@
-package kernel.jdon.error.code;
+package kernel.jdon.error.code.api;
 
 import org.springframework.http.HttpStatus;
 
+import kernel.jdon.error.code.ErrorCode;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public enum JobCategoryErrorCode implements ErrorCode {
-	NOT_FOUND_JOB_CATEGORY(HttpStatus.NOT_FOUND, "존재하지 않는 카테고리 입니다.");
+public enum MemberErrorCode implements ErrorCode {
+	NOT_FOUND_JOB_CATEGORY(HttpStatus.NOT_FOUND, "존재하지 않는 직군 또는 직무입니다.");
 
 	private final HttpStatus httpStatus;
 	private final String message;
@@ -21,3 +22,4 @@ public enum JobCategoryErrorCode implements ErrorCode {
 		return message;
 	}
 }
+
