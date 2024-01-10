@@ -14,8 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import kernel.jdon.config.UrlConfig;
-import kernel.jdon.crawler.common.repository.SkillRepository;
-import kernel.jdon.crawler.common.repository.WantedJdSkillRepository;
 import kernel.jdon.crawler.wanted.converter.EntityConverter;
 import kernel.jdon.crawler.wanted.dto.object.CreateSkillDto;
 import kernel.jdon.crawler.wanted.dto.response.WantedJobDetailResponse;
@@ -30,9 +28,11 @@ import kernel.jdon.error.exception.crawler.CrawlerException;
 import kernel.jdon.jobcategory.domain.JobCategory;
 import kernel.jdon.jobcategory.repository.JobCategoryRepository;
 import kernel.jdon.skill.domain.Skill;
+import kernel.jdon.skill.repository.SkillRepository;
 import kernel.jdon.wantedjd.domain.WantedJd;
 import kernel.jdon.wantedjd.repository.WantedJdRepository;
-import kernel.jdon.wantedskill.domain.WantedJdSkill;
+import kernel.jdon.wantedjdskill.domain.WantedJdSkill;
+import kernel.jdon.wantedjdskill.repository.WantedJdSkillRepository;
 import lombok.RequiredArgsConstructor;
 
 @Service

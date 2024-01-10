@@ -1,4 +1,4 @@
-package kernel.jdon.wantedskill.domain;
+package kernel.jdon.wantedjdskill.domain;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

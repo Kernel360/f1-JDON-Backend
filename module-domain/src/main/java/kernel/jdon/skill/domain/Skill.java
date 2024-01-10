@@ -14,7 +14,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import kernel.jdon.jobcategory.domain.JobCategory;
-import kernel.jdon.wantedskill.domain.WantedJdSkill;
+import kernel.jdon.wantedjdskill.domain.WantedJdSkill;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

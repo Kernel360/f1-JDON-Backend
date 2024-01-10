@@ -6,15 +6,15 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import kernel.jdon.crawler.common.repository.SkillRepository;
-import kernel.jdon.crawler.common.repository.WantedJdSkillRepository;
 import kernel.jdon.crawler.inflearn.converter.EntityConverter;
 import kernel.jdon.inflearncourse.domain.InflearnCourse;
 import kernel.jdon.inflearncourse.repository.InflearnCourseRepository;
 import kernel.jdon.inflearnjdskill.domain.InflearnJdSkill;
 import kernel.jdon.inflearnjdskill.repository.InflearnJdSkillRepository;
 import kernel.jdon.skill.domain.Skill;
-import kernel.jdon.wantedskill.domain.WantedJdSkill;
+import kernel.jdon.skill.repository.SkillRepository;
+import kernel.jdon.wantedjdskill.domain.WantedJdSkill;
+import kernel.jdon.wantedjdskill.repository.WantedJdSkillRepository;
 import lombok.RequiredArgsConstructor;
 
 @Service
