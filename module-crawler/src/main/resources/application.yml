@@ -13,16 +13,14 @@ spring:
     hibernate:
       ddl-auto: update
 
-    properties:
-      hibernate:
-        #        show-sql: true
-        format_sql: true
+logging:
+  level:
+    root: info
 
-logging.level:
-  root: info
-
-  org.hibernate.SQL: debug
-  #  org.hibernate.type: trace
+decorator:
+  datasource:
+    p6spy:
+      enable-logging: true
 
 max_fetch_jd_list:
   size: 10
