@@ -2,7 +2,7 @@ package kernel.jdon.crawler.inflearn.service;
 
 import org.springframework.stereotype.Service;
 
-import kernel.jdon.crawler.inflearn.repository.InflearnCourseRepository;
+import kernel.jdon.inflearncourse.repository.InflearnCourseRepository;
 import lombok.RequiredArgsConstructor;
 
 @Service

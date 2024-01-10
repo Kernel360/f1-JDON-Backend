@@ -13,7 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import kernel.jdon.inflearn.domain.InflearnCourse;
+import kernel.jdon.inflearncourse.domain.InflearnCourse;
 import kernel.jdon.member.domain.Member;
 
 @Entity
