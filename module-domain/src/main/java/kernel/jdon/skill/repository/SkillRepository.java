@@ -1,4 +1,4 @@
-package kernel.jdon.crawler.common.repository;
+package kernel.jdon.skill.repository;
 
 import java.util.Optional;
 

@@ -4,7 +4,7 @@ import kernel.jdon.crawler.wanted.dto.object.CreateSkillDto;
 import kernel.jdon.crawler.wanted.dto.response.WantedJobDetailResponse;
 import kernel.jdon.skill.domain.Skill;
 import kernel.jdon.wantedjd.domain.WantedJd;
-import kernel.jdon.wantedskill.domain.WantedJdSkill;
+import kernel.jdon.wantedjdskill.domain.WantedJdSkill;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
