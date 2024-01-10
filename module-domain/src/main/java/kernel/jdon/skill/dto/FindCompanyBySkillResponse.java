@@ -14,4 +14,5 @@ public class FindCompanyBySkillResponse {
 	private String companyName;
 	private String imageUrl;
 	private String title;
+	private String detailUrl;
 }

@@ -140,6 +140,7 @@ public class SkillController {
 				.imageUrl(
 					"https://image.wanted.co.kr/optimize?src=https%3A%2F%2Fstatic.wanted.co.kr%2Fimages%2Fcompany%2F22005%2F1d2vjy100vmqwhux__1080_790.jpg&w=1000&q=75")
 				.title("웹 풀스택 개발자 (3년 이상)")
+				.detailUrl("https://www.wanted.co.kr/wd/198250")
 				.build();
 
 			findCompanyBySkillResponseList.add(findCompanyBySkillResponse);
