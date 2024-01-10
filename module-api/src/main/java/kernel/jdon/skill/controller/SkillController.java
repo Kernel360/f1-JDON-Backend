@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import kernel.jdon.dto.response.CommonResponse;
+import kernel.jdon.skill.dto.FindCompanyBySkillResponse;
 import kernel.jdon.skill.dto.FindHotSkillResponse;
 import kernel.jdon.skill.dto.FindJdResponse;
 import kernel.jdon.skill.dto.FindJobCategorySkillResponse;
@@ -126,5 +127,24 @@ public class SkillController {
 				.build();
 
 		return ResponseEntity.ok(CommonResponse.of(findListDataBySkillResponse));
+	}
+
+	@GetMapping("/api/v1/skills/company")
+	public ResponseEntity<CommonResponse> getCompanyListBySkill(
+		@RequestParam(name = "keyword", defaultValue = "") String keyword) {
+
+		List<FindCompanyBySkillResponse> findCompanyBySkillResponseList = new ArrayList<>();
+		for (int i = 0; i < 6; i++) {
+			FindCompanyBySkillResponse findCompanyBySkillResponse = FindCompanyBySkillResponse.builder()
+				.companyName("회사명" + i)
+				.imageUrl(
+					"https://image.wanted.co.kr/optimize?src=https%3A%2F%2Fstatic.wanted.co.kr%2Fimages%2Fcompany%2F22005%2F1d2vjy100vmqwhux__1080_790.jpg&w=1000&q=75")
+				.title("웹 풀스택 개발자 (3년 이상)")
+				.build();
+
+			findCompanyBySkillResponseList.add(findCompanyBySkillResponse);
+		}
+
+		return ResponseEntity.ok(CommonResponse.of(findCompanyBySkillResponseList));
 	}
 }
