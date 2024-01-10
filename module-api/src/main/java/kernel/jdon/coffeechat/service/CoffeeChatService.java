@@ -7,6 +7,7 @@ import kernel.jdon.coffeechat.domain.CoffeeChat;
 import kernel.jdon.coffeechat.dto.request.CreateCoffeeChatRequest;
 import kernel.jdon.coffeechat.dto.request.UpdateCoffeeChatRequest;
 import kernel.jdon.coffeechat.dto.response.CreateCoffeeChatResponse;
+import kernel.jdon.coffeechat.dto.response.DeleteCoffeeChatResponse;
 import kernel.jdon.coffeechat.dto.response.FindCoffeeChatResponse;
 import kernel.jdon.coffeechat.dto.response.UpdateCoffeeChatResponse;
 import kernel.jdon.coffeechat.repository.CoffeeChatRepository;
@@ -22,9 +23,9 @@ public class CoffeeChatService {
 	private final CoffeeChatRepository coffeeChatRepository;
 
 	private CoffeeChat findById(Long coffeeChatId) {
-		CoffeeChat findCoffeeChat = coffeeChatRepository.findById(coffeeChatId)
+
+		return coffeeChatRepository.findById(coffeeChatId)
 			.orElseThrow(() -> new ApiException(CoffeeChatErrorCode.NOT_FOUND_COFFEECHAT));
-		return findCoffeeChat;
 	}
 
 	@Transactional
@@ -50,8 +51,16 @@ public class CoffeeChatService {
 	public UpdateCoffeeChatResponse update(Long coffeeChatId, UpdateCoffeeChatRequest request) {
 		CoffeeChat findCoffeeChat = findById(coffeeChatId);
 		findCoffeeChat.updateCoffeeChat(request);
-		
+
 		return UpdateCoffeeChatResponse.of(findCoffeeChat.getId());
+	}
+
+	@Transactional
+	public DeleteCoffeeChatResponse delete(Long coffeeChatId) {
+		CoffeeChat findCoffeeChat = findById(coffeeChatId);
+		coffeeChatRepository.deleteById(findCoffeeChat.getId());
+		
+		return DeleteCoffeeChatResponse.of(coffeeChatId);
 	}
 
 }
