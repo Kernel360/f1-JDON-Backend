@@ -1,6 +1,7 @@
 package kernel.jdon.auth.dto.request;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import kernel.jdon.auth.dto.object.RegisterMemberDto;
@@ -17,7 +18,7 @@ public class RegisterRequest {
 	private String encrypted;
 	private String hmac;
 	private String nickname;
-	private LocalDate birthday;
+	private LocalDate birth;
 	private String gender;
 	private Long jobCategoryId;
 	private List<Long> skillList;
@@ -26,12 +27,13 @@ public class RegisterRequest {
 		return Member.builder()
 			.email(registerMemberDto.getEmail())
 			.nickname(nickname)
-			.birth(birthday.toString())
-			.gender(Gender.valueOf(gender))
+			.birth(birth.toString())
+			.gender(Gender.ofType(gender))
 			.role(registerMemberDto.getMemberRole())
 			.accountStatus(MemberAccountStatus.ACTIVE)
 			.socialProvider(registerMemberDto.getSocialProvider())
 			.jobCategory(registerMemberDto.getJobCategory())
+			.joinDate(LocalDateTime.now())
 			.build();
 	}
 }

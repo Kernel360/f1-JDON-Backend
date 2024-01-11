@@ -14,7 +14,9 @@ import kernel.jdon.auth.dto.response.WithdrawResponse;
 import kernel.jdon.dto.response.CommonResponse;
 import kernel.jdon.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class AuthController {
@@ -24,6 +26,7 @@ public class AuthController {
 	@PostMapping("/api/v1/register")
 	public ResponseEntity<CommonResponse> register(@RequestBody RegisterRequest registerRequest) {
 
+		log.info("registerRequest: {}", registerRequest);
 		Long registerMemberId = memberService.register(registerRequest);
 		URI uri = URI.create("/api/v1/member/" + registerMemberId);
 

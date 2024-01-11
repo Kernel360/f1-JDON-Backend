@@ -33,7 +33,7 @@ public class JdonOAuth2User extends DefaultOAuth2User {
 	}
 
 	public String getSocialProviderType() {
-		return socialProvider.getProvider();
+		return socialProvider.getProviderName();
 	}
 
 	@Override
