@@ -10,9 +10,9 @@ import kernel.jdon.coffeechat.dto.response.CreateCoffeeChatResponse;
 import kernel.jdon.coffeechat.dto.response.DeleteCoffeeChatResponse;
 import kernel.jdon.coffeechat.dto.response.FindCoffeeChatResponse;
 import kernel.jdon.coffeechat.dto.response.UpdateCoffeeChatResponse;
+import kernel.jdon.coffeechat.error.CoffeeChatErrorCode;
 import kernel.jdon.coffeechat.repository.CoffeeChatRepository;
-import kernel.jdon.error.code.api.CoffeeChatErrorCode;
-import kernel.jdon.error.exception.api.ApiException;
+import kernel.jdon.global.exception.ApiException;
 import lombok.RequiredArgsConstructor;
 
 @Service

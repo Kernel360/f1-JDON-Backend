@@ -1,13 +1,13 @@
-package kernel.jdon.error.code.crawler;
+package kernel.jdon.faq.error;
 
 import org.springframework.http.HttpStatus;
 
-import kernel.jdon.error.code.ErrorCode;
+import kernel.jdon.error.ErrorCode;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public enum WantedErrorCode implements ErrorCode {
-	NOT_FOUND_JOB_CATEGORY(HttpStatus.NOT_FOUND, "존재하지 않는 직군 또는 직무 입니다.");
+public enum FaqErrorCode implements ErrorCode {
+	NOT_FOUND_FAQ(HttpStatus.NOT_FOUND, "존재하지 않는 FAQ 입니다.");
 
 	private final HttpStatus httpStatus;
 	private final String message;

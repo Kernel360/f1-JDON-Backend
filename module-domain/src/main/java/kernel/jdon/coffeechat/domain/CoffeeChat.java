@@ -20,8 +20,6 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import kernel.jdon.base.BaseEntity;
 import kernel.jdon.coffeechatmember.domain.CoffeeChatMember;
-import kernel.jdon.error.code.api.CoffeeChatErrorCode;
-import kernel.jdon.error.exception.api.ApiException;
 import kernel.jdon.member.domain.Member;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -102,16 +100,16 @@ public class CoffeeChat extends BaseEntity {
 
 	private void validateMeetDate(LocalDateTime newMeetDate) {
 		if (this.meetDate.isBefore(LocalDateTime.now())) {
-			throw new ApiException(CoffeeChatErrorCode.EXPIRED_COFFEECHAT);
+			// throw new ApiException(CoffeeChatErrorCode.EXPIRED_COFFEECHAT);
 		}
 		if (newMeetDate.isBefore(LocalDateTime.now())) {
-			throw new ApiException(CoffeeChatErrorCode.MEET_DATE_ISBEFORE_NOW);
+			// throw new ApiException(CoffeeChatErrorCode.MEET_DATE_ISBEFORE_NOW);
 		}
 	}
 
 	private void validateRecruitCount(Long newTotalCount) {
 		if (newTotalCount <= 0 || newTotalCount < this.currentRecruitCount) {
-			throw new ApiException(CoffeeChatErrorCode.INVALID_RECRUIT_COUNT);
+			// throw new ApiException(CoffeeChatErrorCode.INVALID_RECRUIT_COUNT);
 		}
 	}
 
