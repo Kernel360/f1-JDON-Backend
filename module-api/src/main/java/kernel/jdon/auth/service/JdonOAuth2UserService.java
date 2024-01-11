@@ -14,6 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.servlet.http.HttpSession;
 import kernel.jdon.auth.JdonOAuth2User;
+import kernel.jdon.auth.error.AuthErrorCode;
+import kernel.jdon.error.exception.api.ApiException;
 import kernel.jdon.member.domain.Member;
 import kernel.jdon.member.domain.SocialProviderType;
 import kernel.jdon.member.repository.MemberRepository;
@@ -63,7 +65,7 @@ public class JdonOAuth2UserService extends DefaultOAuth2UserService {
 
 	private void checkRightSocialProvider(Member findMember, SocialProviderType socialProvider) {
 		if (!findMember.isRightSocialProvider(socialProvider))
-			throw new IllegalArgumentException("다른 소셜 로그인으로 가입된 이메일입니다.");
+			throw new ApiException(AuthErrorCode.NOT_FOUND_NOT_MATCH_PROVIDER_TYPE);
 	}
 
 	private SocialProviderType getSocialProvider(OAuth2UserRequest userRequest) {
