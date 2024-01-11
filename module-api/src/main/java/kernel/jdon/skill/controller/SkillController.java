@@ -10,16 +10,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import kernel.jdon.dto.response.CommonResponse;
-import kernel.jdon.skill.dto.FindCompanyBySkillResponse;
-import kernel.jdon.skill.dto.FindHotSkillResponse;
-import kernel.jdon.skill.dto.FindJdResponse;
-import kernel.jdon.skill.dto.FindJobCategorySkillResponse;
-import kernel.jdon.skill.dto.FindLectureResponse;
-import kernel.jdon.skill.dto.FindListDataBySkillResponse;
-import kernel.jdon.skill.dto.FindListHotSkillResponse;
-import kernel.jdon.skill.dto.FindListJobCategorySkillResponse;
-import kernel.jdon.skill.dto.FindListMemberSkillResponse;
-import kernel.jdon.skill.dto.FindMemberSkillResponse;
+import kernel.jdon.skill.dto.response.FindCompanyBySkillResponse;
+import kernel.jdon.skill.dto.response.FindHotSkillResponse;
+import kernel.jdon.skill.dto.response.FindJdResponse;
+import kernel.jdon.skill.dto.response.FindJobCategorySkillResponse;
+import kernel.jdon.skill.dto.response.FindLectureResponse;
+import kernel.jdon.skill.dto.response.FindListDataBySkillResponse;
+import kernel.jdon.skill.dto.response.FindListHotSkillResponse;
+import kernel.jdon.skill.dto.response.FindListJobCategorySkillResponse;
+import kernel.jdon.skill.dto.response.FindListMemberSkillResponse;
+import kernel.jdon.skill.dto.response.FindMemberSkillResponse;
 
 @RestController
 public class SkillController {
