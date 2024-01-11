@@ -29,7 +29,7 @@ public class OAuth2SecurityConfig {
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.csrf().disable();
 		http.authorizeHttpRequests(config -> config
-			.anyRequest().permitAll()); // .anyRequest().authenticated());
+			.anyRequest().permitAll());
 		http.oauth2Login(oauth2Configurer -> oauth2Configurer
 			.successHandler(oAuth2AuthenticationSuccessHandler())
 			.userInfoEndpoint()
@@ -56,7 +56,7 @@ public class OAuth2SecurityConfig {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-				String redirectUrl = "http://localhost:3000/oauth/kakao/info?" + encoded;
+				String redirectUrl = "http://localhost:3000/oauth/info?" + encoded;
 				response.sendRedirect(redirectUrl);
 			}
 		});
