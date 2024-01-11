@@ -14,6 +14,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import kernel.jdon.auth.encrypt.AesUtil;
 import kernel.jdon.auth.encrypt.HmacUtil;
 import kernel.jdon.auth.service.JdonOAuth2UserService;
+import kernel.jdon.util.StringUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -52,12 +53,11 @@ public class OAuth2SecurityConfig {
 					log.info("email=" + email + "&provider=kakao");
 					log.info("encoded : " + encoded);
 					log.info("hmac : " + HmacUtil.generateHMAC(encoded));
-					encoded = "value=" + encoded + "&hmac=" + HmacUtil.generateHMAC(encoded);
+					encoded = StringUtil.joinToString("value=", encoded, "&hmac=", HmacUtil.generateHMAC(encoded));
 				} catch (Exception e) {
-					e.printStackTrace();
+					log.warn(e.getMessage(), e);
 				}
-				String redirectUrl = "http://localhost:3000/oauth/info?" + encoded;
-				response.sendRedirect(redirectUrl);
+				response.sendRedirect(StringUtil.joinToString("http://localhost:3000/oauth/info?", encoded));
 			}
 		});
 	}
