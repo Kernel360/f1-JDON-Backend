@@ -50,7 +50,8 @@ public class CoffeeChatService {
 	@Transactional
 	public UpdateCoffeeChatResponse update(Long coffeeChatId, UpdateCoffeeChatRequest request) {
 		CoffeeChat findCoffeeChat = findByIdIfNotDeleted(coffeeChatId);
-		findCoffeeChat.updateCoffeeChat(request);
+		CoffeeChat updateCoffeeChat = UpdateCoffeeChatRequest.toEntity(request);
+		findCoffeeChat.updateCoffeeChat(updateCoffeeChat);
 
 		return UpdateCoffeeChatResponse.of(findCoffeeChat.getId());
 	}

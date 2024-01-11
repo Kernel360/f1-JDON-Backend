@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import kernel.jdon.coffeechat.domain.CoffeeChat;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,5 +20,14 @@ public class UpdateCoffeeChatRequest {
 	private LocalDateTime meetDate;
 	private String openChatUrl;
 
+	public static CoffeeChat toEntity(UpdateCoffeeChatRequest request) {
+		return CoffeeChat.builder()
+			.title(request.title)
+			.content(request.content)
+			.totalRecruitCount(request.totalRecruitCount)
+			.meetDate(request.meetDate)
+			.openChatUrl(request.openChatUrl)
+			.build();
+	}
 }
 

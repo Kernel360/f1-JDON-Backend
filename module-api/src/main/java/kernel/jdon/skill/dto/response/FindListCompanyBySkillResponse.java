@@ -1,4 +1,4 @@
-package kernel.jdon.skill.dto;
+package kernel.jdon.skill.dto.response;
 
 import java.util.List;
 
@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
-public class FindListHotSkillResponse {
-	private List<FindHotSkillResponse> skillList;
+public class FindListCompanyBySkillResponse {
+	private List<FindCompanyBySkillResponse> companyList;
 }

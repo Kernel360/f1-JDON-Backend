@@ -5,13 +5,9 @@ import java.time.LocalDateTime;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import kernel.jdon.coffeechat.domain.CoffeeChat;
-import kernel.jdon.coffeechat.domain.CoffeeChatActiveStatus;
-import kernel.jdon.faq.dto.response.FindFaqResponse;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
 @Builder

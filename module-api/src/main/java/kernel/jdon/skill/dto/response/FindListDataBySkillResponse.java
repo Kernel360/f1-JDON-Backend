@@ -1,4 +1,6 @@
-package kernel.jdon.skill.dto;
+package kernel.jdon.skill.dto.response;
+
+import java.util.List;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -10,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
-public class FindMemberSkillResponse {
-	private Long skillId;
-	private String keyword;
+public class FindListDataBySkillResponse {
+	private List<FindLectureResponse> lectureList;
+	private List<FindJdResponse> jdList;
 }
