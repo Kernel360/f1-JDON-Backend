@@ -22,7 +22,7 @@ public class UpdateCoffeeChatRequest {
 
 	public static CoffeeChat toEntity(UpdateCoffeeChatRequest request) {
 		return CoffeeChat.builder()
-			.title(request.title)
+			.content(request.title)
 			.content(request.content)
 			.totalRecruitCount(request.totalRecruitCount)
 			.meetDate(request.meetDate)
