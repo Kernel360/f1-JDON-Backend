@@ -1,4 +1,4 @@
-package kernel.jdon.skill.dto;
+package kernel.jdon.skill.dto.response;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -10,13 +10,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
-public class FindLectureResponse {
-	private Long lectureId;
+public class FindJdResponse {
+	private String company;
 	private String title;
-	private String lectureUrl;
 	private String imageUrl;
-	private String instructor;
-	private Integer studentCount;
-	private Integer price;
-	private Boolean isFavorite;
+	private String jdUrl;
 }

@@ -19,7 +19,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import kernel.jdon.base.BaseEntity;
-import kernel.jdon.coffeechat.dto.request.UpdateCoffeeChatRequest;
 import kernel.jdon.coffeechatmember.domain.CoffeeChatMember;
 import kernel.jdon.error.code.api.CoffeeChatErrorCode;
 import kernel.jdon.error.exception.api.ApiException;
@@ -90,14 +89,14 @@ public class CoffeeChat extends BaseEntity {
 		this.viewCount += 1;
 	}
 
-	public void updateCoffeeChat(UpdateCoffeeChatRequest request) {
-		validateRecruitCount(request.getTotalRecruitCount());
-		validateMeetDate(request.getMeetDate());
-		this.title = request.getTitle();
-		this.content = request.getContent();
-		this.totalRecruitCount = request.getTotalRecruitCount();
-		this.meetDate = request.getMeetDate();
-		this.openChatUrl = request.getOpenChatUrl();
+	public void updateCoffeeChat(CoffeeChat updateCoffeeChat) {
+		validateRecruitCount(updateCoffeeChat.getTotalRecruitCount());
+		validateMeetDate(updateCoffeeChat.getMeetDate());
+		this.title = updateCoffeeChat.getTitle();
+		this.content = updateCoffeeChat.getContent();
+		this.totalRecruitCount = updateCoffeeChat.getTotalRecruitCount();
+		this.meetDate = updateCoffeeChat.getMeetDate();
+		this.openChatUrl = updateCoffeeChat.getOpenChatUrl();
 		updateStatusByRecruitCount();
 	}
 

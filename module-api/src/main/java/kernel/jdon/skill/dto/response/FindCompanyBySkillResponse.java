@@ -1,4 +1,4 @@
-package kernel.jdon.skill.dto;
+package kernel.jdon.skill.dto.response;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -10,7 +10,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
-public class FindJobCategorySkillResponse {
-	private Long skillId;
-	private String keyword;
+public class FindCompanyBySkillResponse {
+	private String companyName;
+	private String imageUrl;
+	private String title;
+	private String detailUrl;
 }

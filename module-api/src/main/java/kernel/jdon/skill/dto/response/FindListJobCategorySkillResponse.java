@@ -1,4 +1,4 @@
-package kernel.jdon.skill.dto;
+package kernel.jdon.skill.dto.response;
 
 import java.util.List;
 
