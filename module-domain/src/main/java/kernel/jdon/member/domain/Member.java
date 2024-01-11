@@ -35,13 +35,13 @@ import lombok.NoArgsConstructor;
 public class Member {
 
 	@OneToMany(mappedBy = "member")
-	private final List<CoffeeChat> hostChatList = new ArrayList<>();
+	private List<CoffeeChat> hostChatList = new ArrayList<>();
 	@OneToMany(mappedBy = "member")
-	private final List<CoffeeChatMember> guestChatList = new ArrayList<>();
+	private List<CoffeeChatMember> guestChatList = new ArrayList<>();
 	@OneToMany(mappedBy = "member")
-	private final List<MemberSkill> memberSkillList = new ArrayList<>();
+	private List<MemberSkill> memberSkillList = new ArrayList<>();
 	@OneToMany(mappedBy = "member")
-	private final List<Favorite> favoriteList = new ArrayList<>();
+	private List<Favorite> favoriteList = new ArrayList<>();
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;

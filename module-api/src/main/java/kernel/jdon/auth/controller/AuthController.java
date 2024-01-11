@@ -24,10 +24,10 @@ public class AuthController {
 	@PostMapping("/api/v1/register")
 	public ResponseEntity<CommonResponse> register(@RequestBody RegisterRequest registerRequest) {
 
-		Long memberId = memberService.register(registerRequest);
-		URI uri = URI.create("/api/v1/member/" + memberId);
+		Long registerMemberId = memberService.register(registerRequest);
+		URI uri = URI.create("/api/v1/member/" + registerMemberId);
 
-		return ResponseEntity.created(uri).body(CommonResponse.of(RegisterResponse.of(memberId)));
+		return ResponseEntity.created(uri).body(CommonResponse.of(RegisterResponse.of(registerMemberId)));
 	}
 
 	@DeleteMapping("/api/v1/withdraw")
