@@ -27,7 +27,9 @@ public class OAuth2SecurityConfig {
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+		http.csrf().disable();
 		http.authorizeHttpRequests(config -> config
+			.requestMatchers("api/**").permitAll()
 			.anyRequest().permitAll());
 		http.oauth2Login(oauth2Configurer -> oauth2Configurer
 			.successHandler(oAuth2AuthenticationSuccessHandler())

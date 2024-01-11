@@ -1,16 +1,25 @@
 package kernel.jdon.member.domain;
 
+import java.util.Arrays;
+
 public enum SocialProviderType {
 	KAKAO("kakao"),
 	GITHUB("github");
 
-	private final String provider;
+	private final String providerName;
 
-	SocialProviderType(String provider) {
-		this.provider = provider;
+	SocialProviderType(String providerName) {
+		this.providerName = providerName;
 	}
 
-	public String getProvider() {
-		return provider;
+	public String getProviderName() {
+		return providerName;
+	}
+
+	public static SocialProviderType ofType(String providerName) {
+		return Arrays.stream(SocialProviderType.values())
+			.filter(e -> e.getProviderName().equals(providerName))
+			.findAny()
+			.orElseThrow(() -> null);
 	}
 }
