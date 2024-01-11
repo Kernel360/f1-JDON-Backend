@@ -27,25 +27,12 @@ public class CourseStorageService {
 	private final SkillRepository skillRepository;
 
 	protected void createInflearnCourseAndInflearnJdSkill(InflearnCourse inflearnCourse, String skillTags) {
-		if (shouldCreateInflearnCourse(skillTags)) {
-			InflearnCourse savedCourse = inflearnCourseRepository.save(inflearnCourse);
-			processAndCreateInflearnJdSKill(savedCourse, skillTags);
-		}
-	}
-
-	private boolean shouldCreateInflearnCourse(String skillTags) {
-		String[] skillList = skillTags.split(", ");
-		for (String skill : skillList) {
-			Optional<Skill> existingSkill = skillRepository.findByKeyword(skill);
-			if (existingSkill.isPresent()) {
-				List<WantedJdSkill> wantedJdSkills = wantedJdSkillRepository.findBySkill(existingSkill.get());
-				if (!wantedJdSkills.isEmpty()) {
-					return true;
-				}
-			}
+		if (inflearnCourse == null) {
+			return;
 		}
 
-		return false;
+		InflearnCourse savedCourse = inflearnCourseRepository.save(inflearnCourse);
+		processAndCreateInflearnJdSKill(savedCourse, skillTags);
 	}
 
 	private void processAndCreateInflearnJdSKill(InflearnCourse inflearnCourse, String skillTags) {

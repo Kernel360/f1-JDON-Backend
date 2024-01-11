@@ -14,9 +14,17 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CourseParserService {
 
-	protected CourseAndSkillsDto parseCourse(Element courseElement, String lectureUrl) {
+	private final CourseKeywordAnalysisService courseKeywordAnalysisService;
+
+	protected CourseAndSkillsDto parseCourse(Element courseElement, String lectureUrl, String skillKeyword) {
 		Long courseId = Long.parseLong(courseElement.attr("data-productId"));
 		String title = getText(courseElement, "div.course_title");
+		String description = getText(courseElement, "p.course_description");
+
+		if (!courseKeywordAnalysisService.isKeywordPresentInTitleAndDescription(title, description, skillKeyword)) {
+			return null;
+		}
+
 		long studentCount = parseStudentCount(courseElement);
 		String instructor = getText(courseElement, "div.instructor");
 		String imageUrl = courseElement.select("img").attr("src");

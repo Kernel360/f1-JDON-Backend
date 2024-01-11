@@ -1,7 +1,5 @@
 package kernel.jdon.crawler.inflearn.service;
 
-import static kernel.jdon.util.StringUtil.*;
-
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
@@ -9,10 +7,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kernel.jdon.crawler.config.UrlConfig;
 import kernel.jdon.crawler.inflearn.dto.CourseAndSkillsDto;
-import kernel.jdon.crawler.inflearn.search.CourseDomain;
 import kernel.jdon.crawler.inflearn.search.CourseSearchSort;
-import kernel.jdon.crawler.inflearn.search.DevelopmentProgrammingCategory;
-import kernel.jdon.inflearncourse.domain.InflearnCourse;
+import kernel.jdon.inflearn.domain.InflearnCourse;
+import kernel.jdon.util.StringUtil;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -28,16 +25,31 @@ public class InflearnCrawlerService implements CrawlerService {
 
 	@Transactional
 	@Override
-	public void fetchCourseInfo() {
-		String lectureUrl = createInflearnListUrl(CourseDomain.DEVELOPMENT_PROGRAMMING,
-			DevelopmentProgrammingCategory.WEB_DEVELOPMENT, CourseSearchSort.SORT_POPULARITY, 1);
+	public void fetchCourseInfo(String skillKeyword) {
+		String lectureUrl = createInflearnSearchUrl(skillKeyword, CourseSearchSort.SORT_POPULARITY, 1);
 		Elements courseElements = courseScraperService.scrapeCourses(lectureUrl);
-		parseAndCreateCourses(courseElements, lectureUrl);
+		parseAndCreateCourses(courseElements, lectureUrl, skillKeyword);
 	}
 
-	private void parseAndCreateCourses(Elements courseElements, String lectureUrl) {
+	private String createInflearnSearchUrl(String skillKeyword, CourseSearchSort searchSort, int pageNum) {
+		String path = StringUtil.joinToString(urlConfig.getInflearnCourseListUrl(), "/");
+
+		String queryString = StringUtil.joinToString(
+			StringUtil.createQueryString("s", skillKeyword),
+			StringUtil.createQueryString(CourseSearchSort.SEARCH_KEY, searchSort.getSearchValue()),
+			StringUtil.createQueryString("page", String.valueOf(pageNum))
+		);
+
+		return path + "?" + queryString;
+	}
+
+	private void parseAndCreateCourses(Elements courseElements, String lectureUrl, String skillKeyword) {
 		for (Element courseElement : courseElements) {
-			CourseAndSkillsDto courseAndSkillsDto = courseParserService.parseCourse(courseElement, lectureUrl);
+			CourseAndSkillsDto courseAndSkillsDto = courseParserService.parseCourse(courseElement, lectureUrl,
+				skillKeyword);
+			if (courseAndSkillsDto == null) {
+				continue;
+			}
 			InflearnCourse course = courseAndSkillsDto.getCourse();
 			String skillTags = courseAndSkillsDto.getSkillTags();
 
@@ -45,25 +57,5 @@ public class InflearnCrawlerService implements CrawlerService {
 				courseStorageService.createInflearnCourseAndInflearnJdSkill(course, skillTags);
 			}
 		}
-	}
-
-	private String createInflearnListUrl(CourseDomain domain, DevelopmentProgrammingCategory category,
-		CourseSearchSort searchSort, int pageNum) {
-		String path = joinToString(
-			urlConfig.getInflearnCourseListUrl(),
-			createPathString(domain.getSearchValue()),
-			createPathString(category.getSearchValue())
-		);
-
-		String queryString = joinToString(
-			createQueryString(CourseSearchSort.SEARCH_KEY, searchSort.getSearchValue()),
-			createQueryString("page", String.valueOf(pageNum))
-		);
-
-		if (queryString.endsWith("&")) {
-			queryString = queryString.substring(0, queryString.length() - 1);
-		}
-
-		return path + "?" + queryString;
 	}
 }
