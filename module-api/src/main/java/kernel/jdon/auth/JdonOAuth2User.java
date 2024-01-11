@@ -32,6 +32,10 @@ public class JdonOAuth2User extends DefaultOAuth2User {
 		this.socialProvider = socialProvider;
 	}
 
+	public String getSocialProviderType() {
+		return socialProvider.getProvider();
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		return super.equals(obj);

@@ -32,37 +32,48 @@ public class JdonOAuth2UserService extends DefaultOAuth2UserService {
 	@Override
 	public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
 		OAuth2User user = super.loadUser(userRequest);
-		SocialProviderType socialProvider = SocialProviderType.valueOf((
-			userRequest.getClientRegistration().getRegistrationId()).toUpperCase());
-		String userNameAttributeName = userRequest.getClientRegistration()
+
+		return getOAuth2UserFromOAuthServer(userRequest, user);
+	}
+
+	private DefaultOAuth2User getOAuth2UserFromOAuthServer(OAuth2UserRequest userRequest, OAuth2User user) {
+		SocialProviderType socialProvider = getSocialProvider(userRequest);
+		String email = null;
+		if (SocialProviderType.KAKAO == socialProvider) {
+			email = getEmailFromKakao(user);
+		}
+
+		Member findMember = memberRepository.findByEmail(email);
+		List<SimpleGrantedAuthority> authorities = null;
+		if (findMember != null && findMember.isActiveMember()) {
+			checkRightSocialProvider(findMember, socialProvider);
+			httpSession.setAttribute("USER", email);
+			authorities = List.of(new SimpleGrantedAuthority("ROLE_USER"));
+		} else {
+			authorities = List.of(new SimpleGrantedAuthority("ROLE_TEMPORARY_USER"));
+		}
+		return new JdonOAuth2User(authorities, user.getAttributes(), getUserNameAttributeName(userRequest),
+			email, socialProvider);
+	}
+
+	private String getEmailFromKakao(OAuth2User user) {
+		Map<String, Object> attributes = user.getAttributes();
+		return ((Map<String, String>)attributes.get("kakao_account")).get("email");
+	}
+
+	private void checkRightSocialProvider(Member findMember, SocialProviderType socialProvider) {
+		if (!findMember.isRightSocialProvider(socialProvider))
+			throw new IllegalArgumentException("다른 소셜 로그인으로 가입된 이메일입니다.");
+	}
+
+	private SocialProviderType getSocialProvider(OAuth2UserRequest userRequest) {
+		return SocialProviderType.valueOf((userRequest.getClientRegistration().getRegistrationId()).toUpperCase());
+	}
+
+	private String getUserNameAttributeName(OAuth2UserRequest userRequest) {
+		return userRequest.getClientRegistration()
 			.getProviderDetails()
 			.getUserInfoEndpoint()
 			.getUserNameAttributeName();
-		if (SocialProviderType.KAKAO == socialProvider) {
-			return getEmailFromKakao(user, userNameAttributeName);
-		}
-		return user;
-	}
-
-	private DefaultOAuth2User getEmailFromKakao(OAuth2User user, String userNameAttributeName) {
-		Map<String, Object> attributes = user.getAttributes();
-		String email = ((Map<String, String>)attributes.get("kakao_account")).get("email");
-
-		Member findMember = memberRepository.findByEmail(email);
-		if (findMember != null && findMember.isActiveMember()) {
-			checkRightSocialProvider(findMember, SocialProviderType.KAKAO);
-			httpSession.setAttribute("USER", email);
-			return new JdonOAuth2User(user.getAuthorities(), attributes, userNameAttributeName, email,
-				SocialProviderType.KAKAO);
-		} else {
-			List<SimpleGrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_TEMPORARY_USER"));
-			return new JdonOAuth2User(authorities, attributes, userNameAttributeName, email,
-				SocialProviderType.KAKAO);
-		}
-	}
-
-	private void checkRightSocialProvider(Member findMember, SocialProviderType socialProviderType) {
-		if (!findMember.isRightSocialProvider(socialProviderType))
-			throw new IllegalArgumentException("다른 소셜 로그인으로 가입된 이메일입니다.");
 	}
 }

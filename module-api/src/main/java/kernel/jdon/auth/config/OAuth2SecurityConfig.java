@@ -1,20 +1,19 @@
 package kernel.jdon.auth.config;
 
-import java.util.Map;
+import static kernel.jdon.auth.encrypt.AesUtil.*;
+import static kernel.jdon.auth.encrypt.HmacUtil.*;
+import static kernel.jdon.util.StringUtil.*;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
-import kernel.jdon.auth.encrypt.AesUtil;
-import kernel.jdon.auth.encrypt.HmacUtil;
+import kernel.jdon.auth.JdonOAuth2User;
 import kernel.jdon.auth.service.JdonOAuth2UserService;
-import kernel.jdon.util.StringUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -42,23 +41,32 @@ public class OAuth2SecurityConfig {
 	@Bean
 	public AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler() {
 		return ((request, response, authentication) -> {
-			DefaultOAuth2User defaultOAuth2User = (DefaultOAuth2User)authentication.getPrincipal();
-			if (defaultOAuth2User.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_TEMPORARY_USER"))) {
-				Map<String, Object> attributes = defaultOAuth2User.getAttributes();
-				String email = ((Map<String, String>)attributes.get("kakao_account")).get("email");
-
-				String encoded = null;
-				try {
-					encoded = AesUtil.encryptAESCBC(email + "&kakao");
-					log.info("email=" + email + "&provider=kakao");
-					log.info("encoded : " + encoded);
-					log.info("hmac : " + HmacUtil.generateHMAC(encoded));
-					encoded = StringUtil.joinToString("value=", encoded, "&hmac=", HmacUtil.generateHMAC(encoded));
-				} catch (Exception e) {
-					log.warn(e.getMessage(), e);
-				}
-				response.sendRedirect(StringUtil.joinToString("http://localhost:3000/oauth/info?", encoded));
+			JdonOAuth2User jdonOAuth2User = (JdonOAuth2User)authentication.getPrincipal();
+			if (isTemporaryUser(jdonOAuth2User)) {
+				String query = createUserInfoString(jdonOAuth2User.getEmail(), jdonOAuth2User.getSocialProviderType());
+				String encodedQueryString = createEncryptQueryString(query);
+				response.sendRedirect(joinToString("http://localhost:3000/oauth/info?", encodedQueryString));
 			}
 		});
+	}
+
+	private boolean isTemporaryUser(JdonOAuth2User jdonOAuth2User) {
+		return jdonOAuth2User.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_TEMPORARY_USER"));
+	}
+
+	private String createUserInfoString(String email, String provider) {
+		return joinToString(createQueryString("email", email), createQueryString("provider", provider));
+	}
+
+	private String createEncryptQueryString(String info) {
+		String encoded = null;
+		try {
+			encoded = encryptAESCBC(info);
+			encoded = joinToString(createQueryString("value", encoded),
+				createQueryString("hmac", generateHMAC(encoded)));
+		} catch (Exception e) {
+			log.warn(e.getMessage(), e);
+		}
+		return encoded;
 	}
 }
