@@ -90,14 +90,14 @@ public class CoffeeChat extends BaseEntity {
 		this.viewCount += 1;
 	}
 
-	public void updateCoffeeChat(UpdateCoffeeChatRequest request) {
-		validateRecruitCount(request.getTotalRecruitCount());
-		validateMeetDate(request.getMeetDate());
-		this.title = request.getTitle();
-		this.content = request.getContent();
-		this.totalRecruitCount = request.getTotalRecruitCount();
-		this.meetDate = request.getMeetDate();
-		this.openChatUrl = request.getOpenChatUrl();
+	public void updateCoffeeChat(CoffeeChat updateCoffeeChat) {
+		validateRecruitCount(updateCoffeeChat.getTotalRecruitCount());
+		validateMeetDate(updateCoffeeChat.getMeetDate());
+		this.title = updateCoffeeChat.getTitle();
+		this.content = updateCoffeeChat.getContent();
+		this.totalRecruitCount = updateCoffeeChat.getTotalRecruitCount();
+		this.meetDate = updateCoffeeChat.getMeetDate();
+		this.openChatUrl = updateCoffeeChat.getOpenChatUrl();
 		updateStatusByRecruitCount();
 	}
 
