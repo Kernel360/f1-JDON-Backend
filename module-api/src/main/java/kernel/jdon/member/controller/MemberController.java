@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import kernel.jdon.auth.LoginUser;
-import kernel.jdon.auth.SessionUserInfo;
+import kernel.jdon.global.annotation.LoginUser;
+import kernel.jdon.auth.dto.SessionUserInfo;
 import kernel.jdon.dto.response.CommonResponse;
 import kernel.jdon.member.dto.request.ModifyMemberRequest;
 import kernel.jdon.member.dto.request.NicknameDuplicateRequest;

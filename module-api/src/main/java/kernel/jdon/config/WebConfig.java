@@ -1,4 +1,4 @@
-package kernel.jdon.auth.config;
+package kernel.jdon.config;
 
 import java.util.List;
 
