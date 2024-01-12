@@ -1,4 +1,4 @@
-package kernel.jdon.error.code;
+package kernel.jdon.error;
 
 import org.springframework.http.HttpStatus;
 
