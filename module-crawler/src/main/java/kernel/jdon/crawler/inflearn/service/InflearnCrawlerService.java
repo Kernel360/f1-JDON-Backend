@@ -56,7 +56,7 @@ public class InflearnCrawlerService implements CrawlerService {
 
 			InflearnCourse inflearnCourse = courseParserService.parseCourse(courseElement, lectureUrl,
 				skillKeyword);
-
+                                                                                                       
 			if (inflearnCourse != null) {
 				newCourses.add(inflearnCourse);
 				savedCourseCount++;

@@ -35,9 +35,9 @@ public class CourseStorageService {
 		}
 	}
 
-	private void createInflearnCourses(Skill skill, List<InflearnCourse> newCourses,
+	private void createInflearnCourses(Skill skill, List<InflearnCourse> inflearnCourseList,
 		List<WantedJdSkill> wantedJdSkillList) {
-		for (InflearnCourse inflearnCourse : newCourses) {
+		for (InflearnCourse inflearnCourse : inflearnCourseList) {
 			if (!courseDuplicationCheckerService.isDuplicate(inflearnCourse.getCourseId())) {
 				InflearnCourse savedCourse = inflearnCourseRepository.save(inflearnCourse);
 				wantedJdSkillList.forEach(wantedJdSkill -> createInflearnJdSkill(savedCourse, wantedJdSkill));
@@ -46,8 +46,7 @@ public class CourseStorageService {
 	}
 
 	private void createInflearnJdSkill(InflearnCourse course, WantedJdSkill wantedJdSkill) {
-		InflearnJdSkill jdSkill = EntityConverter.createInflearnJdSkill(course, wantedJdSkill);
-		inflearnJdSkillRepository.save(jdSkill);
+		InflearnJdSkill createdJdSkill = EntityConverter.createInflearnJdSkill(course, wantedJdSkill);
+		inflearnJdSkillRepository.save(createdJdSkill);
 	}
-
 }
