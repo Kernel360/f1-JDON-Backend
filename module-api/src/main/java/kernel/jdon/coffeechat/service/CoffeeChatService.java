@@ -10,9 +10,9 @@ import kernel.jdon.coffeechat.dto.response.CreateCoffeeChatResponse;
 import kernel.jdon.coffeechat.dto.response.DeleteCoffeeChatResponse;
 import kernel.jdon.coffeechat.dto.response.FindCoffeeChatResponse;
 import kernel.jdon.coffeechat.dto.response.UpdateCoffeeChatResponse;
+import kernel.jdon.coffeechat.error.CoffeeChatErrorCode;
 import kernel.jdon.coffeechat.repository.CoffeeChatRepository;
-import kernel.jdon.error.code.api.CoffeeChatErrorCode;
-import kernel.jdon.error.exception.api.ApiException;
+import kernel.jdon.global.exception.ApiException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -48,20 +48,41 @@ public class CoffeeChatService {
 	}
 
 	@Transactional
-	public UpdateCoffeeChatResponse update(Long coffeeChatId, UpdateCoffeeChatRequest request) {
-		CoffeeChat findCoffeeChat = findByIdIfNotDeleted(coffeeChatId);
-		CoffeeChat updateCoffeeChat = UpdateCoffeeChatRequest.toEntity(request);
-		findCoffeeChat.updateCoffeeChat(updateCoffeeChat);
-
-		return UpdateCoffeeChatResponse.of(findCoffeeChat.getId());
-	}
-
-	@Transactional
 	public DeleteCoffeeChatResponse delete(Long coffeeChatId) {
 		CoffeeChat findCoffeeChat = findByIdIfNotDeleted(coffeeChatId);
 		coffeeChatRepository.deleteById(findCoffeeChat.getId());
 
 		return DeleteCoffeeChatResponse.of(coffeeChatId);
+	}
+
+	@Transactional
+	public UpdateCoffeeChatResponse update(Long coffeeChatId, UpdateCoffeeChatRequest request) {
+		CoffeeChat findCoffeeChat = findByIdIfNotDeleted(coffeeChatId);
+		CoffeeChat target = UpdateCoffeeChatRequest.toEntity(request);
+
+		validateUpdate(findCoffeeChat, target);
+
+		findCoffeeChat.updateCoffeeChat(target);
+
+		return UpdateCoffeeChatResponse.of(findCoffeeChat.getId());
+	}
+
+	private void validateUpdate(CoffeeChat findCoffeeChat, CoffeeChat target) {
+		checkRecruitCount(findCoffeeChat, target);
+		checkMeetDate(findCoffeeChat, target);
+
+	}
+
+	private void checkMeetDate(CoffeeChat findCoffeeChat, CoffeeChat target) {
+		if (findCoffeeChat.isValidMeetDate(target.getMeetDate())) {
+			throw new ApiException(CoffeeChatErrorCode.MEET_DATE_ISBEFORE_NOW);
+		}
+	}
+	
+	private void checkRecruitCount(CoffeeChat findCoffeeChat, CoffeeChat target) {
+		if (findCoffeeChat.isValidRecruitCount(target.getTotalRecruitCount())) {
+			throw new ApiException(CoffeeChatErrorCode.EXPIRED_COFFEECHAT);
+		}
 	}
 
 }

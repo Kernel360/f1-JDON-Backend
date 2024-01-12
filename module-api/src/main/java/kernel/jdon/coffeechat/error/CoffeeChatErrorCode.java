@@ -1,8 +1,8 @@
-package kernel.jdon.error.code.api;
+package kernel.jdon.coffeechat.error;
 
 import org.springframework.http.HttpStatus;
 
-import kernel.jdon.error.code.ErrorCode;
+import kernel.jdon.error.ErrorCode;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor

@@ -5,8 +5,6 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import kernel.jdon.error.code.api.FaqErrorCode;
-import kernel.jdon.error.exception.api.ApiException;
 import kernel.jdon.faq.domain.Faq;
 import kernel.jdon.faq.dto.request.CreateFaqRequest;
 import kernel.jdon.faq.dto.request.UpdateFaqRequest;
@@ -14,7 +12,9 @@ import kernel.jdon.faq.dto.response.CreateFaqResponse;
 import kernel.jdon.faq.dto.response.DeleteFaqResponse;
 import kernel.jdon.faq.dto.response.FindListFaqResponse;
 import kernel.jdon.faq.dto.response.UpdateFaqResponse;
+import kernel.jdon.faq.error.FaqErrorCode;
 import kernel.jdon.faq.repository.FaqRepository;
+import kernel.jdon.global.exception.ApiException;
 import lombok.RequiredArgsConstructor;
 
 @Service

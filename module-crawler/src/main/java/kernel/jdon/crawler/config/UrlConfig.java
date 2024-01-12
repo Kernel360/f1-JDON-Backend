@@ -1,4 +1,4 @@
-package kernel.jdon.config;
+package kernel.jdon.crawler.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;

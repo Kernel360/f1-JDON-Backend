@@ -20,8 +20,6 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import kernel.jdon.base.BaseEntity;
 import kernel.jdon.coffeechatmember.domain.CoffeeChatMember;
-import kernel.jdon.error.code.api.CoffeeChatErrorCode;
-import kernel.jdon.error.exception.api.ApiException;
 import kernel.jdon.member.domain.Member;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -89,39 +87,36 @@ public class CoffeeChat extends BaseEntity {
 		this.viewCount += 1;
 	}
 
-	public void updateCoffeeChat(CoffeeChat updateCoffeeChat) {
-		validateRecruitCount(updateCoffeeChat.getTotalRecruitCount());
-		validateMeetDate(updateCoffeeChat.getMeetDate());
-		this.title = updateCoffeeChat.getTitle();
-		this.content = updateCoffeeChat.getContent();
-		this.totalRecruitCount = updateCoffeeChat.getTotalRecruitCount();
-		this.meetDate = updateCoffeeChat.getMeetDate();
-		this.openChatUrl = updateCoffeeChat.getOpenChatUrl();
+	public void updateCoffeeChat(CoffeeChat request) {
+		this.title = request.getTitle();
+		this.content = request.getContent();
+		this.totalRecruitCount = request.getTotalRecruitCount();
+		this.meetDate = request.getMeetDate();
+		this.openChatUrl = request.getOpenChatUrl();
 		updateStatusByRecruitCount();
 	}
 
-	private void validateMeetDate(LocalDateTime newMeetDate) {
-		if (this.meetDate.isBefore(LocalDateTime.now())) {
-			throw new ApiException(CoffeeChatErrorCode.EXPIRED_COFFEECHAT);
-		}
-		if (newMeetDate.isBefore(LocalDateTime.now())) {
-			throw new ApiException(CoffeeChatErrorCode.MEET_DATE_ISBEFORE_NOW);
-		}
+	public boolean isValidMeetDate(LocalDateTime newMeetDate) {
+		return !(this.meetDate.isBefore(LocalDateTime.now()) || newMeetDate.isBefore(LocalDateTime.now()));
 	}
 
-	private void validateRecruitCount(Long newTotalCount) {
-		if (newTotalCount <= 0 || newTotalCount < this.currentRecruitCount) {
-			throw new ApiException(CoffeeChatErrorCode.INVALID_RECRUIT_COUNT);
-		}
+	public boolean isValidRecruitCount(Long newTotalCount) {
+		return newTotalCount <= 0 || newTotalCount < this.currentRecruitCount;
 	}
 
 	private void updateStatusByRecruitCount() {
 		if (this.totalRecruitCount.equals(this.currentRecruitCount)) {
-			this.coffeeChatStatus = CoffeeChatActiveStatus.FULL;
-			return;
+			changeStatusFull();
+		} else if (this.totalRecruitCount > this.currentRecruitCount) {
+			changeStatusOpen();
 		}
-		if (this.totalRecruitCount > this.currentRecruitCount) {
-			this.coffeeChatStatus = CoffeeChatActiveStatus.OPEN;
-		}
+	}
+
+	private void changeStatusFull() {
+		this.coffeeChatStatus = CoffeeChatActiveStatus.FULL;
+	}
+
+	private void changeStatusOpen() {
+		this.coffeeChatStatus = CoffeeChatActiveStatus.OPEN;
 	}
 }

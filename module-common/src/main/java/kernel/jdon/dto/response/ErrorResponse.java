@@ -6,7 +6,7 @@ import java.time.format.DateTimeFormatter;
 import org.springframework.http.HttpStatus;
 
 import jakarta.servlet.http.HttpServletRequest;
-import kernel.jdon.error.code.ErrorCode;
+import kernel.jdon.error.ErrorCode;
 import lombok.Builder;
 import lombok.Getter;
 
