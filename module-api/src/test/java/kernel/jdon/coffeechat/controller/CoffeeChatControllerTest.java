@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import kernel.jdon.coffeechat.dto.request.CreateCoffeeChatRequest;
 import kernel.jdon.coffeechat.dto.response.CreateCoffeeChatResponse;
+import kernel.jdon.coffeechat.dto.response.FindCoffeeChatResponse;
 import kernel.jdon.coffeechat.service.CoffeeChatService;
 
 @WebMvcTest(CoffeeChatController.class)
@@ -55,6 +56,30 @@ class CoffeeChatControllerTest {
 		resultActions.andExpect(status().isCreated())
 			.andExpect(jsonPath("$.data.coffeeChatId").value(1L));
 
+	}
+
+	@DisplayName("커피챗 상세조회 성공")
+	@Test
+	void getCoffeeChat() throws Exception {
+		//given
+		Long coffeeChatId = 1L;
+		FindCoffeeChatResponse response = findCoffeeChatResponse();
+		when(coffeeChatService.find(coffeeChatId)).thenReturn(response);
+
+		//when
+		ResultActions resultActions = mockMvc.perform(
+			MockMvcRequestBuilders.get("/api/v1/coffeechats/{id}", coffeeChatId));
+
+		//then
+		resultActions.andExpect(status().isOk())
+			.andExpect(jsonPath("$.data.coffeeChatId").value(coffeeChatId))
+			.andExpect(jsonPath("$.data.nickname").value("마틴 파울러"));
+
+	}
+
+	private FindCoffeeChatResponse findCoffeeChatResponse() {
+		return new FindCoffeeChatResponse(1L, "마틴 파울러", "커피챗제목1", "커피챗내용1", 1000L, "모집중", LocalDateTime.now(),
+			LocalDateTime.now(), "https://open.kakao.com/o/abc", 5L, 3L, "backend");
 	}
 
 	private CreateCoffeeChatRequest createCoffeeChatRequest() {
