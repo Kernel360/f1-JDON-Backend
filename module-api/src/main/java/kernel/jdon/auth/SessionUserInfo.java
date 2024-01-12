@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 
 import kernel.jdon.member.domain.Member;
 import kernel.jdon.member.domain.MemberRole;
+import kernel.jdon.member.repository.MemberRepository;
 import lombok.Getter;
 
 @Getter

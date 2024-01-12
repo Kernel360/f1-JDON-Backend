@@ -1,4 +1,4 @@
-package kernel.jdon.auth;
+package kernel.jdon.auth.service;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
@@ -8,6 +8,8 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 import jakarta.servlet.http.HttpSession;
+import kernel.jdon.auth.LoginUser;
+import kernel.jdon.auth.SessionUserInfo;
 import lombok.RequiredArgsConstructor;
 
 @Component
