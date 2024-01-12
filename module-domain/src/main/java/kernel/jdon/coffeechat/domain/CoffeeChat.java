@@ -88,11 +88,6 @@ public class CoffeeChat extends BaseEntity {
 	}
 
 	public void updateCoffeeChat(CoffeeChat request) {
-		// todo : 객체지향적으로 캡슐화 한다면 여기서 유효성 검사를 진행한다.
-		// isValidRecruitCount(request.getTotalRecruitCount());
-		// isValidMeetDate(request.getMeetDate());
-
-		// todo : 서비스에서 호출할 경우 아래의 로직만 탐
 		this.title = request.getTitle();
 		this.content = request.getContent();
 		this.totalRecruitCount = request.getTotalRecruitCount();
@@ -101,28 +96,27 @@ public class CoffeeChat extends BaseEntity {
 		updateStatusByRecruitCount();
 	}
 
-	private boolean isValidMeetDate(LocalDateTime newMeetDate) {
-		return this.meetDate.isBefore(LocalDateTime.now());
-			// throw CoffeeChatErrorCode.EXPIRED_COFFEECHAT;
-
-		// if (newMeetDate.isBefore(LocalDateTime.now())) {
-		// 	// throw new ApiException(CoffeeChatErrorCode.MEET_DATE_ISBEFORE_NOW);
-		// 	return false;
-		// }
+	public boolean isValidMeetDate(LocalDateTime newMeetDate) {
+		return !(this.meetDate.isBefore(LocalDateTime.now()) || newMeetDate.isBefore(LocalDateTime.now()));
 	}
 
 	public boolean isValidRecruitCount(Long newTotalCount) {
-		return newTotalCount <= 0 ||
-			newTotalCount < this.currentRecruitCount;
+		return newTotalCount <= 0 || newTotalCount < this.currentRecruitCount;
 	}
 
 	private void updateStatusByRecruitCount() {
 		if (this.totalRecruitCount.equals(this.currentRecruitCount)) {
-			this.coffeeChatStatus = CoffeeChatActiveStatus.FULL;
-			return;
+			changeStatusFull();
+		} else if (this.totalRecruitCount > this.currentRecruitCount) {
+			changeStatusOpen();
 		}
-		if (this.totalRecruitCount > this.currentRecruitCount) {
-			this.coffeeChatStatus = CoffeeChatActiveStatus.OPEN;
-		}
+	}
+
+	private void changeStatusFull() {
+		this.coffeeChatStatus = CoffeeChatActiveStatus.FULL;
+	}
+
+	private void changeStatusOpen() {
+		this.coffeeChatStatus = CoffeeChatActiveStatus.OPEN;
 	}
 }
