@@ -8,8 +8,8 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 import jakarta.servlet.http.HttpSession;
-import kernel.jdon.auth.LoginUser;
-import kernel.jdon.auth.SessionUserInfo;
+import kernel.jdon.global.annotation.LoginUser;
+import kernel.jdon.auth.dto.SessionUserInfo;
 import lombok.RequiredArgsConstructor;
 
 @Component

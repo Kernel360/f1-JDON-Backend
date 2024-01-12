@@ -1,4 +1,4 @@
-package kernel.jdon.auth;
+package kernel.jdon.global.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -13,8 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.servlet.http.HttpSession;
-import kernel.jdon.auth.JdonOAuth2User;
-import kernel.jdon.auth.SessionUserInfo;
+import kernel.jdon.auth.dto.JdonOAuth2User;
+import kernel.jdon.auth.dto.SessionUserInfo;
 import kernel.jdon.auth.error.AuthErrorCode;
 import kernel.jdon.error.exception.api.ApiException;
 import kernel.jdon.member.domain.Member;
