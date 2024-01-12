@@ -46,6 +46,21 @@ public class WantedJd {
 	@Column(name = "image_url", columnDefinition = "TEXT", nullable = false)
 	private String imageUrl;
 
+	@Column(name = "requirements", columnDefinition = "TEXT")
+	private String requirements;
+
+	@Column(name = "main_tasks", columnDefinition = "TEXT")
+	private String mainTasks;
+
+	@Column(name = "intro", columnDefinition = "TEXT")
+	private String intro;
+
+	@Column(name = "benefits", columnDefinition = "TEXT")
+	private String benefits;
+
+	@Column(name = "preferredPoints", columnDefinition = "TEXT")
+	private String preferredPoints;
+
 	@CreatedDate
 	@Column(name = "scraping_date", columnDefinition = "TEXT", nullable = false)
 	private String scrapingDate;
@@ -56,13 +71,19 @@ public class WantedJd {
 
 	@Builder
 	public WantedJd(String companyName, String title, Long detailId, String detailUrl, String imageUrl,
-		String scrapingDate,
+		String requirements,
+		String mainTasks, String intro, String benefits, String preferredPoints, String scrapingDate,
 		JobCategory jobCategory) {
 		this.companyName = companyName;
 		this.title = title;
 		this.detailId = detailId;
 		this.detailUrl = detailUrl;
 		this.imageUrl = imageUrl;
+		this.requirements = requirements;
+		this.mainTasks = mainTasks;
+		this.intro = intro;
+		this.benefits = benefits;
+		this.preferredPoints = preferredPoints;
 		this.scrapingDate = scrapingDate;
 		this.jobCategory = jobCategory;
 	}
