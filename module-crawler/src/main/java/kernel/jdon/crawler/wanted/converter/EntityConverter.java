@@ -25,6 +25,11 @@ public class EntityConverter {
 			.detailId(wantedJobDetailResponse.getJob().getId())
 			.detailUrl(wantedJobDetailResponse.getDetailUrl())
 			.imageUrl(wantedJobDetailResponse.getJob().getCompanyImages())
+			.requirements(wantedJobDetailResponse.getJob().getDetail().getRequirements())
+			.mainTasks(wantedJobDetailResponse.getJob().getDetail().getMainTasks())
+			.intro(wantedJobDetailResponse.getJob().getDetail().getIntro())
+			.benefits(wantedJobDetailResponse.getJob().getDetail().getBenefits())
+			.preferredPoints(wantedJobDetailResponse.getJob().getDetail().getPreferredPoints())
 			.build();
 	}
 
