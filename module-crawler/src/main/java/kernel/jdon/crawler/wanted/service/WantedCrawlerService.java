@@ -51,7 +51,7 @@ public class WantedCrawlerService {
 	private int MAX_FETCH_JD_LIST_OFFSET;
 
 	@Transactional
-	public void fetchJd() {
+	public void fetchJd() throws InterruptedException {
 		JobSearchJobPosition[] jobPositions = {
 			JobSearchJobPosition.JOB_POSITION_FRONTEND,
 			JobSearchJobPosition.JOB_POSITION_SERVER
@@ -70,7 +70,7 @@ public class WantedCrawlerService {
 			.orElseThrow(() -> new CrawlerException(WantedErrorCode.NOT_FOUND_JOB_CATEGORY));
 	}
 
-	private void fetchJobDetail(JobCategory jobCategory, Set<Long> fetchJobIds) {
+	private void fetchJobDetail(JobCategory jobCategory, Set<Long> fetchJobIds) throws InterruptedException {
 		HashMap<WantedJd, List<Skill>> wantedJdSkillMap = new HashMap<>();
 		for (Long detailId : fetchJobIds) {
 			if (isJobDetailExist(jobCategory, detailId)) {
@@ -80,6 +80,8 @@ public class WantedCrawlerService {
 			WantedJd savedWantedJd = createWantedJd(jobDetailResponse);
 			List<Skill> savedSkillList = createSkillList(jobCategory, jobDetailResponse);
 			wantedJdSkillMap.put(savedWantedJd, savedSkillList);
+
+			Thread.sleep(1000);
 		}
 		createWantedJdSkill(wantedJdSkillMap);
 	}
@@ -128,7 +130,7 @@ public class WantedCrawlerService {
 		return restTemplate.getForObject(jobDetailUrl, WantedJobDetailResponse.class);
 	}
 
-	private Set<Long> fetchJobIdList(JobSearchJobPosition jobPosition) {
+	private Set<Long> fetchJobIdList(JobSearchJobPosition jobPosition) throws InterruptedException {
 		Set<Long> fetchJobIds = new HashSet<>();
 		int offset = 0;
 
@@ -142,6 +144,8 @@ public class WantedCrawlerService {
 			fetchJobIds.addAll(jobIds);
 
 			offset += MAX_FETCH_JD_LIST_OFFSET;
+
+			Thread.sleep(1000);
 		}
 
 		return fetchJobIds;
