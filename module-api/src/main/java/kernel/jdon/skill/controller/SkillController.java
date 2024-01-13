@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import kernel.jdon.dto.response.CommonResponse;
 import kernel.jdon.skill.dto.response.FindCompanyBySkillResponse;
-import kernel.jdon.skill.dto.response.FindHotSkillResponse;
 import kernel.jdon.skill.dto.response.FindJdResponse;
 import kernel.jdon.skill.dto.response.FindJobCategorySkillResponse;
 import kernel.jdon.skill.dto.response.FindLectureResponse;
@@ -20,29 +19,18 @@ import kernel.jdon.skill.dto.response.FindListHotSkillResponse;
 import kernel.jdon.skill.dto.response.FindListJobCategorySkillResponse;
 import kernel.jdon.skill.dto.response.FindListMemberSkillResponse;
 import kernel.jdon.skill.dto.response.FindMemberSkillResponse;
+import kernel.jdon.skill.service.SkillService;
+import lombok.RequiredArgsConstructor;
 
 @RestController
+@RequiredArgsConstructor
 public class SkillController {
-
+	private final SkillService skillService;
 	@GetMapping("/api/v1/skills/hot")
 	public ResponseEntity<CommonResponse> getHotSkillList() {
-		List<FindHotSkillResponse> findHotSkillResponseList = new ArrayList<>();
-		for (long i = 1; i <= 10; i++) {
-			FindHotSkillResponse findHotSkillResponse =
-				FindHotSkillResponse.builder()
-					.skillId(i)
-					.keyword("skill_" + i)
-					.build();
+		FindListHotSkillResponse hotSkillList = skillService.findHotSkillList();
 
-			findHotSkillResponseList.add(findHotSkillResponse);
-		}
-
-		FindListHotSkillResponse findListHotSkillResponse =
-			FindListHotSkillResponse.builder()
-				.skillList(findHotSkillResponseList)
-				.build();
-
-		return ResponseEntity.ok(CommonResponse.of(findListHotSkillResponse));
+		return ResponseEntity.ok(CommonResponse.of(hotSkillList));
 	}
 
 	@GetMapping("/api/v1/skills/member")
