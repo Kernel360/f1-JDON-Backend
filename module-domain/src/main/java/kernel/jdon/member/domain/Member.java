@@ -45,34 +45,57 @@ public class Member {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
 	@Column(name = "email", columnDefinition = "VARCHAR(255)", nullable = false, unique = true)
 	private String email;
+
 	@Column(name = "nickname", columnDefinition = "VARCHAR(255)", nullable = false, unique = true)
 	private String nickname;
+
 	@Column(name = "birth", columnDefinition = "VARCHAR(11)", nullable = false)
 	private String birth;
+
 	@Enumerated(EnumType.STRING)
 	@Column(name = "gender", columnDefinition = "VARCHAR(11)", nullable = false)
 	private Gender gender;
+
 	@CreatedDate
 	@Column(name = "join_date", columnDefinition = "DATETIME", nullable = false)
 	private LocalDateTime joinDate;
+
 	@Column(name = "last_login_date", columnDefinition = "DATETIME")
 	private LocalDateTime lastLoginDate;
+
 	@Enumerated(EnumType.STRING)
 	@Column(name = "role", columnDefinition = "VARCHAR(10)", nullable = false)
 	private MemberRole role;
+
 	@Enumerated(EnumType.STRING)
 	@Column(name = "account_status", columnDefinition = "VARCHAR(10)", nullable = false)
 	private MemberAccountStatus accountStatus;
+
 	@Column(name = "withdraw_date", columnDefinition = "DATETIME")
 	private LocalDateTime withdrawDate;
+
 	@Enumerated(EnumType.STRING)
 	@Column(name = "social_provider", columnDefinition = "VARCHAR(20)", nullable = false)
 	private SocialProviderType socialProvider;
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "job_category_id", columnDefinition = "BIGINT")
 	private JobCategory jobCategory;
+
+	@OneToMany(mappedBy = "member")
+	private List<CoffeeChat> hostChatList = new ArrayList<>();
+
+	@OneToMany(mappedBy = "member")
+	private List<CoffeeChatMember> guestChatList = new ArrayList<>();
+
+	@OneToMany(mappedBy = "member")
+	private List<MemberSkill> memberSkillList = new ArrayList<>();
+
+	@OneToMany(mappedBy = "member")
+	private List<Favorite> favoriteList = new ArrayList<>();
 
 	@Builder
 	public Member(Long id, String email, String nickname, String birth, Gender gender, LocalDateTime joinDate,

@@ -1,4 +1,4 @@
-package kernel.jdon.auth.config;
+package kernel.jdon.config;
 
 import static kernel.jdon.auth.encrypt.AesUtil.*;
 import static kernel.jdon.auth.encrypt.HmacUtil.*;
@@ -12,7 +12,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
-import kernel.jdon.auth.JdonOAuth2User;
+import kernel.jdon.auth.dto.JdonOAuth2User;
 import kernel.jdon.auth.service.JdonOAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

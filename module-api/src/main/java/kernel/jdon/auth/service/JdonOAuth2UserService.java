@@ -13,7 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.servlet.http.HttpSession;
-import kernel.jdon.auth.JdonOAuth2User;
+import kernel.jdon.auth.dto.JdonOAuth2User;
+import kernel.jdon.auth.dto.SessionUserInfo;
 import kernel.jdon.auth.error.AuthErrorCode;
 import kernel.jdon.error.exception.api.ApiException;
 import kernel.jdon.member.domain.Member;
@@ -49,7 +50,7 @@ public class JdonOAuth2UserService extends DefaultOAuth2UserService {
 		List<SimpleGrantedAuthority> authorities = null;
 		if (findMember != null && findMember.isActiveMember()) {
 			checkRightSocialProvider(findMember, socialProvider);
-			httpSession.setAttribute("USER", email);
+			httpSession.setAttribute("USER", SessionUserInfo.of(findMember));
 			authorities = List.of(new SimpleGrantedAuthority("ROLE_USER"));
 		} else {
 			authorities = List.of(new SimpleGrantedAuthority("ROLE_TEMPORARY_USER"));

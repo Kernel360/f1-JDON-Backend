@@ -10,17 +10,23 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import kernel.jdon.global.annotation.LoginUser;
+import kernel.jdon.auth.dto.SessionUserInfo;
 import kernel.jdon.dto.response.CommonResponse;
 import kernel.jdon.member.dto.request.ModifyMemberRequest;
 import kernel.jdon.member.dto.request.NicknameDuplicateRequest;
 import kernel.jdon.member.dto.response.GetMemberResponse;
 import kernel.jdon.member.dto.response.ModifyMemberResponse;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RestController
 public class MemberController {
 
 	@GetMapping("/api/v1/member")
-	public ResponseEntity<CommonResponse> get() {
+	public ResponseEntity<CommonResponse> get(@LoginUser SessionUserInfo sessionUser) {
+		log.info("sessionUser: {}", sessionUser.getEmail(), sessionUser.getId());
+
 		GetMemberResponse getMemberResponse = GetMemberResponse.builder()
 			.email("aaa@gmail.com")
 			.nickname("aaa")
