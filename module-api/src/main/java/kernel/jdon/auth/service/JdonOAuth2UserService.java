@@ -16,7 +16,7 @@ import jakarta.servlet.http.HttpSession;
 import kernel.jdon.auth.dto.JdonOAuth2User;
 import kernel.jdon.auth.dto.SessionUserInfo;
 import kernel.jdon.auth.error.AuthErrorCode;
-import kernel.jdon.error.exception.api.ApiException;
+import kernel.jdon.global.exception.ApiException;
 import kernel.jdon.member.domain.Member;
 import kernel.jdon.member.domain.SocialProviderType;
 import kernel.jdon.member.repository.MemberRepository;

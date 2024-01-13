@@ -85,18 +85,6 @@ public class Member {
 	@JoinColumn(name = "job_category_id", columnDefinition = "BIGINT")
 	private JobCategory jobCategory;
 
-	@OneToMany(mappedBy = "member")
-	private List<CoffeeChat> hostChatList = new ArrayList<>();
-
-	@OneToMany(mappedBy = "member")
-	private List<CoffeeChatMember> guestChatList = new ArrayList<>();
-
-	@OneToMany(mappedBy = "member")
-	private List<MemberSkill> memberSkillList = new ArrayList<>();
-
-	@OneToMany(mappedBy = "member")
-	private List<Favorite> favoriteList = new ArrayList<>();
-
 	@Builder
 	public Member(Long id, String email, String nickname, String birth, Gender gender, LocalDateTime joinDate,
 		LocalDateTime lastLoginDate, MemberRole role, MemberAccountStatus accountStatus, LocalDateTime withdrawDate,

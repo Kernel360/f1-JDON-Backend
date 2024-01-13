@@ -2,7 +2,7 @@ package kernel.jdon.auth.error;
 
 import org.springframework.http.HttpStatus;
 
-import kernel.jdon.error.code.ErrorCode;
+import kernel.jdon.error.ErrorCode;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

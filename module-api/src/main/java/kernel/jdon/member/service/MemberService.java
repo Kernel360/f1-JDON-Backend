@@ -16,7 +16,7 @@ import kernel.jdon.auth.dto.object.RegisterMemberDto;
 import kernel.jdon.auth.dto.request.RegisterRequest;
 import kernel.jdon.auth.encrypt.AesUtil;
 import kernel.jdon.error.code.api.MemberErrorCode;
-import kernel.jdon.error.exception.api.ApiException;
+import kernel.jdon.global.exception.ApiException;
 import kernel.jdon.jobcategory.domain.JobCategory;
 import kernel.jdon.jobcategory.repository.JobCategoryRepository;
 import kernel.jdon.member.domain.Member;
