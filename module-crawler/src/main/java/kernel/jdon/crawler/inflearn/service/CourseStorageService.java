@@ -27,12 +27,20 @@ public class CourseStorageService {
 	private final CourseDuplicationCheckerService courseDuplicationCheckerService;
 
 	protected void createInflearnCourseAndInflearnJdSkill(String skillKeyword, List<InflearnCourse> newCourseList) {
-		Optional<Skill> skillOptional = skillRepository.findByKeyword(skillKeyword);
-		if (skillOptional.isPresent()) {
-			Skill skill = skillOptional.get();
-			List<WantedJdSkill> wantedJdSkillList = wantedJdSkillRepository.findBySkill(skill);
-			createInflearnCourses(skill, newCourseList, wantedJdSkillList);
+		Optional<Skill> findSkillOptional = skillRepository.findByKeyword(skillKeyword);
+		if (findSkillOptional.isPresent()) {
+			Skill skill = findSkillOptional.get();
+			List<WantedJdSkill> findWantedJdSkillList = wantedJdSkillRepository.findBySkill(skill);
+			System.out.println("findWantedJdSkillList: " + findWantedJdSkillList.toString());
+			// deleteExistingInflearnJdSkills(skill);
+			createInflearnCourses(skill, newCourseList, findWantedJdSkillList);
 		}
+	}
+
+	private void deleteExistingInflearnJdSkills(Skill skill) {
+		List<InflearnJdSkill> existingJdSkills = inflearnJdSkillRepository.findBySkill(skill);
+		System.out.println("existingJdSkills: " + existingJdSkills);
+		inflearnJdSkillRepository.deleteAll(existingJdSkills);
 	}
 
 	private void createInflearnCourses(Skill skill, List<InflearnCourse> inflearnCourseList,
@@ -46,6 +54,8 @@ public class CourseStorageService {
 	}
 
 	private void createInflearnJdSkill(InflearnCourse course, WantedJdSkill wantedJdSkill) {
+		System.out.println("wantedJdSkill: " + wantedJdSkill);
+		System.out.println("course: " + course);
 		InflearnJdSkill createdJdSkill = EntityConverter.createInflearnJdSkill(course, wantedJdSkill);
 		inflearnJdSkillRepository.save(createdJdSkill);
 	}

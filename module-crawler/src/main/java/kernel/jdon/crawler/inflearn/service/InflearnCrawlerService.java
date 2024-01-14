@@ -24,13 +24,14 @@ public class InflearnCrawlerService implements CrawlerService {
 	private final CourseParserService courseParserService;
 	private final CourseStorageService courseStorageService;
 	private static final int MAX_COURSES_PER_KEYWORD = 3;
+	private int savedCourseCount = 0;
 
 	@Transactional
 	@Override
-	public void fetchCourseInfo(String skillKeyword) {
-		String lectureUrl = createInflearnSearchUrl(skillKeyword, CourseSearchSort.SORT_POPULARITY, 1);
+	public void fetchCourseInfo(String skillKeyword, int pageNum) {
+		String lectureUrl = createInflearnSearchUrl(skillKeyword, CourseSearchSort.SORT_POPULARITY, pageNum);
 		Elements courseElements = courseScraperService.scrapeCourses(lectureUrl);
-		parseAndCreateCourses(courseElements, lectureUrl, skillKeyword);
+		parseAndCreateCourses(courseElements, lectureUrl, skillKeyword, pageNum);
 	}
 
 	private String createInflearnSearchUrl(String skillKeyword, CourseSearchSort searchSort, int pageNum) {
@@ -45,25 +46,27 @@ public class InflearnCrawlerService implements CrawlerService {
 		return path + "?" + queryString;
 	}
 
-	private void parseAndCreateCourses(Elements courseElements, String lectureUrl, String skillKeyword) {
-		int savedCourseCount = 0;
+	private void parseAndCreateCourses(Elements courseElements, String lectureUrl, String skillKeyword, int pageNum) {
 		List<InflearnCourse> newCourses = new ArrayList<>();
-
 		for (Element courseElement : courseElements) {
 			if (savedCourseCount >= MAX_COURSES_PER_KEYWORD) {
 				break;
 			}
 
-			InflearnCourse inflearnCourse = courseParserService.parseCourse(courseElement, lectureUrl,
+			InflearnCourse parsedCourse = courseParserService.parseCourse(courseElement, lectureUrl,
 				skillKeyword);
-                                                                                                       
-			if (inflearnCourse != null) {
-				newCourses.add(inflearnCourse);
+
+			if (parsedCourse != null) {
+				newCourses.add(parsedCourse);
 				savedCourseCount++;
 			}
 		}
+		if (savedCourseCount < MAX_COURSES_PER_KEYWORD) {
+			fetchCourseInfo(skillKeyword, pageNum + 1);
+		}
 
 		if (!newCourses.isEmpty()) {
+			savedCourseCount = 0;
 			courseStorageService.createInflearnCourseAndInflearnJdSkill(skillKeyword, newCourses);
 		}
 	}

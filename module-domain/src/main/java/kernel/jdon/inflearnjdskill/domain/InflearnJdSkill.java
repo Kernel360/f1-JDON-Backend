@@ -12,9 +12,11 @@ import kernel.jdon.inflearncourse.domain.InflearnCourse;
 import kernel.jdon.wantedjdskill.domain.WantedJdSkill;
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "inflearn_jd_skill")
 public class InflearnJdSkill {
