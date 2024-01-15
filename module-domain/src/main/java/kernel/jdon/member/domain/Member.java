@@ -20,9 +20,9 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import kernel.jdon.coffeechat.domain.CoffeeChat;
 import kernel.jdon.coffeechatmember.domain.CoffeeChatMember;
+import kernel.jdon.favorite.domain.Favorite;
 import kernel.jdon.jobcategory.domain.JobCategory;
 import kernel.jdon.memberskill.domain.MemberSkill;
-import kernel.jdon.favorite.domain.Favorite;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -34,6 +34,14 @@ import lombok.NoArgsConstructor;
 @Table(name = "member")
 public class Member {
 
+	@OneToMany(mappedBy = "member")
+	private List<CoffeeChat> hostChatList = new ArrayList<>();
+	@OneToMany(mappedBy = "member")
+	private List<CoffeeChatMember> guestChatList = new ArrayList<>();
+	@OneToMany(mappedBy = "member")
+	private List<MemberSkill> memberSkillList = new ArrayList<>();
+	@OneToMany(mappedBy = "member")
+	private List<Favorite> favoriteList = new ArrayList<>();
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -69,29 +77,18 @@ public class Member {
 	@Column(name = "withdraw_date", columnDefinition = "DATETIME")
 	private LocalDateTime withdrawDate;
 
+	@Enumerated(EnumType.STRING)
 	@Column(name = "social_provider", columnDefinition = "VARCHAR(20)", nullable = false)
-	private String socialProvider;
+	private SocialProviderType socialProvider;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "job_category_id", columnDefinition = "BIGINT")
 	private JobCategory jobCategory;
 
-	@OneToMany(mappedBy = "member")
-	private List<CoffeeChat> hostChatList = new ArrayList<>();
-
-	@OneToMany(mappedBy = "member")
-	private List<CoffeeChatMember> guestChatList = new ArrayList<>();
-
-	@OneToMany(mappedBy = "member")
-	private List<MemberSkill> memberSkillList = new ArrayList<>();
-
-	@OneToMany(mappedBy = "member")
-	private List<Favorite> favoriteList = new ArrayList<>();
-
 	@Builder
 	public Member(Long id, String email, String nickname, String birth, Gender gender, LocalDateTime joinDate,
 		LocalDateTime lastLoginDate, MemberRole role, MemberAccountStatus accountStatus, LocalDateTime withdrawDate,
-		String socialProvider, JobCategory jobCategory) {
+		SocialProviderType socialProvider, JobCategory jobCategory) {
 		this.id = id;
 		this.email = email;
 		this.nickname = nickname;
@@ -104,5 +101,13 @@ public class Member {
 		this.withdrawDate = withdrawDate;
 		this.socialProvider = socialProvider;
 		this.jobCategory = jobCategory;
+	}
+
+	public boolean isActiveMember() {
+		return this.accountStatus != MemberAccountStatus.WITHDRAW;
+	}
+
+	public boolean isRightSocialProvider(SocialProviderType socialProvider) {
+		return this.socialProvider == socialProvider;
 	}
 }

@@ -1,39 +1,32 @@
 package kernel.jdon.member.controller;
 
-import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import kernel.jdon.global.annotation.LoginUser;
+import kernel.jdon.auth.dto.SessionUserInfo;
 import kernel.jdon.dto.response.CommonResponse;
 import kernel.jdon.member.dto.request.ModifyMemberRequest;
 import kernel.jdon.member.dto.request.NicknameDuplicateRequest;
-import kernel.jdon.member.dto.request.SaveMemberRequest;
 import kernel.jdon.member.dto.response.GetMemberResponse;
 import kernel.jdon.member.dto.response.ModifyMemberResponse;
-import kernel.jdon.member.dto.response.RemoveMemberResponse;
-import kernel.jdon.member.dto.response.SaveMemberResponse;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RestController
 public class MemberController {
 
-	@PostMapping("/api/v1/member")
-	public ResponseEntity<CommonResponse> save(@RequestBody SaveMemberRequest saveMemberRequest) {
-		Long memberId = 1L;
-		URI uri = URI.create("/api/v1/member/" + memberId);
-
-		return ResponseEntity.created(uri).body(CommonResponse.of(SaveMemberResponse.of(memberId)));
-	}
-
 	@GetMapping("/api/v1/member")
-	public ResponseEntity<CommonResponse> get() {
+	public ResponseEntity<CommonResponse> get(@LoginUser SessionUserInfo sessionUser) {
+		log.info("sessionUser: {}", sessionUser.getEmail(), sessionUser.getId());
+
 		GetMemberResponse getMemberResponse = GetMemberResponse.builder()
 			.email("aaa@gmail.com")
 			.nickname("aaa")
@@ -58,12 +51,6 @@ public class MemberController {
 			.build();
 
 		return ResponseEntity.ok(CommonResponse.of(modifyMemberResponse));
-	}
-
-	@DeleteMapping("/api/v1/member")
-	public ResponseEntity<CommonResponse> withdraw() {
-
-		return ResponseEntity.ok(CommonResponse.of(RemoveMemberResponse.of(1L)));
 	}
 
 	@PostMapping("nickname/duplicate")
