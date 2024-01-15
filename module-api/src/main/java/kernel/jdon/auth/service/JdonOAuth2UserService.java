@@ -44,6 +44,8 @@ public class JdonOAuth2UserService extends DefaultOAuth2UserService {
 		String email = null;
 		if (SocialProviderType.KAKAO == socialProvider) {
 			email = getEmailFromKakao(user);
+		} else if (SocialProviderType.GITHUB == socialProvider) {
+			email = getEmailFromGithub(user);
 		}
 
 		Member findMember = memberRepository.findByEmail(email);
@@ -57,6 +59,10 @@ public class JdonOAuth2UserService extends DefaultOAuth2UserService {
 		}
 		return new JdonOAuth2User(authorities, user.getAttributes(), getUserNameAttributeName(userRequest),
 			email, socialProvider);
+	}
+
+	private String getEmailFromGithub(OAuth2User user) {
+		return (String)user.getAttributes().get("email");
 	}
 
 	private String getEmailFromKakao(OAuth2User user) {
