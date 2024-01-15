@@ -29,13 +29,9 @@ public class CourseParserService {
 		String instructor = getText(courseElement, "div.instructor");
 		String imageUrl = courseElement.select("img").attr("src");
 		int price = Integer.parseInt(parsePrice(courseElement));
-		// String skillTags = getText(courseElement, "div.course_skills > span");
-		// String standardizedSkillTags = SkillStandardizer.standardize(skillTags);
 
-		InflearnCourse inflearnCourse = EntityConverter.createInflearnCourse(courseId, title, lectureUrl, instructor,
+		return EntityConverter.createInflearnCourse(courseId, title, lectureUrl, instructor,
 			studentCount, imageUrl, price);
-
-		return inflearnCourse;
 	}
 
 	private String getText(Element element, String cssQuery) {

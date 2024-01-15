@@ -30,29 +30,29 @@ public class CourseStorageService {
 	}
 
 	private void deleteExistingInflearnJdSkills(Skill skill) {
-		List<InflearnJdSkill> existingJdSkills = inflearnJdSkillRepository.findBySkill(skill);
-		inflearnJdSkillRepository.deleteAll(existingJdSkills);
+		List<InflearnJdSkill> findJdSkills = inflearnJdSkillRepository.findBySkill(skill);
+		inflearnJdSkillRepository.deleteAll(findJdSkills);
 	}
 
 	private void createInflearnCourses(Skill skill, List<InflearnCourse> inflearnCourseList
 	) {
 		for (InflearnCourse inflearnCourse : inflearnCourseList) {
-			Optional<InflearnCourse> existingCourseOptional = inflearnCourseRepository.findByTitle(
+			Optional<InflearnCourse> findCourseOptional = inflearnCourseRepository.findByTitle(
 				inflearnCourse.getTitle());
 
-			if (existingCourseOptional.isPresent()) {
-				InflearnCourse existingCourse = existingCourseOptional.get();
-				inflearnCourseRepository.save(existingCourse);
-				createInflearnJdSkill(existingCourse, skill);
+			if (findCourseOptional.isPresent()) {
+				InflearnCourse findCourse = findCourseOptional.get();
+				inflearnCourseRepository.save(findCourse);
+				createInflearnJdSkill(findCourse, skill);
 			} else {
-				InflearnCourse savedCourse = inflearnCourseRepository.save(inflearnCourse);
-				createInflearnJdSkill(savedCourse, skill);
+				InflearnCourse saveCourse = inflearnCourseRepository.save(inflearnCourse);
+				createInflearnJdSkill(saveCourse, skill);
 			}
 		}
 	}
 
 	private void createInflearnJdSkill(InflearnCourse course, Skill skill) {
-		InflearnJdSkill createdJdSkill = EntityConverter.createInflearnJdSkill(course, skill);
-		inflearnJdSkillRepository.save(createdJdSkill);
+		InflearnJdSkill createJdSkill = EntityConverter.createInflearnJdSkill(course, skill);
+		inflearnJdSkillRepository.save(createJdSkill);
 	}
 }
