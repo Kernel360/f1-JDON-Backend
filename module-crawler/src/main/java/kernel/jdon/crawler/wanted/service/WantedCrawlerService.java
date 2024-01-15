@@ -2,10 +2,9 @@ package kernel.jdon.crawler.wanted.service;
 
 import static kernel.jdon.util.StringUtil.*;
 
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -25,13 +24,16 @@ import kernel.jdon.crawler.wanted.search.JobSearchJobCategory;
 import kernel.jdon.crawler.wanted.search.JobSearchJobPosition;
 import kernel.jdon.crawler.wanted.search.JobSearchLocation;
 import kernel.jdon.crawler.wanted.search.JobSearchSort;
+import kernel.jdon.crawler.wanted.skill.BackendSkillType;
+import kernel.jdon.crawler.wanted.skill.FrontendSkillType;
+import kernel.jdon.crawler.wanted.skill.SkillType;
 import kernel.jdon.jobcategory.domain.JobCategory;
 import kernel.jdon.jobcategory.repository.JobCategoryRepository;
 import kernel.jdon.skill.domain.Skill;
 import kernel.jdon.skill.repository.SkillRepository;
+import kernel.jdon.skillhistory.repository.SkillHistoryRepository;
 import kernel.jdon.wantedjd.domain.WantedJd;
 import kernel.jdon.wantedjd.repository.WantedJdRepository;
-import kernel.jdon.wantedjdskill.domain.WantedJdSkill;
 import kernel.jdon.wantedjdskill.repository.WantedJdSkillRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -44,6 +46,7 @@ public class WantedCrawlerService {
 	private final WantedJdRepository wantedJdRepository;
 	private final WantedJdSkillRepository wantedJdSkillRepository;
 	private final SkillRepository skillRepository;
+	private final SkillHistoryRepository skillHistoryRepository;
 	private final JobCategoryRepository jobCategoryRepository;
 	@Value("${max_fetch_jd_list.size}")
 	private int MAX_FETCH_JD_LIST_SIZE;
@@ -61,7 +64,9 @@ public class WantedCrawlerService {
 
 			JobCategory findJobCategory = findByJobPosition(jobPosition);
 
-			fetchJobDetail(findJobCategory, fetchJobIds);
+			fetchJobDetail(jobPosition, findJobCategory, fetchJobIds);
+
+			Thread.sleep(1000);
 		}
 	}
 
@@ -70,43 +75,59 @@ public class WantedCrawlerService {
 			.orElseThrow(() -> new CrawlerException(WantedErrorCode.NOT_FOUND_JOB_CATEGORY));
 	}
 
-	private void fetchJobDetail(JobCategory jobCategory, Set<Long> fetchJobIds) throws InterruptedException {
-		HashMap<WantedJd, List<Skill>> wantedJdSkillMap = new HashMap<>();
+	private void fetchJobDetail(JobSearchJobPosition jobPosition, JobCategory jobCategory, Set<Long> fetchJobIds) {
 		for (Long detailId : fetchJobIds) {
 			if (isJobDetailExist(jobCategory, detailId)) {
 				continue;
 			}
 			WantedJobDetailResponse jobDetailResponse = getJobDetail(jobCategory, detailId);
 			WantedJd savedWantedJd = createWantedJd(jobDetailResponse);
-			List<Skill> savedSkillList = createSkillList(jobCategory, jobDetailResponse);
-			wantedJdSkillMap.put(savedWantedJd, savedSkillList);
 
-			Thread.sleep(1000);
+			List<WantedJobDetailResponse.WantedSkill> wantedDetailSkillList = jobDetailResponse.getJob().getSkill();
+
+			createSkillHistory(jobCategory, savedWantedJd, wantedDetailSkillList);
+			createWantedJdSkill(jobPosition, jobCategory, savedWantedJd, wantedDetailSkillList);
 		}
-		createWantedJdSkill(wantedJdSkillMap);
 	}
 
 	private boolean isJobDetailExist(JobCategory jobCategory, Long detailId) {
 		return wantedJdRepository.existsByJobCategoryAndDetailId(jobCategory, detailId);
 	}
 
-	private void createWantedJdSkill(HashMap<WantedJd, List<Skill>> wantedJdSkillMap) {
-		for (Map.Entry<WantedJd, List<Skill>> entry : wantedJdSkillMap.entrySet()) {
-			WantedJd wantedJd = entry.getKey();
-			List<Skill> skillList = entry.getValue();
-			List<WantedJdSkill> wantedJdSkillList = skillList.stream()
-				.map(skill -> EntityConverter.createWantedJdSkill(wantedJd, skill))
-				.toList();
-			wantedJdSkillRepository.saveAll(wantedJdSkillList);
+	private void createSkillHistory(JobCategory jobCategory, WantedJd wantedJd, List<WantedJobDetailResponse.WantedSkill> wantedDetailSkillList) {
+		for (WantedJobDetailResponse.WantedSkill wantedJdDetailSkill : wantedDetailSkillList) {
+			skillHistoryRepository.save(
+				EntityConverter.createSkillHistory(new CreateSkillDto(jobCategory, wantedJd, wantedJdDetailSkill.getKeyword())));
 		}
 	}
 
-	private List<Skill> createSkillList(JobCategory jobCategory, WantedJobDetailResponse jobDetailResponse) {
-		return jobDetailResponse.getJob().getSkill().stream()
-			.map(wantedJdDetailSkill -> skillRepository.save(
-				EntityConverter.createSkill(new CreateSkillDto(jobCategory, wantedJdDetailSkill.getKeyword())))
-			)
-			.toList();
+	private void createWantedJdSkill(JobSearchJobPosition jobPosition, JobCategory jobCategory, WantedJd wantedJd, List<WantedJobDetailResponse.WantedSkill> wantedDetailSkillList) {
+		//TODO : 전략패턴으로 리팩토링 필요
+		SkillType[] skillTypes = (jobPosition == JobSearchJobPosition.JOB_POSITION_SERVER)
+			? BackendSkillType.values()
+			: FrontendSkillType.values();
+
+		for (WantedJobDetailResponse.WantedSkill wantedSkill: wantedDetailSkillList) {
+			String skillKeyword = wantedSkill.getKeyword();
+
+			boolean isSkillInJobPosition = Arrays.stream(skillTypes)
+				.anyMatch(skillType -> skillType.getKeyword().equalsIgnoreCase(skillKeyword));
+
+			Skill findSkill = null;
+			if (isSkillInJobPosition) {
+				SkillType matchedSkillType = Arrays.stream(skillTypes)
+					.filter(skillType -> skillType.getKeyword().equalsIgnoreCase(skillKeyword))
+					.findFirst()
+					.get();
+
+				findSkill = skillRepository.findByJobCategoryIdAndKeyword(jobCategory.getId(), matchedSkillType.getKeyword())
+					.orElseThrow(() -> new IllegalArgumentException("해당하는 기술스택이 없음 -> 데이터베이스와 동기화되지 않은 키워드"));
+			} else {
+				findSkill = skillRepository.findByJobCategoryIdAndKeyword(jobCategory.getId(), SkillType.getOrderKeyword())
+					.orElseThrow(() -> new IllegalArgumentException("해당하는 기술스택이 없음 -> 데이터베이스와 동기화되지 않은 키워드"));
+			}
+			wantedJdSkillRepository.save(EntityConverter.createWantedJdSkill(wantedJd, findSkill));
+		}
 	}
 
 	private WantedJobDetailResponse getJobDetail(JobCategory jobCategory, Long detailId) {
@@ -130,7 +151,7 @@ public class WantedCrawlerService {
 		return restTemplate.getForObject(jobDetailUrl, WantedJobDetailResponse.class);
 	}
 
-	private Set<Long> fetchJobIdList(JobSearchJobPosition jobPosition) throws InterruptedException {
+	private Set<Long> fetchJobIdList(JobSearchJobPosition jobPosition) {
 		Set<Long> fetchJobIds = new HashSet<>();
 		int offset = 0;
 
@@ -144,8 +165,6 @@ public class WantedCrawlerService {
 			fetchJobIds.addAll(jobIds);
 
 			offset += MAX_FETCH_JD_LIST_OFFSET;
-
-			Thread.sleep(1000);
 		}
 
 		return fetchJobIds;
