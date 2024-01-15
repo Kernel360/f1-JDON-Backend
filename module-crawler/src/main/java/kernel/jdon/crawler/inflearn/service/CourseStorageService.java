@@ -38,8 +38,10 @@ public class CourseStorageService {
 	private void createInflearnCourses(Skill skill, List<InflearnCourse> newCourses,
 		List<WantedJdSkill> wantedJdSkillList) {
 		for (InflearnCourse inflearnCourse : newCourses) {
-			InflearnCourse savedCourse = inflearnCourseRepository.save(inflearnCourse);
-			wantedJdSkillList.forEach(wantedJdSkill -> createInflearnJdSkill(savedCourse, wantedJdSkill));
+			if (!courseDuplicationCheckerService.isDuplicate(inflearnCourse.getCourseId())) {
+				InflearnCourse savedCourse = inflearnCourseRepository.save(inflearnCourse);
+				wantedJdSkillList.forEach(wantedJdSkill -> createInflearnJdSkill(savedCourse, wantedJdSkill));
+			}
 		}
 	}
 
