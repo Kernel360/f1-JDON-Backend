@@ -12,7 +12,8 @@ import lombok.Getter;
 @Getter
 @Builder
 @AllArgsConstructor
-public class FindCoffeeChatResponse {
+public class
+FindCoffeeChatResponse {
 
 	private Long coffeeChatId;
 	private String nickname;

@@ -78,11 +78,25 @@ class CoffeeChatControllerTest {
 	}
 
 	private FindCoffeeChatResponse findCoffeeChatResponse() {
-		return new FindCoffeeChatResponse(1L, "마틴 파울러", "커피챗제목1", "커피챗내용1", 1000L, "모집중", LocalDateTime.now(),
-			LocalDateTime.now(), "https://open.kakao.com/o/abc", 5L, 3L, "backend");
+
+		return FindCoffeeChatResponse.builder()
+			.coffeeChatId(1L)
+			.nickname("마틴 파울러")
+			.title("커피챗제목1")
+			.content("커피챗내용1")
+			.viewCount(1000L)
+			.status("모집중")
+			.meetDate(LocalDateTime.now())
+			.createdDate(LocalDateTime.now())
+			.openChatUrl("https://open.kakao.com/o/abc")
+			.totalRecruitCount(5L)
+			.currentRecruitCount(3L)
+			.job("backend")
+			.build();
 	}
 
 	private CreateCoffeeChatRequest createCoffeeChatRequest() {
+
 		return CreateCoffeeChatRequest.builder()
 			.title("chat1")
 			.content("content1")
