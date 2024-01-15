@@ -1,12 +1,13 @@
 package kernel.jdon.inflearnjdskill.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
-import kernel.jdon.inflearncourse.domain.InflearnCourse;
 import kernel.jdon.inflearnjdskill.domain.InflearnJdSkill;
-import kernel.jdon.wantedjdskill.domain.WantedJdSkill;
+import kernel.jdon.skill.domain.Skill;
 
 public interface InflearnJdSkillRepository extends JpaRepository<InflearnJdSkill, Long> {
 
-	boolean existsByInflearnCourseAndWantedJdSkill(InflearnCourse inflearnCourse, WantedJdSkill wantedJdSkill);
+	@Query("select i from InflearnJdSkill i where i.wantedJdSkill.skill = :skill")
+	List<InflearnJdSkill> findBySkill(Skill skill);
 }

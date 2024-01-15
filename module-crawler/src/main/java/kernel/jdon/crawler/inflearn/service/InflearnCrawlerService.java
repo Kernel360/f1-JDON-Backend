@@ -1,12 +1,14 @@
 package kernel.jdon.crawler.inflearn.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import kernel.jdon.crawler.config.UrlConfig;
-import kernel.jdon.crawler.inflearn.dto.CourseAndSkillsDto;
+import kernel.jdon.config.UrlConfig;
 import kernel.jdon.crawler.inflearn.search.CourseSearchSort;
 import kernel.jdon.inflearncourse.domain.InflearnCourse;
 import kernel.jdon.util.StringUtil;
@@ -21,7 +23,7 @@ public class InflearnCrawlerService implements CrawlerService {
 	private final CourseScraperService courseScraperService;
 	private final CourseParserService courseParserService;
 	private final CourseStorageService courseStorageService;
-	private final CourseDuplicationCheckerService courseDuplicationCheckerService;
+	private static final int MAX_COURSES_PER_KEYWORD = 3;
 
 	@Transactional
 	@Override
@@ -44,18 +46,25 @@ public class InflearnCrawlerService implements CrawlerService {
 	}
 
 	private void parseAndCreateCourses(Elements courseElements, String lectureUrl, String skillKeyword) {
-		for (Element courseElement : courseElements) {
-			CourseAndSkillsDto courseAndSkillsDto = courseParserService.parseCourse(courseElement, lectureUrl,
-				skillKeyword);
-			if (courseAndSkillsDto == null) {
-				continue;
-			}
-			InflearnCourse course = courseAndSkillsDto.getCourse();
-			String skillTags = courseAndSkillsDto.getSkillTags();
+		int savedCourseCount = 0;
+		List<InflearnCourse> newCourses = new ArrayList<>();
 
-			if (!courseDuplicationCheckerService.isDuplicate(course.getCourseId())) {
-				courseStorageService.createInflearnCourseAndInflearnJdSkill(course, skillTags);
+		for (Element courseElement : courseElements) {
+			if (savedCourseCount >= MAX_COURSES_PER_KEYWORD) {
+				break;
 			}
+
+			InflearnCourse inflearnCourse = courseParserService.parseCourse(courseElement, lectureUrl,
+				skillKeyword);
+
+			if (inflearnCourse != null) {
+				newCourses.add(inflearnCourse);
+				savedCourseCount++;
+			}
+		}
+
+		if (!newCourses.isEmpty()) {
+			courseStorageService.createInflearnCourseAndInflearnJdSkill(skillKeyword, newCourses);
 		}
 	}
 }
