@@ -14,4 +14,3 @@ public class CourseKeywordAnalysisService {
 			(description.toLowerCase().contains(keyword.toLowerCase()) || description.contains(keywordInKorean));
 	}
 }
-

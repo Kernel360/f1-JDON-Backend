@@ -34,4 +34,3 @@ public enum KeywordTranslator {
 		return keyword;
 	}
 }
-
