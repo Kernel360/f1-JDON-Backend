@@ -1,16 +1,14 @@
 package kernel.jdon.skill.dto.response;
 
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
-@Builder
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
 public class FindHotSkillResponse {
-	private Long skillId;
 	private String keyword;
+
+	public static FindHotSkillResponse of(String keyword) {
+		return new FindHotSkillResponse(keyword);
+	}
 }
