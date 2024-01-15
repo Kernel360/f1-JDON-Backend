@@ -19,8 +19,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import kernel.jdon.coffeechat.dto.request.CreateCoffeeChatRequest;
+import kernel.jdon.coffeechat.dto.request.UpdateCoffeeChatRequest;
 import kernel.jdon.coffeechat.dto.response.CreateCoffeeChatResponse;
 import kernel.jdon.coffeechat.dto.response.FindCoffeeChatResponse;
+import kernel.jdon.coffeechat.dto.response.UpdateCoffeeChatResponse;
 import kernel.jdon.coffeechat.service.CoffeeChatService;
 
 @WebMvcTest(CoffeeChatController.class)
@@ -77,6 +79,27 @@ class CoffeeChatControllerTest {
 
 	}
 
+	@DisplayName("커피챗 수정 성공")
+	@Test
+	void modifyCoffeeChat() throws Exception {
+		//given
+		Long updateCoffeeChatID = 1L;
+		UpdateCoffeeChatRequest request = updateCoffeeChatRequest();
+		UpdateCoffeeChatResponse response = new UpdateCoffeeChatResponse(updateCoffeeChatID);
+		doReturn(response).when(coffeeChatService).update(any(Long.class), any(UpdateCoffeeChatRequest.class));
+
+		//when
+		ResultActions resultActions = mockMvc.perform(
+			MockMvcRequestBuilders.put("/api/v1/coffeechats/{id}", updateCoffeeChatID)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(toJson(request))
+		);
+
+		//then
+		resultActions.andExpect(status().isOk())
+			.andExpect(jsonPath("$.data.coffeeChatId").value(updateCoffeeChatID));
+	}
+
 	private FindCoffeeChatResponse findCoffeeChatResponse() {
 
 		return FindCoffeeChatResponse.builder()
@@ -112,6 +135,17 @@ class CoffeeChatControllerTest {
 
 	private <T> String toJson(T data) throws JsonProcessingException {
 		return objectMapper.writeValueAsString(data);
+	}
+
+	private UpdateCoffeeChatRequest updateCoffeeChatRequest() {
+
+		return UpdateCoffeeChatRequest.builder()
+			.title("커피챗제목1")
+			.content("커피챗내용1")
+			.totalRecruitCount(10L)
+			.meetDate(LocalDateTime.now())
+			.openChatUrl("https://open.kakao.com/o/def")
+			.build();
 	}
 
 }
