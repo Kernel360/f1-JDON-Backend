@@ -8,7 +8,7 @@ import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import kernel.jdon.config.UrlConfig;
+import kernel.jdon.crawler.config.UrlConfig;
 import kernel.jdon.crawler.inflearn.search.CourseSearchSort;
 import kernel.jdon.inflearncourse.domain.InflearnCourse;
 import kernel.jdon.util.StringUtil;
