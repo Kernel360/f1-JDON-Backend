@@ -36,12 +36,16 @@ public class Member {
 
 	@OneToMany(mappedBy = "member")
 	private List<CoffeeChat> hostChatList = new ArrayList<>();
+
 	@OneToMany(mappedBy = "member")
 	private List<CoffeeChatMember> guestChatList = new ArrayList<>();
+
 	@OneToMany(mappedBy = "member")
 	private List<MemberSkill> memberSkillList = new ArrayList<>();
+
 	@OneToMany(mappedBy = "member")
 	private List<Favorite> favoriteList = new ArrayList<>();
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -109,5 +113,15 @@ public class Member {
 
 	public boolean isRightSocialProvider(SocialProviderType socialProvider) {
 		return this.socialProvider == socialProvider;
+	}
+
+	public long update(Member updateMember, List<MemberSkill> memberSkillList) {
+		this.nickname = updateMember.nickname;
+		this.birth = updateMember.birth;
+		this.gender = updateMember.getGender();
+		this.jobCategory = updateMember.jobCategory;
+		this.memberSkillList = memberSkillList;
+
+		return this.id;
 	}
 }
