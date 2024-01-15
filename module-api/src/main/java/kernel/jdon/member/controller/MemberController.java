@@ -41,9 +41,10 @@ public class MemberController {
 		return ResponseEntity.ok(CommonResponse.of(updateMemberResponse));
 	}
 
-	@PostMapping("nickname/duplicate")
-	public ResponseEntity<Void> checkNicknameDuplicate(
+	@PostMapping("/api/v1/nickname/duplicate")
+	public ResponseEntity<Void> checkNicknameDuplicate(@LoginUser SessionUserInfo user,
 		@RequestBody NicknameDuplicateRequest nicknameDuplicateRequest) {
+		memberService.checkNicknameDuplicate(user.getId(), nicknameDuplicateRequest.getNickname());
 
 		return ResponseEntity.noContent().build();
 	}

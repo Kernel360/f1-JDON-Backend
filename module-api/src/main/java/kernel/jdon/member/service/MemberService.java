@@ -143,4 +143,11 @@ public class MemberService {
 		}
 		return params;
 	}
+
+	public void checkNicknameDuplicate(Long userId, String nickname) {
+		Member existNicknameMember = memberRepository.findByNickname(nickname);
+		if (null != existNicknameMember) {
+			throw new ApiException(MemberErrorCode.CONFLICT_DUPLICATE_NICKNAME);
+		}
+	}
 }
