@@ -1,5 +1,7 @@
 package kernel.jdon.member.domain;
 
+import java.util.Arrays;
+
 public enum Gender {
 
 	MALE("남성"),
@@ -13,5 +15,12 @@ public enum Gender {
 
 	public String getGender() {
 		return gender;
+	}
+
+	public static Gender ofType(String gender) {
+		return Arrays.stream(Gender.values())
+			.filter(e -> e.getGender().equals(gender))
+			.findAny()
+			.orElseThrow(() -> null);
 	}
 }
