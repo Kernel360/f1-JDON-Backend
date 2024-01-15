@@ -15,29 +15,25 @@ import kernel.jdon.auth.dto.SessionUserInfo;
 import kernel.jdon.dto.response.CommonResponse;
 import kernel.jdon.member.dto.request.ModifyMemberRequest;
 import kernel.jdon.member.dto.request.NicknameDuplicateRequest;
-import kernel.jdon.member.dto.request.SaveMemberRequest;
-import kernel.jdon.member.dto.response.GetMemberResponse;
+import kernel.jdon.member.dto.response.FindMemberResponse;
 import kernel.jdon.member.dto.response.ModifyMemberResponse;
+import kernel.jdon.member.service.MemberService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 public class MemberController {
+
+	private final MemberService memberService;
 
 	@GetMapping("/api/v1/member")
 	public ResponseEntity<CommonResponse> get(@LoginUser SessionUserInfo sessionUser) {
-		log.info("sessionUser: {}", sessionUser.getEmail(), sessionUser.getId());
+		Long memberId = sessionUser.getId();
+		FindMemberResponse findMemberResponse = memberService.find(memberId);
 
-		GetMemberResponse getMemberResponse = GetMemberResponse.builder()
-			.email("aaa@gmail.com")
-			.nickname("aaa")
-			.birth(LocalDate.now())
-			.gender("여성")
-			.jobCategoryId(1L)
-			.skillList(List.of(1L, 2L, 3L))
-			.build();
-
-		return ResponseEntity.ok(CommonResponse.of(getMemberResponse));
+		return ResponseEntity.ok(CommonResponse.of(findMemberResponse));
 	}
 
 	@PutMapping("/api/v1/member")
