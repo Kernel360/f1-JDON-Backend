@@ -12,8 +12,6 @@ import kernel.jdon.inflearnjdskill.domain.InflearnJdSkill;
 import kernel.jdon.inflearnjdskill.repository.InflearnJdSkillRepository;
 import kernel.jdon.skill.domain.Skill;
 import kernel.jdon.skill.repository.SkillRepository;
-import kernel.jdon.wantedjdskill.domain.WantedJdSkill;
-import kernel.jdon.wantedjdskill.repository.WantedJdSkillRepository;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -22,41 +20,39 @@ public class CourseStorageService {
 
 	private final InflearnCourseRepository inflearnCourseRepository;
 	private final InflearnJdSkillRepository inflearnJdSkillRepository;
-	private final WantedJdSkillRepository wantedJdSkillRepository;
 	private final SkillRepository skillRepository;
-	private final CourseDuplicationCheckerService courseDuplicationCheckerService;
 
 	protected void createInflearnCourseAndInflearnJdSkill(String skillKeyword, List<InflearnCourse> newCourseList) {
-		Optional<Skill> findSkillOptional = skillRepository.findByKeyword(skillKeyword);
-		if (findSkillOptional.isPresent()) {
-			Skill skill = findSkillOptional.get();
-			List<WantedJdSkill> findWantedJdSkillList = wantedJdSkillRepository.findBySkill(skill);
-			System.out.println("findWantedJdSkillList: " + findWantedJdSkillList.toString());
-			// deleteExistingInflearnJdSkills(skill);
-			createInflearnCourses(skill, newCourseList, findWantedJdSkillList);
-		}
+		Skill findSkill = skillRepository.findByKeyword(skillKeyword)
+			.orElseThrow(() -> new IllegalArgumentException("추가하기"));
+		deleteExistingInflearnJdSkills(findSkill);
+		createInflearnCourses(findSkill, newCourseList);
 	}
 
 	private void deleteExistingInflearnJdSkills(Skill skill) {
 		List<InflearnJdSkill> existingJdSkills = inflearnJdSkillRepository.findBySkill(skill);
-		System.out.println("existingJdSkills: " + existingJdSkills);
 		inflearnJdSkillRepository.deleteAll(existingJdSkills);
 	}
 
-	private void createInflearnCourses(Skill skill, List<InflearnCourse> inflearnCourseList,
-		List<WantedJdSkill> wantedJdSkillList) {
+	private void createInflearnCourses(Skill skill, List<InflearnCourse> inflearnCourseList
+	) {
 		for (InflearnCourse inflearnCourse : inflearnCourseList) {
-			if (!courseDuplicationCheckerService.isDuplicate(inflearnCourse.getCourseId())) {
+			Optional<InflearnCourse> existingCourseOptional = inflearnCourseRepository.findByTitle(
+				inflearnCourse.getTitle());
+
+			if (existingCourseOptional.isPresent()) {
+				InflearnCourse existingCourse = existingCourseOptional.get();
+				inflearnCourseRepository.save(existingCourse);
+				createInflearnJdSkill(existingCourse, skill);
+			} else {
 				InflearnCourse savedCourse = inflearnCourseRepository.save(inflearnCourse);
-				wantedJdSkillList.forEach(wantedJdSkill -> createInflearnJdSkill(savedCourse, wantedJdSkill));
+				createInflearnJdSkill(savedCourse, skill);
 			}
 		}
 	}
 
-	private void createInflearnJdSkill(InflearnCourse course, WantedJdSkill wantedJdSkill) {
-		System.out.println("wantedJdSkill: " + wantedJdSkill);
-		System.out.println("course: " + course);
-		InflearnJdSkill createdJdSkill = EntityConverter.createInflearnJdSkill(course, wantedJdSkill);
+	private void createInflearnJdSkill(InflearnCourse course, Skill skill) {
+		InflearnJdSkill createdJdSkill = EntityConverter.createInflearnJdSkill(course, skill);
 		inflearnJdSkillRepository.save(createdJdSkill);
 	}
 }

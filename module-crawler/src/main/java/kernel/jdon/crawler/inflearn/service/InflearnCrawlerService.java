@@ -25,6 +25,7 @@ public class InflearnCrawlerService implements CrawlerService {
 	private final CourseStorageService courseStorageService;
 	private static final int MAX_COURSES_PER_KEYWORD = 3;
 	private int savedCourseCount = 0;
+	private List<InflearnCourse> newCourses = new ArrayList<>();
 
 	@Transactional
 	@Override
@@ -47,7 +48,6 @@ public class InflearnCrawlerService implements CrawlerService {
 	}
 
 	private void parseAndCreateCourses(Elements courseElements, String lectureUrl, String skillKeyword, int pageNum) {
-		List<InflearnCourse> newCourses = new ArrayList<>();
 		for (Element courseElement : courseElements) {
 			if (savedCourseCount >= MAX_COURSES_PER_KEYWORD) {
 				break;
@@ -66,8 +66,9 @@ public class InflearnCrawlerService implements CrawlerService {
 		}
 
 		if (!newCourses.isEmpty()) {
-			savedCourseCount = 0;
 			courseStorageService.createInflearnCourseAndInflearnJdSkill(skillKeyword, newCourses);
+			savedCourseCount = 0;
+			newCourses.clear();
 		}
 	}
 }
