@@ -9,7 +9,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import kernel.jdon.inflearncourse.domain.InflearnCourse;
-import kernel.jdon.wantedjdskill.domain.WantedJdSkill;
+import kernel.jdon.skill.domain.Skill;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,16 +26,16 @@ public class InflearnJdSkill {
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "wanted_jd_skill_id", columnDefinition = "BIGINT")
-	private WantedJdSkill wantedJdSkill;
-
-	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "course_id", columnDefinition = "BIGINT")
 	private InflearnCourse inflearnCourse;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "skill_id", columnDefinition = "BIGINT")
+	private Skill skill;
+
 	@Builder
-	public InflearnJdSkill(WantedJdSkill wantedJdSkill, InflearnCourse inflearnCourse) {
-		this.wantedJdSkill = wantedJdSkill;
+	public InflearnJdSkill(Skill skill, InflearnCourse inflearnCourse) {
+		this.skill = skill;
 		this.inflearnCourse = inflearnCourse;
 	}
 }
