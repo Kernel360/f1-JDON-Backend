@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import kernel.jdon.coffeechat.dto.request.CreateCoffeeChatRequest;
 import kernel.jdon.coffeechat.dto.request.UpdateCoffeeChatRequest;
 import kernel.jdon.coffeechat.dto.response.CreateCoffeeChatResponse;
+import kernel.jdon.coffeechat.dto.response.DeleteCoffeeChatResponse;
 import kernel.jdon.coffeechat.dto.response.FindCoffeeChatResponse;
 import kernel.jdon.coffeechat.dto.response.UpdateCoffeeChatResponse;
 import kernel.jdon.coffeechat.service.CoffeeChatService;
@@ -100,6 +101,24 @@ class CoffeeChatControllerTest {
 			.andExpect(jsonPath("$.data.coffeeChatId").value(updateCoffeeChatID));
 	}
 
+	@DisplayName("커피챗 삭제 성공")
+	@Test
+	void removeCoffeeChat() throws Exception {
+		//given
+		Long deleteCoffeeChatId = 1L;
+		DeleteCoffeeChatResponse response = deleteCoffeeChatResponse();
+		doReturn(response).when(coffeeChatService).delete(any(Long.class));
+
+		//when
+		ResultActions resultActions = mockMvc.perform(
+			MockMvcRequestBuilders.delete("/api/v1/coffeechats/{id}", deleteCoffeeChatId)
+		);
+
+		//then
+		resultActions.andExpect(status().isOk())
+			.andExpect(jsonPath("$.data.coffeeChatId").value(deleteCoffeeChatId));
+	}
+
 	private FindCoffeeChatResponse findCoffeeChatResponse() {
 
 		return FindCoffeeChatResponse.builder()
@@ -146,6 +165,10 @@ class CoffeeChatControllerTest {
 			.meetDate(LocalDateTime.now())
 			.openChatUrl("https://open.kakao.com/o/def")
 			.build();
+	}
+
+	private DeleteCoffeeChatResponse deleteCoffeeChatResponse() {
+		return new DeleteCoffeeChatResponse(1L);
 	}
 
 }
