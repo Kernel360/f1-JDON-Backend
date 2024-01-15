@@ -5,6 +5,8 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import kernel.jdon.crawler.global.error.code.InflearnErrorCode;
+import kernel.jdon.crawler.global.error.exception.CrawlerException;
 import kernel.jdon.crawler.inflearn.converter.EntityConverter;
 import kernel.jdon.inflearncourse.domain.InflearnCourse;
 import kernel.jdon.inflearncourse.repository.InflearnCourseRepository;
@@ -24,7 +26,7 @@ public class CourseStorageService {
 
 	protected void createInflearnCourseAndInflearnJdSkill(String skillKeyword, List<InflearnCourse> newCourseList) {
 		Skill findSkill = skillRepository.findByKeyword(skillKeyword)
-			.orElseThrow(() -> new IllegalArgumentException("추가하기"));
+			.orElseThrow(() -> new CrawlerException(InflearnErrorCode.NOT_FOUND_SKILL));
 		deleteExistingInflearnJdSkills(findSkill);
 		createInflearnCourses(findSkill, newCourseList);
 	}
