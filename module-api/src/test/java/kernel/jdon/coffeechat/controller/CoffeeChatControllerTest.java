@@ -1,6 +1,7 @@
 package kernel.jdon.coffeechat.controller;
 
 import static org.mockito.Mockito.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.time.LocalDateTime;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -39,6 +41,7 @@ class CoffeeChatControllerTest {
 	ObjectMapper objectMapper;
 
 	@DisplayName("커피챗 생성 성공")
+	@WithMockUser
 	@Test
 	void createCoffeeChat() throws Exception {
 		//given
@@ -51,6 +54,7 @@ class CoffeeChatControllerTest {
 		//when
 		ResultActions resultActions = mockMvc.perform(
 			MockMvcRequestBuilders.post("/api/v1/coffeechats")
+				.with(csrf())
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(toJson(request))
 		);
@@ -62,6 +66,7 @@ class CoffeeChatControllerTest {
 	}
 
 	@DisplayName("커피챗 상세조회 성공")
+	@WithMockUser
 	@Test
 	void getCoffeeChat() throws Exception {
 		//given
@@ -81,6 +86,7 @@ class CoffeeChatControllerTest {
 	}
 
 	@DisplayName("커피챗 수정 성공")
+	@WithMockUser
 	@Test
 	void modifyCoffeeChat() throws Exception {
 		//given
@@ -92,6 +98,7 @@ class CoffeeChatControllerTest {
 		//when
 		ResultActions resultActions = mockMvc.perform(
 			MockMvcRequestBuilders.put("/api/v1/coffeechats/{id}", updateCoffeeChatID)
+				.with(csrf())
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(toJson(request))
 		);
@@ -102,6 +109,7 @@ class CoffeeChatControllerTest {
 	}
 
 	@DisplayName("커피챗 삭제 성공")
+	@WithMockUser
 	@Test
 	void removeCoffeeChat() throws Exception {
 		//given
@@ -112,6 +120,7 @@ class CoffeeChatControllerTest {
 		//when
 		ResultActions resultActions = mockMvc.perform(
 			MockMvcRequestBuilders.delete("/api/v1/coffeechats/{id}", deleteCoffeeChatId)
+				.with(csrf())
 		);
 
 		//then
