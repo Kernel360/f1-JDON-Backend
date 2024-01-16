@@ -22,6 +22,7 @@ import kernel.jdon.jobcategory.repository.JobCategoryRepository;
 import kernel.jdon.member.domain.Member;
 import kernel.jdon.member.domain.MemberRole;
 import kernel.jdon.member.domain.SocialProviderType;
+import kernel.jdon.member.dto.response.FindMemberResponse;
 import kernel.jdon.member.repository.MemberRepository;
 import kernel.jdon.memberskill.domain.MemberSkill;
 import kernel.jdon.memberskill.repository.MemberSkillRepository;
@@ -40,6 +41,12 @@ public class MemberService {
 	private final SkillRepository skillRepository;
 	private final MemberSkillRepository memberSkillRepository;
 	private final JobCategoryRepository jobCategoryRepository;
+
+	public FindMemberResponse find(Long memberId) {
+		return memberRepository.findById(memberId)
+			.map(FindMemberResponse::of)
+			.orElseThrow(() -> new ApiException(MemberErrorCode.NOT_FOUND_MEMBER));
+	}
 
 	@Transactional
 	public Long register(RegisterRequest registerRequest) {
