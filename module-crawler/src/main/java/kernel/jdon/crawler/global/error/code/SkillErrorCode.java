@@ -6,8 +6,8 @@ import kernel.jdon.error.ErrorCode;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public enum InflearnErrorCode implements ErrorCode {
-	NOT_FOUND_INFLEARN_URL(HttpStatus.NOT_FOUND, "인프런 강의가 존재하지 않는 url입니다.");
+public enum SkillErrorCode implements ErrorCode {
+	NOT_FOUND_SKILL(HttpStatus.NOT_FOUND, "존재하지 않는 기술 스택입니다.");
 
 	private final HttpStatus httpStatus;
 	private final String message;

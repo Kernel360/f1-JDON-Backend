@@ -4,8 +4,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import kernel.jdon.crawler.global.error.code.InflearnErrorCode;
+import kernel.jdon.crawler.global.error.code.SkillErrorCode;
 import kernel.jdon.crawler.global.error.exception.CrawlerException;
 import kernel.jdon.crawler.inflearn.converter.EntityConverter;
 import kernel.jdon.inflearncourse.domain.InflearnCourse;
@@ -17,6 +18,7 @@ import kernel.jdon.skill.repository.SkillRepository;
 import lombok.RequiredArgsConstructor;
 
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class CourseStorageService {
 
@@ -24,9 +26,10 @@ public class CourseStorageService {
 	private final InflearnJdSkillRepository inflearnJdSkillRepository;
 	private final SkillRepository skillRepository;
 
-	protected void createInflearnCourseAndInflearnJdSkill(String skillKeyword, List<InflearnCourse> newCourseList) {
+	@Transactional
+	public void createInflearnCourseAndInflearnJdSkill(String skillKeyword, List<InflearnCourse> newCourseList) {
 		Skill findSkill = skillRepository.findByKeyword(skillKeyword)
-			.orElseThrow(() -> new CrawlerException(InflearnErrorCode.NOT_FOUND_SKILL));
+			.orElseThrow(() -> new CrawlerException(SkillErrorCode.NOT_FOUND_SKILL));
 		deleteExistingInflearnJdSkills(findSkill);
 		createInflearnCourses(findSkill, newCourseList);
 	}
