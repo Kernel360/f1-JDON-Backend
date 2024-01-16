@@ -1,5 +1,7 @@
 package kernel.jdon.crawler.inflearn.service;
 
+import static kernel.jdon.util.StringUtil.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import kernel.jdon.crawler.config.UrlConfig;
 import kernel.jdon.crawler.inflearn.search.CourseSearchSort;
 import kernel.jdon.inflearncourse.domain.InflearnCourse;
-import kernel.jdon.util.StringUtil;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -36,15 +37,15 @@ public class InflearnCrawlerService implements CrawlerService {
 	}
 
 	private String createInflearnSearchUrl(String skillKeyword, CourseSearchSort searchSort, int pageNum) {
-		String path = StringUtil.joinToString(urlConfig.getInflearnCourseListUrl(), "/");
+		String path = joinToString(urlConfig.getInflearnCourseListUrl(), "/");
 
-		String queryString = StringUtil.joinToString(
-			StringUtil.createQueryString("s", skillKeyword),
-			StringUtil.createQueryString(CourseSearchSort.SEARCH_KEY, searchSort.getSearchValue()),
-			StringUtil.createQueryString("page", String.valueOf(pageNum))
+		String queryString = joinToString(
+			createQueryString("s", skillKeyword),
+			createQueryString(CourseSearchSort.SEARCH_KEY, searchSort.getSearchValue()),
+			createQueryString("page", String.valueOf(pageNum))
 		);
 
-		return path + "?" + queryString;
+		return joinToString(path, "?", queryString);
 	}
 
 	private void parseAndCreateCourses(Elements courseElements, String lectureUrl, String skillKeyword, int pageNum) {
