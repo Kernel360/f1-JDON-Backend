@@ -40,10 +40,10 @@ class CoffeeChatControllerTest {
 	@Autowired
 	ObjectMapper objectMapper;
 
-	@DisplayName("커피챗 생성 성공")
+	@DisplayName("유효한 요청으로 커피챗 생성 성공시 생성된 커피챗의 ID를 반환한다.")
 	@WithMockUser
 	@Test
-	void createCoffeeChat() throws Exception {
+	void givenValidRequest_whenCreateCoffeeChat_thenReturnCreatedCoffeeChatId() throws Exception {
 		//given
 		CreateCoffeeChatRequest request = createCoffeeChatRequest();
 		CreateCoffeeChatResponse response = createCoffeeChatResponse();
@@ -65,10 +65,10 @@ class CoffeeChatControllerTest {
 
 	}
 
-	@DisplayName("커피챗 상세조회 성공")
+	@DisplayName("유효한 커피챗 ID로 상세 조회 시 정상 응답과 데이터를 반환한다.")
 	@WithMockUser
 	@Test
-	void getCoffeeChat() throws Exception {
+	void givenValidCoffeeChatId_whenFindCoffeeChat_thenReturnValidCoffeeChatResponse() throws Exception {
 		//given
 		Long coffeeChatId = 1L;
 		FindCoffeeChatResponse response = findCoffeeChatResponse();
@@ -81,14 +81,18 @@ class CoffeeChatControllerTest {
 		//then
 		resultActions.andExpect(status().isOk())
 			.andExpect(jsonPath("$.data.coffeeChatId").value(coffeeChatId))
+			.andExpect(jsonPath("$.data.meetDate").exists())
+			.andExpect(jsonPath("$.data.createdDate").exists())
+			.andExpect(jsonPath("$.data.totalRecruitCount").value(5))
+			.andExpect(jsonPath("$.data.currentRecruitCount").value(3))
 			.andExpect(jsonPath("$.data.nickname").value("마틴 파울러"));
 
 	}
 
-	@DisplayName("커피챗 수정 성공")
+	@DisplayName("유효한 요청으로 커피챗 수정 성공시 수정된 커피챗의 ID를 반환한다.")
 	@WithMockUser
 	@Test
-	void modifyCoffeeChat() throws Exception {
+	void givenValidUpdateRequest_whenUpdateCoffeeChat_thenReturnUpdatedCoffeeChatId() throws Exception {
 		//given
 		Long updateCoffeeChatID = 1L;
 		UpdateCoffeeChatRequest request = updateCoffeeChatRequest();
@@ -108,10 +112,10 @@ class CoffeeChatControllerTest {
 			.andExpect(jsonPath("$.data.coffeeChatId").value(updateCoffeeChatID));
 	}
 
-	@DisplayName("커피챗 삭제 성공")
+	@DisplayName("유효한 커피챗 ID로 삭제 성공 시 정상응답과 삭제된 커피챗의 ID를 반환한다.")
 	@WithMockUser
 	@Test
-	void removeCoffeeChat() throws Exception {
+	void givenValidCoffeeChatId_whenDeleteCoffeeChat_thenReturnDeletedCoffeeChatId() throws Exception {
 		//given
 		Long deleteCoffeeChatId = 1L;
 		DeleteCoffeeChatResponse response = deleteCoffeeChatResponse();
