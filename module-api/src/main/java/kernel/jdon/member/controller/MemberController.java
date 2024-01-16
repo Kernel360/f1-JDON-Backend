@@ -42,9 +42,8 @@ public class MemberController {
 	}
 
 	@PostMapping("/api/v1/nickname/duplicate")
-	public ResponseEntity<Void> checkNicknameDuplicate(@LoginUser SessionUserInfo user,
-		@RequestBody NicknameDuplicateRequest nicknameDuplicateRequest) {
-		memberService.checkNicknameDuplicate(user.getId(), nicknameDuplicateRequest.getNickname());
+	public ResponseEntity<Void> checkNicknameDuplicate(@RequestBody NicknameDuplicateRequest nicknameDuplicateRequest) {
+		memberService.checkNicknameDuplicate(nicknameDuplicateRequest.getNickname());
 
 		return ResponseEntity.noContent().build();
 	}
