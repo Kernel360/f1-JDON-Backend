@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.data.annotation.CreatedDate;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -40,7 +41,7 @@ public class Member {
 	@OneToMany(mappedBy = "member")
 	private List<CoffeeChatMember> guestChatList = new ArrayList<>();
 
-	@OneToMany(mappedBy = "member")
+	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<MemberSkill> memberSkillList = new ArrayList<>();
 
 	@OneToMany(mappedBy = "member")
@@ -120,8 +121,13 @@ public class Member {
 		this.birth = updateMember.birth;
 		this.gender = updateMember.getGender();
 		this.jobCategory = updateMember.jobCategory;
-		this.memberSkillList = memberSkillList;
+		updateMemberSkillList(memberSkillList);
 
 		return this.id;
+	}
+
+	public void updateMemberSkillList(List<MemberSkill> memberSkillList) {
+		this.memberSkillList.clear();
+		this.memberSkillList.addAll(memberSkillList);
 	}
 }
