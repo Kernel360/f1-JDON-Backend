@@ -30,7 +30,7 @@ public class InflearnCrawlerService implements CrawlerService {
 
 	@Transactional
 	@Override
-	public void fetchCourseInfo(String skillKeyword, int pageNum) {
+	public void createCourseInfo(String skillKeyword, int pageNum) {
 		String createLectureUrl = createInflearnSearchUrl(skillKeyword, CourseSearchSort.SORT_POPULARITY, pageNum);
 		Elements scrapeCourseElements = courseScraperService.scrapeCourses(createLectureUrl);
 		parseAndCreateCourses(scrapeCourseElements, createLectureUrl, skillKeyword, pageNum);
@@ -63,7 +63,7 @@ public class InflearnCrawlerService implements CrawlerService {
 			}
 		}
 		if (savedCourseCount < MAX_COURSES_PER_KEYWORD) {
-			fetchCourseInfo(skillKeyword, pageNum + 1);
+			createCourseInfo(skillKeyword, pageNum + 1);
 		}
 
 		if (!newCourses.isEmpty()) {
