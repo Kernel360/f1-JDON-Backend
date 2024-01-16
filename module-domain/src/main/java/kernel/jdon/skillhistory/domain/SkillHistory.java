@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import kernel.jdon.jobcategory.domain.JobCategory;
 import kernel.jdon.wantedjd.domain.WantedJd;
 import lombok.AccessLevel;
@@ -19,7 +20,10 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "skill_history")
+@Table(name = "skill_history",
+	uniqueConstraints = {
+		@UniqueConstraint(columnNames = {"job_category_id", "wanted_jd_id", "keyword"})
+	})
 public class SkillHistory {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
