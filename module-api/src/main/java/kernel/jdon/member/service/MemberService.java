@@ -14,7 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 import kernel.jdon.auth.dto.object.RegisterMemberDto;
 import kernel.jdon.auth.dto.request.RegisterRequest;
 import kernel.jdon.auth.encrypt.AesUtil;
+import kernel.jdon.error.code.api.JobCategoryErrorCode;
 import kernel.jdon.error.code.api.MemberErrorCode;
+import kernel.jdon.error.code.api.SkillErrorCode;
 import kernel.jdon.global.exception.ApiException;
 import kernel.jdon.jobcategory.domain.JobCategory;
 import kernel.jdon.jobcategory.repository.JobCategoryRepository;
@@ -92,7 +94,7 @@ public class MemberService {
 	private List<Skill> findSkillList(List<Long> skillIdList) {
 		return skillIdList.stream()
 			.map(skillId -> skillRepository.findById(skillId)
-				.orElseThrow(() -> new ApiException(MemberErrorCode.NOT_FOUND_SKILL))).toList();
+				.orElseThrow(() -> new ApiException(SkillErrorCode.NOT_FOUND_SKILL))).toList();
 	}
 
 	private List<MemberSkill> getMemberSkillList(List<Skill> skillList, Member member) {
@@ -106,7 +108,7 @@ public class MemberService {
 
 	private JobCategory findJobCategory(Long jobCategoryId) {
 		return jobCategoryRepository.findById(jobCategoryId)
-			.orElseThrow(() -> new ApiException(MemberErrorCode.NOT_FOUND_JOB_CATEGORY));
+			.orElseThrow(() -> new ApiException(JobCategoryErrorCode.NOT_FOUND_JOB_CATEGORY));
 	}
 
 	private String getEmailAndProviderString (String hmac, String encrypted) {
