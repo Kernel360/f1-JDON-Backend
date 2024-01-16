@@ -3,6 +3,7 @@ package kernel.jdon.crawler.wanted.converter;
 import kernel.jdon.crawler.wanted.dto.object.CreateSkillDto;
 import kernel.jdon.crawler.wanted.dto.response.WantedJobDetailResponse;
 import kernel.jdon.skill.domain.Skill;
+import kernel.jdon.skillhistory.domain.SkillHistory;
 import kernel.jdon.wantedjd.domain.WantedJd;
 import kernel.jdon.wantedjdskill.domain.WantedJdSkill;
 import lombok.AccessLevel;
@@ -33,9 +34,10 @@ public class EntityConverter {
 			.build();
 	}
 
-	public static Skill createSkill(CreateSkillDto createSkillDto) {
-		return Skill.builder()
+	public static SkillHistory createSkillHistory(CreateSkillDto createSkillDto) {
+		return SkillHistory.builder()
 			.keyword(createSkillDto.getKeyword())
+			.wantedJd(createSkillDto.getWantedJd())
 			.jobCategory(createSkillDto.getJobCategory())
 			.build();
 	}
