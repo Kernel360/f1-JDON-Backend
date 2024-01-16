@@ -30,7 +30,7 @@ public class CourseStorageService {
 		Skill findSkill = skillRepository.findByKeyword(skillKeyword)
 			.orElseThrow(() -> new CrawlerException(SkillErrorCode.NOT_FOUND_SKILL));
 		deleteExistingInflearnJdSkills(findSkill);
-		createOrUpdateCourses(newCourseList, findSkill);
+		createOrUpdateCourseList(newCourseList, findSkill);
 	}
 
 	private void deleteExistingInflearnJdSkills(Skill skill) {
@@ -38,7 +38,7 @@ public class CourseStorageService {
 		inflearnJdSkillRepository.deleteAll(findJdSkills);
 	}
 
-	private void createOrUpdateCourses(List<InflearnCourse> inflearnCourseList, Skill skill) {
+	private void createOrUpdateCourseList(List<InflearnCourse> inflearnCourseList, Skill skill) {
 		for (InflearnCourse inflearnCourse : inflearnCourseList) {
 			InflearnCourse createCourse = createOrUpdateCourse(inflearnCourse);
 			createInflearnJdSkill(createCourse, skill);
