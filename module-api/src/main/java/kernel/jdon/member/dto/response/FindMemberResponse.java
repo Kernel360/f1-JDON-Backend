@@ -16,7 +16,7 @@ import lombok.Getter;
 public class FindMemberResponse {
 	private String email;
 	private String nickname;
-	private LocalDate birth;
+	private String birth;
 	private String gender;
 	private Long jobCategoryId;
 	private List<Long> skillList;
@@ -29,7 +29,7 @@ public class FindMemberResponse {
 		return FindMemberResponse.builder()
 			.email(member.getEmail())
 			.nickname(member.getNickname())
-			.birth(LocalDate.parse(member.getBirth(), DateTimeFormatter.ISO_DATE))
+			.birth(member.getBirth())
 			.gender(member.getGender().getGender())
 			.jobCategoryId(member.getJobCategory().getId())
 			.skillList(skillList)
