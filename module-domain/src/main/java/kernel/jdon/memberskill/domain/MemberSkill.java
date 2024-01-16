@@ -11,11 +11,13 @@ import jakarta.persistence.Table;
 import kernel.jdon.member.domain.Member;
 import kernel.jdon.skill.domain.Skill;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor(access = lombok.AccessLevel.PROTECTED)
 @Table(name = "member_skill")
+@Getter
 public class MemberSkill {
 
 	@Id
