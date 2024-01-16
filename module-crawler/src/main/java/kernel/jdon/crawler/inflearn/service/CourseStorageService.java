@@ -1,7 +1,6 @@
 package kernel.jdon.crawler.inflearn.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,7 +30,7 @@ public class CourseStorageService {
 		Skill findSkill = skillRepository.findByKeyword(skillKeyword)
 			.orElseThrow(() -> new CrawlerException(SkillErrorCode.NOT_FOUND_SKILL));
 		deleteExistingInflearnJdSkills(findSkill);
-		createInflearnCourses(findSkill, newCourseList);
+		createOrUpdateCourses(newCourseList, findSkill);
 	}
 
 	private void deleteExistingInflearnJdSkills(Skill skill) {
@@ -39,21 +38,16 @@ public class CourseStorageService {
 		inflearnJdSkillRepository.deleteAll(findJdSkills);
 	}
 
-	private void createInflearnCourses(Skill skill, List<InflearnCourse> inflearnCourseList
-	) {
+	private void createOrUpdateCourses(List<InflearnCourse> inflearnCourseList, Skill skill) {
 		for (InflearnCourse inflearnCourse : inflearnCourseList) {
-			Optional<InflearnCourse> findCourseOptional = inflearnCourseRepository.findByTitle(
-				inflearnCourse.getTitle());
-
-			if (findCourseOptional.isPresent()) {
-				InflearnCourse findCourse = findCourseOptional.get();
-				inflearnCourseRepository.save(findCourse);
-				createInflearnJdSkill(findCourse, skill);
-			} else {
-				InflearnCourse saveCourse = inflearnCourseRepository.save(inflearnCourse);
-				createInflearnJdSkill(saveCourse, skill);
-			}
+			InflearnCourse savedCourse = createOrUpdateCourse(inflearnCourse);
+			createInflearnJdSkill(savedCourse, skill);
 		}
+	}
+
+	private InflearnCourse createOrUpdateCourse(InflearnCourse course) {
+		return inflearnCourseRepository.findByTitle(course.getTitle())
+			.orElseGet(() -> inflearnCourseRepository.save(course));
 	}
 
 	private void createInflearnJdSkill(InflearnCourse course, Skill skill) {
