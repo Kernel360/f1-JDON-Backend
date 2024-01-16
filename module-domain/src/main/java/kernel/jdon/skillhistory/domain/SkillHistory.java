@@ -41,8 +41,7 @@ public class SkillHistory {
 	private WantedJd wantedJd;
 
 	@Builder
-	public SkillHistory(Long id, String keyword, JobCategory jobCategory, WantedJd wantedJd) {
-		this.id = id;
+	public SkillHistory(String keyword, JobCategory jobCategory, WantedJd wantedJd) {
 		this.keyword = keyword;
 		this.jobCategory = jobCategory;
 		this.wantedJd = wantedJd;

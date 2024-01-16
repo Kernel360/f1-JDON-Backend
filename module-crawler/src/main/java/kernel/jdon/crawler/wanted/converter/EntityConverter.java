@@ -34,13 +34,6 @@ public class EntityConverter {
 			.build();
 	}
 
-	public static Skill createSkill(CreateSkillDto createSkillDto) {
-		return Skill.builder()
-			.keyword(createSkillDto.getKeyword())
-			.jobCategory(createSkillDto.getJobCategory())
-			.build();
-	}
-
 	public static SkillHistory createSkillHistory(CreateSkillDto createSkillDto) {
 		return SkillHistory.builder()
 			.keyword(createSkillDto.getKeyword())
