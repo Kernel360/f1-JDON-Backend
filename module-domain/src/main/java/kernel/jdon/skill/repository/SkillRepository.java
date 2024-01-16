@@ -8,6 +8,5 @@ import kernel.jdon.skill.domain.Skill;
 
 public interface SkillRepository extends JpaRepository<Skill, Long>, SkillRepositoryCustom {
 	Optional<Skill> findByJobCategoryIdAndKeyword(Long jobCategoryId, String keyword);
-
 	Optional<Skill> findByKeyword(String keyword);
 }
