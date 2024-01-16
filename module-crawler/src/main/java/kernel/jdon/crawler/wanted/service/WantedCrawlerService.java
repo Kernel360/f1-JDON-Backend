@@ -52,6 +52,7 @@ public class WantedCrawlerService {
 	private int MAX_FETCH_JD_LIST_SIZE;
 	@Value("${max_fetch_jd_list.offset}")
 	private int MAX_FETCH_JD_LIST_OFFSET;
+	private static final int SLEEP_TIME_MILLIS = 1000;
 
 	@Transactional
 	public void fetchJd() throws InterruptedException {
@@ -64,9 +65,9 @@ public class WantedCrawlerService {
 
 			JobCategory findJobCategory = findByJobPosition(jobPosition);
 
-			fetchJobDetail(jobPosition, findJobCategory, fetchJobIds);
+			createJobDetail(jobPosition, findJobCategory, fetchJobIds);
 
-			Thread.sleep(1000);
+			Thread.sleep(SLEEP_TIME_MILLIS);
 		}
 	}
 
@@ -75,7 +76,7 @@ public class WantedCrawlerService {
 			.orElseThrow(() -> new CrawlerException(WantedErrorCode.NOT_FOUND_JOB_CATEGORY));
 	}
 
-	private void fetchJobDetail(JobSearchJobPosition jobPosition, JobCategory jobCategory, Set<Long> fetchJobIds) {
+	private void createJobDetail(JobSearchJobPosition jobPosition, JobCategory jobCategory, Set<Long> fetchJobIds) {
 		for (Long detailId : fetchJobIds) {
 			if (isJobDetailExist(jobCategory, detailId)) {
 				continue;
@@ -120,18 +121,21 @@ public class WantedCrawlerService {
 					.findFirst()
 					.get();
 
-				findSkill = skillRepository.findByJobCategoryIdAndKeyword(jobCategory.getId(), matchedSkillType.getKeyword())
-					.orElseThrow(() -> new IllegalArgumentException("해당하는 기술스택이 없음 -> 데이터베이스와 동기화되지 않은 키워드"));
+				findSkill = findByJobCategoryIdAndKeyword(jobCategory, matchedSkillType.getKeyword());
 			} else {
-				findSkill = skillRepository.findByJobCategoryIdAndKeyword(jobCategory.getId(), SkillType.getOrderKeyword())
-					.orElseThrow(() -> new IllegalArgumentException("해당하는 기술스택이 없음 -> 데이터베이스와 동기화되지 않은 키워드"));
+				findSkill = findByJobCategoryIdAndKeyword(jobCategory, SkillType.getOrderKeyword());
 			}
 			wantedJdSkillRepository.save(EntityConverter.createWantedJdSkill(wantedJd, findSkill));
 		}
 	}
 
+	private Skill findByJobCategoryIdAndKeyword(JobCategory jobCategory, String matchedSkillType) {
+		return skillRepository.findByJobCategoryIdAndKeyword(jobCategory.getId(), matchedSkillType)
+			.orElseThrow(() -> new IllegalArgumentException("해당하는 기술스택이 없음 -> 데이터베이스와 동기화되지 않은 키워드"));
+	}
+
 	private WantedJobDetailResponse getJobDetail(JobCategory jobCategory, Long detailId) {
-		WantedJobDetailResponse wantedJobDetailResponse = fetchJobDetail(detailId);
+		WantedJobDetailResponse wantedJobDetailResponse = createfetchJobDetail(detailId);
 		addWantedJobDetailResponse(wantedJobDetailResponse, jobCategory, detailId);
 		return wantedJobDetailResponse;
 	}
@@ -146,7 +150,7 @@ public class WantedCrawlerService {
 		return wantedJdRepository.save(EntityConverter.createWantedJd(jobDetailResponse));
 	}
 
-	private WantedJobDetailResponse fetchJobDetail(Long jobId) {
+	private WantedJobDetailResponse createfetchJobDetail(Long jobId) {
 		String jobDetailUrl = joinToString(urlConfig.getWantedApiJobDetailUrl(), jobId);
 		return restTemplate.getForObject(jobDetailUrl, WantedJobDetailResponse.class);
 	}
