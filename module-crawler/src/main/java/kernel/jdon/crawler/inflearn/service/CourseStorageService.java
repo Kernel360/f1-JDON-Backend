@@ -40,8 +40,8 @@ public class CourseStorageService {
 
 	private void createOrUpdateCourses(List<InflearnCourse> inflearnCourseList, Skill skill) {
 		for (InflearnCourse inflearnCourse : inflearnCourseList) {
-			InflearnCourse savedCourse = createOrUpdateCourse(inflearnCourse);
-			createInflearnJdSkill(savedCourse, skill);
+			InflearnCourse createCourse = createOrUpdateCourse(inflearnCourse);
+			createInflearnJdSkill(createCourse, skill);
 		}
 	}
 
