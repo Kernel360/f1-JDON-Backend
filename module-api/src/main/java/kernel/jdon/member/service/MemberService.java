@@ -52,8 +52,6 @@ public class MemberService {
 	@Transactional
 	public UpdateMemberResponse update(Long userId, UpdateMemberRequest updateMemberRequest) {
 		Member findMember = findMember(userId);
-		isUserEmail(updateMemberRequest.getEmail(), findMember.getEmail());
-
 		JobCategory findJobCategory = findJobCategory(updateMemberRequest.getJobCategoryId());
 		Member updateMember = updateMemberRequest.toUpdateEntity(findJobCategory);
 		List<Skill> findSkillList = findSkillList(updateMemberRequest.getSkillList());
@@ -65,12 +63,6 @@ public class MemberService {
 	private Member findMember(Long id) {
 		return memberRepository.findById(id)
 			.orElseThrow(() -> new ApiException(MemberErrorCode.NOT_FOUND_MEMBER));
-	}
-
-	private void isUserEmail(String requestEmail, String sessionUserEmail) {
-		if (!requestEmail.equals(sessionUserEmail)) {
-			throw new ApiException(MemberErrorCode.FORBIDDEN_NOT_MATCH_EMAIL);
-		}
 	}
 
 	@Transactional

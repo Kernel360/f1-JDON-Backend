@@ -14,7 +14,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UpdateMemberRequest {
-	private String email;
 	private String nickname;
 	private LocalDate birth;
 	private String gender;
@@ -23,7 +22,6 @@ public class UpdateMemberRequest {
 
 	public Member toUpdateEntity(JobCategory jobCategory) {
 		return Member.builder()
-			.email(email)
 			.nickname(nickname)
 			.birth(birth.toString())
 			.gender(Gender.ofType(gender))
