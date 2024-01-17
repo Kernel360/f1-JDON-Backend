@@ -38,8 +38,19 @@ dependencies {
 
 }
 
+def buildDir = 'build'
+
 clean {
-    delete file('src/main/generated')
+    delete file(buildDir)
+}
+
+sourceSets {
+    main.java.srcDir buildDir
+}
+
+tasks.withType(JavaCompile) {
+    options.annotationProcessorPath = configurations.annotationProcessor
+    options.compilerArgs += ['-s', buildDir]
 }
 
 tasks.register("prepareKotlinBuildScriptModel") {}
