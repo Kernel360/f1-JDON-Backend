@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import kernel.jdon.coffeechat.domain.CoffeeChat;
 
-public interface CoffeeChatRepository extends JpaRepository<CoffeeChat, Long> {
+public interface CoffeeChatRepository extends CoffeeChatDomainRepository {
 
 	Optional<CoffeeChat> findByIdAndIsDeletedFalse(Long id);
 
