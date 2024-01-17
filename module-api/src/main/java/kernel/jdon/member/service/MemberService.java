@@ -7,7 +7,6 @@ import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,13 +14,17 @@ import org.springframework.transaction.annotation.Transactional;
 import kernel.jdon.auth.dto.object.RegisterMemberDto;
 import kernel.jdon.auth.dto.request.RegisterRequest;
 import kernel.jdon.auth.encrypt.AesUtil;
+import kernel.jdon.error.code.api.JobCategoryErrorCode;
 import kernel.jdon.error.code.api.MemberErrorCode;
+import kernel.jdon.error.code.api.SkillErrorCode;
 import kernel.jdon.global.exception.ApiException;
 import kernel.jdon.jobcategory.domain.JobCategory;
 import kernel.jdon.jobcategory.repository.JobCategoryRepository;
 import kernel.jdon.member.domain.Member;
 import kernel.jdon.member.domain.MemberRole;
 import kernel.jdon.member.domain.SocialProviderType;
+import kernel.jdon.member.dto.request.UpdateMemberRequest;
+import kernel.jdon.member.dto.response.UpdateMemberResponse;
 import kernel.jdon.member.dto.response.FindMemberResponse;
 import kernel.jdon.member.repository.MemberRepository;
 import kernel.jdon.memberskill.domain.MemberSkill;
@@ -49,6 +52,22 @@ public class MemberService {
 	}
 
 	@Transactional
+	public UpdateMemberResponse update(Long userId, UpdateMemberRequest updateMemberRequest) {
+		Member findMember = findMember(userId);
+		JobCategory findJobCategory = findJobCategory(updateMemberRequest.getJobCategoryId());
+		Member updateMember = updateMemberRequest.toUpdateEntity(findJobCategory);
+		List<Skill> findSkillList = findSkillList(updateMemberRequest.getSkillList());
+		List<MemberSkill> memberSkillList = getMemberSkillList(findSkillList, findMember);
+
+		return UpdateMemberResponse.of(findMember.update(updateMember, memberSkillList));
+	}
+
+	private Member findMember(Long id) {
+		return memberRepository.findById(id)
+			.orElseThrow(() -> new ApiException(MemberErrorCode.NOT_FOUND_MEMBER));
+	}
+
+	@Transactional
 	public Long register(RegisterRequest registerRequest) {
 		String emailAndProvider = getEmailAndProviderString(registerRequest.getHmac(), registerRequest.getEncrypted());
 		Map<String, String> userInfo = parseQueryString(emailAndProvider);
@@ -67,21 +86,29 @@ public class MemberService {
 	}
 
 	private void saveMemberSkillList(List<Long> skillIdList, Member member) {
-		List<Skill> findSkillList = skillIdList.stream()
+		List<Skill> findSkillList = findSkillList(skillIdList);
+		List<MemberSkill> memberSkillList = getMemberSkillList(findSkillList, member);
+		memberSkillRepository.saveAll(memberSkillList);
+	}
+
+	private List<Skill> findSkillList(List<Long> skillIdList) {
+		return skillIdList.stream()
 			.map(skillId -> skillRepository.findById(skillId)
-				.orElseThrow(() -> new ApiException(MemberErrorCode.NOT_FOUND_SKILL))).toList();
-		List<MemberSkill> memberSkillList = findSkillList.stream()
+				.orElseThrow(() -> new ApiException(SkillErrorCode.NOT_FOUND_SKILL))).toList();
+	}
+
+	private List<MemberSkill> getMemberSkillList(List<Skill> skillList, Member member) {
+		return skillList.stream()
 			.map(skill -> MemberSkill.builder()
 				.member(member)
 				.skill(skill)
 				.build())
-			.collect(Collectors.toList());
-		memberSkillRepository.saveAll(memberSkillList);
+			.toList();
 	}
 
 	private JobCategory findJobCategory(Long jobCategoryId) {
 		return jobCategoryRepository.findById(jobCategoryId)
-			.orElseThrow(() -> new ApiException(MemberErrorCode.NOT_FOUND_JOB_CATEGORY));
+			.orElseThrow(() -> new ApiException(JobCategoryErrorCode.NOT_FOUND_JOB_CATEGORY));
 	}
 
 	private String getEmailAndProviderString (String hmac, String encrypted) {
