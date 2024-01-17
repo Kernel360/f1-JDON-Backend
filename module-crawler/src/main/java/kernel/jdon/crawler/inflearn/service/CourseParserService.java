@@ -5,7 +5,6 @@ import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
 import kernel.jdon.crawler.inflearn.converter.EntityConverter;
-import kernel.jdon.crawler.inflearn.dto.CourseAndSkillsDto;
 import kernel.jdon.crawler.inflearn.util.SkillStandardizer;
 import kernel.jdon.inflearncourse.domain.InflearnCourse;
 import lombok.RequiredArgsConstructor;
@@ -14,20 +13,25 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CourseParserService {
 
-	protected CourseAndSkillsDto parseCourse(Element courseElement, String lectureUrl) {
+	private final CourseKeywordAnalysisService courseKeywordAnalysisService;
+
+	protected InflearnCourse parseCourse(Element courseElement, String lectureUrl, String skillKeyword) {
 		Long courseId = Long.parseLong(courseElement.attr("data-productId"));
 		String title = getText(courseElement, "div.course_title");
+		String description = getText(courseElement, "p.course_description");
+
+		if (!courseKeywordAnalysisService.isKeywordPresentInTitleAndDescription(title, description,
+			SkillStandardizer.standardize(skillKeyword))) {
+			return null;
+		}
+
 		long studentCount = parseStudentCount(courseElement);
 		String instructor = getText(courseElement, "div.instructor");
 		String imageUrl = courseElement.select("img").attr("src");
 		int price = Integer.parseInt(parsePrice(courseElement));
-		String skillTags = getText(courseElement, "div.course_skills > span");
-		String standardizedSkillTags = SkillStandardizer.standardize(skillTags);
 
-		InflearnCourse inflearnCourse = EntityConverter.createInflearnCourse(courseId, title, lectureUrl, instructor,
+		return EntityConverter.createInflearnCourse(courseId, title, lectureUrl, instructor,
 			studentCount, imageUrl, price);
-
-		return new CourseAndSkillsDto(inflearnCourse, standardizedSkillTags);
 	}
 
 	private String getText(Element element, String cssQuery) {

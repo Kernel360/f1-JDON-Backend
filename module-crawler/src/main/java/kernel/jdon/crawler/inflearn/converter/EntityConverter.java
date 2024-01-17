@@ -2,7 +2,7 @@ package kernel.jdon.crawler.inflearn.converter;
 
 import kernel.jdon.inflearncourse.domain.InflearnCourse;
 import kernel.jdon.inflearnjdskill.domain.InflearnJdSkill;
-import kernel.jdon.wantedjdskill.domain.WantedJdSkill;
+import kernel.jdon.skill.domain.Skill;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -21,10 +21,10 @@ public class EntityConverter {
 			.build();
 	}
 
-	public static InflearnJdSkill createInflearnJdSkill(InflearnCourse course, WantedJdSkill wantedJdSkill) {
+	public static InflearnJdSkill createInflearnJdSkill(InflearnCourse course, Skill skill) {
 		return InflearnJdSkill.builder()
 			.inflearnCourse(course)
-			.wantedJdSkill(wantedJdSkill)
+			.skill(skill)
 			.build();
 	}
 }

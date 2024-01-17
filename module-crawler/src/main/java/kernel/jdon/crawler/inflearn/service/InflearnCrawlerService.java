@@ -8,10 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import kernel.jdon.crawler.config.UrlConfig;
-import kernel.jdon.crawler.inflearn.dto.CourseAndSkillsDto;
-import kernel.jdon.crawler.inflearn.search.CourseDomain;
 import kernel.jdon.crawler.inflearn.search.CourseSearchSort;
-import kernel.jdon.crawler.inflearn.search.DevelopmentProgrammingCategory;
+import kernel.jdon.crawler.inflearn.util.InflearnCrawlerState;
 import kernel.jdon.inflearncourse.domain.InflearnCourse;
 import lombok.RequiredArgsConstructor;
 
@@ -24,46 +22,54 @@ public class InflearnCrawlerService implements CrawlerService {
 	private final CourseScraperService courseScraperService;
 	private final CourseParserService courseParserService;
 	private final CourseStorageService courseStorageService;
-	private final CourseDuplicationCheckerService courseDuplicationCheckerService;
+	private static final int MAX_COURSES_PER_KEYWORD = 3;
 
 	@Transactional
 	@Override
-	public void fetchCourseInfo() {
-		String lectureUrl = createInflearnListUrl(CourseDomain.DEVELOPMENT_PROGRAMMING,
-			DevelopmentProgrammingCategory.WEB_DEVELOPMENT, CourseSearchSort.SORT_POPULARITY, 1);
-		Elements courseElements = courseScraperService.scrapeCourses(lectureUrl);
-		parseAndCreateCourses(courseElements, lectureUrl);
-	}
+	public void createCourseInfo(String skillKeyword, int pageNum) {
+		InflearnCrawlerState state = new InflearnCrawlerState();
 
-	private void parseAndCreateCourses(Elements courseElements, String lectureUrl) {
-		for (Element courseElement : courseElements) {
-			CourseAndSkillsDto courseAndSkillsDto = courseParserService.parseCourse(courseElement, lectureUrl);
-			InflearnCourse course = courseAndSkillsDto.getCourse();
-			String skillTags = courseAndSkillsDto.getSkillTags();
+		while (state.getSavedCourseCount() < MAX_COURSES_PER_KEYWORD) {
+			String createLectureUrl = createInflearnSearchUrl(skillKeyword, CourseSearchSort.SORT_POPULARITY, pageNum);
+			Elements scrapeCourseElements = courseScraperService.scrapeCourses(createLectureUrl);
+			parseAndCreateCourses(scrapeCourseElements, createLectureUrl, skillKeyword, pageNum, state);
 
-			if (!courseDuplicationCheckerService.isDuplicate(course.getCourseId())) {
-				courseStorageService.createInflearnCourseAndInflearnJdSkill(course, skillTags);
+			if (state.getSavedCourseCount() < MAX_COURSES_PER_KEYWORD) {
+				pageNum++;
 			}
+		}
+
+		if (!state.getNewCourses().isEmpty()) {
+			courseStorageService.createInflearnCourseAndInflearnJdSkill(skillKeyword, state.getNewCourses());
+			state.resetState();
 		}
 	}
 
-	private String createInflearnListUrl(CourseDomain domain, DevelopmentProgrammingCategory category,
-		CourseSearchSort searchSort, int pageNum) {
-		String path = joinToString(
-			urlConfig.getInflearnCourseListUrl(),
-			createPathString(domain.getSearchValue()),
-			createPathString(category.getSearchValue())
-		);
+	private String createInflearnSearchUrl(String skillKeyword, CourseSearchSort searchSort, int pageNum) {
+		String path = joinToString(urlConfig.getInflearnCourseListUrl(), "/");
 
 		String queryString = joinToString(
+			createQueryString("s", skillKeyword),
 			createQueryString(CourseSearchSort.SEARCH_KEY, searchSort.getSearchValue()),
 			createQueryString("page", String.valueOf(pageNum))
 		);
 
-		if (queryString.endsWith("&")) {
-			queryString = queryString.substring(0, queryString.length() - 1);
-		}
+		return joinToString(path, "?", queryString);
+	}
 
-		return path + "?" + queryString;
+	private void parseAndCreateCourses(Elements courseElements, String lectureUrl, String skillKeyword, int pageNum,
+		InflearnCrawlerState state) {
+		for (Element courseElement : courseElements) {
+			if (state.getSavedCourseCount() >= MAX_COURSES_PER_KEYWORD) {
+				break;
+			}
+
+			InflearnCourse parsedCourse = courseParserService.parseCourse(courseElement, lectureUrl, skillKeyword);
+			
+			if (parsedCourse != null) {
+				state.addNewCourse(parsedCourse);
+				state.incrementSavedCourseCount();
+			}
+		}
 	}
 }
