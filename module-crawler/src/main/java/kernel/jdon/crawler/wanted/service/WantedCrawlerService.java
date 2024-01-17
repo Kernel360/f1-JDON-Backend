@@ -20,6 +20,7 @@ import kernel.jdon.crawler.wanted.dto.object.CreateSkillDto;
 import kernel.jdon.crawler.wanted.dto.response.WantedJobDetailResponse;
 import kernel.jdon.crawler.wanted.dto.response.WantedJobListResponse;
 import kernel.jdon.crawler.wanted.repository.SkillRepository;
+import kernel.jdon.crawler.wanted.repository.WantedJdRepository;
 import kernel.jdon.crawler.wanted.search.JobSearchExperience;
 import kernel.jdon.crawler.wanted.search.JobSearchJobCategory;
 import kernel.jdon.crawler.wanted.search.JobSearchJobPosition;
@@ -33,7 +34,6 @@ import kernel.jdon.jobcategory.repository.JobCategoryRepository;
 import kernel.jdon.skill.domain.Skill;
 import kernel.jdon.skillhistory.repository.SkillHistoryRepository;
 import kernel.jdon.wantedjd.domain.WantedJd;
-import kernel.jdon.wantedjd.repository.WantedJdRepository;
 import kernel.jdon.wantedjdskill.repository.WantedJdSkillRepository;
 import lombok.RequiredArgsConstructor;
 
