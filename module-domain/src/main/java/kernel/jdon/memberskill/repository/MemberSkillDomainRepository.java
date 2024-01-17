@@ -4,6 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import kernel.jdon.memberskill.domain.MemberSkill;
 
-public interface MemberSkillRepository extends JpaRepository<MemberSkill, Long> {
+public interface MemberSkillDomainRepository extends JpaRepository<MemberSkill, Long> {
 
 }
