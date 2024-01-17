@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import kernel.jdon.dto.response.CommonResponse;
-import kernel.jdon.favorite.domain.dto.request.CreateFavoriteRequest;
-import kernel.jdon.favorite.domain.dto.response.CreateFavoriteResponse;
-import kernel.jdon.favorite.domain.dto.response.FindFavoriteResponse;
+import kernel.jdon.favorite.dto.request.CreateFavoriteRequest;
+import kernel.jdon.favorite.dto.response.CreateFavoriteResponse;
+import kernel.jdon.favorite.dto.response.FindFavoriteResponse;
 
 @RestController
 public class FavoriteController {

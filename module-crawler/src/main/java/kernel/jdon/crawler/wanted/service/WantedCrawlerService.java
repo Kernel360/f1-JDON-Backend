@@ -19,6 +19,11 @@ import kernel.jdon.crawler.wanted.converter.EntityConverter;
 import kernel.jdon.crawler.wanted.dto.object.CreateSkillDto;
 import kernel.jdon.crawler.wanted.dto.response.WantedJobDetailResponse;
 import kernel.jdon.crawler.wanted.dto.response.WantedJobListResponse;
+import kernel.jdon.crawler.wanted.repository.JobCategoryRepository;
+import kernel.jdon.crawler.wanted.repository.SkillHistoryRepository;
+import kernel.jdon.crawler.wanted.repository.SkillRepository;
+import kernel.jdon.crawler.wanted.repository.WantedJdRepository;
+import kernel.jdon.crawler.wanted.repository.WantedJdSkillRepository;
 import kernel.jdon.crawler.wanted.search.JobSearchExperience;
 import kernel.jdon.crawler.wanted.search.JobSearchJobCategory;
 import kernel.jdon.crawler.wanted.search.JobSearchJobPosition;
@@ -28,13 +33,8 @@ import kernel.jdon.crawler.wanted.skill.BackendSkillType;
 import kernel.jdon.crawler.wanted.skill.FrontendSkillType;
 import kernel.jdon.crawler.wanted.skill.SkillType;
 import kernel.jdon.jobcategory.domain.JobCategory;
-import kernel.jdon.jobcategory.repository.JobCategoryRepository;
 import kernel.jdon.skill.domain.Skill;
-import kernel.jdon.skill.repository.SkillRepository;
-import kernel.jdon.skillhistory.repository.SkillHistoryRepository;
 import kernel.jdon.wantedjd.domain.WantedJd;
-import kernel.jdon.wantedjd.repository.WantedJdRepository;
-import kernel.jdon.wantedjdskill.repository.WantedJdSkillRepository;
 import lombok.RequiredArgsConstructor;
 
 @Service
