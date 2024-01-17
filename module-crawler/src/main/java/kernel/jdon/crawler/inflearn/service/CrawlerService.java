@@ -1,5 +1,5 @@
 package kernel.jdon.crawler.inflearn.service;
 
 public interface CrawlerService {
-	void fetchCourseInfo();
+	void createCourseInfo(String skillKeyword, int page);
 }

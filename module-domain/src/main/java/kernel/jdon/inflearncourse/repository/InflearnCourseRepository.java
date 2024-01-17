@@ -8,5 +8,6 @@ import kernel.jdon.inflearncourse.domain.InflearnCourse;
 
 public interface InflearnCourseRepository extends JpaRepository<InflearnCourse, Long> {
 
-	Optional<InflearnCourse> findByCourseId(Long courseId);
+	Optional<InflearnCourse> findByTitle(String title);
+
 }

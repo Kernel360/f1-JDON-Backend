@@ -1,11 +1,12 @@
 package kernel.jdon.crawler.inflearn.service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import kernel.jdon.crawler.global.error.code.SkillErrorCode;
+import kernel.jdon.crawler.global.error.exception.CrawlerException;
 import kernel.jdon.crawler.inflearn.converter.EntityConverter;
 import kernel.jdon.inflearncourse.domain.InflearnCourse;
 import kernel.jdon.inflearncourse.repository.InflearnCourseRepository;
@@ -13,66 +14,44 @@ import kernel.jdon.inflearnjdskill.domain.InflearnJdSkill;
 import kernel.jdon.inflearnjdskill.repository.InflearnJdSkillRepository;
 import kernel.jdon.skill.domain.Skill;
 import kernel.jdon.skill.repository.SkillRepository;
-import kernel.jdon.wantedjdskill.domain.WantedJdSkill;
-import kernel.jdon.wantedjdskill.repository.WantedJdSkillRepository;
 import lombok.RequiredArgsConstructor;
 
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class CourseStorageService {
 
 	private final InflearnCourseRepository inflearnCourseRepository;
 	private final InflearnJdSkillRepository inflearnJdSkillRepository;
-	private final WantedJdSkillRepository wantedJdSkillRepository;
 	private final SkillRepository skillRepository;
 
-	protected void createInflearnCourseAndInflearnJdSkill(InflearnCourse inflearnCourse, String skillTags) {
-		if (shouldCreateInflearnCourse(skillTags)) {
-			InflearnCourse savedCourse = inflearnCourseRepository.save(inflearnCourse);
-			processAndCreateInflearnJdSKill(savedCourse, skillTags);
+	@Transactional
+	public void createInflearnCourseAndInflearnJdSkill(String skillKeyword, List<InflearnCourse> newCourseList) {
+		Skill findSkill = skillRepository.findByKeyword(skillKeyword)
+			.orElseThrow(() -> new CrawlerException(SkillErrorCode.NOT_FOUND_SKILL));
+		deleteExistingInflearnJdSkills(findSkill);
+		createOrUpdateCourseList(newCourseList, findSkill);
+	}
+
+	private void deleteExistingInflearnJdSkills(Skill skill) {
+		List<InflearnJdSkill> findJdSkills = inflearnJdSkillRepository.findBySkill(skill);
+		inflearnJdSkillRepository.deleteAll(findJdSkills);
+	}
+
+	private void createOrUpdateCourseList(List<InflearnCourse> inflearnCourseList, Skill skill) {
+		for (InflearnCourse inflearnCourse : inflearnCourseList) {
+			InflearnCourse createCourse = createOrUpdateCourse(inflearnCourse);
+			createInflearnJdSkill(createCourse, skill);
 		}
 	}
 
-	private boolean shouldCreateInflearnCourse(String skillTags) {
-		String[] skillList = skillTags.split(", ");
-		for (String skill : skillList) {
-			Optional<Skill> existingSkill = skillRepository.findByKeyword(skill);
-			if (existingSkill.isPresent()) {
-				List<WantedJdSkill> wantedJdSkills = wantedJdSkillRepository.findBySkill(existingSkill.get());
-				if (!wantedJdSkills.isEmpty()) {
-					return true;
-				}
-			}
-		}
-
-		return false;
+	private InflearnCourse createOrUpdateCourse(InflearnCourse course) {
+		return inflearnCourseRepository.findByTitle(course.getTitle())
+			.orElseGet(() -> inflearnCourseRepository.save(course));
 	}
 
-	private void processAndCreateInflearnJdSKill(InflearnCourse inflearnCourse, String skillTags) {
-		String[] skillList = skillTags.split(", ");
-		for (String skill : skillList) {
-			associateWantedJdSkillWithInflearnCourse(inflearnCourse, skill);
-		}
-	}
-
-	private void associateWantedJdSkillWithInflearnCourse(InflearnCourse inflearnCourse, String skill) {
-		List<WantedJdSkill> wantedJdSkillList = findWantedJdSkill(skill);
-		wantedJdSkillList.forEach(wantedJdSkill -> createInflearnJdSkillIfNotExists(inflearnCourse, wantedJdSkill));
-	}
-
-	private List<WantedJdSkill> findWantedJdSkill(String keyword) {
-		Optional<Skill> existingSkill = skillRepository.findByKeyword(keyword);
-		if (existingSkill.isPresent()) {
-			return wantedJdSkillRepository.findBySkill(existingSkill.get());
-		}
-
-		return new ArrayList<>();
-	}
-
-	private void createInflearnJdSkillIfNotExists(InflearnCourse inflearnCourse, WantedJdSkill wantedJdSkill) {
-		if (!inflearnJdSkillRepository.existsByInflearnCourseAndWantedJdSkill(inflearnCourse, wantedJdSkill)) {
-			InflearnJdSkill inflearnJdSkill = EntityConverter.createInflearnJdSkill(inflearnCourse, wantedJdSkill);
-			inflearnJdSkillRepository.save(inflearnJdSkill);
-		}
+	private void createInflearnJdSkill(InflearnCourse course, Skill skill) {
+		InflearnJdSkill createJdSkill = EntityConverter.createInflearnJdSkill(course, skill);
+		inflearnJdSkillRepository.save(createJdSkill);
 	}
 }
