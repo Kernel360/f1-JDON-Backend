@@ -33,8 +33,13 @@ public class OAuth2SecurityConfig {
 			.anyRequest().permitAll());
 		http.oauth2Login(oauth2Configurer -> oauth2Configurer
 			.successHandler(oAuth2AuthenticationSuccessHandler())
-			.userInfoEndpoint()
-			.userService(jdonOAuth2UserService));
+			.userInfoEndpoint(userInfoEndpointConfigurer -> userInfoEndpointConfigurer
+				.userService(jdonOAuth2UserService)));
+		http.logout(logoutConfigurer -> logoutConfigurer
+			.logoutUrl("/api/v1/logout")
+			.logoutSuccessUrl("http://localhost:3000/main") // TODO: 프론트와 상의 후 메인페이지 url로 변경
+			.invalidateHttpSession(true)
+			.deleteCookies("JSESSIONID"));
 
 		return http.build();
 	}
