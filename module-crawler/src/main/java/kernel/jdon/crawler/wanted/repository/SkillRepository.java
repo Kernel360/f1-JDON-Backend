@@ -1,12 +1,11 @@
-package kernel.jdon.skill.repository;
+package kernel.jdon.crawler.wanted.repository;
 
 import java.util.Optional;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-
 import kernel.jdon.skill.domain.Skill;
+import kernel.jdon.skill.repository.SkillDomainRepository;
 
-public interface SkillRepository extends JpaRepository<Skill, Long>, SkillRepositoryCustom {
+public interface SkillRepository extends SkillDomainRepository {
 	Optional<Skill> findByJobCategoryIdAndKeyword(Long jobCategoryId, String keyword);
 	Optional<Skill> findByKeyword(String keyword);
 }
