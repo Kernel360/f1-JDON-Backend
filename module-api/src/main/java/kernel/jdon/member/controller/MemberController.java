@@ -1,8 +1,5 @@
 package kernel.jdon.member.controller;
 
-import java.time.LocalDate;
-import java.util.List;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,12 +10,12 @@ import org.springframework.web.bind.annotation.RestController;
 import kernel.jdon.global.annotation.LoginUser;
 import kernel.jdon.auth.dto.SessionUserInfo;
 import kernel.jdon.dto.response.CommonResponse;
-import kernel.jdon.member.dto.request.ModifyMemberRequest;
 import kernel.jdon.member.dto.request.NicknameDuplicateRequest;
-import kernel.jdon.member.dto.response.FindMemberResponse;
-import kernel.jdon.member.dto.response.ModifyMemberResponse;
+import kernel.jdon.member.dto.request.UpdateMemberRequest;
+import kernel.jdon.member.dto.response.UpdateMemberResponse;
 import kernel.jdon.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import kernel.jdon.member.dto.response.FindMemberResponse;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -37,17 +34,11 @@ public class MemberController {
 	}
 
 	@PutMapping("/api/v1/member")
-	public ResponseEntity<CommonResponse> modify(@RequestBody ModifyMemberRequest modifyMemberRequest) {
-		ModifyMemberResponse modifyMemberResponse = ModifyMemberResponse.builder()
-			.email(modifyMemberRequest.getEmail())
-			.nickname(modifyMemberRequest.getNickname())
-			.birth(modifyMemberRequest.getBirth())
-			.gender(modifyMemberRequest.getGender())
-			.jobCategoryId(modifyMemberRequest.getJobCategoryId())
-			.skillList(modifyMemberRequest.getSkillList())
-			.build();
+	public ResponseEntity<CommonResponse> modify(@LoginUser SessionUserInfo user,
+		@RequestBody UpdateMemberRequest updateMemberRequest) {
+		UpdateMemberResponse updateMemberResponse = memberService.update(user.getId(), updateMemberRequest);
 
-		return ResponseEntity.ok(CommonResponse.of(modifyMemberResponse));
+		return ResponseEntity.ok(CommonResponse.of(updateMemberResponse));
 	}
 
 	@PostMapping("nickname/duplicate")
