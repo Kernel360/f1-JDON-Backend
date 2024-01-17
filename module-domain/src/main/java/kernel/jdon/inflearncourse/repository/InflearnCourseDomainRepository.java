@@ -6,8 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import kernel.jdon.inflearncourse.domain.InflearnCourse;
 
-public interface InflearnCourseRepository extends JpaRepository<InflearnCourse, Long> {
-
-	Optional<InflearnCourse> findByTitle(String title);
-
+public interface InflearnCourseDomainRepository extends JpaRepository<InflearnCourse, Long> {
 }
