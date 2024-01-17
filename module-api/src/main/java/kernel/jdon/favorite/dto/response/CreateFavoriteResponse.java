@@ -1,4 +1,4 @@
-package kernel.jdon.favorite.domain.dto.response;
+package kernel.jdon.favorite.dto.response;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

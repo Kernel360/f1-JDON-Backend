@@ -1,4 +1,4 @@
-package kernel.jdon.favorite.domain.dto.request;
+package kernel.jdon.favorite.dto.request;
 
 import lombok.AccessLevel;
 import lombok.Getter;
