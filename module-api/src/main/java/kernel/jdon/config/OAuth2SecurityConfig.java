@@ -27,7 +27,11 @@ public class OAuth2SecurityConfig {
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
 		http.csrf().disable();
+
+		http.cors(corsConfiguerer -> corsConfiguerer.disable());
+
 		http.authorizeHttpRequests(config -> config
 			.requestMatchers("api/**").permitAll()
 			.anyRequest().permitAll());
