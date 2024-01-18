@@ -168,7 +168,11 @@ public class WantedCrawlerService {
 
 			fetchJobIds.addAll(jobIds);
 
-			offset += MAX_FETCH_JD_LIST_OFFSET;
+			if (jobIds.size() < MAX_FETCH_JD_LIST_OFFSET) {
+				offset += MAX_FETCH_JD_LIST_OFFSET;
+			} else {
+				break;
+			}
 		}
 
 		return fetchJobIds;
