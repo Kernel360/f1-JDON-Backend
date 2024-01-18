@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import kernel.jdon.skill.dto.response.FindHotSkillResponse;
+import kernel.jdon.skill.dto.object.FindHotSkillDto;
 import kernel.jdon.skill.dto.response.FindListHotSkillResponse;
 import kernel.jdon.skill.repository.SkillRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,9 +15,7 @@ public class SkillService {
 	private final SkillRepository skillRepository;
 
 	public FindListHotSkillResponse findHotSkillList() {
-		List<FindHotSkillResponse> findHotSkillList = skillRepository.findHotSkillList().stream()
-			.map(FindHotSkillResponse::of)
-			.toList();
+		List<FindHotSkillDto> findHotSkillList = skillRepository.findHotSkillList();
 
 		return new FindListHotSkillResponse(findHotSkillList);
 	}
