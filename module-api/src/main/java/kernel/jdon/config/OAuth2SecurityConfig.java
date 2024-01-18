@@ -4,6 +4,8 @@ import static kernel.jdon.auth.encrypt.AesUtil.*;
 import static kernel.jdon.auth.encrypt.HmacUtil.*;
 import static kernel.jdon.util.StringUtil.*;
 
+import java.util.List;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -11,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.web.cors.CorsConfiguration;
 
 import kernel.jdon.auth.dto.JdonOAuth2User;
 import kernel.jdon.auth.service.JdonOAuth2UserService;
@@ -28,10 +31,16 @@ public class OAuth2SecurityConfig {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
+		http.cors(corsCustomizer -> corsCustomizer.configurationSource(request -> {
+			CorsConfiguration config = new CorsConfiguration();
+			config.setAllowedOrigins(List.of("http://localhost:3000"));
+			config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
+			config.setAllowedHeaders(List.of("*"));
+			config.setMaxAge(3600L);
+
+			return config;
+		}));
 		http.csrf().disable();
-
-		http.cors(corsConfiguerer -> corsConfiguerer.disable());
-
 		http.authorizeHttpRequests(config -> config
 			.requestMatchers("api/**").permitAll()
 			.anyRequest().permitAll());
