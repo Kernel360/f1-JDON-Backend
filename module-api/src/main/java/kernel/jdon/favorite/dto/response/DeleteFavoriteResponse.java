@@ -1,4 +1,4 @@
-package kernel.jdon.favorite.domain.dto.response;
+package kernel.jdon.favorite.dto.response;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -8,10 +8,10 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
-public class CreateFavoriteResponse {
+public class DeleteFavoriteResponse {
 	private Long lectureId;
 
-	public static CreateFavoriteResponse of(Long lectureId) {
-		return new CreateFavoriteResponse(lectureId);
+	public static DeleteFavoriteResponse of(Long lectureId) {
+		return new DeleteFavoriteResponse(lectureId);
 	}
 }

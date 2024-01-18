@@ -10,4 +10,6 @@ public interface InflearnCourseRepository extends JpaRepository<InflearnCourse, 
 
 	Optional<InflearnCourse> findByTitle(String title);
 
+	Optional<InflearnCourse> findById(Long id);
+
 }

@@ -24,8 +24,8 @@ import kernel.jdon.member.domain.Member;
 import kernel.jdon.member.domain.MemberRole;
 import kernel.jdon.member.domain.SocialProviderType;
 import kernel.jdon.member.dto.request.UpdateMemberRequest;
-import kernel.jdon.member.dto.response.UpdateMemberResponse;
 import kernel.jdon.member.dto.response.FindMemberResponse;
+import kernel.jdon.member.dto.response.UpdateMemberResponse;
 import kernel.jdon.member.repository.MemberRepository;
 import kernel.jdon.memberskill.domain.MemberSkill;
 import kernel.jdon.memberskill.repository.MemberSkillRepository;
@@ -111,11 +111,12 @@ public class MemberService {
 			.orElseThrow(() -> new ApiException(JobCategoryErrorCode.NOT_FOUND_JOB_CATEGORY));
 	}
 
-	private String getEmailAndProviderString (String hmac, String encrypted) {
+	private String getEmailAndProviderString(String hmac, String encrypted) {
 		String emailAndProvider = null;
 		try {
 			if (isValidHMAC(hmac, encrypted)) {
 				emailAndProvider = AesUtil.decryptAESCBC(encrypted);
+				log.info("emailAndProvider: {}", emailAndProvider);
 			} else {
 				throw new ApiException(MemberErrorCode.UNAUTHORIZED_EMAIL_OAUTH2);
 			}
