@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import kernel.jdon.auth.dto.SessionUserInfo;
 import kernel.jdon.coffeechat.dto.request.CreateCoffeeChatRequest;
 import kernel.jdon.coffeechat.dto.request.UpdateCoffeeChatRequest;
 import kernel.jdon.coffeechat.dto.response.ApplyCoffeeChatResponse;
@@ -23,6 +24,7 @@ import kernel.jdon.coffeechat.dto.response.FindCoffeeChatListResponse;
 import kernel.jdon.coffeechat.dto.response.UpdateCoffeeChatResponse;
 import kernel.jdon.coffeechat.service.CoffeeChatService;
 import kernel.jdon.dto.response.CommonResponse;
+import kernel.jdon.global.annotation.LoginUser;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -38,8 +40,10 @@ public class CoffeeChatController {
 	}
 
 	@PostMapping("/api/v1/coffeechats")
-	public ResponseEntity<CommonResponse> save(@RequestBody CreateCoffeeChatRequest request) {
-		CreateCoffeeChatResponse response = coffeeChatService.create(request);
+	public ResponseEntity<CommonResponse> save(
+		@RequestBody CreateCoffeeChatRequest request,
+		@LoginUser SessionUserInfo sessionUser) {
+		CreateCoffeeChatResponse response = coffeeChatService.create(request, sessionUser.getId());
 		URI uri = URI.create("/v1/coffeechats/" + response.getCoffeeChatId());
 
 		return ResponseEntity.created(uri).body(CommonResponse.of(response));

@@ -12,15 +12,21 @@ import kernel.jdon.coffeechat.dto.response.FindCoffeeChatResponse;
 import kernel.jdon.coffeechat.dto.response.UpdateCoffeeChatResponse;
 import kernel.jdon.coffeechat.error.CoffeeChatErrorCode;
 import kernel.jdon.coffeechat.repository.CoffeeChatRepository;
+import kernel.jdon.error.code.api.MemberErrorCode;
 import kernel.jdon.global.exception.ApiException;
+import kernel.jdon.member.domain.Member;
+import kernel.jdon.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
+@Slf4j
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class CoffeeChatService {
 
 	private final CoffeeChatRepository coffeeChatRepository;
+	private final MemberRepository memberRepository;
 
 	private CoffeeChat findByIdIfNotDeleted(Long coffeeChatId) {
 
@@ -41,8 +47,11 @@ public class CoffeeChatService {
 	}
 
 	@Transactional
-	public CreateCoffeeChatResponse create(CreateCoffeeChatRequest request) {
-		CoffeeChat savedCoffeeChat = coffeeChatRepository.save(CreateCoffeeChatRequest.toEntity(request));
+	public CreateCoffeeChatResponse create(CreateCoffeeChatRequest request, Long memberId) {
+		Member findMember = memberRepository.findById(memberId)
+			.orElseThrow(() -> new ApiException(MemberErrorCode.NOT_FOUND_MEMBER));
+		
+		CoffeeChat savedCoffeeChat = coffeeChatRepository.save(request.toEntity(findMember));
 
 		return CreateCoffeeChatResponse.of(savedCoffeeChat.getId());
 	}
@@ -78,7 +87,7 @@ public class CoffeeChatService {
 			throw new ApiException(CoffeeChatErrorCode.MEET_DATE_ISBEFORE_NOW);
 		}
 	}
-	
+
 	private void checkRecruitCount(CoffeeChat findCoffeeChat, CoffeeChat target) {
 		if (findCoffeeChat.isValidRecruitCount(target.getTotalRecruitCount())) {
 			throw new ApiException(CoffeeChatErrorCode.EXPIRED_COFFEECHAT);
