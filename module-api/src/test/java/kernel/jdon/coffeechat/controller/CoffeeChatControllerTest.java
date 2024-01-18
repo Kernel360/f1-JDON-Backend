@@ -49,7 +49,7 @@ class CoffeeChatControllerTest {
 		CreateCoffeeChatResponse response = createCoffeeChatResponse();
 
 		doReturn(response).when(coffeeChatService)
-			.create(any(CreateCoffeeChatRequest.class));
+			.create(any(CreateCoffeeChatRequest.class), any(Long.class));
 
 		//when
 		ResultActions resultActions = mockMvc.perform(
