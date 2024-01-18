@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 import kernel.jdon.dto.response.CommonResponse;
 import kernel.jdon.skill.dto.response.FindCompanyBySkillResponse;
 import kernel.jdon.skill.dto.response.FindJdResponse;
-import kernel.jdon.skill.dto.response.FindJobCategorySkillResponse;
 import kernel.jdon.skill.dto.response.FindLectureResponse;
 import kernel.jdon.skill.dto.response.FindListDataBySkillResponse;
 import kernel.jdon.skill.dto.response.FindListHotSkillResponse;
@@ -56,21 +55,8 @@ public class SkillController {
 
 	@GetMapping("/api/v1/skills/job-category/{jobCategoryId}")
 	public ResponseEntity<CommonResponse> getJobCategorySkillList(@PathVariable Long jobCategoryId) {
-
-		List<FindJobCategorySkillResponse> findJobCategorySkillResponseList = new ArrayList<>();
-		for (long i = 1; i <= 5; i++) {
-			FindJobCategorySkillResponse findJobCategorySkillResponse = FindJobCategorySkillResponse.builder()
-				.skillId(i)
-				.keyword("jobCategory_skill_" + i)
-				.build();
-
-			findJobCategorySkillResponseList.add(findJobCategorySkillResponse);
-		}
-
 		FindListJobCategorySkillResponse findListJobCategorySkillResponse =
-			FindListJobCategorySkillResponse.builder()
-				.skillList(findJobCategorySkillResponseList)
-				.build();
+			skillService.findJobCategorySkillList(jobCategoryId);
 
 		return ResponseEntity.ok(CommonResponse.of(findListJobCategorySkillResponse));
 	}
