@@ -4,19 +4,32 @@ import static kernel.jdon.auth.encrypt.AesUtil.*;
 import static kernel.jdon.auth.encrypt.HmacUtil.*;
 import static kernel.jdon.util.StringUtil.*;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.MediaType;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.web.cors.CorsConfiguration;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import jakarta.servlet.http.HttpServletResponse;
+import kernel.jdon.auth.dto.AuthExceptionResponse;
 import kernel.jdon.auth.dto.JdonOAuth2User;
+import kernel.jdon.auth.error.AuthErrorCode;
 import kernel.jdon.auth.service.JdonOAuth2UserService;
+import kernel.jdon.error.ErrorCode;
+import kernel.jdon.auth.error.exception.UnAuthorizedException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -40,12 +53,17 @@ public class OAuth2SecurityConfig {
 
 			return config;
 		}));
+		http.exceptionHandling(exceptionConfig -> exceptionConfig
+			.authenticationEntryPoint(jdonUnAuthorizedEntryPoint)
+			.accessDeniedHandler(jdonAccessDeniedHandler));
 		http.csrf().disable();
 		http.authorizeHttpRequests(config -> config
+			.requestMatchers("/api/v1/member").hasAnyRole("USER")
 			.requestMatchers("api/**").permitAll()
 			.anyRequest().permitAll());
 		http.oauth2Login(oauth2Configurer -> oauth2Configurer
 			.successHandler(oAuth2AuthenticationSuccessHandler())
+				.failureHandler(oAuth2AuthenticationFailureHandler())
 			.userInfoEndpoint(userInfoEndpointConfigurer -> userInfoEndpointConfigurer
 				.userService(jdonOAuth2UserService)));
 		http.logout(logoutConfigurer -> logoutConfigurer
@@ -55,6 +73,28 @@ public class OAuth2SecurityConfig {
 			.deleteCookies("JSESSIONID"));
 
 		return http.build();
+	}
+
+
+	private final AuthenticationEntryPoint jdonUnAuthorizedEntryPoint = (request, response, authException) -> {
+		throwAuthException(response, AuthErrorCode.UNAUTHORIZED, "/");
+	};
+
+	private final AccessDeniedHandler jdonAccessDeniedHandler = (request, response, accessDeniedException) -> {
+		throwAuthException(response, AuthErrorCode.FORBIDDEN, "/");
+	};
+
+	private void throwAuthException(HttpServletResponse response, ErrorCode authErrorCode, String redirectUri) throws
+		IOException {
+		AuthExceptionResponse exception = new AuthExceptionResponse(
+			authErrorCode.getHttpStatus().value(), authErrorCode.getMessage(), redirectUri);
+		String json = new ObjectMapper().writeValueAsString(exception);
+		response.setStatus(authErrorCode.getHttpStatus().value());
+		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+		response.setCharacterEncoding("utf-8");
+		PrintWriter write = response.getWriter();
+		write.write(json);
+		write.flush();
 	}
 
 	@Bean
@@ -87,5 +127,14 @@ public class OAuth2SecurityConfig {
 			log.warn(e.getMessage(), e);
 		}
 		return encoded;
+	}
+
+	@Bean
+	public AuthenticationFailureHandler oAuth2AuthenticationFailureHandler() {
+		return ((request, response, exception) -> {
+			if (exception instanceof UnAuthorizedException) {
+				throwAuthException(response, ((UnAuthorizedException) exception).getErrorCode(), "/");
+			}
+		});
 	}
 }

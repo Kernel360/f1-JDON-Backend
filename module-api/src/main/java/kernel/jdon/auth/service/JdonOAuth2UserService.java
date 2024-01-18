@@ -16,7 +16,7 @@ import jakarta.servlet.http.HttpSession;
 import kernel.jdon.auth.dto.JdonOAuth2User;
 import kernel.jdon.auth.dto.SessionUserInfo;
 import kernel.jdon.auth.error.AuthErrorCode;
-import kernel.jdon.global.exception.ApiException;
+import kernel.jdon.auth.error.exception.UnAuthorizedException;
 import kernel.jdon.member.domain.Member;
 import kernel.jdon.member.domain.SocialProviderType;
 import kernel.jdon.member.repository.MemberRepository;
@@ -62,17 +62,28 @@ public class JdonOAuth2UserService extends DefaultOAuth2UserService {
 	}
 
 	private String getEmailFromGithub(OAuth2User user) {
-		return (String)user.getAttributes().get("email");
+		String email = (String)user.getAttributes().get("email");
+		isEmailExist(email);
+
+		return email;
 	}
 
 	private String getEmailFromKakao(OAuth2User user) {
 		Map<String, Object> attributes = user.getAttributes();
-		return ((Map<String, String>)attributes.get("kakao_account")).get("email");
+		String email = ((Map<String, String>)attributes.get("kakao_account")).get("email");
+		isEmailExist(email);
+
+		return email;
+	}
+
+	private void isEmailExist(String email) {
+		if (email == null)
+			throw new UnAuthorizedException(AuthErrorCode.UNAUTHORIZED_OAUTH_RETURN_NULL_EMAIL);
 	}
 
 	private void checkRightSocialProvider(Member findMember, SocialProviderType socialProvider) {
 		if (!findMember.isRightSocialProvider(socialProvider))
-			throw new ApiException(AuthErrorCode.NOT_FOUND_NOT_MATCH_PROVIDER_TYPE);
+			throw new UnAuthorizedException(AuthErrorCode.UNAUTHORIZED_NOT_MATCH_PROVIDER_TYPE);
 	}
 
 	private SocialProviderType getSocialProvider(OAuth2UserRequest userRequest) {
