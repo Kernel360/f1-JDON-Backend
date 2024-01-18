@@ -162,17 +162,17 @@ public class WantedCrawlerService {
 		while (fetchJobIds.size() < MAX_FETCH_JD_LIST_SIZE) {
 			WantedJobListResponse jobListResponse = fetchJobList(jobPosition, offset);
 
-			List<Long> jobIds = jobListResponse.getData().stream()
+			List<Long> jobIdList = jobListResponse.getData().stream()
 				.map(WantedJobListResponse.Data::getId)
 				.toList();
 
-			fetchJobIds.addAll(jobIds);
+			fetchJobIds.addAll(jobIdList);
 
-			if (jobIds.size() < MAX_FETCH_JD_LIST_OFFSET) {
-				offset += MAX_FETCH_JD_LIST_OFFSET;
-			} else {
+			if (jobIdList.size() < MAX_FETCH_JD_LIST_OFFSET) {
 				break;
 			}
+
+			offset += MAX_FETCH_JD_LIST_OFFSET;
 		}
 
 		return fetchJobIds;
