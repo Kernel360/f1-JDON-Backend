@@ -10,13 +10,21 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import kernel.jdon.auth.dto.SessionUserInfo;
 import kernel.jdon.dto.response.CommonResponse;
-import kernel.jdon.favorite.dto.request.CreateFavoriteRequest;
+import kernel.jdon.favorite.dto.request.CreateOrDeleteFavoriteRequest;
 import kernel.jdon.favorite.dto.response.CreateFavoriteResponse;
+import kernel.jdon.favorite.dto.response.DeleteFavoriteResponse;
 import kernel.jdon.favorite.dto.response.FindFavoriteResponse;
+import kernel.jdon.favorite.service.FavoriteService;
+import kernel.jdon.global.annotation.LoginUser;
+import lombok.RequiredArgsConstructor;
 
 @RestController
+@RequiredArgsConstructor
 public class FavoriteController {
+
+	private final FavoriteService favoriteService;
 
 	@GetMapping("/api/v1/favorites")
 	public ResponseEntity<CommonResponse> getAll() {
@@ -41,10 +49,23 @@ public class FavoriteController {
 	}
 
 	@PostMapping("/api/v1/favorites")
-	public ResponseEntity<CommonResponse> save(@RequestBody CreateFavoriteRequest createFavoriteRequest) {
-		Long lectureId = createFavoriteRequest.getLectureId();
-		URI uri = URI.create("/api/v1/favorites/" + lectureId);
+	public ResponseEntity<CommonResponse> save(@LoginUser SessionUserInfo user,
+		@RequestBody CreateOrDeleteFavoriteRequest createOrDeleteFavoriteRequest) {
+		URI uri;
+		CommonResponse response;
 
-		return ResponseEntity.created(uri).body(CommonResponse.of(CreateFavoriteResponse.of(lectureId)));
+		if (createOrDeleteFavoriteRequest.getIsFavorite()) {
+			CreateFavoriteResponse createFavoriteResponse = favoriteService.create(user.getId(),
+				createOrDeleteFavoriteRequest);
+			uri = URI.create("/api/v1/favorites/" + createFavoriteResponse.getLectureId());
+			response = CommonResponse.of(createFavoriteResponse);
+		} else {
+			DeleteFavoriteResponse deleteFavoriteResponse = favoriteService.delete(user.getId(),
+				createOrDeleteFavoriteRequest);
+			uri = URI.create("/api/v1/favorites/" + deleteFavoriteResponse.getLectureId());
+			response = CommonResponse.of(deleteFavoriteResponse);
+		}
+
+		return ResponseEntity.created(uri).body(response);
 	}
 }
