@@ -1,10 +1,5 @@
 package kernel.jdon.faq.service;
 
-import java.util.List;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import kernel.jdon.faq.domain.Faq;
 import kernel.jdon.faq.dto.request.CreateFaqRequest;
 import kernel.jdon.faq.dto.request.UpdateFaqRequest;
@@ -16,6 +11,10 @@ import kernel.jdon.faq.error.FaqErrorCode;
 import kernel.jdon.faq.repository.FaqRepository;
 import kernel.jdon.global.exception.ApiException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
@@ -30,7 +29,7 @@ public class FaqService {
 
 	@Transactional
 	public CreateFaqResponse create(CreateFaqRequest createFaqRequest) {
-		Faq savedFaq = faqRepository.save(CreateFaqRequest.toEntity(createFaqRequest));
+		Faq savedFaq = faqRepository.save(createFaqRequest.toEntity());
 
 		return CreateFaqResponse.of(savedFaq.getId());
 	}
