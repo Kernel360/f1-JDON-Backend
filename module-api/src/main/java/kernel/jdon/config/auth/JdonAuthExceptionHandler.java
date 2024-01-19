@@ -6,8 +6,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import kernel.jdon.auth.dto.AuthExceptionResponse;
 import kernel.jdon.auth.error.AuthErrorCode;
-import kernel.jdon.auth.error.exception.UnAuthorizedException;
 import kernel.jdon.error.ErrorCode;
+import kernel.jdon.global.exception.UnAuthorizedException;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
@@ -24,14 +24,14 @@ public class JdonAuthExceptionHandler implements AuthenticationEntryPoint, Acces
 
     private void throwAuthException(HttpServletResponse response, ErrorCode authErrorCode, String redirectUri) throws
             IOException {
-        AuthExceptionResponse exception = new AuthExceptionResponse(
+        AuthExceptionResponse exceptionResponse = new AuthExceptionResponse(
                 authErrorCode.getHttpStatus().value(), authErrorCode.getMessage(), redirectUri);
-        String json = new ObjectMapper().writeValueAsString(exception);
+        String exceptionResponseJson = new ObjectMapper().writeValueAsString(exceptionResponse);
         response.setStatus(authErrorCode.getHttpStatus().value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding("utf-8");
         PrintWriter write = response.getWriter();
-        write.write(json);
+        write.write(exceptionResponseJson);
         write.flush();
     }
 
