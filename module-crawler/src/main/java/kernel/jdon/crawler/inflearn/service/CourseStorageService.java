@@ -7,7 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kernel.jdon.crawler.global.error.code.SkillErrorCode;
 import kernel.jdon.crawler.global.error.exception.CrawlerException;
-import kernel.jdon.crawler.inflearn.converter.EntityConverter;
 import kernel.jdon.crawler.wanted.repository.InflearnCourseRepository;
 import kernel.jdon.crawler.wanted.repository.InflearnJdSkillRepository;
 import kernel.jdon.crawler.wanted.repository.SkillRepository;
@@ -51,7 +50,7 @@ public class CourseStorageService {
 	}
 
 	private void createInflearnJdSkill(InflearnCourse course, Skill skill) {
-		InflearnJdSkill createJdSkill = EntityConverter.createInflearnJdSkill(course, skill);
+		InflearnJdSkill createJdSkill = InflearnJdSkill.create(course, skill);
 		inflearnJdSkillRepository.save(createJdSkill);
 	}
 }

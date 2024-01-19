@@ -11,7 +11,6 @@ import jakarta.persistence.Table;
 import kernel.jdon.inflearncourse.domain.InflearnCourse;
 import kernel.jdon.skill.domain.Skill;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -33,9 +32,11 @@ public class InflearnJdSkill {
 	@JoinColumn(name = "skill_id", columnDefinition = "BIGINT")
 	private Skill skill;
 
-	@Builder
-	public InflearnJdSkill(Skill skill, InflearnCourse inflearnCourse) {
-		this.skill = skill;
-		this.inflearnCourse = inflearnCourse;
+	public static InflearnJdSkill create(InflearnCourse inflearnCourse, Skill skill) {
+		InflearnJdSkill jdSkill = new InflearnJdSkill();
+		jdSkill.inflearnCourse = inflearnCourse;
+		jdSkill.skill = skill;
+		
+		return jdSkill;
 	}
 }

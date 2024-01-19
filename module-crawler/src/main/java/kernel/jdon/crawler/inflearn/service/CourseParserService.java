@@ -4,7 +4,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
-import kernel.jdon.crawler.inflearn.converter.EntityConverter;
 import kernel.jdon.crawler.inflearn.util.SkillStandardizer;
 import kernel.jdon.inflearncourse.domain.InflearnCourse;
 import lombok.RequiredArgsConstructor;
@@ -29,9 +28,8 @@ public class CourseParserService {
 		String instructor = getText(courseElement, "div.instructor");
 		String imageUrl = courseElement.select("img").attr("src");
 		int price = Integer.parseInt(parsePrice(courseElement));
-
-		return EntityConverter.createInflearnCourse(courseId, title, lectureUrl, instructor,
-			studentCount, imageUrl, price);
+		
+		return InflearnCourse.create(courseId, title, lectureUrl, instructor, studentCount, imageUrl, price);
 	}
 
 	private String getText(Element element, String cssQuery) {

@@ -11,7 +11,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import kernel.jdon.base.BaseEntity;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -47,15 +46,17 @@ public class InflearnCourse extends BaseEntity {
 	@Column(name = "price", columnDefinition = "INT", nullable = false)
 	private int price;
 
-	@Builder
-	public InflearnCourse(Long courseId, String title, String lectureUrl, String instructor, Long studentCount,
-		String imageUrl, int price) {
-		this.courseId = courseId;
-		this.title = title;
-		this.lectureUrl = lectureUrl;
-		this.instructor = instructor;
-		this.studentCount = studentCount;
-		this.imageUrl = imageUrl;
-		this.price = price;
+	public static InflearnCourse create(Long courseId, String title, String lectureUrl, String instructor,
+		Long studentCount, String imageUrl, int price) {
+		InflearnCourse course = new InflearnCourse();
+		course.courseId = courseId;
+		course.title = title;
+		course.lectureUrl = lectureUrl;
+		course.instructor = instructor;
+		course.studentCount = studentCount;
+		course.imageUrl = imageUrl;
+		course.price = price;
+		
+		return course;
 	}
 }
