@@ -50,21 +50,6 @@ public class FavoriteController {
 	@PostMapping("/api/v1/favorites")
 	public ResponseEntity<CommonResponse> save(@LoginUser SessionUserInfo user,
 		@RequestBody UpdateFavoriteRequest updateFavoriteRequest) {
-		// URI uri;
-		// CommonResponse response;
-
-		// if (updateFavoriteRequest.getIsFavorite()) {
-		// 	CreateFavoriteResponse createFavoriteResponse = favoriteService.create(user.getId(),
-		// 		updateFavoriteRequest);
-		// 	uri = URI.create("/api/v1/favorites/" + createFavoriteResponse.getLectureId());
-		// 	response = CommonResponse.of(createFavoriteResponse);
-		// } else {
-		// 	UpdateFavoriteResponse updateFavoriteResponse = favoriteService.delete(user.getId(),
-		// 		updateFavoriteRequest);
-		// 	uri = URI.create("/api/v1/favorites/" + updateFavoriteResponse.getLectureId());
-		// 	response = CommonResponse.of(updateFavoriteResponse);
-		// }
-
 		UpdateFavoriteResponse updateFavoriteResponse = favoriteService.update(user.getId(),
 			updateFavoriteRequest);
 		URI uri = URI.create("/api/v1/favorites/" + updateFavoriteResponse.getLectureId());
