@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import kernel.jdon.auth.dto.SessionUserInfo;
 import kernel.jdon.dto.response.CommonResponse;
+import kernel.jdon.global.annotation.LoginUser;
 import kernel.jdon.skill.dto.response.FindCompanyBySkillResponse;
 import kernel.jdon.skill.dto.response.FindJdResponse;
 import kernel.jdon.skill.dto.response.FindLectureResponse;
@@ -17,7 +19,6 @@ import kernel.jdon.skill.dto.response.FindListDataBySkillResponse;
 import kernel.jdon.skill.dto.response.FindListHotSkillResponse;
 import kernel.jdon.skill.dto.response.FindListJobCategorySkillResponse;
 import kernel.jdon.skill.dto.response.FindListMemberSkillResponse;
-import kernel.jdon.skill.dto.response.FindMemberSkillResponse;
 import kernel.jdon.skill.service.SkillService;
 import lombok.RequiredArgsConstructor;
 
@@ -33,24 +34,11 @@ public class SkillController {
 	}
 
 	@GetMapping("/api/v1/skills/member")
-	public ResponseEntity<CommonResponse> getMemberSkillList() {
+	public ResponseEntity<CommonResponse> getMemberSkillList(@LoginUser SessionUserInfo sessionUser) {
+		Long memberId = sessionUser.getId();
+		FindListMemberSkillResponse findMemberSkillList = skillService.findMemberSkillList(memberId);
 
-		List<FindMemberSkillResponse> findMemberSkillResponseList = new ArrayList<>();
-		for (long i = 1; i <= 5; i++) {
-			FindMemberSkillResponse findMemberSkillResponse = FindMemberSkillResponse.builder()
-				.skillId(i)
-				.keyword("member_skill_" + i)
-				.build();
-
-			findMemberSkillResponseList.add(findMemberSkillResponse);
-		}
-
-		FindListMemberSkillResponse findListMemberSkillResponse =
-			FindListMemberSkillResponse.builder()
-				.skillList(findMemberSkillResponseList)
-				.build();
-
-		return ResponseEntity.ok(CommonResponse.of(findListMemberSkillResponse));
+		return ResponseEntity.ok(CommonResponse.of(findMemberSkillList));
 	}
 
 	@GetMapping("/api/v1/skills/job-category/{jobCategoryId}")
