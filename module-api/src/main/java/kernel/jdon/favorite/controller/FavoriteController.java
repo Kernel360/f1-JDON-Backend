@@ -48,7 +48,7 @@ public class FavoriteController {
 	}
 
 	@PostMapping("/api/v1/favorites")
-	public ResponseEntity<CommonResponse> save(@LoginUser SessionUserInfo user,
+	public ResponseEntity<CommonResponse> update(@LoginUser SessionUserInfo user,
 		@RequestBody UpdateFavoriteRequest updateFavoriteRequest) {
 		UpdateFavoriteResponse updateFavoriteResponse = favoriteService.update(user.getId(),
 			updateFavoriteRequest);
