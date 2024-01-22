@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class CreateFavoriteRequest {
+public class UpdateFavoriteRequest {
 	private Long lectureId;
 	private Boolean isFavorite;
 }

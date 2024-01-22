@@ -10,13 +10,20 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import kernel.jdon.auth.dto.SessionUserInfo;
 import kernel.jdon.dto.response.CommonResponse;
-import kernel.jdon.favorite.dto.request.CreateFavoriteRequest;
-import kernel.jdon.favorite.dto.response.CreateFavoriteResponse;
+import kernel.jdon.favorite.dto.request.UpdateFavoriteRequest;
 import kernel.jdon.favorite.dto.response.FindFavoriteResponse;
+import kernel.jdon.favorite.dto.response.UpdateFavoriteResponse;
+import kernel.jdon.favorite.service.FavoriteService;
+import kernel.jdon.global.annotation.LoginUser;
+import lombok.RequiredArgsConstructor;
 
 @RestController
+@RequiredArgsConstructor
 public class FavoriteController {
+
+	private final FavoriteService favoriteService;
 
 	@GetMapping("/api/v1/favorites")
 	public ResponseEntity<CommonResponse> getAll() {
@@ -41,10 +48,12 @@ public class FavoriteController {
 	}
 
 	@PostMapping("/api/v1/favorites")
-	public ResponseEntity<CommonResponse> save(@RequestBody CreateFavoriteRequest createFavoriteRequest) {
-		Long lectureId = createFavoriteRequest.getLectureId();
-		URI uri = URI.create("/api/v1/favorites/" + lectureId);
+	public ResponseEntity<CommonResponse> update(@LoginUser SessionUserInfo user,
+		@RequestBody UpdateFavoriteRequest updateFavoriteRequest) {
+		UpdateFavoriteResponse updateFavoriteResponse = favoriteService.update(user.getId(),
+			updateFavoriteRequest);
+		URI uri = URI.create("/api/v1/favorites/" + updateFavoriteResponse.getLectureId());
 
-		return ResponseEntity.created(uri).body(CommonResponse.of(CreateFavoriteResponse.of(lectureId)));
+		return ResponseEntity.created(uri).body(CommonResponse.of(updateFavoriteResponse));
 	}
 }
