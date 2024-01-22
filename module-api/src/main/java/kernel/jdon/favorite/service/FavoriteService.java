@@ -1,10 +1,15 @@
 package kernel.jdon.favorite.service;
 
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import kernel.jdon.favorite.domain.Favorite;
 import kernel.jdon.favorite.dto.request.UpdateFavoriteRequest;
+import kernel.jdon.favorite.dto.response.FindListFavoriteResponse;
 import kernel.jdon.favorite.dto.response.UpdateFavoriteResponse;
 import kernel.jdon.favorite.error.FavoriteErrorCode;
 import kernel.jdon.favorite.repository.FavoriteRepository;
@@ -61,5 +66,15 @@ public class FavoriteService {
 		favoriteRepository.delete(findFavorite);
 
 		return UpdateFavoriteResponse.of(findFavorite.getId());
+	}
+
+	public FindListFavoriteResponse findList(Long memberId, Pageable pageable) {
+		Page<Favorite> findFavoritePage = favoriteRepository.findFavoriteByMemberId(memberId,
+			pageable);
+		List<InflearnCourse> findInflearnCourseList = findFavoritePage.getContent().stream()
+			.map(Favorite::getInflearnCourse)
+			.toList();
+
+		return FindListFavoriteResponse.of(findInflearnCourseList, pageable, findFavoritePage.getTotalElements());
 	}
 }
