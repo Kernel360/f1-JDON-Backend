@@ -5,10 +5,10 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class DeleteFavoriteResponse {
+public class UpdateFavoriteResponse {
 	private Long lectureId;
 
-	public static DeleteFavoriteResponse of(Long lectureId) {
-		return new DeleteFavoriteResponse(lectureId);
+	public static UpdateFavoriteResponse of(Long lectureId) {
+		return new UpdateFavoriteResponse(lectureId);
 	}
 }

@@ -7,8 +7,7 @@ import kernel.jdon.error.code.api.MemberErrorCode;
 import kernel.jdon.favorite.domain.Favorite;
 import kernel.jdon.favorite.dto.object.CreateFavoriteDto;
 import kernel.jdon.favorite.dto.request.UpdateFavoriteRequest;
-import kernel.jdon.favorite.dto.response.CreateFavoriteResponse;
-import kernel.jdon.favorite.dto.response.DeleteFavoriteResponse;
+import kernel.jdon.favorite.dto.response.UpdateFavoriteResponse;
 import kernel.jdon.favorite.error.FavoriteErrorCode;
 import kernel.jdon.favorite.repository.FavoriteRepository;
 import kernel.jdon.global.exception.ApiException;
@@ -28,7 +27,17 @@ public class FavoriteService {
 	private final InflearnCourseRepository inflearnCourseRepository;
 
 	@Transactional
-	public CreateFavoriteResponse create(Long memberId, UpdateFavoriteRequest updateFavoriteRequest) {
+	public UpdateFavoriteResponse update(Long memberId, UpdateFavoriteRequest updateFavoriteRequest) {
+		UpdateFavoriteResponse updateFavoriteResponse;
+		if (updateFavoriteRequest.getIsFavorite()) {
+			updateFavoriteResponse = create(memberId, updateFavoriteRequest);
+		} else {
+			updateFavoriteResponse = delete(memberId, updateFavoriteRequest);
+		}
+		return updateFavoriteResponse;
+	}
+
+	public UpdateFavoriteResponse create(Long memberId, UpdateFavoriteRequest updateFavoriteRequest) {
 		Member findMember = memberRepository.findById(memberId)
 			.orElseThrow(() -> new ApiException(MemberErrorCode.NOT_FOUND_MEMBER));
 		InflearnCourse findInflearnCourse = inflearnCourseRepository.findById(
@@ -41,32 +50,31 @@ public class FavoriteService {
 			.orElseGet(() -> createNewFavorite(findMember, findInflearnCourse));
 	}
 
-	private CreateFavoriteResponse createNewFavorite(Member member, InflearnCourse inflearnCourse) {
+	private UpdateFavoriteResponse createNewFavorite(Member member, InflearnCourse inflearnCourse) {
 		CreateFavoriteDto createFavoriteDto = CreateFavoriteDto.builder()
 			.member(member)
 			.inflearnCourse(inflearnCourse)
 			.build();
 		Favorite savedFavorite = favoriteRepository.save(UpdateFavoriteRequest.toEntity(createFavoriteDto));
 
-		return CreateFavoriteResponse.of(savedFavorite.getId());
+		return UpdateFavoriteResponse.of(savedFavorite.getId());
 	}
 
-	private CreateFavoriteResponse activateFavorite(Favorite favorite) {
+	private UpdateFavoriteResponse activateFavorite(Favorite favorite) {
 		if (favorite.isDeleted()) {
 			favorite.like();
 		}
 
-		return CreateFavoriteResponse.of(favorite.getId());
+		return UpdateFavoriteResponse.of(favorite.getId());
 	}
 
-	@Transactional
-	public DeleteFavoriteResponse delete(Long memberId, UpdateFavoriteRequest updateFavoriteRequest) {
+	public UpdateFavoriteResponse delete(Long memberId, UpdateFavoriteRequest updateFavoriteRequest) {
 		Favorite findFavorite = favoriteRepository.findFavoriteByMemberIdAndInflearnCourseId(memberId,
 				updateFavoriteRequest.getLectureId())
 			.orElseThrow(() -> new ApiException(FavoriteErrorCode.NOT_FOUND_FAVORITE));
 
 		findFavorite.dislike();
 
-		return DeleteFavoriteResponse.of(findFavorite.getId());
+		return UpdateFavoriteResponse.of(findFavorite.getId());
 	}
 }

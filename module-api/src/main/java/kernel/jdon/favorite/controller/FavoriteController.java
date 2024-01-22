@@ -13,9 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import kernel.jdon.auth.dto.SessionUserInfo;
 import kernel.jdon.dto.response.CommonResponse;
 import kernel.jdon.favorite.dto.request.UpdateFavoriteRequest;
-import kernel.jdon.favorite.dto.response.CreateFavoriteResponse;
-import kernel.jdon.favorite.dto.response.DeleteFavoriteResponse;
 import kernel.jdon.favorite.dto.response.FindFavoriteResponse;
+import kernel.jdon.favorite.dto.response.UpdateFavoriteResponse;
 import kernel.jdon.favorite.service.FavoriteService;
 import kernel.jdon.global.annotation.LoginUser;
 import lombok.RequiredArgsConstructor;
@@ -51,21 +50,25 @@ public class FavoriteController {
 	@PostMapping("/api/v1/favorites")
 	public ResponseEntity<CommonResponse> save(@LoginUser SessionUserInfo user,
 		@RequestBody UpdateFavoriteRequest updateFavoriteRequest) {
-		URI uri;
-		CommonResponse response;
+		// URI uri;
+		// CommonResponse response;
 
-		if (updateFavoriteRequest.getIsFavorite()) {
-			CreateFavoriteResponse createFavoriteResponse = favoriteService.create(user.getId(),
-				updateFavoriteRequest);
-			uri = URI.create("/api/v1/favorites/" + createFavoriteResponse.getLectureId());
-			response = CommonResponse.of(createFavoriteResponse);
-		} else {
-			DeleteFavoriteResponse deleteFavoriteResponse = favoriteService.delete(user.getId(),
-				updateFavoriteRequest);
-			uri = URI.create("/api/v1/favorites/" + deleteFavoriteResponse.getLectureId());
-			response = CommonResponse.of(deleteFavoriteResponse);
-		}
+		// if (updateFavoriteRequest.getIsFavorite()) {
+		// 	CreateFavoriteResponse createFavoriteResponse = favoriteService.create(user.getId(),
+		// 		updateFavoriteRequest);
+		// 	uri = URI.create("/api/v1/favorites/" + createFavoriteResponse.getLectureId());
+		// 	response = CommonResponse.of(createFavoriteResponse);
+		// } else {
+		// 	UpdateFavoriteResponse updateFavoriteResponse = favoriteService.delete(user.getId(),
+		// 		updateFavoriteRequest);
+		// 	uri = URI.create("/api/v1/favorites/" + updateFavoriteResponse.getLectureId());
+		// 	response = CommonResponse.of(updateFavoriteResponse);
+		// }
 
-		return ResponseEntity.created(uri).body(response);
+		UpdateFavoriteResponse updateFavoriteResponse = favoriteService.update(user.getId(),
+			updateFavoriteRequest);
+		URI uri = URI.create("/api/v1/favorites/" + updateFavoriteResponse.getLectureId());
+
+		return ResponseEntity.created(uri).body(CommonResponse.of(updateFavoriteResponse));
 	}
 }
