@@ -25,14 +25,14 @@ public class CreateCoffeeChatRequest {
 	private LocalDateTime meetDate;
 	private String openChatUrl;
 
-	public static CoffeeChat toEntity(CreateCoffeeChatRequest request) {
+	public CoffeeChat toEntity(Member member) {
 		return CoffeeChat.builder()
-			.title(request.getTitle())
-			.content(request.getContent())
-			.totalRecruitCount(request.getTotalRecruitCount())
-			.meetDate(request.getMeetDate())
-			.openChatUrl(request.getOpenChatUrl())
-			.member(Member.builder().id(1L).build())
+			.title(title)
+			.content(content)
+			.totalRecruitCount(totalRecruitCount)
+			.meetDate(meetDate)
+			.openChatUrl(openChatUrl)
+			.member(member)
 			.build();
 	}
 
