@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public enum FavoriteErrorCode implements ErrorCode {
-	NOT_FOUND_FAVORITE(HttpStatus.NOT_FOUND, "존재하지 않는 Favorite 입니다.");
+	NOT_FOUND_FAVORITE(HttpStatus.NOT_FOUND, "존재하지 않는 찜 정보입니다.");
 
 	private final HttpStatus httpStatus;
 	private final String message;
