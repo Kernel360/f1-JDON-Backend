@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import kernel.jdon.auth.dto.SessionUserInfo;
 import kernel.jdon.dto.response.CommonResponse;
-import kernel.jdon.favorite.dto.request.CreateOrDeleteFavoriteRequest;
+import kernel.jdon.favorite.dto.request.UpdateFavoriteRequest;
 import kernel.jdon.favorite.dto.response.CreateFavoriteResponse;
 import kernel.jdon.favorite.dto.response.DeleteFavoriteResponse;
 import kernel.jdon.favorite.dto.response.FindFavoriteResponse;
@@ -50,18 +50,18 @@ public class FavoriteController {
 
 	@PostMapping("/api/v1/favorites")
 	public ResponseEntity<CommonResponse> save(@LoginUser SessionUserInfo user,
-		@RequestBody CreateOrDeleteFavoriteRequest createOrDeleteFavoriteRequest) {
+		@RequestBody UpdateFavoriteRequest updateFavoriteRequest) {
 		URI uri;
 		CommonResponse response;
 
-		if (createOrDeleteFavoriteRequest.getIsFavorite()) {
+		if (updateFavoriteRequest.getIsFavorite()) {
 			CreateFavoriteResponse createFavoriteResponse = favoriteService.create(user.getId(),
-				createOrDeleteFavoriteRequest);
+				updateFavoriteRequest);
 			uri = URI.create("/api/v1/favorites/" + createFavoriteResponse.getLectureId());
 			response = CommonResponse.of(createFavoriteResponse);
 		} else {
 			DeleteFavoriteResponse deleteFavoriteResponse = favoriteService.delete(user.getId(),
-				createOrDeleteFavoriteRequest);
+				updateFavoriteRequest);
 			uri = URI.create("/api/v1/favorites/" + deleteFavoriteResponse.getLectureId());
 			response = CommonResponse.of(deleteFavoriteResponse);
 		}

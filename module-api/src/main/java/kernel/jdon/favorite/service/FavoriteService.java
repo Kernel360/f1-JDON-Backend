@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import kernel.jdon.error.code.api.MemberErrorCode;
 import kernel.jdon.favorite.domain.Favorite;
 import kernel.jdon.favorite.dto.object.CreateFavoriteDto;
-import kernel.jdon.favorite.dto.request.CreateOrDeleteFavoriteRequest;
+import kernel.jdon.favorite.dto.request.UpdateFavoriteRequest;
 import kernel.jdon.favorite.dto.response.CreateFavoriteResponse;
 import kernel.jdon.favorite.dto.response.DeleteFavoriteResponse;
 import kernel.jdon.favorite.error.FavoriteErrorCode;
@@ -28,15 +28,15 @@ public class FavoriteService {
 	private final InflearnCourseRepository inflearnCourseRepository;
 
 	@Transactional
-	public CreateFavoriteResponse create(Long memberId, CreateOrDeleteFavoriteRequest createOrDeleteFavoriteRequest) {
+	public CreateFavoriteResponse create(Long memberId, UpdateFavoriteRequest updateFavoriteRequest) {
 		Member findMember = memberRepository.findById(memberId)
 			.orElseThrow(() -> new ApiException(MemberErrorCode.NOT_FOUND_MEMBER));
 		InflearnCourse findInflearnCourse = inflearnCourseRepository.findById(
-				createOrDeleteFavoriteRequest.getLectureId())
+				updateFavoriteRequest.getLectureId())
 			.orElseThrow(() -> new ApiException(InflearncourseErrorCode.NOT_FOUND_INFLEARN_COURSE));
 
 		return favoriteRepository.findFavoriteByMemberIdAndInflearnCourseId(memberId,
-				createOrDeleteFavoriteRequest.getLectureId())
+				updateFavoriteRequest.getLectureId())
 			.map(this::activateFavorite)
 			.orElseGet(() -> createNewFavorite(findMember, findInflearnCourse));
 	}
@@ -46,7 +46,7 @@ public class FavoriteService {
 			.member(member)
 			.inflearnCourse(inflearnCourse)
 			.build();
-		Favorite savedFavorite = favoriteRepository.save(CreateOrDeleteFavoriteRequest.toEntity(createFavoriteDto));
+		Favorite savedFavorite = favoriteRepository.save(UpdateFavoriteRequest.toEntity(createFavoriteDto));
 
 		return CreateFavoriteResponse.of(savedFavorite.getId());
 	}
@@ -60,9 +60,9 @@ public class FavoriteService {
 	}
 
 	@Transactional
-	public DeleteFavoriteResponse delete(Long memberId, CreateOrDeleteFavoriteRequest createOrDeleteFavoriteRequest) {
+	public DeleteFavoriteResponse delete(Long memberId, UpdateFavoriteRequest updateFavoriteRequest) {
 		Favorite findFavorite = favoriteRepository.findFavoriteByMemberIdAndInflearnCourseId(memberId,
-				createOrDeleteFavoriteRequest.getLectureId())
+				updateFavoriteRequest.getLectureId())
 			.orElseThrow(() -> new ApiException(FavoriteErrorCode.NOT_FOUND_FAVORITE));
 
 		findFavorite.dislike();
