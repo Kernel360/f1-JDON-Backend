@@ -2,6 +2,7 @@ package kernel.jdon.favorite.controller;
 
 import java.net.URI;
 
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,7 +29,8 @@ public class FavoriteController {
 
 	@GetMapping("/api/v1/favorites")
 	public ResponseEntity<CommonResponse> getList(@LoginUser SessionUserInfo user, Pageable pageable) {
-		FindListFavoriteResponse findListFavoriteResponse = favoriteService.findList(user.getId(), pageable);
+		Pageable modifiedPageable = PageRequest.of(pageable.getPageNumber(), 12, pageable.getSort());
+		FindListFavoriteResponse findListFavoriteResponse = favoriteService.findList(user.getId(), modifiedPageable);
 		CustomPageInfo<FindFavoriteResponse> customPageInfo = findListFavoriteResponse.getCustomPageInfo();
 
 		return ResponseEntity.ok(CommonResponse.of(customPageInfo));

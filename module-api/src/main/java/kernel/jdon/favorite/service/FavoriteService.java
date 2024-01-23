@@ -3,7 +3,6 @@ package kernel.jdon.favorite.service;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -70,9 +69,7 @@ public class FavoriteService {
 	}
 
 	public FindListFavoriteResponse findList(Long memberId, Pageable pageable) {
-		Pageable pageableWithFixedPageSize = PageRequest.of(pageable.getPageNumber(), 12, pageable.getSort());
-		Page<Favorite> findFavoritePage = favoriteRepository.findFavoriteByMemberId(memberId,
-			pageableWithFixedPageSize);
+		Page<Favorite> findFavoritePage = favoriteRepository.findFavoriteByMemberId(memberId, pageable);
 		List<InflearnCourse> findInflearnCourseList = findFavoritePage.getContent().stream()
 			.map(Favorite::getInflearnCourse)
 			.toList();
