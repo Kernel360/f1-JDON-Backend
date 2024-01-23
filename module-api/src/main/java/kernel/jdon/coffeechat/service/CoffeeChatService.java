@@ -1,5 +1,7 @@
 package kernel.jdon.coffeechat.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -8,6 +10,7 @@ import kernel.jdon.coffeechat.dto.request.CreateCoffeeChatRequest;
 import kernel.jdon.coffeechat.dto.request.UpdateCoffeeChatRequest;
 import kernel.jdon.coffeechat.dto.response.CreateCoffeeChatResponse;
 import kernel.jdon.coffeechat.dto.response.DeleteCoffeeChatResponse;
+import kernel.jdon.coffeechat.dto.response.FindCoffeeChatListResponse;
 import kernel.jdon.coffeechat.dto.response.FindCoffeeChatResponse;
 import kernel.jdon.coffeechat.dto.response.UpdateCoffeeChatResponse;
 import kernel.jdon.coffeechat.error.CoffeeChatErrorCode;
@@ -46,11 +49,15 @@ public class CoffeeChatService {
 		coffeeChat.increaseViewCount();
 	}
 
+	public Page<FindCoffeeChatListResponse> findHostCoffeeChatList(Long memberId, Pageable pageable) {
+		return coffeeChatRepository.findAllByMemberIdAndIsDeletedFalse(memberId, pageable)
+			.map(FindCoffeeChatListResponse::of);
+	}
+
 	@Transactional
 	public CreateCoffeeChatResponse create(CreateCoffeeChatRequest request, Long memberId) {
 		Member findMember = memberRepository.findById(memberId)
 			.orElseThrow(() -> new ApiException(MemberErrorCode.NOT_FOUND_MEMBER));
-		
 		CoffeeChat savedCoffeeChat = coffeeChatRepository.save(request.toEntity(findMember));
 
 		return CreateCoffeeChatResponse.of(savedCoffeeChat.getId());
