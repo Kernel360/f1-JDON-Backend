@@ -12,7 +12,7 @@ import lombok.Getter;
 @Getter
 @Builder
 public class FindListFavoriteResponse {
-	private CustomPageInfo<FindFavoriteResponse> pageInfo;
+	private CustomPageInfo<FindFavoriteResponse> customPageInfo;
 
 	public static FindListFavoriteResponse of(List<InflearnCourse> inflearnCourseList, Pageable pageable,
 		long totalCount) {
@@ -22,10 +22,7 @@ public class FindListFavoriteResponse {
 
 		CustomPageInfo<FindFavoriteResponse> customPageInfo = new CustomPageInfo<>(findFavoriteResponseList, pageable,
 			totalCount);
-
-		return FindListFavoriteResponse.builder()
-			.pageInfo(customPageInfo)
-			.build();
+		
+		return new FindListFavoriteResponse(customPageInfo);
 	}
-
 }
