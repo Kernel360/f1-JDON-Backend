@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,7 +25,6 @@ import kernel.jdon.coffeechat.dto.response.CreateCoffeeChatResponse;
 import kernel.jdon.coffeechat.dto.response.DeleteCoffeeChatResponse;
 import kernel.jdon.coffeechat.dto.response.FindCoffeeChatListResponse;
 import kernel.jdon.coffeechat.dto.response.UpdateCoffeeChatResponse;
-import kernel.jdon.coffeechat.repository.CoffeeChatRepository;
 import kernel.jdon.coffeechat.service.CoffeeChatService;
 import kernel.jdon.dto.response.CommonResponse;
 import kernel.jdon.global.annotation.LoginUser;
@@ -76,7 +76,7 @@ public class CoffeeChatController {
 
 	@GetMapping("/api/v1/coffeechats/host")
 	public ResponseEntity<CommonResponse> getHostCoffeeChatList(
-		@LoginUser SessionUserInfo sessionUser, Pageable pageable) {
+		@LoginUser SessionUserInfo sessionUser, @PageableDefault(size = 12) Pageable pageable) {
 
 		Page<FindCoffeeChatListResponse> hostCoffeeChatList = coffeeChatService.findHostCoffeeChatList(
 			sessionUser.getId(), pageable);
