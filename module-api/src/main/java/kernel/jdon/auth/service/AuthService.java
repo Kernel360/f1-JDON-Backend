@@ -4,6 +4,7 @@ import kernel.jdon.auth.dto.SessionUserInfo;
 import kernel.jdon.auth.error.AuthErrorCode;
 import kernel.jdon.global.exception.ApiException;
 import kernel.jdon.member.domain.SocialProviderType;
+import kernel.jdon.member.error.MemberErrorCode;
 import kernel.jdon.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +30,10 @@ public class AuthService {
 
     public Long withdraw(SessionUserInfo userInfo) {
         sendDeleteRequestToOAuth2(userInfo);
-        memberRepository.deleteById(userInfo.getId());
+        memberRepository.findById(userInfo.getId())
+                .orElseThrow(() -> new ApiException(MemberErrorCode.NOT_FOUND_MEMBER))
+                .withdrawMemberAccount();
+
         return userInfo.getId();
     }
 
@@ -59,6 +63,5 @@ public class AuthService {
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> responseEntity = restTemplate
                 .exchange(builder.toUriString(), HttpMethod.POST, requestEntity, String.class);
-        HttpStatus statusCode = (HttpStatus) responseEntity.getStatusCode();
     }
 }
