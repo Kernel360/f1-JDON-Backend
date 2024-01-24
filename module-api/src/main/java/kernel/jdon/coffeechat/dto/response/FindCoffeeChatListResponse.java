@@ -19,6 +19,7 @@ public class FindCoffeeChatListResponse {
 	private String job;
 	private String title;
 	private String status;
+	private boolean isDeleted;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
 	private LocalDateTime meetDate;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
@@ -32,6 +33,7 @@ public class FindCoffeeChatListResponse {
 			.nickname(coffeeChat.getMember().getNickname())
 			.title(coffeeChat.getTitle())
 			.status(coffeeChat.getCoffeeChatStatus().getActiveStatus())
+			.isDeleted(coffeeChat.isDeleted())
 			.meetDate(coffeeChat.getMeetDate())
 			.totalRecruitCount(coffeeChat.getTotalRecruitCount())
 			.currentRecruitCount(coffeeChat.getCurrentRecruitCount())

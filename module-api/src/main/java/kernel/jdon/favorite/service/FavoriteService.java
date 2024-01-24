@@ -3,7 +3,6 @@ package kernel.jdon.favorite.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import kernel.jdon.error.code.api.MemberErrorCode;
 import kernel.jdon.favorite.domain.Favorite;
 import kernel.jdon.favorite.dto.request.UpdateFavoriteRequest;
 import kernel.jdon.favorite.dto.response.UpdateFavoriteResponse;
@@ -14,6 +13,7 @@ import kernel.jdon.inflearncourse.domain.InflearnCourse;
 import kernel.jdon.inflearncourse.error.InflearncourseErrorCode;
 import kernel.jdon.inflearncourse.repository.InflearnCourseRepository;
 import kernel.jdon.member.domain.Member;
+import kernel.jdon.member.error.MemberErrorCode;
 import kernel.jdon.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 
