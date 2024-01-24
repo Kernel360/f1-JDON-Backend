@@ -57,6 +57,7 @@ public class JdonOAuth2UserService extends DefaultOAuth2UserService {
 		} else {
 			authorities = List.of(new SimpleGrantedAuthority("ROLE_TEMPORARY_USER"));
 		}
+
 		return new JdonOAuth2User(authorities, user.getAttributes(), getUserNameAttributeName(userRequest),
 			userInfo.getEmail(), userInfo.getSocialProvider());
 	}
@@ -64,7 +65,7 @@ public class JdonOAuth2UserService extends DefaultOAuth2UserService {
 	private UserInfoFromOAuth2 getUserInfoFromGithub(OAuth2User user) {
 		String email = (String)user.getAttributes().get("email");
 		isEmailExist(email);
-		String oAuthId = (String)user.getAttributes().get("id");
+		String oAuthId = String.valueOf(user.getAttributes().get("id"));
 
 		return UserInfoFromOAuth2.of(email, oAuthId, SocialProviderType.GITHUB);
 	}

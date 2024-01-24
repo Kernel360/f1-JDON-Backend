@@ -11,12 +11,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 @Slf4j
 public class AuthService {
@@ -28,6 +30,7 @@ public class AuthService {
     @Value("${spring.security.oauth2.client.provider.kakao.delete-user-url}")
     private String kakaoDeleteAccountUrl;
 
+    @Transactional
     public Long withdraw(SessionUserInfo userInfo) {
         sendDeleteRequestToOAuth2(userInfo);
         memberRepository.findById(userInfo.getId())
