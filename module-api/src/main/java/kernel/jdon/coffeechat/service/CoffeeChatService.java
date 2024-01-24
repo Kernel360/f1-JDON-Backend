@@ -57,7 +57,8 @@ public class CoffeeChatService {
 				pageable)
 			.map(FindCoffeeChatListResponse::of);
 
-		CustomPageInfo customPageInfo = new CustomPageInfo(findCoffeeChatListResponse.getContent(), pageable,
+		CustomPageInfo<FindCoffeeChatListResponse> customPageInfo = new CustomPageInfo<>(
+			findCoffeeChatListResponse.getContent(), pageable,
 			findCoffeeChatListResponse.getTotalElements());
 
 		return HostCoffeeChatListResponse.of(customPageInfo);
