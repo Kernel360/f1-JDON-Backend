@@ -1,12 +1,11 @@
 package kernel.jdon.faq.dto.request;
 
 import kernel.jdon.faq.domain.Faq;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor
 public class CreateFaqRequest {
 	private String title;
 	private String content;
