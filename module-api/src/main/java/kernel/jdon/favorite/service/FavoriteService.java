@@ -1,7 +1,5 @@
 package kernel.jdon.favorite.service;
 
-import java.util.List;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -70,10 +68,7 @@ public class FavoriteService {
 
 	public FindListFavoriteResponse findList(Long memberId, Pageable pageable) {
 		Page<Favorite> findFavoritePage = favoriteRepository.findFavoriteByMemberId(memberId, pageable);
-		List<InflearnCourse> findInflearnCourseList = findFavoritePage.getContent().stream()
-			.map(Favorite::getInflearnCourse)
-			.toList();
-
-		return FindListFavoriteResponse.of(findInflearnCourseList, pageable, findFavoritePage.getTotalElements());
+		
+		return FindListFavoriteResponse.of(findFavoritePage, pageable);
 	}
 }

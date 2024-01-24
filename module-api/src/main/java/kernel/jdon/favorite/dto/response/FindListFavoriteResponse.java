@@ -2,10 +2,11 @@ package kernel.jdon.favorite.dto.response;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import kernel.jdon.favorite.domain.Favorite;
 import kernel.jdon.global.page.CustomPageInfo;
-import kernel.jdon.inflearncourse.domain.InflearnCourse;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -14,15 +15,15 @@ import lombok.Getter;
 public class FindListFavoriteResponse {
 	private CustomPageInfo<FindFavoriteResponse> customPageInfo;
 
-	public static FindListFavoriteResponse of(List<InflearnCourse> inflearnCourseList, Pageable pageable,
-		long totalCount) {
-		List<FindFavoriteResponse> findFavoriteResponseList = inflearnCourseList.stream()
+	public static FindListFavoriteResponse of(Page<Favorite> findFavoritePage, Pageable pageable) {
+		List<FindFavoriteResponse> findFavoriteResponseList = findFavoritePage.getContent().stream()
+			.map(Favorite::getInflearnCourse)
 			.map(FindFavoriteResponse::of)
 			.toList();
 
 		CustomPageInfo<FindFavoriteResponse> customPageInfo = new CustomPageInfo<>(findFavoriteResponseList, pageable,
-			totalCount);
-		
+			findFavoritePage.getTotalElements());
+
 		return new FindListFavoriteResponse(customPageInfo);
 	}
 }
