@@ -50,12 +50,12 @@ public class CoffeeChatService {
 		coffeeChat.increaseViewCount();
 	}
 
-	public CustomPageResponse<FindCoffeeChatListResponse> findHostCoffeeChatList(Long memberId, Pageable pageable) {
+	public CustomPageResponse findHostCoffeeChatList(Long memberId, Pageable pageable) {
 		Page<FindCoffeeChatListResponse> findCoffeeChatPage = coffeeChatRepository.findAllByMemberIdAndIsDeletedFalse(
 				memberId, pageable)
 			.map(FindCoffeeChatListResponse::of);
 
-		return new CustomPageResponse<>(findCoffeeChatPage);
+		return CustomPageResponse.of(findCoffeeChatPage);
 	}
 
 	@Transactional

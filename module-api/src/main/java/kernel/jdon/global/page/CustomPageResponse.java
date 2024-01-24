@@ -5,21 +5,22 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
+@AllArgsConstructor
 public class CustomPageResponse<T> {
 
 	private List<T> content;
 	private PageInfo pageInfo;
 
-	public CustomPageResponse(Page<T> page) {
-		this.content = page.getContent();
-		this.pageInfo = new PageInfo(page);
+	public static CustomPageResponse of(Page page) {
+		return new CustomPageResponse(page.getContent(), new PageInfo(page));
 	}
 
 	@Getter
-	public class PageInfo implements Serializable {
+	public static class PageInfo implements Serializable {
 
 		private Integer pageNumber;
 		private Integer pageSize;
