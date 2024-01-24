@@ -13,12 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 import kernel.jdon.auth.dto.SessionUserInfo;
 import kernel.jdon.dto.response.CommonResponse;
 import kernel.jdon.favorite.dto.request.UpdateFavoriteRequest;
-import kernel.jdon.favorite.dto.response.FindFavoriteResponse;
 import kernel.jdon.favorite.dto.response.FindListFavoriteResponse;
 import kernel.jdon.favorite.dto.response.UpdateFavoriteResponse;
 import kernel.jdon.favorite.service.FavoriteService;
 import kernel.jdon.global.annotation.LoginUser;
-import kernel.jdon.global.page.CustomPageInfo;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -31,9 +29,10 @@ public class FavoriteController {
 	public ResponseEntity<CommonResponse> getList(@LoginUser SessionUserInfo user,
 		@PageableDefault(size = 12) Pageable pageable) {
 		FindListFavoriteResponse findListFavoriteResponse = favoriteService.findList(user.getId(), pageable);
-		CustomPageInfo<FindFavoriteResponse> customPageInfo = findListFavoriteResponse.getCustomPageInfo();
 
-		return ResponseEntity.ok(CommonResponse.of(customPageInfo));
+		// TODO: customPageInfo로 만들지 favoriteList와 pageInfo로 만들어서 Controller에서 한번에 반환할지 정해야합니다.
+		// return ResponseEntity.ok(CommonResponse.of(findListFavoriteResponse.getCustomPageInfo()));
+		return ResponseEntity.ok(CommonResponse.of(findListFavoriteResponse));
 	}
 
 	@PostMapping("/api/v1/favorites")
