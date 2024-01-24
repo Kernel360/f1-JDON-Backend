@@ -23,11 +23,11 @@ import kernel.jdon.coffeechat.dto.response.ApplyCoffeeChatResponse;
 import kernel.jdon.coffeechat.dto.response.CreateCoffeeChatResponse;
 import kernel.jdon.coffeechat.dto.response.DeleteCoffeeChatResponse;
 import kernel.jdon.coffeechat.dto.response.FindCoffeeChatListResponse;
-import kernel.jdon.coffeechat.dto.response.HostCoffeeChatListResponse;
 import kernel.jdon.coffeechat.dto.response.UpdateCoffeeChatResponse;
 import kernel.jdon.coffeechat.service.CoffeeChatService;
 import kernel.jdon.dto.response.CommonResponse;
 import kernel.jdon.global.annotation.LoginUser;
+import kernel.jdon.global.page.CustomPageResponse;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -78,8 +78,8 @@ public class CoffeeChatController {
 		@LoginUser SessionUserInfo sessionUser,
 		@PageableDefault(size = 12) Pageable pageable) {
 
-		HostCoffeeChatListResponse response = coffeeChatService.findHostCoffeeChatList(sessionUser.getId(),
-			pageable);
+		CustomPageResponse<FindCoffeeChatListResponse> response = coffeeChatService.findHostCoffeeChatList(
+			sessionUser.getId(), pageable);
 
 		return ResponseEntity.ok().body(CommonResponse.of(response));
 	}
