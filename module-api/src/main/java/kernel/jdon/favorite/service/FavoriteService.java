@@ -32,7 +32,7 @@ public class FavoriteService {
 
 	@Transactional
 	public UpdateFavoriteResponse update(Long memberId, UpdateFavoriteRequest updateFavoriteRequest) {
-		if (updateFavoriteRequest.getIsFavorite()) {
+		if (Boolean.TRUE.equals(updateFavoriteRequest.getIsFavorite())) {
 			return create(memberId, updateFavoriteRequest);
 		} else {
 			return delete(memberId, updateFavoriteRequest);
