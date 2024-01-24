@@ -1,12 +1,17 @@
 package kernel.jdon.skill.service;
 
+import static org.springframework.util.StringUtils.*;
+
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
 import kernel.jdon.skill.dto.object.FindHotSkillDto;
 import kernel.jdon.skill.dto.object.FindMemberSkillDto;
+import kernel.jdon.skill.dto.object.FindWantedJdDto;
 import kernel.jdon.skill.dto.response.FindJobCategorySkillResponse;
+import kernel.jdon.skill.dto.object.FindLectureDto;
+import kernel.jdon.skill.dto.response.FindListDataBySkillResponse;
 import kernel.jdon.skill.dto.response.FindListHotSkillResponse;
 import kernel.jdon.skill.dto.response.FindListJobCategorySkillResponse;
 import kernel.jdon.skill.dto.response.FindListMemberSkillResponse;
@@ -36,7 +41,15 @@ public class SkillService {
 			.map(FindJobCategorySkillResponse::of)
 			.toList();
 
-
 		return new FindListJobCategorySkillResponse(findJobCategorySkillList);
+	}
+
+	public FindListDataBySkillResponse findDataBySkillList(String keyword) {
+		keyword = hasText(keyword) ? keyword
+								   : skillRepository.findHotSkillList().get(0).getKeyword();
+		List<FindWantedJdDto> findWantedJdList = skillRepository.findWantedJdListBySkill(keyword);
+		List<FindLectureDto> findLectureList = skillRepository.findInflearnLectureListBySkill(keyword);
+
+		return FindListDataBySkillResponse.of(keyword, findLectureList, findWantedJdList);
 	}
 }
