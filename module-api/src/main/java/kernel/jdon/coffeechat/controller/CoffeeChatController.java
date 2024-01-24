@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
@@ -24,11 +23,11 @@ import kernel.jdon.coffeechat.dto.response.ApplyCoffeeChatResponse;
 import kernel.jdon.coffeechat.dto.response.CreateCoffeeChatResponse;
 import kernel.jdon.coffeechat.dto.response.DeleteCoffeeChatResponse;
 import kernel.jdon.coffeechat.dto.response.FindCoffeeChatListResponse;
+import kernel.jdon.coffeechat.dto.response.HostCoffeeChatListResponse;
 import kernel.jdon.coffeechat.dto.response.UpdateCoffeeChatResponse;
 import kernel.jdon.coffeechat.service.CoffeeChatService;
 import kernel.jdon.dto.response.CommonResponse;
 import kernel.jdon.global.annotation.LoginUser;
-import kernel.jdon.global.page.CustomPageInfo;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -79,11 +78,10 @@ public class CoffeeChatController {
 		@LoginUser SessionUserInfo sessionUser,
 		@PageableDefault(size = 12) Pageable pageable) {
 
-		Page<FindCoffeeChatListResponse> hostCoffeeChatList = coffeeChatService.findHostCoffeeChatList(
-			sessionUser.getId(), pageable);
+		HostCoffeeChatListResponse response = coffeeChatService.findHostCoffeeChatList(sessionUser.getId(),
+			pageable);
 
-		return ResponseEntity.ok().body(CommonResponse.of(
-			new CustomPageInfo(hostCoffeeChatList.getContent(), pageable, hostCoffeeChatList.getTotalElements())));
+		return ResponseEntity.ok().body(CommonResponse.of(response));
 	}
 
 	@GetMapping("/api/v1/coffeechats")

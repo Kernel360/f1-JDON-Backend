@@ -12,10 +12,12 @@ import kernel.jdon.coffeechat.dto.response.CreateCoffeeChatResponse;
 import kernel.jdon.coffeechat.dto.response.DeleteCoffeeChatResponse;
 import kernel.jdon.coffeechat.dto.response.FindCoffeeChatListResponse;
 import kernel.jdon.coffeechat.dto.response.FindCoffeeChatResponse;
+import kernel.jdon.coffeechat.dto.response.HostCoffeeChatListResponse;
 import kernel.jdon.coffeechat.dto.response.UpdateCoffeeChatResponse;
 import kernel.jdon.coffeechat.error.CoffeeChatErrorCode;
 import kernel.jdon.coffeechat.repository.CoffeeChatRepository;
 import kernel.jdon.global.exception.ApiException;
+import kernel.jdon.global.page.CustomPageInfo;
 import kernel.jdon.member.domain.Member;
 import kernel.jdon.member.error.MemberErrorCode;
 import kernel.jdon.member.repository.MemberRepository;
@@ -49,9 +51,16 @@ public class CoffeeChatService {
 		coffeeChat.increaseViewCount();
 	}
 
-	public Page<FindCoffeeChatListResponse> findHostCoffeeChatList(Long memberId, Pageable pageable) {
-		return coffeeChatRepository.findAllByMemberIdAndIsDeletedFalse(memberId, pageable)
+	public HostCoffeeChatListResponse findHostCoffeeChatList(Long memberId, Pageable pageable) {
+		Page<FindCoffeeChatListResponse> findCoffeeChatListResponse = coffeeChatRepository.findAllByMemberIdAndIsDeletedFalse(
+				memberId,
+				pageable)
 			.map(FindCoffeeChatListResponse::of);
+
+		CustomPageInfo customPageInfo = new CustomPageInfo(findCoffeeChatListResponse.getContent(), pageable,
+			findCoffeeChatListResponse.getTotalElements());
+
+		return HostCoffeeChatListResponse.of(customPageInfo);
 	}
 
 	@Transactional
