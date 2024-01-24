@@ -30,9 +30,7 @@ public class FavoriteController {
 		@PageableDefault(size = 12) Pageable pageable) {
 		FindListFavoriteResponse findListFavoriteResponse = favoriteService.findList(user.getId(), pageable);
 
-		// TODO: customPageInfo로 만들지 favoriteList와 pageInfo로 만들어서 Controller에서 한번에 반환할지 정해야합니다.
-		// return ResponseEntity.ok(CommonResponse.of(findListFavoriteResponse.getCustomPageInfo()));
-		return ResponseEntity.ok(CommonResponse.of(findListFavoriteResponse));
+		return ResponseEntity.ok(CommonResponse.of(findListFavoriteResponse.getCustomPageInfo()));
 	}
 
 	@PostMapping("/api/v1/favorites")
