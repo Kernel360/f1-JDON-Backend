@@ -7,11 +7,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kernel.jdon.favorite.domain.Favorite;
 import kernel.jdon.favorite.dto.request.UpdateFavoriteRequest;
-import kernel.jdon.favorite.dto.response.FindListFavoriteResponse;
+import kernel.jdon.favorite.dto.response.FindFavoriteResponse;
 import kernel.jdon.favorite.dto.response.UpdateFavoriteResponse;
 import kernel.jdon.favorite.error.FavoriteErrorCode;
 import kernel.jdon.favorite.repository.FavoriteRepository;
 import kernel.jdon.global.exception.ApiException;
+import kernel.jdon.global.page.CustomPageResponse;
 import kernel.jdon.inflearncourse.domain.InflearnCourse;
 import kernel.jdon.inflearncourse.error.InflearncourseErrorCode;
 import kernel.jdon.inflearncourse.repository.InflearnCourseRepository;
@@ -66,9 +67,12 @@ public class FavoriteService {
 		return UpdateFavoriteResponse.of(findFavorite.getId());
 	}
 
-	public FindListFavoriteResponse findList(Long memberId, Pageable pageable) {
+	public CustomPageResponse findList(Long memberId, Pageable pageable) {
 		Page<Favorite> findFavoritePage = favoriteRepository.findFavoriteByMemberId(memberId, pageable);
-		
-		return FindListFavoriteResponse.of(findFavoritePage, pageable);
+		Page<FindFavoriteResponse> findFavoriteResponsePage = findFavoritePage.map(
+			favorite -> FindFavoriteResponse.of(favorite.getInflearnCourse())
+		);
+
+		return CustomPageResponse.of(findFavoriteResponsePage);
 	}
 }
