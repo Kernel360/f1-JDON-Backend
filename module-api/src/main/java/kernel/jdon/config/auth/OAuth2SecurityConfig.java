@@ -42,23 +42,16 @@ public class OAuth2SecurityConfig {
         http.exceptionHandling(exceptionConfig -> exceptionConfig
                 .authenticationEntryPoint(jdonAuthExceptionHandler)
                 .accessDeniedHandler(jdonAuthExceptionHandler));
-//		http.csrf(csrfConfigurer -> csrfConfigurer.disable());
         http.csrf(csrfConfigurer -> csrfConfigurer
                 .ignoringRequestMatchers("/api/v1/register", "/api/v1/nickname/duplicate")
                 .csrfTokenRepository(setHttpSessionCsrfTokenRepository())
                 .csrfTokenRequestHandler(csrfTokenRequestAttributeHandler)
         );
         http.authorizeHttpRequests(config -> config
-//                .requestMatchers("/api/v1/csrf-token").permitAll()
+                .requestMatchers("/oauth2/authorization/**", "/api/v1/register", "/api/v1/nickname/duplicate").permitAll()
                 .requestMatchers("/api/v1/**").permitAll()
-//			.requestMatchers("/api/v1/member").hasAnyRole("USER")
+                .requestMatchers("/api/v1/member/**", "/api/v1/withdraw", "/api/v1/logout").hasAnyRole("USER")
                 .anyRequest().permitAll());
-//		http.authorizeHttpRequests(requestConfig -> requestConfig
-//				.requestMatchers("/login").permitAll()
-//				.requestMatchers("/oauth2/authorization/**", "/api/v1/register", "/api/v1/nickname/duplicate").permitAll()
-//				.requestMatchers("/api/v1/member/**", "/api/v1/withdraw", "/api/v1/logout").hasAnyRole("USER")
-//				.requestMatchers("/api/v1/**").permitAll()
-//				.anyRequest().permitAll());
         http.oauth2Login(oauth2Configurer -> oauth2Configurer
                 .successHandler(jdonOAuth2AuthenticationSuccessHandler)
                 .failureHandler(jdonAuthExceptionHandler)
