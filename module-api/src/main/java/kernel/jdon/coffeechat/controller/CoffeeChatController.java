@@ -123,9 +123,13 @@ public class CoffeeChatController {
 	}
 
 	@PostMapping("/api/v1/coffeechats/{id}")
-	public ResponseEntity<CommonResponse> apply(@PathVariable(name = "id") Long coffeeChatId) {
+	public ResponseEntity<CommonResponse> apply(
+		@PathVariable(name = "id") Long coffeeChatId,
+		@LoginUser SessionUserInfo sessionUser) {
 
-		return ResponseEntity.ok().body(CommonResponse.of(ApplyCoffeeChatResponse.of(coffeeChatId)));
+		ApplyCoffeeChatResponse response = coffeeChatService.apply(coffeeChatId, sessionUser.getId());
+
+		return ResponseEntity.ok().body(CommonResponse.of(response));
 	}
 
 }
