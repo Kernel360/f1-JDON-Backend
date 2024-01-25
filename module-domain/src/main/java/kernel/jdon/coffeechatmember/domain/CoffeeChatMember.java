@@ -3,9 +3,11 @@ package kernel.jdon.coffeechatmember.domain;
 import java.time.LocalDateTime;
 
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,9 +17,15 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import kernel.jdon.coffeechat.domain.CoffeeChat;
 import kernel.jdon.member.domain.Member;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "coffee_chat_member")
+@EntityListeners(AuditingEntityListener.class)
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CoffeeChatMember {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,4 +42,14 @@ public class CoffeeChatMember {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "coffee_chat_id", columnDefinition = "BIGINT")
 	private CoffeeChat coffeeChat;
+
+	private CoffeeChatMember(Member member, CoffeeChat coffeeChat) {
+		this.member = member;
+		this.coffeeChat = coffeeChat;
+	}
+
+	public static CoffeeChatMember from(Member member, CoffeeChat coffeeChat) {
+		return new CoffeeChatMember(member, coffeeChat);
+	}
+
 }
