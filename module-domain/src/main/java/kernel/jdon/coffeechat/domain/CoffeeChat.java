@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.hibernate.annotations.SQLDelete;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -69,7 +70,7 @@ public class CoffeeChat extends BaseEntity {
 	@JoinColumn(name = "created_by", columnDefinition = "BIGINT")
 	private Member member;
 
-	@OneToMany(mappedBy = "coffeeChat")
+	@OneToMany(mappedBy = "coffeeChat", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<CoffeeChatMember> coffeeChatMemberList = new ArrayList<>();
 
 	@Builder
@@ -85,6 +86,16 @@ public class CoffeeChat extends BaseEntity {
 
 	public void increaseViewCount() {
 		this.viewCount += 1;
+	}
+
+	public void applyCoffeeChat(CoffeeChatMember coffeeChatMember) {
+		this.coffeeChatMemberList.add(coffeeChatMember);
+		increaseCurrentRecruitCount();
+		updateStatusByRecruitCount();
+	}
+
+	private void increaseCurrentRecruitCount() {
+		this.currentRecruitCount += 1;
 	}
 
 	public void updateCoffeeChat(CoffeeChat request) {
