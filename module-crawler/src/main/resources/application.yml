@@ -22,6 +22,12 @@ decorator:
     p6spy:
       enable-logging: true
 
-max_fetch_jd_list:
-  size: 10
-  offset: 5
+scraping:
+  wanted:
+    max_fetch_jd_list:
+      size: 10 # 스크래핑 시 총 몇 개의 Job Description을 가져올지 설정
+      offset: 5 # 각 스크래핑 요청 당 몇 개의 Job Description을 가져올지 설정
+    sleep:
+      threshold_count: 30 # 지정된 개수까지 Job Description을 스크래핑한 후 쉬도록 설정
+      time_millis: 1000 # 쉬는 시간의 길이를 밀리초 단위로 설정
+

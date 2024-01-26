@@ -48,11 +48,14 @@ public class WantedCrawlerService {
 	private final SkillRepository skillRepository;
 	private final SkillHistoryRepository skillHistoryRepository;
 	private final JobCategoryRepository jobCategoryRepository;
-	@Value("${max_fetch_jd_list.size}")
+	@Value("${scraping.wanted.max_fetch_jd_list.size}")
 	private int MAX_FETCH_JD_LIST_SIZE;
-	@Value("${max_fetch_jd_list.offset}")
+	@Value("${scraping.wanted.max_fetch_jd_list.offset}")
 	private int MAX_FETCH_JD_LIST_OFFSET;
-	private static final int SLEEP_TIME_MILLIS = 1000;
+	@Value("${scraping.wanted.sleep.time_millis}")
+	private int SLEEP_TIME_MILLIS;
+	@Value("${scraping.wanted.sleep.threshold_count}")
+	private int THRESHOLD_COUNT;
 
 	@Transactional
 	public void fetchJd() throws InterruptedException {
@@ -66,8 +69,6 @@ public class WantedCrawlerService {
 			JobCategory findJobCategory = findByJobPosition(jobPosition);
 
 			createJobDetail(jobPosition, findJobCategory, fetchJobIds);
-
-			Thread.sleep(SLEEP_TIME_MILLIS);
 		}
 	}
 
@@ -76,11 +77,18 @@ public class WantedCrawlerService {
 			.orElseThrow(() -> new CrawlerException(WantedErrorCode.NOT_FOUND_JOB_CATEGORY));
 	}
 
-	private void createJobDetail(JobSearchJobPosition jobPosition, JobCategory jobCategory, Set<Long> fetchJobIds) {
+	private void createJobDetail(JobSearchJobPosition jobPosition, JobCategory jobCategory,
+		Set<Long> fetchJobIds) throws InterruptedException {
+		int sleepCounter = 0;
 		for (Long detailId : fetchJobIds) {
 			if (isJobDetailExist(jobCategory, detailId)) {
 				continue;
 			}
+			if (sleepCounter == THRESHOLD_COUNT) {
+				Thread.sleep(SLEEP_TIME_MILLIS);
+				sleepCounter = 0;
+			}
+
 			WantedJobDetailResponse jobDetailResponse = getJobDetail(jobCategory, detailId);
 			WantedJd savedWantedJd = createWantedJd(jobDetailResponse);
 
@@ -88,6 +96,8 @@ public class WantedCrawlerService {
 
 			createSkillHistory(jobCategory, savedWantedJd, wantedDetailSkillList);
 			createWantedJdSkill(jobPosition, jobCategory, savedWantedJd, wantedDetailSkillList);
+
+			sleepCounter++;
 		}
 	}
 
@@ -95,20 +105,23 @@ public class WantedCrawlerService {
 		return wantedJdRepository.existsByJobCategoryAndDetailId(jobCategory, detailId);
 	}
 
-	private void createSkillHistory(JobCategory jobCategory, WantedJd wantedJd, List<WantedJobDetailResponse.WantedSkill> wantedDetailSkillList) {
+	private void createSkillHistory(JobCategory jobCategory, WantedJd wantedJd,
+		List<WantedJobDetailResponse.WantedSkill> wantedDetailSkillList) {
 		for (WantedJobDetailResponse.WantedSkill wantedJdDetailSkill : wantedDetailSkillList) {
 			skillHistoryRepository.save(
-				EntityConverter.createSkillHistory(new CreateSkillDto(jobCategory, wantedJd, wantedJdDetailSkill.getKeyword())));
+				EntityConverter.createSkillHistory(
+					new CreateSkillDto(jobCategory, wantedJd, wantedJdDetailSkill.getKeyword())));
 		}
 	}
 
-	private void createWantedJdSkill(JobSearchJobPosition jobPosition, JobCategory jobCategory, WantedJd wantedJd, List<WantedJobDetailResponse.WantedSkill> wantedDetailSkillList) {
+	private void createWantedJdSkill(JobSearchJobPosition jobPosition, JobCategory jobCategory, WantedJd wantedJd,
+		List<WantedJobDetailResponse.WantedSkill> wantedDetailSkillList) {
 		//TODO : 전략패턴으로 리팩토링 필요
 		SkillType[] skillTypes = (jobPosition == JobSearchJobPosition.JOB_POSITION_SERVER)
 			? BackendSkillType.values()
 			: FrontendSkillType.values();
 
-		for (WantedJobDetailResponse.WantedSkill wantedSkill: wantedDetailSkillList) {
+		for (WantedJobDetailResponse.WantedSkill wantedSkill : wantedDetailSkillList) {
 			String skillKeyword = wantedSkill.getKeyword();
 
 			boolean isSkillInJobPosition = Arrays.stream(skillTypes)
