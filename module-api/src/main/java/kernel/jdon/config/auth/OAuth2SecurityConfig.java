@@ -30,12 +30,12 @@ public class OAuth2SecurityConfig {
         XorCsrfTokenRequestAttributeHandler csrfTokenRequestAttributeHandler = new XorCsrfTokenRequestAttributeHandler();
         csrfTokenRequestAttributeHandler.setCsrfRequestAttributeName(null);
 
-		http.cors(corsCustomizer -> corsCustomizer.configurationSource(request -> {
-			CorsConfiguration config = new CorsConfiguration();
-			config.setAllowedOrigins(List.of("http://localhost:3000", "https://peaceful-sopapillas-36c089.netlify.app"));
-			config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
-			config.setAllowedHeaders(List.of("*"));
-			config.setMaxAge(3600L);
+        http.cors(corsCustomizer -> corsCustomizer.configurationSource(request -> {
+            CorsConfiguration config = new CorsConfiguration();
+            config.setAllowedOrigins(List.of("http://localhost:3000", "https://peaceful-sopapillas-36c089.netlify.app"));
+            config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
+            config.setAllowedHeaders(List.of("*"));
+            config.setMaxAge(3600L);
 
             return config;
         }));
@@ -49,7 +49,6 @@ public class OAuth2SecurityConfig {
         );
         http.authorizeHttpRequests(config -> config
                 .requestMatchers("/oauth2/authorization/**", "/api/v1/register", "/api/v1/nickname/duplicate").permitAll()
-                .requestMatchers("/api/v1/**").permitAll()
                 .requestMatchers("/api/v1/member/**", "/api/v1/withdraw", "/api/v1/logout").hasAnyRole("USER")
                 .anyRequest().permitAll());
         http.oauth2Login(oauth2Configurer -> oauth2Configurer
