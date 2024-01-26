@@ -59,11 +59,7 @@ public class WantedCrawlerService {
 
 	@Transactional
 	public void fetchJd() throws InterruptedException {
-		JobSearchJobPosition[] jobPositions = {
-			JobSearchJobPosition.JOB_POSITION_FRONTEND,
-			JobSearchJobPosition.JOB_POSITION_SERVER
-		};
-		for (JobSearchJobPosition jobPosition : jobPositions) {
+		for (JobSearchJobPosition jobPosition : JobSearchJobPosition.getAllPositions()) {
 			Set<Long> fetchJobIds = fetchJobIdList(jobPosition);
 
 			JobCategory findJobCategory = findByJobPosition(jobPosition);
@@ -82,7 +78,7 @@ public class WantedCrawlerService {
 		int sleepCounter = 0;
 		for (Long detailId : fetchJobIds) {
 			if (isJobDetailExist(jobCategory, detailId)) {
-				continue;
+				break;
 			}
 			if (sleepCounter == THRESHOLD_COUNT) {
 				Thread.sleep(SLEEP_TIME_MILLIS);
