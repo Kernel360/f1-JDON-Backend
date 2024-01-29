@@ -17,7 +17,6 @@ import kernel.jdon.coffeechat.dto.response.FindCoffeeChatResponse;
 import kernel.jdon.coffeechat.dto.response.UpdateCoffeeChatResponse;
 import kernel.jdon.coffeechat.error.CoffeeChatErrorCode;
 import kernel.jdon.coffeechat.repository.CoffeeChatRepository;
-import kernel.jdon.coffeechatmember.domain.CoffeeChatMember;
 import kernel.jdon.global.exception.ApiException;
 import kernel.jdon.global.page.CustomPageResponse;
 import kernel.jdon.member.domain.Member;
@@ -43,11 +42,15 @@ public class CoffeeChatService {
 
 	private CoffeeChat findExistAndOpenCoffeeChat(Long coffeeChatId) {
 
-		return coffeeChatRepository.findByIdAndCoffeeChatStatus(coffeeChatId, CoffeeChatActiveStatus.OPEN)
-			.orElseThrow(() -> new ApiException(CoffeeChatErrorCode.NOT_OPEN_COFFEECHAT));
+		CoffeeChat findCoffeeChat = findExistCoffeeChat(coffeeChatId);
+		if (findCoffeeChat.getCoffeeChatStatus() != CoffeeChatActiveStatus.OPEN) {
+			throw new ApiException(CoffeeChatErrorCode.NOT_OPEN_COFFEECHAT);
+		}
+
+		return findCoffeeChat;
 	}
 
-	private Member findExistMember(Long memberId) {
+	private Member findMember(Long memberId) {
 		return memberRepository.findById(memberId)
 			.orElseThrow(() -> new ApiException(MemberErrorCode.NOT_FOUND_MEMBER));
 	}
@@ -74,7 +77,7 @@ public class CoffeeChatService {
 
 	@Transactional
 	public CreateCoffeeChatResponse create(CreateCoffeeChatRequest request, Long memberId) {
-		Member findMember = findExistMember(memberId);
+		Member findMember = findMember(memberId);
 		CoffeeChat savedCoffeeChat = coffeeChatRepository.save(request.toEntity(findMember));
 
 		return CreateCoffeeChatResponse.of(savedCoffeeChat.getId());
@@ -83,19 +86,17 @@ public class CoffeeChatService {
 	@Transactional
 	public ApplyCoffeeChatResponse apply(Long coffeeChatId, Long memberId) {
 		CoffeeChat findCoffeeChat = findExistAndOpenCoffeeChat(coffeeChatId);
-		Member findMember = findExistMember(memberId);
+		Member findMember = findMember(memberId);
 
 		checkIfGuestEqualToHost(findMember, findCoffeeChat);
-
-		CoffeeChatMember coffeeChatMember = CoffeeChatMember.from(findMember, findCoffeeChat);
-		findCoffeeChat.applyCoffeeChat(coffeeChatMember);
+		findCoffeeChat.addCoffeeChatMember(findMember);
 
 		return ApplyCoffeeChatResponse.of(findCoffeeChat.getId());
 	}
 
 	private void checkIfGuestEqualToHost(Member findMember, CoffeeChat findCoffeeChat) {
 		if (findMember.getId().equals(findCoffeeChat.getMember().getId())) {
-			throw new ApiException(CoffeeChatErrorCode.CAN_NOT_JOIN_OWN_COFEECHAT);
+			throw new ApiException(CoffeeChatErrorCode.CAN_NOT_JOIN_OWN_COFFEECHAT);
 		}
 	}
 
