@@ -19,15 +19,17 @@ import static kernel.jdon.util.StringUtil.joinToString;
 
 @Component
 @Slf4j
-public class JdonOAuth2AuthenticationSuccessHandler implements AuthenticationSuccessHandler{
+public class JdonOAuth2AuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        JdonOAuth2User jdonOAuth2User = (JdonOAuth2User)authentication.getPrincipal();
+        JdonOAuth2User jdonOAuth2User = (JdonOAuth2User) authentication.getPrincipal();
         if (isTemporaryUser(jdonOAuth2User)) {
             String query = createUserInfoString(jdonOAuth2User.getEmail(), jdonOAuth2User.getSocialProviderType());
             String encodedQueryString = createEncryptQueryString(query);
             response.sendRedirect(joinToString("http://localhost:3000/oauth/info?", encodedQueryString));
+        } else {
+            response.sendRedirect("http://localhost:3000/oauth/login/success");
         }
     }
 
