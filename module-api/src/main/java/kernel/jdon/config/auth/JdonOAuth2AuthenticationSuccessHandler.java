@@ -11,6 +11,8 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 import static kernel.jdon.auth.encrypt.AesUtil.encryptAESCBC;
 import static kernel.jdon.auth.encrypt.HmacUtil.generateHMAC;
@@ -27,6 +29,7 @@ public class JdonOAuth2AuthenticationSuccessHandler implements AuthenticationSuc
         if (isTemporaryUser(jdonOAuth2User)) {
             String query = createUserInfoString(jdonOAuth2User.getEmail(), jdonOAuth2User.getSocialProviderType());
             String encodedQueryString = createEncryptQueryString(query);
+            log.info("encodedQuery: {}", encodedQueryString);
             response.sendRedirect(joinToString("http://localhost:3000/oauth/info?", encodedQueryString));
         } else {
             response.sendRedirect("http://localhost:3000/oauth/login/success");
@@ -45,8 +48,8 @@ public class JdonOAuth2AuthenticationSuccessHandler implements AuthenticationSuc
         String encoded = null;
         try {
             encoded = encryptAESCBC(info);
-            encoded = joinToString(createQueryString("value", encoded),
-                    createQueryString("hmac", generateHMAC(encoded)));
+            encoded = joinToString(createQueryString("value", URLEncoder.encode(encoded, StandardCharsets.UTF_8)),
+                    createQueryString("hmac", URLEncoder.encode(generateHMAC(encoded), StandardCharsets.UTF_8)));
         } catch (Exception e) {
             log.warn(e.getMessage(), e);
         }
