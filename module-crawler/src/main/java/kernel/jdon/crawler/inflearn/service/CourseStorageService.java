@@ -1,7 +1,6 @@
 package kernel.jdon.crawler.inflearn.service;
 
 import java.util.List;
-import java.util.Objects;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,7 +42,6 @@ public class CourseStorageService {
 		List<Skill> skills = skillRepository.findByKeyword(skillKeyword);
 		return skills.stream()
 			.map(Skill::getJobCategory)
-			.filter(Objects::nonNull)
 			.map(JobCategory::getId)
 			.distinct()
 			.toList();
