@@ -3,16 +3,14 @@ package kernel.jdon.crawler.wanted.service;
 import static kernel.jdon.util.StringUtil.*;
 
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
-import kernel.jdon.crawler.config.UrlConfig;
+import kernel.jdon.crawler.config.ScrapingWantedConfig;
 import kernel.jdon.crawler.global.error.code.WantedErrorCode;
 import kernel.jdon.crawler.global.error.exception.CrawlerException;
 import kernel.jdon.crawler.wanted.converter.EntityConverter;
@@ -29,6 +27,8 @@ import kernel.jdon.crawler.wanted.search.JobSearchJobCategory;
 import kernel.jdon.crawler.wanted.search.JobSearchJobPosition;
 import kernel.jdon.crawler.wanted.search.JobSearchLocation;
 import kernel.jdon.crawler.wanted.search.JobSearchSort;
+import kernel.jdon.crawler.wanted.service.infrastructure.JobDetailProcessingCounter;
+import kernel.jdon.crawler.wanted.service.infrastructure.JobListProcessingCounter;
 import kernel.jdon.crawler.wanted.skill.BackendSkillType;
 import kernel.jdon.crawler.wanted.skill.FrontendSkillType;
 import kernel.jdon.crawler.wanted.skill.SkillType;
@@ -42,79 +42,91 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class WantedCrawlerService {
 	private final RestTemplate restTemplate;
-	private final UrlConfig urlConfig;
+	private final ScrapingWantedConfig scrapingWantedConfig;
 	private final WantedJdRepository wantedJdRepository;
 	private final WantedJdSkillRepository wantedJdSkillRepository;
 	private final SkillRepository skillRepository;
 	private final SkillHistoryRepository skillHistoryRepository;
 	private final JobCategoryRepository jobCategoryRepository;
-	@Value("${max_fetch_jd_list.size}")
-	private int MAX_FETCH_JD_LIST_SIZE;
-	@Value("${max_fetch_jd_list.offset}")
-	private int MAX_FETCH_JD_LIST_OFFSET;
-	private static final int SLEEP_TIME_MILLIS = 1000;
 
 	@Transactional
 	public void fetchJd() throws InterruptedException {
-		JobSearchJobPosition[] jobPositions = {
-			JobSearchJobPosition.JOB_POSITION_FRONTEND,
-			JobSearchJobPosition.JOB_POSITION_SERVER
-		};
-		for (JobSearchJobPosition jobPosition : jobPositions) {
+		for (JobSearchJobPosition jobPosition : JobSearchJobPosition.getAllPositions()) {
 			Set<Long> fetchJobIds = fetchJobIdList(jobPosition);
 
 			JobCategory findJobCategory = findByJobPosition(jobPosition);
 
-			createJobDetail(jobPosition, findJobCategory, fetchJobIds);
-
-			Thread.sleep(SLEEP_TIME_MILLIS);
+			processJobDetails(jobPosition, findJobCategory, fetchJobIds);
 		}
 	}
 
-	private JobCategory findByJobPosition(JobSearchJobPosition jobPosition) {
+	private JobCategory findByJobPosition(final JobSearchJobPosition jobPosition) {
 		return jobCategoryRepository.findByWantedCode(jobPosition.getSearchValue())
 			.orElseThrow(() -> new CrawlerException(WantedErrorCode.NOT_FOUND_JOB_CATEGORY));
 	}
 
-	private void createJobDetail(JobSearchJobPosition jobPosition, JobCategory jobCategory, Set<Long> fetchJobIds) {
-		for (Long detailId : fetchJobIds) {
-			if (isJobDetailExist(jobCategory, detailId)) {
+	private void processJobDetails(final JobSearchJobPosition jobPosition, final JobCategory jobCategory,
+		final Set<Long> fetchJobIds) throws InterruptedException {
+		JobDetailProcessingCounter jobProcessingCounter = new JobDetailProcessingCounter(scrapingWantedConfig);
+
+		for (Long jobDetailId : fetchJobIds) {
+			if (jobProcessingCounter.isBreakRequired()) {
+				break;
+			}
+			if (isJobDetailExist(jobCategory, jobDetailId)) {
+				jobProcessingCounter.incrementFailCount();
 				continue;
 			}
-			WantedJobDetailResponse jobDetailResponse = getJobDetail(jobCategory, detailId);
-			WantedJd savedWantedJd = createWantedJd(jobDetailResponse);
+			if (jobProcessingCounter.isSleepRequired()) {
+				performSleep();
+				jobProcessingCounter.resetSleepCounter();
+			}
 
-			List<WantedJobDetailResponse.WantedSkill> wantedDetailSkillList = jobDetailResponse.getJob().getSkill();
+			jobProcessingCounter.resetFailCount(); // 연속으로 JD가 추출되지 않았다면 초기화
 
-			createSkillHistory(jobCategory, savedWantedJd, wantedDetailSkillList);
-			createWantedJdSkill(jobPosition, jobCategory, savedWantedJd, wantedDetailSkillList);
+			createJobDetail(jobPosition, jobCategory, jobDetailId);
+
+			jobProcessingCounter.incrementSleepCounter();
 		}
 	}
 
-	private boolean isJobDetailExist(JobCategory jobCategory, Long detailId) {
-		return wantedJdRepository.existsByJobCategoryAndDetailId(jobCategory, detailId);
+	private void createJobDetail(final JobSearchJobPosition jobPosition, final JobCategory jobCategory, final Long jobDetailId) {
+		WantedJobDetailResponse jobDetailResponse = getJobDetail(jobCategory, jobDetailId);
+		WantedJd savedWantedJd = createWantedJd(jobDetailResponse);
+
+		List<WantedJobDetailResponse.WantedSkill> wantedDetailSkillList =
+			jobDetailResponse.getJob().getSkill();
+
+		createSkillHistory(jobCategory, savedWantedJd, wantedDetailSkillList);
+		createWantedJdSkill(jobPosition, jobCategory, savedWantedJd, wantedDetailSkillList);
 	}
 
-	private void createSkillHistory(JobCategory jobCategory, WantedJd wantedJd, List<WantedJobDetailResponse.WantedSkill> wantedDetailSkillList) {
+	private boolean isJobDetailExist(final JobCategory jobCategory, final Long jobDetailId) {
+		return wantedJdRepository.existsByJobCategoryAndDetailId(jobCategory, jobDetailId);
+	}
+
+	private void createSkillHistory(final JobCategory jobCategory, final WantedJd wantedJd,
+		List<WantedJobDetailResponse.WantedSkill> wantedDetailSkillList) {
 		for (WantedJobDetailResponse.WantedSkill wantedJdDetailSkill : wantedDetailSkillList) {
 			skillHistoryRepository.save(
-				EntityConverter.createSkillHistory(new CreateSkillDto(jobCategory, wantedJd, wantedJdDetailSkill.getKeyword())));
+				EntityConverter.createSkillHistory(
+					new CreateSkillDto(jobCategory, wantedJd, wantedJdDetailSkill.getKeyword())));
 		}
 	}
 
-	private void createWantedJdSkill(JobSearchJobPosition jobPosition, JobCategory jobCategory, WantedJd wantedJd, List<WantedJobDetailResponse.WantedSkill> wantedDetailSkillList) {
+	private void createWantedJdSkill(final JobSearchJobPosition jobPosition, final JobCategory jobCategory, WantedJd wantedJd,
+		List<WantedJobDetailResponse.WantedSkill> wantedDetailSkillList) {
 		//TODO : 전략패턴으로 리팩토링 필요
 		SkillType[] skillTypes = (jobPosition == JobSearchJobPosition.JOB_POSITION_SERVER)
 			? BackendSkillType.values()
 			: FrontendSkillType.values();
 
-		for (WantedJobDetailResponse.WantedSkill wantedSkill: wantedDetailSkillList) {
+		for (WantedJobDetailResponse.WantedSkill wantedSkill : wantedDetailSkillList) {
 			String skillKeyword = wantedSkill.getKeyword();
-
 			boolean isSkillInJobPosition = Arrays.stream(skillTypes)
 				.anyMatch(skillType -> skillType.getKeyword().equalsIgnoreCase(skillKeyword));
-
 			Skill findSkill = null;
+
 			if (isSkillInJobPosition) {
 				SkillType matchedSkillType = Arrays.stream(skillTypes)
 					.filter(skillType -> skillType.getKeyword().equalsIgnoreCase(skillKeyword))
@@ -129,71 +141,81 @@ public class WantedCrawlerService {
 		}
 	}
 
-	private Skill findByJobCategoryIdAndKeyword(JobCategory jobCategory, String matchedSkillType) {
+	private Skill findByJobCategoryIdAndKeyword(final JobCategory jobCategory, final String matchedSkillType) {
 		return skillRepository.findByJobCategoryIdAndKeyword(jobCategory.getId(), matchedSkillType)
 			.orElseThrow(() -> new IllegalArgumentException("해당하는 기술스택이 없음 -> 데이터베이스와 동기화되지 않은 키워드"));
 	}
 
-	private WantedJobDetailResponse getJobDetail(JobCategory jobCategory, Long detailId) {
-		WantedJobDetailResponse wantedJobDetailResponse = createfetchJobDetail(detailId);
-		addWantedJobDetailResponse(wantedJobDetailResponse, jobCategory, detailId);
+	private WantedJobDetailResponse getJobDetail(final JobCategory jobCategory, final Long jobDetailId) {
+		WantedJobDetailResponse wantedJobDetailResponse = fetchJobDetail(jobDetailId);
+		addWantedJobDetailResponse(wantedJobDetailResponse, jobCategory, jobDetailId);
+
 		return wantedJobDetailResponse;
 	}
 
-	private void addWantedJobDetailResponse(WantedJobDetailResponse jobDetailResponse, JobCategory jobCategory,
-		Long detailId) {
-		jobDetailResponse.setDetailUrl(joinToString(urlConfig.getWantedJobDetailUrl(), detailId));
-		jobDetailResponse.setJobCategory(jobCategory);
+	private void addWantedJobDetailResponse(final WantedJobDetailResponse jobDetailResponse, final JobCategory jobCategory,
+		final Long jobDetailId) {
+		final String jobUrlDetail = scrapingWantedConfig.getUrl().getDetail();
+		jobDetailResponse.addDetailInfo(joinToString(jobUrlDetail, jobDetailId), jobCategory);
 	}
 
-	private WantedJd createWantedJd(WantedJobDetailResponse jobDetailResponse) {
+	private WantedJd createWantedJd(final WantedJobDetailResponse jobDetailResponse) {
 		return wantedJdRepository.save(EntityConverter.createWantedJd(jobDetailResponse));
 	}
 
-	private WantedJobDetailResponse createfetchJobDetail(Long jobId) {
-		String jobDetailUrl = joinToString(urlConfig.getWantedApiJobDetailUrl(), jobId);
+	private WantedJobDetailResponse fetchJobDetail(final Long jobId) {
+		final String jobApiDetailUrl = scrapingWantedConfig.getUrl().getApi().getDetail();
+		final String jobDetailUrl = joinToString(jobApiDetailUrl, jobId);
+
 		return restTemplate.getForObject(jobDetailUrl, WantedJobDetailResponse.class);
 	}
 
-	private Set<Long> fetchJobIdList(JobSearchJobPosition jobPosition) {
-		Set<Long> fetchJobIds = new HashSet<>();
-		int offset = 0;
+	private Set<Long> fetchJobIdList(final JobSearchJobPosition jobPosition) {
+		JobListProcessingCounter jobListCounter = new JobListProcessingCounter(scrapingWantedConfig);
 
-		while (fetchJobIds.size() < MAX_FETCH_JD_LIST_SIZE) {
-			WantedJobListResponse jobListResponse = fetchJobList(jobPosition, offset);
+		while (jobListCounter.isBelowSizeLimit()) {
+			WantedJobListResponse jobListResponse = fetchJobList(jobPosition, jobListCounter.getOffset());
 
 			List<Long> jobIdList = jobListResponse.getData().stream()
 				.map(WantedJobListResponse.Data::getId)
 				.toList();
 
-			fetchJobIds.addAll(jobIdList);
+			jobListCounter.addFetchedJobIds(jobIdList);
 
-			if (jobIdList.size() < MAX_FETCH_JD_LIST_OFFSET) {
+			if (jobListCounter.isBelowOffsetLimit(jobIdList.size())) {
 				break;
 			}
 
-			offset += MAX_FETCH_JD_LIST_OFFSET;
+			jobListCounter.incrementOffset();
 		}
 
-		return fetchJobIds;
+		return jobListCounter.getFetchedJobIds();
 	}
 
-	private WantedJobListResponse fetchJobList(JobSearchJobPosition jobPosition, int offset) {
-		String jobListUrl = createJobListUrl(jobPosition, offset);
+	private WantedJobListResponse fetchJobList(final JobSearchJobPosition jobPosition, final int offset) {
+		final String jobListUrl = createJobListUrl(jobPosition, offset);
+
 		return restTemplate.getForObject(jobListUrl, WantedJobListResponse.class);
 	}
 
-	private String createJobListUrl(JobSearchJobPosition jobPosition, int offset) {
+	private String createJobListUrl(final JobSearchJobPosition jobPosition, final int offset) {
+		final int maxFetchJDListOffset = scrapingWantedConfig.getMaxFetchJdList().getOffset();
+		final String jobApiListUrl = scrapingWantedConfig.getUrl().getApi().getList();
+
 		return joinToString(
-			urlConfig.getWantedApiJobListUrl(),
+			jobApiListUrl,
 			createQueryString(JobSearchJobCategory.SEARCH_KEY, JobSearchJobCategory.JOB_DEVELOPER.getSearchValue()),
 			createQueryString(JobSearchJobPosition.SEARCH_KEY, jobPosition.getSearchValue()),
 			createQueryString(JobSearchSort.SEARCH_KEY, JobSearchSort.SORT_LATEST.getSearchValue()),
 			createQueryString(JobSearchLocation.SEARCH_KEY, JobSearchLocation.LOCATIONS_ALL.getSearchValue()),
 			createQueryString(JobSearchExperience.SEARCH_KEY, JobSearchExperience.EXPERIENCE_ALL.getSearchValue()),
-			createQueryString("limit", String.valueOf(MAX_FETCH_JD_LIST_OFFSET)),
+			createQueryString("limit", String.valueOf(maxFetchJDListOffset)),
 			createQueryString("offset", String.valueOf(offset))
 		);
 	}
 
+	private void performSleep() throws InterruptedException {
+		final int sleepTimeMillis = scrapingWantedConfig.getSleep().getTimeMillis();
+		Thread.sleep(sleepTimeMillis);
+	}
 }

@@ -12,6 +12,10 @@ public enum JobSearchJobPosition implements SearchCondition {
 	private final String searchValue;
 	private final String description;
 
+	public static JobSearchJobPosition[] getAllPositions() {
+		return values();
+	}
+
 	@Override
 	public String getDescription() {
 		return this.description;
