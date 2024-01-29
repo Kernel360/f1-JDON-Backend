@@ -147,7 +147,7 @@ public class WantedCrawlerService {
 	}
 
 	private WantedJobDetailResponse getJobDetail(final JobCategory jobCategory, final Long jobDetailId) {
-		WantedJobDetailResponse wantedJobDetailResponse = createFetchJobDetail(jobDetailId);
+		WantedJobDetailResponse wantedJobDetailResponse = fetchJobDetail(jobDetailId);
 		addWantedJobDetailResponse(wantedJobDetailResponse, jobCategory, jobDetailId);
 
 		return wantedJobDetailResponse;
@@ -163,7 +163,7 @@ public class WantedCrawlerService {
 		return wantedJdRepository.save(EntityConverter.createWantedJd(jobDetailResponse));
 	}
 
-	private WantedJobDetailResponse createFetchJobDetail(final Long jobId) {
+	private WantedJobDetailResponse fetchJobDetail(final Long jobId) {
 		final String jobApiDetailUrl = scrapingWantedConfig.getUrl().getApi().getDetail();
 		final String jobDetailUrl = joinToString(jobApiDetailUrl, jobId);
 
