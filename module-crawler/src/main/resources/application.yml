@@ -23,6 +23,10 @@ decorator:
       enable-logging: true
 
 scraping:
+  inflearn:
+    url: https://www.inflearn.com/courses
+    max_courses_per_keyword: 3
+
   wanted:
     url:
       detail: https://www.wanted.co.kr/wd/

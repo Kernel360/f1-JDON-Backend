@@ -7,7 +7,7 @@ import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import kernel.jdon.crawler.config.UrlConfig;
+import kernel.jdon.crawler.config.ScrapingInflearnConfig;
 import kernel.jdon.crawler.inflearn.search.CourseSearchSort;
 import kernel.jdon.crawler.inflearn.util.InflearnCrawlerState;
 import kernel.jdon.inflearncourse.domain.InflearnCourse;
@@ -18,23 +18,23 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class InflearnCrawlerService implements CrawlerService {
 
-	private final UrlConfig urlConfig;
+	private final ScrapingInflearnConfig scrapingInflearnConfig;
 	private final CourseScraperService courseScraperService;
 	private final CourseParserService courseParserService;
 	private final CourseStorageService courseStorageService;
-	private static final int MAX_COURSES_PER_KEYWORD = 3;
 
 	@Transactional
 	@Override
 	public void createCourseInfo(String skillKeyword, int pageNum) {
 		InflearnCrawlerState state = new InflearnCrawlerState();
+		final int maxCoursesPerKeyword = scrapingInflearnConfig.getMaxCoursesPerKeyword();
 
-		while (state.getSavedCourseCount() < MAX_COURSES_PER_KEYWORD) {
+		while (state.getSavedCourseCount() < maxCoursesPerKeyword) {
 			String createLectureUrl = createInflearnSearchUrl(skillKeyword, CourseSearchSort.SORT_POPULARITY, pageNum);
 			Elements scrapeCourseElements = courseScraperService.scrapeCourses(createLectureUrl);
 			parseAndCreateCourses(scrapeCourseElements, createLectureUrl, skillKeyword, pageNum, state);
 
-			if (state.getSavedCourseCount() < MAX_COURSES_PER_KEYWORD) {
+			if (state.getSavedCourseCount() < maxCoursesPerKeyword) {
 				pageNum++;
 			}
 		}
@@ -46,7 +46,8 @@ public class InflearnCrawlerService implements CrawlerService {
 	}
 
 	private String createInflearnSearchUrl(String skillKeyword, CourseSearchSort searchSort, int pageNum) {
-		String path = joinToString(urlConfig.getInflearnCourseListUrl(), "/");
+		final String courseListUrl = scrapingInflearnConfig.getUrl();
+		String path = joinToString(courseListUrl, "/");
 
 		String queryString = joinToString(
 			createQueryString("s", skillKeyword),
@@ -59,8 +60,10 @@ public class InflearnCrawlerService implements CrawlerService {
 
 	private void parseAndCreateCourses(Elements courseElements, String lectureUrl, String skillKeyword, int pageNum,
 		InflearnCrawlerState state) {
+		final int maxCoursesPerKeyword = scrapingInflearnConfig.getMaxCoursesPerKeyword();
+
 		for (Element courseElement : courseElements) {
-			if (state.getSavedCourseCount() >= MAX_COURSES_PER_KEYWORD) {
+			if (state.getSavedCourseCount() >= maxCoursesPerKeyword) {
 				break;
 			}
 
