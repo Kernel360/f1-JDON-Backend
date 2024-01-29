@@ -13,8 +13,6 @@ import org.springframework.web.client.RestTemplate;
 import kernel.jdon.crawler.config.ScrapingWantedConfig;
 import kernel.jdon.crawler.global.error.code.WantedErrorCode;
 import kernel.jdon.crawler.global.error.exception.CrawlerException;
-import kernel.jdon.crawler.wanted.converter.EntityConverter;
-import kernel.jdon.crawler.wanted.dto.object.CreateSkillDto;
 import kernel.jdon.crawler.wanted.dto.response.WantedJobDetailResponse;
 import kernel.jdon.crawler.wanted.dto.response.WantedJobListResponse;
 import kernel.jdon.crawler.wanted.repository.JobCategoryRepository;
@@ -34,7 +32,9 @@ import kernel.jdon.crawler.wanted.skill.FrontendSkillType;
 import kernel.jdon.crawler.wanted.skill.SkillType;
 import kernel.jdon.jobcategory.domain.JobCategory;
 import kernel.jdon.skill.domain.Skill;
+import kernel.jdon.skillhistory.domain.SkillHistory;
 import kernel.jdon.wantedjd.domain.WantedJd;
+import kernel.jdon.wantedjdskill.domain.WantedJdSkill;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -108,9 +108,9 @@ public class WantedCrawlerService {
 	private void createSkillHistory(final JobCategory jobCategory, final WantedJd wantedJd,
 		List<WantedJobDetailResponse.WantedSkill> wantedDetailSkillList) {
 		for (WantedJobDetailResponse.WantedSkill wantedJdDetailSkill : wantedDetailSkillList) {
-			skillHistoryRepository.save(
-				EntityConverter.createSkillHistory(
-					new CreateSkillDto(jobCategory, wantedJd, wantedJdDetailSkill.getKeyword())));
+			SkillHistory skillHistory = new SkillHistory(wantedJdDetailSkill.getKeyword(), jobCategory, wantedJd);
+
+			skillHistoryRepository.save(skillHistory);
 		}
 	}
 
@@ -137,7 +137,13 @@ public class WantedCrawlerService {
 			} else {
 				findSkill = findByJobCategoryIdAndKeyword(jobCategory, SkillType.getOrderKeyword());
 			}
-			wantedJdSkillRepository.save(EntityConverter.createWantedJdSkill(wantedJd, findSkill));
+
+			WantedJdSkill wantedJdSkill = WantedJdSkill.builder()
+				.wantedJd(wantedJd)
+				.skill(findSkill)
+				.build();
+
+			wantedJdSkillRepository.save(wantedJdSkill);
 		}
 	}
 
@@ -159,8 +165,8 @@ public class WantedCrawlerService {
 		jobDetailResponse.addDetailInfo(joinToString(jobUrlDetail, jobDetailId), jobCategory);
 	}
 
-	private WantedJd createWantedJd(final WantedJobDetailResponse jobDetailResponse) {
-		return wantedJdRepository.save(EntityConverter.createWantedJd(jobDetailResponse));
+	private WantedJd createWantedJd(WantedJobDetailResponse jobDetailResponse) {
+		return wantedJdRepository.save(jobDetailResponse.toWantedJdEntity());
 	}
 
 	private WantedJobDetailResponse fetchJobDetail(final Long jobId) {
