@@ -88,7 +88,11 @@ public class CoffeeChat extends BaseEntity {
 		this.viewCount += 1;
 	}
 
-	public void applyCoffeeChat(CoffeeChatMember coffeeChatMember) {
+	public void addCoffeeChatMember(Member member) {
+		CoffeeChatMember coffeeChatMember = CoffeeChatMember.builder()
+			.coffeeChat(this)
+			.member(member)
+			.build();
 		this.coffeeChatMemberList.add(coffeeChatMember);
 		increaseCurrentRecruitCount();
 		updateStatusByRecruitCount();
