@@ -88,13 +88,13 @@ public class CoffeeChatService {
 		CoffeeChat findCoffeeChat = findExistAndOpenCoffeeChat(coffeeChatId);
 		Member findMember = findMember(memberId);
 
-		checkIfGuestEqualToHost(findMember, findCoffeeChat);
+		checkIfMemberIsHost(findMember, findCoffeeChat);
 		findCoffeeChat.addCoffeeChatMember(findMember);
 
 		return ApplyCoffeeChatResponse.of(findCoffeeChat.getId());
 	}
 
-	private void checkIfGuestEqualToHost(Member findMember, CoffeeChat findCoffeeChat) {
+	private void checkIfMemberIsHost(Member findMember, CoffeeChat findCoffeeChat) {
 		if (findMember.getId().equals(findCoffeeChat.getMember().getId())) {
 			throw new ApiException(CoffeeChatErrorCode.CAN_NOT_JOIN_OWN_COFFEECHAT);
 		}
