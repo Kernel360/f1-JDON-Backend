@@ -33,13 +33,13 @@ public class InflearnCrawlerService implements CrawlerService {
 
 	@Transactional
 	@Override
-	public void createCourseInfo(int pageNum) {
+	public void createCourseInfo() {
 		List<String> keywordList = new ArrayList<>();
 		keywordList.addAll(FrontendSkillType.getAllKeywords());
 		keywordList.addAll(BackendSkillType.getAllKeywords());
 
 		for (String keyword : keywordList) {
-			processKeyword(keyword, pageNum);
+			processKeyword(keyword, 1);
 		}
 	}
 

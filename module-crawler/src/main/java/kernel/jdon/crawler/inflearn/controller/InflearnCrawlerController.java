@@ -15,7 +15,7 @@ public class InflearnCrawlerController {
 
 	@GetMapping("/api/v1/crawler/inflearn")
 	public ResponseEntity<Void> getInflearnData() {
-		crawlerService.createCourseInfo(1);
+		crawlerService.createCourseInfo();
 
 		return ResponseEntity.noContent().build();
 	}
