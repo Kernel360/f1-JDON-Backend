@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 @ConfigurationProperties(prefix = "scraping.wanted")
 public class ScrapingWantedConfig {
 	private final MaxFetchJdListConfig maxFetchJdList;
+	private final Limit limit;
 	private final Sleep sleep;
 	private final Url url;
 
@@ -18,6 +19,12 @@ public class ScrapingWantedConfig {
 	public static class MaxFetchJdListConfig {
 		private final int size;
 		private final int offset;
+	}
+
+	@Getter
+	@RequiredArgsConstructor
+	public static class Limit {
+		private final int failCount;
 	}
 
 	@Getter

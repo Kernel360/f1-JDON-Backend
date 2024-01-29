@@ -3,7 +3,7 @@ package kernel.jdon.crawler.wanted.service;
 import static kernel.jdon.util.StringUtil.*;
 
 import java.util.Arrays;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -68,16 +68,24 @@ public class WantedCrawlerService {
 		Set<Long> fetchJobIds) throws InterruptedException {
 		final int thresholdCount = scrapingWantedConfig.getSleep().getThresholdCount();
 		final int sleepTimeMillis = scrapingWantedConfig.getSleep().getTimeMillis();
+		final int failLimitCount = scrapingWantedConfig.getLimit().getFailCount();
 		int sleepCounter = 0;
+		int consecutiveFailCount = 0;
 
 		for (Long detailId : fetchJobIds) {
-			if (isJobDetailExist(jobCategory, detailId)) {
+			if (consecutiveFailCount == failLimitCount) {
 				break;
+			}
+			if (isJobDetailExist(jobCategory, detailId)) {
+				consecutiveFailCount++;
+				continue;
 			}
 			if (sleepCounter == thresholdCount) {
 				Thread.sleep(sleepTimeMillis);
 				sleepCounter = 0;
 			}
+
+			consecutiveFailCount = 0; // 연속으로 JD가 추출되지 않았다면 변수 초기화
 
 			WantedJobDetailResponse jobDetailResponse = getJobDetail(jobCategory, detailId);
 			WantedJd savedWantedJd = createWantedJd(jobDetailResponse);
@@ -95,7 +103,7 @@ public class WantedCrawlerService {
 		return wantedJdRepository.existsByJobCategoryAndDetailId(jobCategory, detailId);
 	}
 
-	private void createSkillHistory(JobCategory jobCategory, WantedJd wantedJd,
+	private void createSkillHistory(final JobCategory jobCategory, final WantedJd wantedJd,
 		List<WantedJobDetailResponse.WantedSkill> wantedDetailSkillList) {
 		for (WantedJobDetailResponse.WantedSkill wantedJdDetailSkill : wantedDetailSkillList) {
 			skillHistoryRepository.save(
@@ -165,7 +173,7 @@ public class WantedCrawlerService {
 		final int maxFetchJDListSize = scrapingWantedConfig.getMaxFetchJdList().getSize();
 		final int maxFetchJDListOffset = scrapingWantedConfig.getMaxFetchJdList().getOffset();
 		int offset = 0;
-		Set<Long> fetchJobIds = new HashSet<>();
+		Set<Long> fetchJobIds = new LinkedHashSet<>();
 
 		while (fetchJobIds.size() < maxFetchJDListSize) {
 			WantedJobListResponse jobListResponse = fetchJobList(jobPosition, offset);
