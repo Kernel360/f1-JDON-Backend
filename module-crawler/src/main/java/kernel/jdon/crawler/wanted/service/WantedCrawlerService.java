@@ -7,12 +7,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
-import kernel.jdon.crawler.config.UrlConfig;
+import kernel.jdon.crawler.config.ScrapingWantedConfig;
 import kernel.jdon.crawler.global.error.code.WantedErrorCode;
 import kernel.jdon.crawler.global.error.exception.CrawlerException;
 import kernel.jdon.crawler.wanted.converter.EntityConverter;
@@ -42,20 +41,12 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class WantedCrawlerService {
 	private final RestTemplate restTemplate;
-	private final UrlConfig urlConfig;
+	private final ScrapingWantedConfig scrapingWantedConfig;
 	private final WantedJdRepository wantedJdRepository;
 	private final WantedJdSkillRepository wantedJdSkillRepository;
 	private final SkillRepository skillRepository;
 	private final SkillHistoryRepository skillHistoryRepository;
 	private final JobCategoryRepository jobCategoryRepository;
-	@Value("${scraping.wanted.max_fetch_jd_list.size}")
-	private int MAX_FETCH_JD_LIST_SIZE;
-	@Value("${scraping.wanted.max_fetch_jd_list.offset}")
-	private int MAX_FETCH_JD_LIST_OFFSET;
-	@Value("${scraping.wanted.sleep.time_millis}")
-	private int SLEEP_TIME_MILLIS;
-	@Value("${scraping.wanted.sleep.threshold_count}")
-	private int THRESHOLD_COUNT;
 
 	@Transactional
 	public void fetchJd() throws InterruptedException {
@@ -68,20 +59,23 @@ public class WantedCrawlerService {
 		}
 	}
 
-	private JobCategory findByJobPosition(JobSearchJobPosition jobPosition) {
+	private JobCategory findByJobPosition(final JobSearchJobPosition jobPosition) {
 		return jobCategoryRepository.findByWantedCode(jobPosition.getSearchValue())
 			.orElseThrow(() -> new CrawlerException(WantedErrorCode.NOT_FOUND_JOB_CATEGORY));
 	}
 
-	private void createJobDetail(JobSearchJobPosition jobPosition, JobCategory jobCategory,
+	private void createJobDetail(final JobSearchJobPosition jobPosition, final JobCategory jobCategory,
 		Set<Long> fetchJobIds) throws InterruptedException {
+		final int thresholdCount = scrapingWantedConfig.getSleep().getThresholdCount();
+		final int sleepTimeMillis = scrapingWantedConfig.getSleep().getTimeMillis();
 		int sleepCounter = 0;
+
 		for (Long detailId : fetchJobIds) {
 			if (isJobDetailExist(jobCategory, detailId)) {
 				break;
 			}
-			if (sleepCounter == THRESHOLD_COUNT) {
-				Thread.sleep(SLEEP_TIME_MILLIS);
+			if (sleepCounter == thresholdCount) {
+				Thread.sleep(sleepTimeMillis);
 				sleepCounter = 0;
 			}
 
@@ -97,7 +91,7 @@ public class WantedCrawlerService {
 		}
 	}
 
-	private boolean isJobDetailExist(JobCategory jobCategory, Long detailId) {
+	private boolean isJobDetailExist(final JobCategory jobCategory, final Long detailId) {
 		return wantedJdRepository.existsByJobCategoryAndDetailId(jobCategory, detailId);
 	}
 
@@ -110,7 +104,7 @@ public class WantedCrawlerService {
 		}
 	}
 
-	private void createWantedJdSkill(JobSearchJobPosition jobPosition, JobCategory jobCategory, WantedJd wantedJd,
+	private void createWantedJdSkill(final JobSearchJobPosition jobPosition, final JobCategory jobCategory, WantedJd wantedJd,
 		List<WantedJobDetailResponse.WantedSkill> wantedDetailSkillList) {
 		//TODO : 전략패턴으로 리팩토링 필요
 		SkillType[] skillTypes = (jobPosition == JobSearchJobPosition.JOB_POSITION_SERVER)
@@ -119,11 +113,10 @@ public class WantedCrawlerService {
 
 		for (WantedJobDetailResponse.WantedSkill wantedSkill : wantedDetailSkillList) {
 			String skillKeyword = wantedSkill.getKeyword();
-
 			boolean isSkillInJobPosition = Arrays.stream(skillTypes)
 				.anyMatch(skillType -> skillType.getKeyword().equalsIgnoreCase(skillKeyword));
-
 			Skill findSkill = null;
+
 			if (isSkillInJobPosition) {
 				SkillType matchedSkillType = Arrays.stream(skillTypes)
 					.filter(skillType -> skillType.getKeyword().equalsIgnoreCase(skillKeyword))
@@ -138,37 +131,43 @@ public class WantedCrawlerService {
 		}
 	}
 
-	private Skill findByJobCategoryIdAndKeyword(JobCategory jobCategory, String matchedSkillType) {
+	private Skill findByJobCategoryIdAndKeyword(final JobCategory jobCategory, final String matchedSkillType) {
 		return skillRepository.findByJobCategoryIdAndKeyword(jobCategory.getId(), matchedSkillType)
 			.orElseThrow(() -> new IllegalArgumentException("해당하는 기술스택이 없음 -> 데이터베이스와 동기화되지 않은 키워드"));
 	}
 
-	private WantedJobDetailResponse getJobDetail(JobCategory jobCategory, Long detailId) {
+	private WantedJobDetailResponse getJobDetail(final JobCategory jobCategory, final Long detailId) {
 		WantedJobDetailResponse wantedJobDetailResponse = createfetchJobDetail(detailId);
 		addWantedJobDetailResponse(wantedJobDetailResponse, jobCategory, detailId);
+
 		return wantedJobDetailResponse;
 	}
 
-	private void addWantedJobDetailResponse(WantedJobDetailResponse jobDetailResponse, JobCategory jobCategory,
+	private void addWantedJobDetailResponse(final WantedJobDetailResponse jobDetailResponse, final JobCategory jobCategory,
 		Long detailId) {
-		jobDetailResponse.setDetailUrl(joinToString(urlConfig.getWantedJobDetailUrl(), detailId));
+		final String jobUrlDetail = scrapingWantedConfig.getUrl().getDetail();
+		jobDetailResponse.setDetailUrl(joinToString(jobUrlDetail, detailId));
 		jobDetailResponse.setJobCategory(jobCategory);
 	}
 
-	private WantedJd createWantedJd(WantedJobDetailResponse jobDetailResponse) {
+	private WantedJd createWantedJd(final WantedJobDetailResponse jobDetailResponse) {
 		return wantedJdRepository.save(EntityConverter.createWantedJd(jobDetailResponse));
 	}
 
-	private WantedJobDetailResponse createfetchJobDetail(Long jobId) {
-		String jobDetailUrl = joinToString(urlConfig.getWantedApiJobDetailUrl(), jobId);
+	private WantedJobDetailResponse createfetchJobDetail(final Long jobId) {
+		final String jobApiDetailUrl = scrapingWantedConfig.getUrl().getApi().getDetail();
+		final String jobDetailUrl = joinToString(jobApiDetailUrl, jobId);
+
 		return restTemplate.getForObject(jobDetailUrl, WantedJobDetailResponse.class);
 	}
 
-	private Set<Long> fetchJobIdList(JobSearchJobPosition jobPosition) {
-		Set<Long> fetchJobIds = new HashSet<>();
+	private Set<Long> fetchJobIdList(final JobSearchJobPosition jobPosition) {
+		final int maxFetchJDListSize = scrapingWantedConfig.getMaxFetchJdList().getSize();
+		final int maxFetchJDListOffset = scrapingWantedConfig.getMaxFetchJdList().getOffset();
 		int offset = 0;
+		Set<Long> fetchJobIds = new HashSet<>();
 
-		while (fetchJobIds.size() < MAX_FETCH_JD_LIST_SIZE) {
+		while (fetchJobIds.size() < maxFetchJDListSize) {
 			WantedJobListResponse jobListResponse = fetchJobList(jobPosition, offset);
 
 			List<Long> jobIdList = jobListResponse.getData().stream()
@@ -177,30 +176,34 @@ public class WantedCrawlerService {
 
 			fetchJobIds.addAll(jobIdList);
 
-			if (jobIdList.size() < MAX_FETCH_JD_LIST_OFFSET) {
+			if (jobIdList.size() < maxFetchJDListOffset) {
 				break;
 			}
 
-			offset += MAX_FETCH_JD_LIST_OFFSET;
+			offset += maxFetchJDListOffset;
 		}
 
 		return fetchJobIds;
 	}
 
-	private WantedJobListResponse fetchJobList(JobSearchJobPosition jobPosition, int offset) {
-		String jobListUrl = createJobListUrl(jobPosition, offset);
+	private WantedJobListResponse fetchJobList(final JobSearchJobPosition jobPosition, final int offset) {
+		final String jobListUrl = createJobListUrl(jobPosition, offset);
+
 		return restTemplate.getForObject(jobListUrl, WantedJobListResponse.class);
 	}
 
-	private String createJobListUrl(JobSearchJobPosition jobPosition, int offset) {
+	private String createJobListUrl(final JobSearchJobPosition jobPosition, final int offset) {
+		final int maxFetchJDListOffset = scrapingWantedConfig.getMaxFetchJdList().getOffset();
+		final String jobApiListUrl = scrapingWantedConfig.getUrl().getApi().getList();
+
 		return joinToString(
-			urlConfig.getWantedApiJobListUrl(),
+			jobApiListUrl,
 			createQueryString(JobSearchJobCategory.SEARCH_KEY, JobSearchJobCategory.JOB_DEVELOPER.getSearchValue()),
 			createQueryString(JobSearchJobPosition.SEARCH_KEY, jobPosition.getSearchValue()),
 			createQueryString(JobSearchSort.SEARCH_KEY, JobSearchSort.SORT_LATEST.getSearchValue()),
 			createQueryString(JobSearchLocation.SEARCH_KEY, JobSearchLocation.LOCATIONS_ALL.getSearchValue()),
 			createQueryString(JobSearchExperience.SEARCH_KEY, JobSearchExperience.EXPERIENCE_ALL.getSearchValue()),
-			createQueryString("limit", String.valueOf(MAX_FETCH_JD_LIST_OFFSET)),
+			createQueryString("limit", String.valueOf(maxFetchJDListOffset)),
 			createQueryString("offset", String.valueOf(offset))
 		);
 	}
