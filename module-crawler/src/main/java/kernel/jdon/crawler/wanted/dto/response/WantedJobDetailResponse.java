@@ -17,11 +17,8 @@ public class WantedJobDetailResponse {
 	private String detailUrl;
 	private JobCategory jobCategory;
 
-	public void setDetailUrl(String detailUrl) {
+	public void addDetailInfo(String detailUrl, JobCategory jobCategory) {
 		this.detailUrl = detailUrl;
-	}
-
-	public void setJobCategory(JobCategory jobCategory) {
 		this.jobCategory = jobCategory;
 	}
 

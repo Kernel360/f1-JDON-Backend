@@ -159,8 +159,7 @@ public class WantedCrawlerService {
 	private void addWantedJobDetailResponse(final WantedJobDetailResponse jobDetailResponse, final JobCategory jobCategory,
 		final Long detailId) {
 		final String jobUrlDetail = scrapingWantedConfig.getUrl().getDetail();
-		jobDetailResponse.setDetailUrl(joinToString(jobUrlDetail, detailId));
-		jobDetailResponse.setJobCategory(jobCategory);
+		jobDetailResponse.addDetailInfo(joinToString(jobUrlDetail, detailId), jobCategory);
 	}
 
 	private WantedJd createWantedJd(final WantedJobDetailResponse jobDetailResponse) {
