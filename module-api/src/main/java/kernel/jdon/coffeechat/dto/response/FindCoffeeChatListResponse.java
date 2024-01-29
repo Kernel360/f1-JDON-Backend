@@ -31,10 +31,12 @@ public class FindCoffeeChatListResponse {
 		return FindCoffeeChatListResponse.builder()
 			.coffeeChatId(coffeeChat.getId())
 			.nickname(coffeeChat.getMember().getNickname())
+			.job((coffeeChat.getMember().getJobCategory().getName()))
 			.title(coffeeChat.getTitle())
 			.status(coffeeChat.getCoffeeChatStatus().getActiveStatus())
 			.isDeleted(coffeeChat.isDeleted())
 			.meetDate(coffeeChat.getMeetDate())
+			.createdDate(coffeeChat.getCreatedDate())
 			.totalRecruitCount(coffeeChat.getTotalRecruitCount())
 			.currentRecruitCount(coffeeChat.getCurrentRecruitCount())
 			.build();
