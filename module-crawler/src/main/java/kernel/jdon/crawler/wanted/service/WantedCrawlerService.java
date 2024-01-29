@@ -65,7 +65,7 @@ public class WantedCrawlerService {
 	}
 
 	private void createJobDetail(final JobSearchJobPosition jobPosition, final JobCategory jobCategory,
-		Set<Long> fetchJobIds) throws InterruptedException {
+		final Set<Long> fetchJobIds) throws InterruptedException {
 		final int thresholdCount = scrapingWantedConfig.getSleep().getThresholdCount();
 		final int sleepTimeMillis = scrapingWantedConfig.getSleep().getTimeMillis();
 		final int failLimitCount = scrapingWantedConfig.getLimit().getFailCount();
@@ -87,16 +87,21 @@ public class WantedCrawlerService {
 
 			consecutiveFailCount = 0; // 연속으로 JD가 추출되지 않았다면 변수 초기화
 
-			WantedJobDetailResponse jobDetailResponse = getJobDetail(jobCategory, detailId);
-			WantedJd savedWantedJd = createWantedJd(jobDetailResponse);
-
-			List<WantedJobDetailResponse.WantedSkill> wantedDetailSkillList = jobDetailResponse.getJob().getSkill();
-
-			createSkillHistory(jobCategory, savedWantedJd, wantedDetailSkillList);
-			createWantedJdSkill(jobPosition, jobCategory, savedWantedJd, wantedDetailSkillList);
+			processJobDetail(jobPosition, jobCategory, detailId);
 
 			sleepCounter++;
 		}
+	}
+
+	private void processJobDetail(final JobSearchJobPosition jobPosition, final JobCategory jobCategory, final Long detailId) {
+		WantedJobDetailResponse jobDetailResponse = getJobDetail(jobCategory, detailId);
+		WantedJd savedWantedJd = createWantedJd(jobDetailResponse);
+
+		List<WantedJobDetailResponse.WantedSkill> wantedDetailSkillList =
+			jobDetailResponse.getJob().getSkill();
+
+		createSkillHistory(jobCategory, savedWantedJd, wantedDetailSkillList);
+		createWantedJdSkill(jobPosition, jobCategory, savedWantedJd, wantedDetailSkillList);
 	}
 
 	private boolean isJobDetailExist(final JobCategory jobCategory, final Long detailId) {
@@ -152,7 +157,7 @@ public class WantedCrawlerService {
 	}
 
 	private void addWantedJobDetailResponse(final WantedJobDetailResponse jobDetailResponse, final JobCategory jobCategory,
-		Long detailId) {
+		final Long detailId) {
 		final String jobUrlDetail = scrapingWantedConfig.getUrl().getDetail();
 		jobDetailResponse.setDetailUrl(joinToString(jobUrlDetail, detailId));
 		jobDetailResponse.setJobCategory(jobCategory);
