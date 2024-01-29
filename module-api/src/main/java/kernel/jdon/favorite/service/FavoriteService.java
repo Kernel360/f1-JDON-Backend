@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import jakarta.validation.Valid;
 import kernel.jdon.favorite.domain.Favorite;
 import kernel.jdon.favorite.dto.request.UpdateFavoriteRequest;
 import kernel.jdon.favorite.dto.response.FindFavoriteResponse;
@@ -30,15 +31,15 @@ public class FavoriteService {
 	private final InflearnCourseRepository inflearnCourseRepository;
 
 	@Transactional
-	public UpdateFavoriteResponse update(Long memberId, UpdateFavoriteRequest updateFavoriteRequest) {
-		if (Boolean.TRUE.equals(updateFavoriteRequest.getIsFavorite())) {
+	public UpdateFavoriteResponse update(Long memberId, @Valid UpdateFavoriteRequest updateFavoriteRequest) {
+		if (updateFavoriteRequest.getIsFavorite()) {
 			return create(memberId, updateFavoriteRequest);
 		} else {
 			return delete(memberId, updateFavoriteRequest);
 		}
 	}
 
-	public UpdateFavoriteResponse create(Long memberId, UpdateFavoriteRequest updateFavoriteRequest) {
+	public UpdateFavoriteResponse create(Long memberId, @Valid UpdateFavoriteRequest updateFavoriteRequest) {
 		Member findMember = memberRepository.findById(memberId)
 			.orElseThrow(() -> new ApiException(MemberErrorCode.NOT_FOUND_MEMBER));
 		InflearnCourse findInflearnCourse = inflearnCourseRepository.findById(
@@ -57,7 +58,7 @@ public class FavoriteService {
 		return UpdateFavoriteResponse.of(savedFavorite.getId());
 	}
 
-	public UpdateFavoriteResponse delete(Long memberId, UpdateFavoriteRequest updateFavoriteRequest) {
+	public UpdateFavoriteResponse delete(Long memberId, @Valid UpdateFavoriteRequest updateFavoriteRequest) {
 		Favorite findFavorite = favoriteRepository.findFavoriteByMemberIdAndInflearnCourseId(memberId,
 				updateFavoriteRequest.getLectureId())
 			.orElseThrow(() -> new ApiException(FavoriteErrorCode.NOT_FOUND_FAVORITE));

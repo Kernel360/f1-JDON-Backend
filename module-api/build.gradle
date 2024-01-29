@@ -27,6 +27,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.0'
+    // validation
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
 
     runtimeOnly 'com.mysql:mysql-connector-j'
 
@@ -68,7 +70,7 @@ tasks.named('test') {
 def querydslDir = "$buildDir/generated/querydsl"
 
 sourceSets {
-    main.java.srcDirs += [ querydslDir ]
+    main.java.srcDirs += [querydslDir]
 }
 
 tasks.withType(JavaCompile) {
