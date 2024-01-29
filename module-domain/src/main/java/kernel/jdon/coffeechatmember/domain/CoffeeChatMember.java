@@ -18,6 +18,7 @@ import jakarta.persistence.Table;
 import kernel.jdon.coffeechat.domain.CoffeeChat;
 import kernel.jdon.member.domain.Member;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -43,13 +44,9 @@ public class CoffeeChatMember {
 	@JoinColumn(name = "coffee_chat_id", columnDefinition = "BIGINT")
 	private CoffeeChat coffeeChat;
 
+	@Builder
 	private CoffeeChatMember(Member member, CoffeeChat coffeeChat) {
 		this.member = member;
 		this.coffeeChat = coffeeChat;
 	}
-
-	public static CoffeeChatMember from(Member member, CoffeeChat coffeeChat) {
-		return new CoffeeChatMember(member, coffeeChat);
-	}
-
 }
