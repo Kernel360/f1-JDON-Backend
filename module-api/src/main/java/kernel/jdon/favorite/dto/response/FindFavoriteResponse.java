@@ -1,5 +1,6 @@
 package kernel.jdon.favorite.dto.response;
 
+import kernel.jdon.inflearncourse.domain.InflearnCourse;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,7 +17,18 @@ public class FindFavoriteResponse {
 	private String lectureUrl;
 	private String imageUrl;
 	private String instructor;
-	private Integer studentCount;
+	private Long studentCount;
 	private Integer price;
-	private Boolean isFavorite;
+
+	public static FindFavoriteResponse of(InflearnCourse inflearnCourse) {
+		return FindFavoriteResponse.builder()
+			.lectureId(inflearnCourse.getId())
+			.title(inflearnCourse.getTitle())
+			.lectureUrl(inflearnCourse.getLectureUrl())
+			.imageUrl(inflearnCourse.getImageUrl())
+			.instructor(inflearnCourse.getInstructor())
+			.studentCount(inflearnCourse.getStudentCount())
+			.price(inflearnCourse.getPrice())
+			.build();
+	}
 }
