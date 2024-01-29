@@ -3,7 +3,6 @@ package kernel.jdon.crawler.wanted.service;
 import static kernel.jdon.util.StringUtil.*;
 
 import java.util.Arrays;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -28,6 +27,8 @@ import kernel.jdon.crawler.wanted.search.JobSearchJobCategory;
 import kernel.jdon.crawler.wanted.search.JobSearchJobPosition;
 import kernel.jdon.crawler.wanted.search.JobSearchLocation;
 import kernel.jdon.crawler.wanted.search.JobSearchSort;
+import kernel.jdon.crawler.wanted.service.infrastructure.JobDetailProcessingCounter;
+import kernel.jdon.crawler.wanted.service.infrastructure.JobListProcessingCounter;
 import kernel.jdon.crawler.wanted.skill.BackendSkillType;
 import kernel.jdon.crawler.wanted.skill.FrontendSkillType;
 import kernel.jdon.crawler.wanted.skill.SkillType;
@@ -66,35 +67,31 @@ public class WantedCrawlerService {
 
 	private void processJobDetails(final JobSearchJobPosition jobPosition, final JobCategory jobCategory,
 		final Set<Long> fetchJobIds) throws InterruptedException {
-		final int thresholdCount = scrapingWantedConfig.getSleep().getThresholdCount();
-		final int sleepTimeMillis = scrapingWantedConfig.getSleep().getTimeMillis();
-		final int failLimitCount = scrapingWantedConfig.getLimit().getFailCount();
-		int sleepCounter = 0;
-		int consecutiveFailCount = 0;
+		JobDetailProcessingCounter jobProcessingCounter = new JobDetailProcessingCounter(scrapingWantedConfig);
 
-		for (Long detailId : fetchJobIds) {
-			if (consecutiveFailCount == failLimitCount) {
+		for (Long jobDetailId : fetchJobIds) {
+			if (jobProcessingCounter.isBreakRequired()) {
 				break;
 			}
-			if (isJobDetailExist(jobCategory, detailId)) {
-				consecutiveFailCount++;
+			if (isJobDetailExist(jobCategory, jobDetailId)) {
+				jobProcessingCounter.incrementFailCount();
 				continue;
 			}
-			if (sleepCounter == thresholdCount) {
-				Thread.sleep(sleepTimeMillis);
-				sleepCounter = 0;
+			if (jobProcessingCounter.isSleepRequired()) {
+				performSleep();
+				jobProcessingCounter.resetSleepCounter();
 			}
 
-			consecutiveFailCount = 0; // 연속으로 JD가 추출되지 않았다면 변수 초기화
+			jobProcessingCounter.resetFailCount(); // 연속으로 JD가 추출되지 않았다면 초기화
 
-			createJobDetail(jobPosition, jobCategory, detailId);
+			createJobDetail(jobPosition, jobCategory, jobDetailId);
 
-			sleepCounter++;
+			jobProcessingCounter.incrementSleepCounter();
 		}
 	}
 
-	private void createJobDetail(final JobSearchJobPosition jobPosition, final JobCategory jobCategory, final Long detailId) {
-		WantedJobDetailResponse jobDetailResponse = getJobDetail(jobCategory, detailId);
+	private void createJobDetail(final JobSearchJobPosition jobPosition, final JobCategory jobCategory, final Long jobDetailId) {
+		WantedJobDetailResponse jobDetailResponse = getJobDetail(jobCategory, jobDetailId);
 		WantedJd savedWantedJd = createWantedJd(jobDetailResponse);
 
 		List<WantedJobDetailResponse.WantedSkill> wantedDetailSkillList =
@@ -104,8 +101,8 @@ public class WantedCrawlerService {
 		createWantedJdSkill(jobPosition, jobCategory, savedWantedJd, wantedDetailSkillList);
 	}
 
-	private boolean isJobDetailExist(final JobCategory jobCategory, final Long detailId) {
-		return wantedJdRepository.existsByJobCategoryAndDetailId(jobCategory, detailId);
+	private boolean isJobDetailExist(final JobCategory jobCategory, final Long jobDetailId) {
+		return wantedJdRepository.existsByJobCategoryAndDetailId(jobCategory, jobDetailId);
 	}
 
 	private void createSkillHistory(final JobCategory jobCategory, final WantedJd wantedJd,
@@ -149,17 +146,17 @@ public class WantedCrawlerService {
 			.orElseThrow(() -> new IllegalArgumentException("해당하는 기술스택이 없음 -> 데이터베이스와 동기화되지 않은 키워드"));
 	}
 
-	private WantedJobDetailResponse getJobDetail(final JobCategory jobCategory, final Long detailId) {
-		WantedJobDetailResponse wantedJobDetailResponse = createFetchJobDetail(detailId);
-		addWantedJobDetailResponse(wantedJobDetailResponse, jobCategory, detailId);
+	private WantedJobDetailResponse getJobDetail(final JobCategory jobCategory, final Long jobDetailId) {
+		WantedJobDetailResponse wantedJobDetailResponse = createFetchJobDetail(jobDetailId);
+		addWantedJobDetailResponse(wantedJobDetailResponse, jobCategory, jobDetailId);
 
 		return wantedJobDetailResponse;
 	}
 
 	private void addWantedJobDetailResponse(final WantedJobDetailResponse jobDetailResponse, final JobCategory jobCategory,
-		final Long detailId) {
+		final Long jobDetailId) {
 		final String jobUrlDetail = scrapingWantedConfig.getUrl().getDetail();
-		jobDetailResponse.addDetailInfo(joinToString(jobUrlDetail, detailId), jobCategory);
+		jobDetailResponse.addDetailInfo(joinToString(jobUrlDetail, jobDetailId), jobCategory);
 	}
 
 	private WantedJd createWantedJd(final WantedJobDetailResponse jobDetailResponse) {
@@ -174,28 +171,25 @@ public class WantedCrawlerService {
 	}
 
 	private Set<Long> fetchJobIdList(final JobSearchJobPosition jobPosition) {
-		final int maxFetchJDListSize = scrapingWantedConfig.getMaxFetchJdList().getSize();
-		final int maxFetchJDListOffset = scrapingWantedConfig.getMaxFetchJdList().getOffset();
-		int offset = 0;
-		Set<Long> fetchJobIds = new LinkedHashSet<>();
+		JobListProcessingCounter jobListCounter = new JobListProcessingCounter(scrapingWantedConfig);
 
-		while (fetchJobIds.size() < maxFetchJDListSize) {
-			WantedJobListResponse jobListResponse = fetchJobList(jobPosition, offset);
+		while (jobListCounter.isBelowSizeLimit()) {
+			WantedJobListResponse jobListResponse = fetchJobList(jobPosition, jobListCounter.getOffset());
 
 			List<Long> jobIdList = jobListResponse.getData().stream()
 				.map(WantedJobListResponse.Data::getId)
 				.toList();
 
-			fetchJobIds.addAll(jobIdList);
+			jobListCounter.addFetchedJobIds(jobIdList);
 
-			if (jobIdList.size() < maxFetchJDListOffset) {
+			if (jobListCounter.isBelowOffsetLimit(jobIdList.size())) {
 				break;
 			}
 
-			offset += maxFetchJDListOffset;
+			jobListCounter.incrementOffset();
 		}
 
-		return fetchJobIds;
+		return jobListCounter.getFetchedJobIds();
 	}
 
 	private WantedJobListResponse fetchJobList(final JobSearchJobPosition jobPosition, final int offset) {
@@ -220,4 +214,8 @@ public class WantedCrawlerService {
 		);
 	}
 
+	private void performSleep() throws InterruptedException {
+		final int sleepTimeMillis = scrapingWantedConfig.getSleep().getTimeMillis();
+		Thread.sleep(sleepTimeMillis);
+	}
 }
