@@ -55,7 +55,7 @@ public class WantedCrawlerService {
 
 			JobCategory findJobCategory = findByJobPosition(jobPosition);
 
-			createJobDetail(jobPosition, findJobCategory, fetchJobIds);
+			processJobDetails(jobPosition, findJobCategory, fetchJobIds);
 		}
 	}
 
@@ -64,7 +64,7 @@ public class WantedCrawlerService {
 			.orElseThrow(() -> new CrawlerException(WantedErrorCode.NOT_FOUND_JOB_CATEGORY));
 	}
 
-	private void createJobDetail(final JobSearchJobPosition jobPosition, final JobCategory jobCategory,
+	private void processJobDetails(final JobSearchJobPosition jobPosition, final JobCategory jobCategory,
 		final Set<Long> fetchJobIds) throws InterruptedException {
 		final int thresholdCount = scrapingWantedConfig.getSleep().getThresholdCount();
 		final int sleepTimeMillis = scrapingWantedConfig.getSleep().getTimeMillis();
@@ -87,13 +87,13 @@ public class WantedCrawlerService {
 
 			consecutiveFailCount = 0; // 연속으로 JD가 추출되지 않았다면 변수 초기화
 
-			processJobDetail(jobPosition, jobCategory, detailId);
+			createJobDetail(jobPosition, jobCategory, detailId);
 
 			sleepCounter++;
 		}
 	}
 
-	private void processJobDetail(final JobSearchJobPosition jobPosition, final JobCategory jobCategory, final Long detailId) {
+	private void createJobDetail(final JobSearchJobPosition jobPosition, final JobCategory jobCategory, final Long detailId) {
 		WantedJobDetailResponse jobDetailResponse = getJobDetail(jobCategory, detailId);
 		WantedJd savedWantedJd = createWantedJd(jobDetailResponse);
 
