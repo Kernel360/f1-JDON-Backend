@@ -46,7 +46,7 @@ public class CoffeeChatController {
 	public ResponseEntity<CommonResponse> save(
 		@RequestBody CreateCoffeeChatRequest request,
 		@LoginUser SessionUserInfo sessionUser) {
-		CreateCoffeeChatResponse response = coffeeChatService.create(request, sessionUser.getId());
+		CreateCoffeeChatResponse response = coffeeChatService.create(request, 2L); // sessionUser.getId());
 		URI uri = URI.create("/v1/coffeechats/" + response.getCoffeeChatId());
 
 		return ResponseEntity.created(uri).body(CommonResponse.of(response));
@@ -79,7 +79,7 @@ public class CoffeeChatController {
 		@PageableDefault(size = 12) Pageable pageable) {
 
 		CustomPageResponse<FindCoffeeChatListResponse> response = coffeeChatService.findHostCoffeeChatList(
-			sessionUser.getId(), pageable);
+			/*sessionUser.getId()*/2L, pageable);
 
 		return ResponseEntity.ok().body(CommonResponse.of(response));
 	}
@@ -127,7 +127,7 @@ public class CoffeeChatController {
 		@PathVariable(name = "id") Long coffeeChatId,
 		@LoginUser SessionUserInfo sessionUser) {
 
-		ApplyCoffeeChatResponse response = coffeeChatService.apply(coffeeChatId, sessionUser.getId());
+		ApplyCoffeeChatResponse response = coffeeChatService.apply(coffeeChatId, /*sessionUser.getId()*/2L);
 
 		return ResponseEntity.ok().body(CommonResponse.of(response));
 	}
