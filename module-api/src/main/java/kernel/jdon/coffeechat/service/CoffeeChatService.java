@@ -51,6 +51,7 @@ public class CoffeeChatService {
 	}
 
 	private Member findMember(Long memberId) {
+		
 		return memberRepository.findById(memberId)
 			.orElseThrow(() -> new ApiException(MemberErrorCode.NOT_FOUND_MEMBER));
 	}
@@ -73,6 +74,14 @@ public class CoffeeChatService {
 			.map(FindCoffeeChatListResponse::of);
 
 		return CustomPageResponse.of(findCoffeeChatPage);
+	}
+
+	public CustomPageResponse findGuestCoffeeChatList(Long memberId, Pageable pageable) {
+		Page<FindCoffeeChatListResponse> guestCoffeeChatPage = coffeeChatRepository.findAllByMemberId(
+				memberId, pageable)
+			.map(FindCoffeeChatListResponse::of);
+
+		return CustomPageResponse.of(guestCoffeeChatPage);
 	}
 
 	@Transactional
