@@ -29,7 +29,7 @@ public class InflearnCrawlerService implements CrawlerService {
 	private final CourseScraperService courseScraperService;
 	private final CourseParserService courseParserService;
 	private final CourseStorageService courseStorageService;
-	private static final int MAX_COURSES_PER_KEYWORD = 3;
+	private static final int SLEEP_TIME = 2000;
 
 	@Transactional
 	@Override
@@ -44,16 +44,10 @@ public class InflearnCrawlerService implements CrawlerService {
 	}
 
 	private void processKeyword(String skillKeyword, int pageNum) {
-		InflearnCrawlerState state = new InflearnCrawlerState();
 		final int maxCoursesPerKeyword = scrapingInflearnConfig.getMaxCoursesPerKeyword();
 		InflearnCrawlerState inflearnCrawlerState = new InflearnCrawlerState();
-
-		while (state.getSavedCourseCount() < maxCoursesPerKeyword) {
-			String createLectureUrl = createInflearnSearchUrl(skillKeyword, CourseSearchSort.SORT_POPULARITY, pageNum);
-			Elements scrapeCourseElements = courseScraperService.scrapeCourses(createLectureUrl);
-			parseAndCreateCourses(scrapeCourseElements, createLectureUrl, skillKeyword, pageNum, state);
-		while (state.getSavedCourseCount() < MAX_COURSES_PER_KEYWORD && !state.isLastPage()) {
-		while (inflearnCrawlerState.getSavedCourseCount() < MAX_COURSES_PER_KEYWORD
+		
+		while (inflearnCrawlerState.getSavedCourseCount() < maxCoursesPerKeyword
 			&& !inflearnCrawlerState.isLastPage()) {
 			try {
 				Thread.sleep(SLEEP_TIME);
@@ -61,17 +55,16 @@ public class InflearnCrawlerService implements CrawlerService {
 				Thread.currentThread().interrupt();
 				break;
 			}
-			String currentUrl = createInflearnSearchUrl(skillKeyword, CourseSearchSort.SORT_POPULARITY, pageNum);
+			String currentUrl = createInflearnSearchUrl(skillKeyword, pageNum);
 			log.info("currentUrl: {}", currentUrl);
 
 			Elements scrapeCourseElements = courseScraperService.scrapeCourses(currentUrl);
 			int coursesCount = scrapeCourseElements.size();
 			inflearnCrawlerState.checkIfLastPageBasedOnCourseCount(coursesCount);
 
-			parseAndCreateCourses(scrapeCourseElements, currentUrl, skillKeyword, pageNum, inflearnCrawlerState);
+			parseAndCreateCourses(scrapeCourseElements, currentUrl, skillKeyword, inflearnCrawlerState);
 
-			if (inflearnCrawlerState.getSavedCourseCount() < MAX_COURSES_PER_KEYWORD) {
-			if (state.getSavedCourseCount() < maxCoursesPerKeyword) {
+			if (inflearnCrawlerState.getSavedCourseCount() < maxCoursesPerKeyword) {
 				pageNum++;
 			}
 		}
@@ -83,27 +76,25 @@ public class InflearnCrawlerService implements CrawlerService {
 		}
 	}
 
-	private String createInflearnSearchUrl(String skillKeyword, CourseSearchSort searchSort, int pageNum) {
+	private String createInflearnSearchUrl(String skillKeyword, int pageNum) {
 		final String courseListUrl = scrapingInflearnConfig.getUrl();
 		String path = joinToString(courseListUrl, "/");
 
 		String queryString = joinToString(
 			createQueryString("s", skillKeyword),
-			createQueryString(CourseSearchSort.SEARCH_KEY, searchSort.getSearchValue()),
+			createQueryString(CourseSearchSort.SEARCH_KEY, CourseSearchSort.SORT_POPULARITY.getSearchValue()),
 			createQueryString("page", String.valueOf(pageNum))
 		);
 
 		return joinToString(path, "?", queryString);
 	}
 
-	private void parseAndCreateCourses(Elements courseElements, String lectureUrl, String skillKeyword, int pageNum,
+	private void parseAndCreateCourses(Elements courseElements, String lectureUrl, String skillKeyword,
 		InflearnCrawlerState inflearnCrawlerState) {
-		InflearnCrawlerState state) {
 		final int maxCoursesPerKeyword = scrapingInflearnConfig.getMaxCoursesPerKeyword();
 
 		for (Element courseElement : courseElements) {
-			if (inflearnCrawlerState.getSavedCourseCount() >= MAX_COURSES_PER_KEYWORD) {
-			if (state.getSavedCourseCount() >= maxCoursesPerKeyword) {
+			if (inflearnCrawlerState.getSavedCourseCount() >= maxCoursesPerKeyword) {
 				break;
 			}
 
