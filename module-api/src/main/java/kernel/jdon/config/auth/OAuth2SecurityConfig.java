@@ -17,12 +17,12 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 @EnableWebSecurity
-// TODO: 이거하면 왜 HttpSecurity에서 Could not autowire. No beans of 'HttpSecurity' type found. 에러가 사라지는지 모르곘음.
 @Configuration
 public class OAuth2SecurityConfig {
 	private final JdonOAuth2UserService jdonOAuth2UserService;
 	private final JdonOAuth2AuthenticationSuccessHandler jdonOAuth2AuthenticationSuccessHandler;
 	private final JdonAuthExceptionHandler jdonAuthExceptionHandler;
+	private final LogoutRedirectUrlConfig logoutRedirectUrlConfig;
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -53,7 +53,7 @@ public class OAuth2SecurityConfig {
 				.userService(jdonOAuth2UserService)));
 		http.logout(logoutConfigurer -> logoutConfigurer
 			.logoutUrl("/api/v1/logout")
-			.logoutSuccessUrl("http://localhost:3000/main") // TODO: 프론트와 상의 후 메인페이지 url로 변경
+			.logoutSuccessUrl(logoutRedirectUrlConfig.getSuccess())
 			.invalidateHttpSession(true)
 			.deleteCookies("JSESSIONID"));
 

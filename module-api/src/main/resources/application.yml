@@ -52,3 +52,11 @@ decorator:
   datasource:
     p6spy:
       enable-logging: true
+
+redirect-url:
+  login:
+    success:
+      member: ${REDIRECT_URL_LOGIN_SUCCESS_MEMBER}
+      guest: ${REDIRECT_URL_LOGIN_SUCCESS_GUEST}
+  logout:
+    success: ${REDIRECT_URL_LOGOUT_SUCCESS}
