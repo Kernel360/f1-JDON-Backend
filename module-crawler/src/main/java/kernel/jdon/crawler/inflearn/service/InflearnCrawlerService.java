@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kernel.jdon.crawler.config.ScrapingInflearnConfig;
 import kernel.jdon.crawler.inflearn.search.CourseSearchSort;
-import kernel.jdon.crawler.inflearn.service.infrastructure.InflearnCrawlerState;
+import kernel.jdon.crawler.inflearn.service.infrastructure.InflearnCourseCounter;
 import kernel.jdon.crawler.inflearn.service.infrastructure.LastPageDiscriminator;
 import kernel.jdon.crawler.wanted.skill.BackendSkillType;
 import kernel.jdon.crawler.wanted.skill.FrontendSkillType;
@@ -45,10 +45,10 @@ public class InflearnCrawlerService implements CrawlerService {
 
 	private void processKeyword(String skillKeyword, int pageNum) {
 		final int maxCoursesPerKeyword = scrapingInflearnConfig.getMaxCoursesPerKeyword();
-		InflearnCrawlerState inflearnCrawlerState = new InflearnCrawlerState();
+		InflearnCourseCounter inflearnCourseCounter = new InflearnCourseCounter();
 		LastPageDiscriminator lastPageDiscriminator = new LastPageDiscriminator(scrapingInflearnConfig);
 
-		while (inflearnCrawlerState.getSavedCourseCount() < maxCoursesPerKeyword
+		while (inflearnCourseCounter.getSavedCourseCount() < maxCoursesPerKeyword
 			&& !lastPageDiscriminator.isLastPage()) {
 			try {
 				Thread.sleep(scrapingInflearnConfig.getSleepTimeMillis());
@@ -63,17 +63,17 @@ public class InflearnCrawlerService implements CrawlerService {
 			int coursesCount = scrapeCourseElements.size();
 			lastPageDiscriminator.checkIfLastPageBasedOnCourseCount(coursesCount);
 
-			parseAndCreateCourses(scrapeCourseElements, currentUrl, skillKeyword, inflearnCrawlerState);
+			parseAndCreateCourses(scrapeCourseElements, currentUrl, skillKeyword, inflearnCourseCounter);
 
-			if (inflearnCrawlerState.getSavedCourseCount() < maxCoursesPerKeyword) {
+			if (inflearnCourseCounter.getSavedCourseCount() < maxCoursesPerKeyword) {
 				pageNum++;
 			}
 		}
 
-		if (!inflearnCrawlerState.getNewCourses().isEmpty()) {
+		if (!inflearnCourseCounter.getNewCourses().isEmpty()) {
 			courseStorageService.createInflearnCourseAndInflearnJdSkill(skillKeyword,
-				inflearnCrawlerState.getNewCourses());
-			inflearnCrawlerState.resetState();
+				inflearnCourseCounter.getNewCourses());
+			inflearnCourseCounter.resetState();
 		}
 	}
 
@@ -91,19 +91,19 @@ public class InflearnCrawlerService implements CrawlerService {
 	}
 
 	private void parseAndCreateCourses(Elements courseElements, String lectureUrl, String skillKeyword,
-		InflearnCrawlerState inflearnCrawlerState) {
+		InflearnCourseCounter inflearnCourseCounter) {
 		final int maxCoursesPerKeyword = scrapingInflearnConfig.getMaxCoursesPerKeyword();
 
 		for (Element courseElement : courseElements) {
-			if (inflearnCrawlerState.getSavedCourseCount() >= maxCoursesPerKeyword) {
+			if (inflearnCourseCounter.getSavedCourseCount() >= maxCoursesPerKeyword) {
 				break;
 			}
 
 			InflearnCourse parsedCourse = courseParserService.parseCourse(courseElement, lectureUrl, skillKeyword);
 
 			if (parsedCourse != null) {
-				inflearnCrawlerState.addNewCourse(parsedCourse);
-				inflearnCrawlerState.incrementSavedCourseCount();
+				inflearnCourseCounter.addNewCourse(parsedCourse);
+				inflearnCourseCounter.incrementSavedCourseCount();
 			}
 		}
 	}

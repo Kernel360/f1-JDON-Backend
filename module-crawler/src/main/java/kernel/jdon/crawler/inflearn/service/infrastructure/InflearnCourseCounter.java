@@ -7,7 +7,7 @@ import kernel.jdon.inflearncourse.domain.InflearnCourse;
 import lombok.Getter;
 
 @Getter
-public class InflearnCrawlerState {
+public class InflearnCourseCounter {
 	private int savedCourseCount = 0;
 	private List<InflearnCourse> newCourses = new ArrayList<>();
 
