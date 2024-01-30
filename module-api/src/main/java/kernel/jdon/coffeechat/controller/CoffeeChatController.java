@@ -59,7 +59,7 @@ public class CoffeeChatController {
 
 		CustomPageResponse<FindCoffeeChatListResponse> response = coffeeChatService.findGuestCoffeeChatList(
 			sessionUser.getId(), pageable);
-		
+
 		return ResponseEntity.ok(CommonResponse.of(response));
 	}
 
