@@ -6,8 +6,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import kernel.jdon.coffeechat.domain.CoffeeChat;
+import kernel.jdon.coffeechat.domain.CoffeeChatActiveStatus;
 import kernel.jdon.coffeechat.dto.request.CreateCoffeeChatRequest;
 import kernel.jdon.coffeechat.dto.request.UpdateCoffeeChatRequest;
+import kernel.jdon.coffeechat.dto.response.ApplyCoffeeChatResponse;
 import kernel.jdon.coffeechat.dto.response.CreateCoffeeChatResponse;
 import kernel.jdon.coffeechat.dto.response.DeleteCoffeeChatResponse;
 import kernel.jdon.coffeechat.dto.response.FindCoffeeChatListResponse;
@@ -32,15 +34,30 @@ public class CoffeeChatService {
 	private final CoffeeChatRepository coffeeChatRepository;
 	private final MemberRepository memberRepository;
 
-	private CoffeeChat findByIdIfNotDeleted(Long coffeeChatId) {
+	private CoffeeChat findExistCoffeeChat(Long coffeeChatId) {
 
 		return coffeeChatRepository.findByIdAndIsDeletedFalse(coffeeChatId)
 			.orElseThrow(() -> new ApiException(CoffeeChatErrorCode.NOT_FOUND_COFFEECHAT));
 	}
 
+	private CoffeeChat findExistAndOpenCoffeeChat(Long coffeeChatId) {
+
+		CoffeeChat findCoffeeChat = findExistCoffeeChat(coffeeChatId);
+		if (findCoffeeChat.getCoffeeChatStatus() != CoffeeChatActiveStatus.OPEN) {
+			throw new ApiException(CoffeeChatErrorCode.NOT_OPEN_COFFEECHAT);
+		}
+
+		return findCoffeeChat;
+	}
+
+	private Member findMember(Long memberId) {
+		return memberRepository.findById(memberId)
+			.orElseThrow(() -> new ApiException(MemberErrorCode.NOT_FOUND_MEMBER));
+	}
+
 	@Transactional
 	public FindCoffeeChatResponse find(Long coffeeChatId) {
-		CoffeeChat findCoffeeChat = findByIdIfNotDeleted(coffeeChatId);
+		CoffeeChat findCoffeeChat = findExistCoffeeChat(coffeeChatId);
 		increaseViewCount(findCoffeeChat);
 
 		return FindCoffeeChatResponse.of(findCoffeeChat);
@@ -60,16 +77,32 @@ public class CoffeeChatService {
 
 	@Transactional
 	public CreateCoffeeChatResponse create(CreateCoffeeChatRequest request, Long memberId) {
-		Member findMember = memberRepository.findById(memberId)
-			.orElseThrow(() -> new ApiException(MemberErrorCode.NOT_FOUND_MEMBER));
+		Member findMember = findMember(memberId);
 		CoffeeChat savedCoffeeChat = coffeeChatRepository.save(request.toEntity(findMember));
 
 		return CreateCoffeeChatResponse.of(savedCoffeeChat.getId());
 	}
 
 	@Transactional
+	public ApplyCoffeeChatResponse apply(Long coffeeChatId, Long memberId) {
+		CoffeeChat findCoffeeChat = findExistAndOpenCoffeeChat(coffeeChatId);
+		Member findMember = findMember(memberId);
+
+		checkIfMemberIsHost(findMember, findCoffeeChat);
+		findCoffeeChat.addCoffeeChatMember(findMember);
+
+		return ApplyCoffeeChatResponse.of(findCoffeeChat.getId());
+	}
+
+	private void checkIfMemberIsHost(Member findMember, CoffeeChat findCoffeeChat) {
+		if (findMember.getId().equals(findCoffeeChat.getMember().getId())) {
+			throw new ApiException(CoffeeChatErrorCode.CAN_NOT_JOIN_OWN_COFFEECHAT);
+		}
+	}
+
+	@Transactional
 	public DeleteCoffeeChatResponse delete(Long coffeeChatId) {
-		CoffeeChat findCoffeeChat = findByIdIfNotDeleted(coffeeChatId);
+		CoffeeChat findCoffeeChat = findExistCoffeeChat(coffeeChatId);
 		coffeeChatRepository.deleteById(findCoffeeChat.getId());
 
 		return DeleteCoffeeChatResponse.of(coffeeChatId);
@@ -77,11 +110,10 @@ public class CoffeeChatService {
 
 	@Transactional
 	public UpdateCoffeeChatResponse update(Long coffeeChatId, UpdateCoffeeChatRequest request) {
-		CoffeeChat findCoffeeChat = findByIdIfNotDeleted(coffeeChatId);
+		CoffeeChat findCoffeeChat = findExistCoffeeChat(coffeeChatId);
 		CoffeeChat target = UpdateCoffeeChatRequest.toEntity(request);
 
 		validateUpdate(findCoffeeChat, target);
-
 		findCoffeeChat.updateCoffeeChat(target);
 
 		return UpdateCoffeeChatResponse.of(findCoffeeChat.getId());
