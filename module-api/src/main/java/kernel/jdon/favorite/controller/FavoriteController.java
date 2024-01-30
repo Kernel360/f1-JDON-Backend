@@ -29,7 +29,7 @@ public class FavoriteController {
 	@GetMapping("/api/v1/favorites")
 	public ResponseEntity<CommonResponse> getList(@LoginUser SessionUserInfo user,
 		@PageableDefault(size = 12) Pageable pageable) {
-		CustomPageResponse<FindFavoriteResponse> findListFavoriteResponse = favoriteService.findList(user.getId(),
+		CustomPageResponse<FindFavoriteResponse> findListFavoriteResponse = favoriteService.findList(/*user.getId()*/2L,
 			pageable);
 
 		return ResponseEntity.ok(CommonResponse.of(findListFavoriteResponse));
@@ -38,7 +38,7 @@ public class FavoriteController {
 	@PostMapping("/api/v1/favorites")
 	public ResponseEntity<CommonResponse> update(@LoginUser SessionUserInfo user,
 		@RequestBody UpdateFavoriteRequest updateFavoriteRequest) {
-		UpdateFavoriteResponse updateFavoriteResponse = favoriteService.update(user.getId(),
+		UpdateFavoriteResponse updateFavoriteResponse = favoriteService.update(/*user.getId()*/2L,
 			updateFavoriteRequest);
 		URI uri = URI.create("/api/v1/favorites/" + updateFavoriteResponse.getLectureId());
 

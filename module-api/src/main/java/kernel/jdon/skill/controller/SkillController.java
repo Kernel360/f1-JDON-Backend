@@ -30,7 +30,7 @@ public class SkillController {
 
 	@GetMapping("/api/v1/skills/member")
 	public ResponseEntity<CommonResponse> getMemberSkillList(@LoginUser SessionUserInfo sessionUser) {
-		Long memberId = sessionUser.getId();
+		Long memberId = /*sessionUser.getId()*/2L;
 		FindListMemberSkillResponse findMemberSkillList = skillService.findMemberSkillList(memberId);
 
 		return ResponseEntity.ok(CommonResponse.of(findMemberSkillList));

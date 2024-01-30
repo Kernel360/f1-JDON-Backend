@@ -7,15 +7,15 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import kernel.jdon.global.annotation.LoginUser;
 import kernel.jdon.auth.dto.SessionUserInfo;
 import kernel.jdon.dto.response.CommonResponse;
+import kernel.jdon.global.annotation.LoginUser;
 import kernel.jdon.member.dto.request.NicknameDuplicateRequest;
 import kernel.jdon.member.dto.request.UpdateMemberRequest;
+import kernel.jdon.member.dto.response.FindMemberResponse;
 import kernel.jdon.member.dto.response.UpdateMemberResponse;
 import kernel.jdon.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
-import kernel.jdon.member.dto.response.FindMemberResponse;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -27,7 +27,7 @@ public class MemberController {
 
 	@GetMapping("/api/v1/member")
 	public ResponseEntity<CommonResponse> get(@LoginUser SessionUserInfo sessionUser) {
-		Long memberId = sessionUser.getId();
+		Long memberId = /*sessionUser.getId();*/2L;
 		FindMemberResponse findMemberResponse = memberService.find(memberId);
 
 		return ResponseEntity.ok(CommonResponse.of(findMemberResponse));
@@ -36,7 +36,7 @@ public class MemberController {
 	@PutMapping("/api/v1/member")
 	public ResponseEntity<CommonResponse> modify(@LoginUser SessionUserInfo user,
 		@RequestBody UpdateMemberRequest updateMemberRequest) {
-		UpdateMemberResponse updateMemberResponse = memberService.update(user.getId(), updateMemberRequest);
+		UpdateMemberResponse updateMemberResponse = memberService.update(/*user.getId()*/2L, updateMemberRequest);
 
 		return ResponseEntity.ok(CommonResponse.of(updateMemberResponse));
 	}
