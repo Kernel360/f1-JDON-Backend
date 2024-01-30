@@ -29,7 +29,6 @@ public class InflearnCrawlerService implements CrawlerService {
 	private final CourseScraperService courseScraperService;
 	private final CourseParserService courseParserService;
 	private final CourseStorageService courseStorageService;
-	private static final int SLEEP_TIME = 2000;
 
 	@Transactional
 	@Override
@@ -46,11 +45,11 @@ public class InflearnCrawlerService implements CrawlerService {
 	private void processKeyword(String skillKeyword, int pageNum) {
 		final int maxCoursesPerKeyword = scrapingInflearnConfig.getMaxCoursesPerKeyword();
 		InflearnCrawlerState inflearnCrawlerState = new InflearnCrawlerState();
-		
+
 		while (inflearnCrawlerState.getSavedCourseCount() < maxCoursesPerKeyword
 			&& !inflearnCrawlerState.isLastPage()) {
 			try {
-				Thread.sleep(SLEEP_TIME);
+				Thread.sleep(scrapingInflearnConfig.getSleepTimeMillis());
 			} catch (InterruptedException e) {
 				Thread.currentThread().interrupt();
 				break;

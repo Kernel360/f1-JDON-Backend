@@ -26,6 +26,7 @@ scraping:
   inflearn:
     url: https://www.inflearn.com/courses
     max_courses_per_keyword: 3
+    sleep_time_millis: 2000
 
   wanted:
     url:
