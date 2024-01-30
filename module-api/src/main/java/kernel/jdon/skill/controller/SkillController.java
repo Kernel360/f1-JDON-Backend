@@ -46,8 +46,10 @@ public class SkillController {
 
 	@GetMapping("/api/v1/skills/search")
 	public ResponseEntity<CommonResponse> getDataListBySkill(
-		@RequestParam(name = "keyword", defaultValue = "") String keyword) {
-		FindListDataBySkillResponse findListDataBySkillResponse = skillService.findDataBySkillList(keyword);
+		@RequestParam(name = "keyword", defaultValue = "") String keyword,
+		@LoginUser SessionUserInfo sessionUser) {
+		Long userId = sessionUser == null ? null : sessionUser.getId();
+		FindListDataBySkillResponse findListDataBySkillResponse = skillService.findDataBySkillList(keyword, userId);
 
 		return ResponseEntity.ok(CommonResponse.of(findListDataBySkillResponse));
 	}

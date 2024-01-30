@@ -11,5 +11,5 @@ public interface SkillRepositoryCustom {
 	List<FindHotSkillDto> findHotSkillList();
 	List<FindMemberSkillDto> findMemberSkillList(Long memberId);
 	List<FindWantedJdDto> findWantedJdListBySkill(String keyword);
-	List<FindLectureDto> findInflearnLectureListBySkill(String keyword);
+	List<FindLectureDto> findInflearnLectureListBySkill(String keyword, Long userId);
 }

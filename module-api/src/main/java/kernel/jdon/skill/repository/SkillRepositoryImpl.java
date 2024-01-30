@@ -1,5 +1,6 @@
 package kernel.jdon.skill.repository;
 
+import static kernel.jdon.favorite.domain.QFavorite.*;
 import static kernel.jdon.inflearncourse.domain.QInflearnCourse.*;
 import static kernel.jdon.inflearnjdskill.domain.QInflearnJdSkill.*;
 import static kernel.jdon.memberskill.domain.QMemberSkill.*;
@@ -10,6 +11,7 @@ import static kernel.jdon.wantedjdskill.domain.QWantedJdSkill.*;
 
 import java.util.List;
 
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -77,12 +79,13 @@ public class SkillRepositoryImpl implements SkillRepositoryCustom {
 	}
 
 	@Override
-	public List<FindLectureDto> findInflearnLectureListBySkill(final String keyword) {
+	public List<FindLectureDto> findInflearnLectureListBySkill(final String keyword, final Long userId) {
 		final int inflearnLectureCount = 3;
 
 		return jpaQueryFactory
 			.select(new QFindLectureDto(inflearnCourse.id, inflearnCourse.title, inflearnCourse.lectureUrl,
-				inflearnCourse.imageUrl, inflearnCourse.instructor, inflearnCourse.studentCount, inflearnCourse.price
+				inflearnCourse.imageUrl, inflearnCourse.instructor, inflearnCourse.studentCount, inflearnCourse.price,
+				isFavoriteLecture(userId)
 			))
 			.from(inflearnJdSkill)
 			.innerJoin(inflearnCourse)
@@ -95,5 +98,23 @@ public class SkillRepositoryImpl implements SkillRepositoryCustom {
 						.where(skill.keyword.eq(keyword))))
 			.limit(inflearnLectureCount)
 			.fetch();
+	}
+
+	private BooleanExpression isFavoriteLecture(Long userId) {
+		return userId == null ? Expressions.asBoolean(false) : isFavoriteLectureByMember(userId);
+	}
+
+	private BooleanExpression isFavoriteLectureByMember(Long userId) {
+		return Expressions.cases()
+			.when(
+				JPAExpressions
+					.select(favorite)
+					.from(favorite)
+					.where(favorite.inflearnCourse.id.eq(inflearnCourse.id)
+						.and(favorite.member.id.eq(userId)))
+					.exists()
+			)
+			.then(true)
+			.otherwise(false);
 	}
 }
