@@ -8,13 +8,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import kernel.jdon.coffeechat.domain.CoffeeChat;
-import kernel.jdon.coffeechat.domain.CoffeeChatActiveStatus;
 
 public interface CoffeeChatRepository extends CoffeeChatDomainRepository {
 
 	Optional<CoffeeChat> findByIdAndIsDeletedFalse(Long id);
-
-	Optional<CoffeeChat> findByIdAndCoffeeChatStatus(Long id, CoffeeChatActiveStatus status);
 
 	Page<CoffeeChat> findAllByMemberIdAndIsDeletedFalse(Long id, Pageable pageable);
 
