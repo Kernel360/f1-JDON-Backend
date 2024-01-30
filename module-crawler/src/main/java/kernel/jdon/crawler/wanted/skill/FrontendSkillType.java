@@ -1,5 +1,8 @@
 package kernel.jdon.crawler.wanted.skill;
 
+import java.util.Arrays;
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -28,5 +31,11 @@ public enum FrontendSkillType implements SkillType {
 	@Override
 	public String getKeyword() {
 		return keyword;
+	}
+
+	public static List<String> getAllKeywords() {
+		return Arrays.stream(FrontendSkillType.values())
+			.map(FrontendSkillType::getKeyword)
+			.toList();
 	}
 }

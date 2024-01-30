@@ -1,5 +1,8 @@
 package kernel.jdon.crawler.wanted.skill;
 
+import java.util.Arrays;
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -47,11 +50,16 @@ public enum BackendSkillType implements SkillType {
 	HADOOP("Hadoop"),
 	LARAVEL("Laravel");
 
-
 	private String keyword;
 
 	@Override
 	public String getKeyword() {
 		return keyword;
+	}
+
+	public static List<String> getAllKeywords() {
+		return Arrays.stream(BackendSkillType.values())
+			.map(BackendSkillType::getKeyword)
+			.toList();
 	}
 }

@@ -45,7 +45,7 @@ public class FavoriteService {
 		InflearnCourse findInflearnCourse = inflearnCourseRepository.findById(
 				updateFavoriteRequest.getLectureId())
 			.orElseThrow(() -> new ApiException(InflearncourseErrorCode.NOT_FOUND_INFLEARN_COURSE));
-		
+
 		return favoriteRepository.findFavoriteByMemberIdAndInflearnCourseId(memberId,
 				updateFavoriteRequest.getLectureId())
 			.map(favorite -> UpdateFavoriteResponse.of(favorite.getId()))
@@ -55,6 +55,7 @@ public class FavoriteService {
 	private UpdateFavoriteResponse createNewFavorite(Member member, InflearnCourse inflearnCourse) {
 		Favorite favorite = new Favorite(member, inflearnCourse);
 		Favorite savedFavorite = favoriteRepository.save(favorite);
+
 		return UpdateFavoriteResponse.of(savedFavorite.getId());
 	}
 

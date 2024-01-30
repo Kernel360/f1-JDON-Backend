@@ -1,6 +1,7 @@
 package kernel.jdon.crawler.inflearn.service;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +14,7 @@ import kernel.jdon.crawler.wanted.repository.InflearnJdSkillRepository;
 import kernel.jdon.crawler.wanted.repository.SkillRepository;
 import kernel.jdon.inflearncourse.domain.InflearnCourse;
 import kernel.jdon.inflearnjdskill.domain.InflearnJdSkill;
+import kernel.jdon.jobcategory.domain.JobCategory;
 import kernel.jdon.skill.domain.Skill;
 import lombok.RequiredArgsConstructor;
 
@@ -27,10 +29,24 @@ public class CourseStorageService {
 
 	@Transactional
 	public void createInflearnCourseAndInflearnJdSkill(String skillKeyword, List<InflearnCourse> newCourseList) {
-		Skill findSkill = skillRepository.findByKeyword(skillKeyword)
-			.orElseThrow(() -> new CrawlerException(SkillErrorCode.NOT_FOUND_SKILL));
-		deleteExistingInflearnJdSkills(findSkill);
-		createOrUpdateCourseList(newCourseList, findSkill);
+		List<Long> jobCategoryIdList = findJobCategoryIds(skillKeyword);
+
+		for (Long jobCategoryId : jobCategoryIdList) {
+			Skill findSkill = skillRepository.findByJobCategoryIdAndKeyword(jobCategoryId, skillKeyword)
+				.orElseThrow(() -> new CrawlerException(SkillErrorCode.NOT_FOUND_SKILL));
+			deleteExistingInflearnJdSkills(findSkill);
+			createOrUpdateCourseList(newCourseList, findSkill);
+		}
+	}
+
+	public List<Long> findJobCategoryIds(String skillKeyword) {
+		List<Skill> skills = skillRepository.findByKeyword(skillKeyword);
+		return skills.stream()
+			.map(Skill::getJobCategory)
+			.filter(Objects::nonNull)
+			.map(JobCategory::getId)
+			.distinct()
+			.toList();
 	}
 
 	private void deleteExistingInflearnJdSkills(Skill skill) {
