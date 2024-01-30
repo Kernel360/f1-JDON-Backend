@@ -29,6 +29,7 @@ public class InflearnCrawlerService implements CrawlerService {
 	private final CourseScraperService courseScraperService;
 	private final CourseParserService courseParserService;
 	private final CourseStorageService courseStorageService;
+	private static final int MAX_COURSES_PER_KEYWORD = 3;
 
 	@Transactional
 	@Override
@@ -51,14 +52,12 @@ public class InflearnCrawlerService implements CrawlerService {
 			Elements scrapeCourseElements = courseScraperService.scrapeCourses(createLectureUrl);
 			parseAndCreateCourses(scrapeCourseElements, createLectureUrl, skillKeyword, pageNum, state);
 		while (state.getSavedCourseCount() < MAX_COURSES_PER_KEYWORD && !state.isLastPage()) {
-			////
 			try {
-				Thread.sleep(2000);
+				Thread.sleep(SLEEP_TIME);
 			} catch (InterruptedException e) {
 				Thread.currentThread().interrupt();
 				break;
 			}
-			////////
 			String currentUrl = createInflearnSearchUrl(skillKeyword, CourseSearchSort.SORT_POPULARITY, pageNum);
 			log.info("currentUrl: {}", currentUrl);
 
