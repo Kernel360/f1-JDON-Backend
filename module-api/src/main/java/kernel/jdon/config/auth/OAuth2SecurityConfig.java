@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 
@@ -40,9 +41,9 @@ public class OAuth2SecurityConfig {
 		http.exceptionHandling(exceptionConfig -> exceptionConfig
 			.authenticationEntryPoint(jdonAuthExceptionHandler)
 			.accessDeniedHandler(jdonAuthExceptionHandler));
-		http.csrf().disable();
+		http.csrf(AbstractHttpConfigurer::disable);
 		http.authorizeHttpRequests(config -> config
-			// .requestMatchers("/api/v1/member").hasAnyRole("USER")
+			.requestMatchers("/api/v1/member").hasAnyRole("USER")
 			.requestMatchers("api/**").permitAll()
 			.anyRequest().permitAll());
 		http.oauth2Login(oauth2Configurer -> oauth2Configurer

@@ -46,7 +46,7 @@ public class CoffeeChatController {
 	public ResponseEntity<CommonResponse> save(
 		@RequestBody CreateCoffeeChatRequest request,
 		@LoginUser SessionUserInfo sessionUser) {
-		CreateCoffeeChatResponse response = coffeeChatService.create(request, 2L); // sessionUser.getId());
+		CreateCoffeeChatResponse response = coffeeChatService.create(request,  sessionUser.getId());
 		URI uri = URI.create("/v1/coffeechats/" + response.getCoffeeChatId());
 
 		return ResponseEntity.created(uri).body(CommonResponse.of(response));

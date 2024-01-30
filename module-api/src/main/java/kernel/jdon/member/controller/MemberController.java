@@ -27,7 +27,7 @@ public class MemberController {
 
 	@GetMapping("/api/v1/member")
 	public ResponseEntity<CommonResponse> get(@LoginUser SessionUserInfo sessionUser) {
-		Long memberId = /*sessionUser.getId();*/2L;
+		Long memberId = sessionUser.getId();
 		FindMemberResponse findMemberResponse = memberService.find(memberId);
 
 		return ResponseEntity.ok(CommonResponse.of(findMemberResponse));
@@ -36,7 +36,7 @@ public class MemberController {
 	@PutMapping("/api/v1/member")
 	public ResponseEntity<CommonResponse> modify(@LoginUser SessionUserInfo user,
 		@RequestBody UpdateMemberRequest updateMemberRequest) {
-		UpdateMemberResponse updateMemberResponse = memberService.update(/*user.getId()*/2L, updateMemberRequest);
+		UpdateMemberResponse updateMemberResponse = memberService.update(user.getId(), updateMemberRequest);
 
 		return ResponseEntity.ok(CommonResponse.of(updateMemberResponse));
 	}
