@@ -18,6 +18,6 @@ public interface CoffeeChatRepository extends CoffeeChatDomainRepository {
 
 	Page<CoffeeChat> findAllByMemberIdAndIsDeletedFalse(Long id, Pageable pageable);
 
-	@Query("SELECT cc FROM CoffeeChat cc JOIN cc.coffeeChatMemberList ccm WHERE ccm.member.id = :memberId")
+	@Query("SELECT cc FROM CoffeeChat cc JOIN FETCH cc.member m JOIN FETCH m.jobCategory JOIN FETCH cc.coffeeChatMemberList ccm WHERE ccm.member.id = :memberId")
 	Page<CoffeeChat> findAllByMemberId(@Param("memberId") Long memberId, Pageable pageable);
 }
