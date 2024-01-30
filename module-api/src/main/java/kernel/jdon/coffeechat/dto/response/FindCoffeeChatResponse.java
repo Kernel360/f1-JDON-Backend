@@ -16,6 +16,7 @@ public class FindCoffeeChatResponse {
 
 	private Long coffeeChatId;
 	private String nickname;
+	private String job;
 	private String title;
 	private String content;
 	private Long viewCount;
@@ -27,12 +28,12 @@ public class FindCoffeeChatResponse {
 	private String openChatUrl;
 	private Long totalRecruitCount;
 	private Long currentRecruitCount;
-	private String job;
 
 	public static FindCoffeeChatResponse of(CoffeeChat coffeeChat) {
 		return FindCoffeeChatResponse.builder()
 			.coffeeChatId(coffeeChat.getId())
 			.nickname(coffeeChat.getMember().getNickname())
+			.job(String.valueOf(coffeeChat.getMember().getJobCategory().getName()))
 			.title(coffeeChat.getTitle())
 			.content(coffeeChat.getContent())
 			.viewCount(coffeeChat.getViewCount())
