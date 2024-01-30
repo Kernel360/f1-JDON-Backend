@@ -12,4 +12,5 @@ public class ScrapingInflearnConfig {
 	private final String url;
 	private final int maxCoursesPerKeyword;
 	private final int sleepTimeMillis;
+	private final int maxCoursesPerPage;
 }

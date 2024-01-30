@@ -12,7 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kernel.jdon.crawler.config.ScrapingInflearnConfig;
 import kernel.jdon.crawler.inflearn.search.CourseSearchSort;
-import kernel.jdon.crawler.inflearn.util.InflearnCrawlerState;
+import kernel.jdon.crawler.inflearn.service.infrastructure.InflearnCrawlerState;
+import kernel.jdon.crawler.inflearn.service.infrastructure.LastPageDiscriminator;
 import kernel.jdon.crawler.wanted.skill.BackendSkillType;
 import kernel.jdon.crawler.wanted.skill.FrontendSkillType;
 import kernel.jdon.inflearncourse.domain.InflearnCourse;
@@ -45,9 +46,10 @@ public class InflearnCrawlerService implements CrawlerService {
 	private void processKeyword(String skillKeyword, int pageNum) {
 		final int maxCoursesPerKeyword = scrapingInflearnConfig.getMaxCoursesPerKeyword();
 		InflearnCrawlerState inflearnCrawlerState = new InflearnCrawlerState();
+		LastPageDiscriminator lastPageDiscriminator = new LastPageDiscriminator(scrapingInflearnConfig);
 
 		while (inflearnCrawlerState.getSavedCourseCount() < maxCoursesPerKeyword
-			&& !inflearnCrawlerState.isLastPage()) {
+			&& !lastPageDiscriminator.isLastPage()) {
 			try {
 				Thread.sleep(scrapingInflearnConfig.getSleepTimeMillis());
 			} catch (InterruptedException e) {
@@ -59,7 +61,7 @@ public class InflearnCrawlerService implements CrawlerService {
 
 			Elements scrapeCourseElements = courseScraperService.scrapeCourses(currentUrl);
 			int coursesCount = scrapeCourseElements.size();
-			inflearnCrawlerState.checkIfLastPageBasedOnCourseCount(coursesCount);
+			lastPageDiscriminator.checkIfLastPageBasedOnCourseCount(coursesCount);
 
 			parseAndCreateCourses(scrapeCourseElements, currentUrl, skillKeyword, inflearnCrawlerState);
 

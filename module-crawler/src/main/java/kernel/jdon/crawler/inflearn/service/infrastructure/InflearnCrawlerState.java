@@ -1,4 +1,4 @@
-package kernel.jdon.crawler.inflearn.util;
+package kernel.jdon.crawler.inflearn.service.infrastructure;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,8 +10,6 @@ import lombok.Getter;
 public class InflearnCrawlerState {
 	private int savedCourseCount = 0;
 	private List<InflearnCourse> newCourses = new ArrayList<>();
-	private boolean isLastPage = false;
-	private static final int MAX_COURSES_PER_PAGE = 24;
 
 	public void incrementSavedCourseCount() {
 		this.savedCourseCount++;
@@ -24,19 +22,5 @@ public class InflearnCrawlerState {
 	public void resetState() {
 		savedCourseCount = 0;
 		newCourses.clear();
-	}
-
-	public boolean isLastPage() {
-		return isLastPage;
-	}
-
-	public void markAsLastPage() {
-		this.isLastPage = true;
-	}
-
-	public void checkIfLastPageBasedOnCourseCount(int courseCount) {
-		if (courseCount < MAX_COURSES_PER_PAGE) {
-			markAsLastPage();
-		}
 	}
 }
