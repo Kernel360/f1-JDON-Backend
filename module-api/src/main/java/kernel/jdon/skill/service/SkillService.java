@@ -44,11 +44,11 @@ public class SkillService {
 		return new FindListJobCategorySkillResponse(findJobCategorySkillList);
 	}
 
-	public FindListDataBySkillResponse findDataBySkillList(String keyword) {
+	public FindListDataBySkillResponse findDataBySkillList(String keyword, Long userId) {
 		keyword = hasText(keyword) ? keyword
 								   : skillRepository.findHotSkillList().get(0).getKeyword();
 		List<FindWantedJdDto> findWantedJdList = skillRepository.findWantedJdListBySkill(keyword);
-		List<FindLectureDto> findLectureList = skillRepository.findInflearnLectureListBySkill(keyword);
+		List<FindLectureDto> findLectureList = skillRepository.findInflearnLectureListBySkill(keyword, userId);
 
 		return FindListDataBySkillResponse.of(keyword, findLectureList, findWantedJdList);
 	}
