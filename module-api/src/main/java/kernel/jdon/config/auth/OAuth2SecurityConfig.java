@@ -42,6 +42,10 @@ public class OAuth2SecurityConfig {
 			.authenticationEntryPoint(jdonAuthExceptionHandler)
 			.accessDeniedHandler(jdonAuthExceptionHandler));
 		http.csrf(AbstractHttpConfigurer::disable);
+		http.sessionManagement(sessionManagementConfigurer -> sessionManagementConfigurer
+			.maximumSessions(1)
+			.maxSessionsPreventsLogin(false)
+		);
 		http.authorizeHttpRequests(config -> config
 			.requestMatchers("/api/v1/member").hasAnyRole("USER")
 			.requestMatchers("api/**").permitAll()
