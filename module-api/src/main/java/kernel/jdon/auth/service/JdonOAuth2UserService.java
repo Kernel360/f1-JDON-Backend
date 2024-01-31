@@ -3,6 +3,7 @@ package kernel.jdon.auth.service;
 import jakarta.servlet.http.HttpSession;
 import kernel.jdon.auth.dto.JdonOAuth2User;
 import kernel.jdon.auth.dto.SessionUserInfo;
+import kernel.jdon.auth.dto.UserInfoFromOAuth2;
 import kernel.jdon.auth.error.AuthErrorCode;
 import kernel.jdon.global.exception.UnAuthorizedException;
 import kernel.jdon.member.domain.Member;
@@ -40,39 +41,42 @@ public class JdonOAuth2UserService extends DefaultOAuth2UserService {
 
 	private DefaultOAuth2User getOAuth2UserFromOAuthServer(OAuth2UserRequest userRequest, OAuth2User user) {
 		SocialProviderType socialProvider = getSocialProvider(userRequest);
-		String email = null;
+		UserInfoFromOAuth2 userInfo = null;
 		if (SocialProviderType.KAKAO == socialProvider) {
-			email = getEmailFromKakao(user);
+			userInfo = getUserInfoFromKakao(user);
 		} else if (SocialProviderType.GITHUB == socialProvider) {
-			email = getEmailFromGithub(user);
+			userInfo = getUserInfoFromGithub(user);
 		}
 
-		Member findMember = memberRepository.findByEmail(email);
+		Member findMember = memberRepository.findByEmail(userInfo.getEmail());
 		List<SimpleGrantedAuthority> authorities = null;
 		if (findMember != null && findMember.isActiveMember()) {
-			checkRightSocialProvider(findMember, socialProvider);
-			httpSession.setAttribute("USER", SessionUserInfo.of(findMember));
+			checkRightSocialProvider(findMember, userInfo.getSocialProvider());
+			httpSession.setAttribute("USER", SessionUserInfo.of(findMember, userInfo));
 			authorities = List.of(new SimpleGrantedAuthority("ROLE_USER"));
 		} else {
 			authorities = List.of(new SimpleGrantedAuthority("ROLE_TEMPORARY_USER"));
 		}
+
 		return new JdonOAuth2User(authorities, user.getAttributes(), getUserNameAttributeName(userRequest),
-			email, socialProvider);
+			userInfo.getEmail(), userInfo.getSocialProvider());
 	}
 
-	private String getEmailFromGithub(OAuth2User user) {
+	private UserInfoFromOAuth2 getUserInfoFromGithub(OAuth2User user) {
 		String email = (String)user.getAttributes().get("email");
 		isEmailExist(email);
+		String oAuthId = String.valueOf(user.getAttributes().get("id"));
 
-		return email;
+		return UserInfoFromOAuth2.of(email, oAuthId, SocialProviderType.GITHUB);
 	}
 
-	private String getEmailFromKakao(OAuth2User user) {
+	private UserInfoFromOAuth2 getUserInfoFromKakao(OAuth2User user) {
 		Map<String, Object> attributes = user.getAttributes();
 		String email = ((Map<String, String>)attributes.get("kakao_account")).get("email");
 		isEmailExist(email);
+		String oAuthId = String.valueOf(attributes.get("id"));
 
-		return email;
+		return UserInfoFromOAuth2.of(email, oAuthId, SocialProviderType.KAKAO);
 	}
 
 	private void isEmailExist(String email) {

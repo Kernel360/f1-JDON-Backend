@@ -1,23 +1,22 @@
 package kernel.jdon.moduleapi.domain.faq.service;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.util.ReflectionTestUtils.*;
-
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-
+import kernel.jdon.faq.domain.Faq;
 import kernel.jdon.faq.dto.request.CreateFaqRequest;
 import kernel.jdon.faq.dto.request.UpdateFaqRequest;
 import kernel.jdon.faq.dto.response.CreateFaqResponse;
 import kernel.jdon.faq.dto.response.DeleteFaqResponse;
 import kernel.jdon.faq.dto.response.FindListFaqResponse;
 import kernel.jdon.faq.dto.response.UpdateFaqResponse;
-import kernel.jdon.faq.domain.Faq;
 import kernel.jdon.faq.repository.FaqRepository;
 import kernel.jdon.faq.service.FaqService;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.springframework.test.util.ReflectionTestUtils.setField;
 
 @SpringBootTest
 public class FaqServiceTest {
@@ -29,7 +28,7 @@ public class FaqServiceTest {
 
 	@Test
 	@DisplayName("faq를 등록한다.")
-	void createFaqTest() {
+	void createFaqTest() throws NoSuchMethodException {
 		// given
 		String createTitle = "FAQ 제목 생성 테스트";
 		String createContent = "FAQ content 생성 테스트";

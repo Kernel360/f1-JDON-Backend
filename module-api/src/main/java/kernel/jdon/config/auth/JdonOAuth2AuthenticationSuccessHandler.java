@@ -4,6 +4,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import kernel.jdon.auth.dto.JdonOAuth2User;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -20,19 +21,21 @@ import static kernel.jdon.util.StringUtil.createQueryString;
 import static kernel.jdon.util.StringUtil.joinToString;
 
 @Component
+@RequiredArgsConstructor
 @Slf4j
 public class JdonOAuth2AuthenticationSuccessHandler implements AuthenticationSuccessHandler {
+    private final LoginRedirectUrlConfig loginRedirectUrlConfig;
 
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
         JdonOAuth2User jdonOAuth2User = (JdonOAuth2User) authentication.getPrincipal();
         if (isTemporaryUser(jdonOAuth2User)) {
             String query = createUserInfoString(jdonOAuth2User.getEmail(), jdonOAuth2User.getSocialProviderType());
-            String encodedQueryString = createEncryptQueryString(query);
+            String encodedQueryString = createEncryptQueryString(query);;
             log.info("encodedQuery: {}", encodedQueryString);
-            response.sendRedirect(joinToString("http://localhost:3000/oauth/info?", encodedQueryString));
+            response.sendRedirect(joinToString(loginRedirectUrlConfig.getSuccess().getGuest(), encodedQueryString));
         } else {
-            response.sendRedirect("http://localhost:3000/oauth/login/success");
+            response.sendRedirect(loginRedirectUrlConfig.getSuccess().getMember());
         }
     }
 
