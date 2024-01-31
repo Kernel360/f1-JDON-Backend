@@ -12,7 +12,6 @@ import jakarta.persistence.Table;
 import kernel.jdon.jobcategory.domain.JobCategory;
 import kernel.jdon.wantedjd.domain.WantedJd;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -36,7 +35,6 @@ public class SkillHistory {
 	@JoinColumn(name = "wanted_jd_id", columnDefinition = "BIGINT")
 	private WantedJd wantedJd;
 
-	@Builder
 	public SkillHistory(String keyword, JobCategory jobCategory, WantedJd wantedJd) {
 		this.keyword = keyword;
 		this.jobCategory = jobCategory;

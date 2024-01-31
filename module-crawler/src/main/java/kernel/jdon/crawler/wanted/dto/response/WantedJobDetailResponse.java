@@ -5,6 +5,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import kernel.jdon.jobcategory.domain.JobCategory;
+import kernel.jdon.wantedjd.domain.WantedJd;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,6 +23,21 @@ public class WantedJobDetailResponse {
 		this.jobCategory = jobCategory;
 	}
 
+	public WantedJd toWantedJdEntity() {
+		return WantedJd.builder()
+			.jobCategory(this.getJobCategory())
+			.companyName(this.getJob().getCompany().getName())
+			.title(this.getJob().getTitle())
+			.detailId(this.getJob().getId())
+			.detailUrl(this.getDetailUrl())
+			.imageUrl(this.getJob().getCompanyImages())
+			.requirements(this.getJob().getDetail().getRequirements())
+			.mainTasks(this.getJob().getDetail().getMainTasks())
+			.intro(this.getJob().getDetail().getIntro())
+			.benefits(this.getJob().getDetail().getBenefits())
+			.preferredPoints(this.getJob().getDetail().getPreferredPoints())
+			.build();
+	}
 	@Getter
 	@NoArgsConstructor(access = AccessLevel.PRIVATE)
 	public static class JobDetail {
