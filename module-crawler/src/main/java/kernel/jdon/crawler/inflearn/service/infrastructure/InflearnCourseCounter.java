@@ -1,24 +1,18 @@
-package kernel.jdon.crawler.inflearn.util;
+package kernel.jdon.crawler.inflearn.service.infrastructure;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import kernel.jdon.inflearncourse.domain.InflearnCourse;
+import lombok.Getter;
 
-public class InflearnCrawlerState {
+@Getter
+public class InflearnCourseCounter {
 	private int savedCourseCount = 0;
 	private List<InflearnCourse> newCourses = new ArrayList<>();
 
-	public int getSavedCourseCount() {
-		return savedCourseCount;
-	}
-
 	public void incrementSavedCourseCount() {
 		this.savedCourseCount++;
-	}
-
-	public List<InflearnCourse> getNewCourses() {
-		return newCourses;
 	}
 
 	public void addNewCourse(InflearnCourse course) {
