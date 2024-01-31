@@ -33,7 +33,7 @@ public class FindCoffeeChatResponse {
 		return FindCoffeeChatResponse.builder()
 			.coffeeChatId(coffeeChat.getId())
 			.nickname(coffeeChat.getMember().getNickname())
-			.job(String.valueOf(coffeeChat.getMember().getJobCategory().getName()))
+			.job(coffeeChat.getMember().getJobCategory().getName())
 			.title(coffeeChat.getTitle())
 			.content(coffeeChat.getContent())
 			.viewCount(coffeeChat.getViewCount())

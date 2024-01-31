@@ -53,24 +53,14 @@ public class CoffeeChatController {
 	}
 
 	@GetMapping("/api/v1/coffeechats/guest")
-	public ResponseEntity<CommonResponse> getGuestCoffeeChatList() {
-		List<FindCoffeeChatListResponse> list = new ArrayList<>();
-		for (long i = 10; i <= 20; i++) {
-			FindCoffeeChatListResponse response = FindCoffeeChatListResponse.builder()
-				.coffeeChatId(i)
-				.nickname("김영한" + i)
-				.job("backend")
-				.title("주니어 백엔드 개발자를 대상으로 커피챗을 엽니다." + i)
-				.status("모집중")
-				.meetDate(LocalDateTime.now().plusMinutes(i))
-				.createdDate(LocalDateTime.now())
-				.currentRecruitCount(5L)
-				.totalRecruitCount(i)
-				.build();
-			list.add(response);
-		}
+	public ResponseEntity<CommonResponse> getGuestCoffeeChatList(
+		@LoginUser SessionUserInfo sessionUser,
+		@PageableDefault(size = 12) Pageable pageable) {
 
-		return ResponseEntity.ok(CommonResponse.of(list));
+		CustomPageResponse<FindCoffeeChatListResponse> response = coffeeChatService.findGuestCoffeeChatList(
+			sessionUser.getId(), pageable);
+
+		return ResponseEntity.ok(CommonResponse.of(response));
 	}
 
 	@GetMapping("/api/v1/coffeechats/host")

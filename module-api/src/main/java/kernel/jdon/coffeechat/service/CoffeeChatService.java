@@ -17,6 +17,8 @@ import kernel.jdon.coffeechat.dto.response.FindCoffeeChatResponse;
 import kernel.jdon.coffeechat.dto.response.UpdateCoffeeChatResponse;
 import kernel.jdon.coffeechat.error.CoffeeChatErrorCode;
 import kernel.jdon.coffeechat.repository.CoffeeChatRepository;
+import kernel.jdon.coffeechatmember.domain.CoffeeChatMember;
+import kernel.jdon.coffeechatmember.repsitory.CoffeeChatMemberRepository;
 import kernel.jdon.global.exception.ApiException;
 import kernel.jdon.global.page.CustomPageResponse;
 import kernel.jdon.member.domain.Member;
@@ -33,6 +35,7 @@ public class CoffeeChatService {
 
 	private final CoffeeChatRepository coffeeChatRepository;
 	private final MemberRepository memberRepository;
+	private final CoffeeChatMemberRepository coffeeChatMemberRepository;
 
 	private CoffeeChat findExistCoffeeChat(Long coffeeChatId) {
 
@@ -51,6 +54,7 @@ public class CoffeeChatService {
 	}
 
 	private Member findMember(Long memberId) {
+
 		return memberRepository.findById(memberId)
 			.orElseThrow(() -> new ApiException(MemberErrorCode.NOT_FOUND_MEMBER));
 	}
@@ -73,6 +77,15 @@ public class CoffeeChatService {
 			.map(FindCoffeeChatListResponse::of);
 
 		return CustomPageResponse.of(findCoffeeChatPage);
+	}
+
+	public CustomPageResponse findGuestCoffeeChatList(Long memberId, Pageable pageable) {
+		Page<FindCoffeeChatListResponse> guestCoffeeChatPage = coffeeChatMemberRepository.findAllByMemberId(
+				memberId, pageable)
+			.map(CoffeeChatMember::getCoffeeChat)
+			.map(FindCoffeeChatListResponse::of);
+
+		return CustomPageResponse.of(guestCoffeeChatPage);
 	}
 
 	@Transactional
