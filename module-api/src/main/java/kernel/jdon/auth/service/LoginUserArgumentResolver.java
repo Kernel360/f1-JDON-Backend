@@ -8,8 +8,11 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 import jakarta.servlet.http.HttpSession;
+import kernel.jdon.auth.dto.UserInfoFromOAuth2;
 import kernel.jdon.global.annotation.LoginUser;
 import kernel.jdon.auth.dto.SessionUserInfo;
+import kernel.jdon.member.domain.Member;
+import kernel.jdon.member.domain.SocialProviderType;
 import lombok.RequiredArgsConstructor;
 
 @Component
@@ -30,6 +33,12 @@ public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver 
 	public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
 		NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
 
-		return httpSession.getAttribute("USER");
+		// TODO: 테스트용으로 임시로 로그인을 안해도 userId=2로 처리되도록 설정
+		Object object = httpSession.getAttribute("USER");
+		if (object == null) {
+			return SessionUserInfo.of(Member.builder().id(2L).build(), UserInfoFromOAuth2.of("test.test", "test", SocialProviderType.KAKAO));
+		} else {
+			return object;
+		}
 	}
 }
