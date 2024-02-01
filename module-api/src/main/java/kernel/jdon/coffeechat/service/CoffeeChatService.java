@@ -101,10 +101,21 @@ public class CoffeeChatService {
 		CoffeeChat findCoffeeChat = findExistAndOpenCoffeeChat(coffeeChatId);
 		Member findMember = findMember(memberId);
 
-		checkIfMemberIsHost(findMember, findCoffeeChat);
+		validateApplyRequest(findMember, findCoffeeChat);
 		findCoffeeChat.addCoffeeChatMember(findMember);
 
 		return ApplyCoffeeChatResponse.of(findCoffeeChat.getId());
+	}
+
+	private void validateApplyRequest(Member findMember, CoffeeChat findCoffeeChat) {
+		checkIfMemberIsHost(findMember, findCoffeeChat);
+		checkIfAlreadyJoined(findMember, findCoffeeChat);
+	}
+
+	private void checkIfAlreadyJoined(Member findMember, CoffeeChat findCoffeeChat) {
+		if (coffeeChatMemberRepository.existsByCoffeeChatIdAndMemberId(findCoffeeChat.getId(), findMember.getId())) {
+			throw new ApiException(CoffeeChatErrorCode.ALREADY_JOINED_COFFEECHAT);
+		}
 	}
 
 	private void checkIfMemberIsHost(Member findMember, CoffeeChat findCoffeeChat) {
