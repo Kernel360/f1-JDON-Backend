@@ -2,6 +2,7 @@ package kernel.jdon.auth.service;
 
 import kernel.jdon.auth.dto.SessionUserInfo;
 import kernel.jdon.auth.error.AuthErrorCode;
+import kernel.jdon.config.auth.WithdrawConfig;
 import kernel.jdon.global.exception.ApiException;
 import kernel.jdon.member.domain.SocialProviderType;
 import kernel.jdon.member.error.MemberErrorCode;
@@ -24,11 +25,12 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class AuthService {
 
     private final MemberRepository memberRepository;
+    private final WithdrawConfig withdrawConfig;
 
-    @Value("${spring.security.oauth2.client.registration.kakao.app-admin-key}")
-    private String kakaoAppAdminKey;
-    @Value("${spring.security.oauth2.client.provider.kakao.delete-user-url}")
-    private String kakaoDeleteAccountUrl;
+    // @Value("${spring.security.oauth2.client.registration.kakao.app-admin-key}")
+    // private String kakaoAppAdminKey;
+    // @Value("${spring.security.oauth2.client.provider.kakao.delete-user-url}")
+    // private String kakaoDeleteAccountUrl;
 
     @Transactional
     public Long withdraw(SessionUserInfo userInfo) {
@@ -53,13 +55,13 @@ public class AuthService {
     private void deleteKakaoAccount(SessionUserInfo userInfo) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        headers.set("Authorization", "KakaoAK " + kakaoAppAdminKey);
+        headers.set("Authorization", "KakaoAK " + withdrawConfig.getAppAdminKey());
 
         MultiValueMap<String, String> requestBody = new LinkedMultiValueMap<>();
         requestBody.add("target_id_type", "user_id");
         requestBody.add("target_id", userInfo.getOAuthId());
 
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(kakaoDeleteAccountUrl);
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(withdrawConfig.getDeleteUserUrl());
 
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity(requestBody, headers);
 
