@@ -47,7 +47,8 @@ public class OAuth2SecurityConfig {
 			.maxSessionsPreventsLogin(false)
 		);
 		http.authorizeHttpRequests(config -> config
-			.requestMatchers("/api/v1/member").hasAnyRole("USER")
+			//TODO: 테스트용으로 임시로 모든 요청을 허용하도록 설정
+			// .requestMatchers("/api/v1/member").hasAnyRole("USER")
 			.requestMatchers("api/**").permitAll()
 			.anyRequest().permitAll());
 		http.oauth2Login(oauth2Configurer -> oauth2Configurer
