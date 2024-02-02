@@ -27,7 +27,11 @@ scraping:
     url: https://www.inflearn.com/courses
     max_courses_per_keyword: 3
     max_courses_per_page: 24
-    sleep_time_millis: 2000
+    sleep: # 단위 millis
+      min_initial: 1000
+      max_initial: 3000
+      max: 10000
+      increment: 1000
 
   wanted:
     url:

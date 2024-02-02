@@ -11,6 +11,15 @@ import lombok.RequiredArgsConstructor;
 public class ScrapingInflearnConfig {
 	private final String url;
 	private final int maxCoursesPerKeyword;
-	private final int sleepTimeMillis;
 	private final int maxCoursesPerPage;
+	private final Sleep sleep;
+
+	@Getter
+	@RequiredArgsConstructor
+	public static class Sleep {
+		private final int minInitial;
+		private final int maxInitial;
+		private final int max;
+		private final int increment;
+	}
 }

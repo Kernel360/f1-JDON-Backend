@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kernel.jdon.crawler.config.ScrapingInflearnConfig;
 import kernel.jdon.crawler.inflearn.search.CourseSearchSort;
+import kernel.jdon.crawler.inflearn.service.infrastructure.DynamicSleepTimeManager;
 import kernel.jdon.crawler.inflearn.service.infrastructure.InflearnCourseCounter;
 import kernel.jdon.crawler.inflearn.service.infrastructure.LastPageDiscriminator;
 import kernel.jdon.crawler.wanted.skill.BackendSkillType;
@@ -47,11 +48,12 @@ public class InflearnCrawlerService implements CrawlerService {
 		final int maxCoursesPerKeyword = scrapingInflearnConfig.getMaxCoursesPerKeyword();
 		InflearnCourseCounter inflearnCourseCounter = new InflearnCourseCounter();
 		LastPageDiscriminator lastPageDiscriminator = new LastPageDiscriminator(scrapingInflearnConfig);
+		DynamicSleepTimeManager sleepTimeManager = new DynamicSleepTimeManager(scrapingInflearnConfig);
 
 		while (inflearnCourseCounter.getSavedCourseCount() < maxCoursesPerKeyword
 			&& !lastPageDiscriminator.isLastPage()) {
 			try {
-				Thread.sleep(scrapingInflearnConfig.getSleepTimeMillis());
+				Thread.sleep(sleepTimeManager.getDynamicSleepTime());
 			} catch (InterruptedException e) {
 				Thread.currentThread().interrupt();
 				break;
@@ -59,17 +61,33 @@ public class InflearnCrawlerService implements CrawlerService {
 			String currentUrl = createInflearnSearchUrl(skillKeyword, pageNum);
 			log.info("currentUrl: {}", currentUrl);
 
-			Elements scrapeCourseElements = courseScraperService.scrapeCourses(currentUrl);
-			int coursesCount = scrapeCourseElements.size();
-			lastPageDiscriminator.checkIfLastPageBasedOnCourseCount(coursesCount);
+			boolean isSuccess = scrapeAndParsePage(currentUrl, skillKeyword, inflearnCourseCounter,
+				lastPageDiscriminator);
+			sleepTimeManager.adjustSleepTime(isSuccess);
 
-			parseAndCreateCourses(scrapeCourseElements, currentUrl, skillKeyword, inflearnCourseCounter);
-
-			if (inflearnCourseCounter.getSavedCourseCount() < maxCoursesPerKeyword) {
+			if (isSuccess && inflearnCourseCounter.getSavedCourseCount() < maxCoursesPerKeyword) {
 				pageNum++;
 			}
 		}
 
+		saveCourseInfo(skillKeyword, inflearnCourseCounter);
+	}
+
+	private boolean scrapeAndParsePage(String currentUrl, String skillKeyword,
+		InflearnCourseCounter inflearnCourseCounter, LastPageDiscriminator lastPageDiscriminator) {
+		try {
+			Elements scrapeCourseElements = courseScraperService.scrapeCourses(currentUrl);
+			int coursesCount = scrapeCourseElements.size();
+			lastPageDiscriminator.checkIfLastPageBasedOnCourseCount(coursesCount);
+			parseAndCreateCourses(scrapeCourseElements, currentUrl, skillKeyword, inflearnCourseCounter);
+			return true;
+		} catch (Exception e) {
+			log.error("페이지 처리 중 오류 발생: {}", currentUrl, e);
+			return false;
+		}
+	}
+
+	private void saveCourseInfo(String skillKeyword, InflearnCourseCounter inflearnCourseCounter) {
 		if (!inflearnCourseCounter.getNewCourses().isEmpty()) {
 			courseStorageService.createInflearnCourseAndInflearnJdSkill(skillKeyword,
 				inflearnCourseCounter.getNewCourses());
