@@ -4,7 +4,6 @@ import static kernel.jdon.util.StringUtil.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -13,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kernel.jdon.crawler.config.ScrapingInflearnConfig;
 import kernel.jdon.crawler.inflearn.search.CourseSearchSort;
+import kernel.jdon.crawler.inflearn.service.infrastructure.DynamicSleepTimeManager;
 import kernel.jdon.crawler.inflearn.service.infrastructure.InflearnCourseCounter;
 import kernel.jdon.crawler.inflearn.service.infrastructure.LastPageDiscriminator;
 import kernel.jdon.crawler.wanted.skill.BackendSkillType;
@@ -31,13 +31,6 @@ public class InflearnCrawlerService implements CrawlerService {
 	private final CourseScraperService courseScraperService;
 	private final CourseParserService courseParserService;
 	private final CourseStorageService courseStorageService;
-	private static final int MAX_COURSES_PER_KEYWORD = 3;
-	private static final int MIN_INITIAL_SLEEP_TIME = 1000;
-	private static final int MAX_INITIAL_SLEEP_TIME = 3000;
-	private static final int MAX_SLEEP_TIME = 10000;
-	private static final int INCREMENT_SLEEP_TIME = 1000;
-	private int dynamicSleepTime = MIN_INITIAL_SLEEP_TIME;
-	private final Random random = new Random();
 
 	@Transactional
 	@Override
@@ -55,11 +48,12 @@ public class InflearnCrawlerService implements CrawlerService {
 		final int maxCoursesPerKeyword = scrapingInflearnConfig.getMaxCoursesPerKeyword();
 		InflearnCourseCounter inflearnCourseCounter = new InflearnCourseCounter();
 		LastPageDiscriminator lastPageDiscriminator = new LastPageDiscriminator(scrapingInflearnConfig);
+		DynamicSleepTimeManager sleepTimeManager = new DynamicSleepTimeManager(scrapingInflearnConfig);
 
 		while (inflearnCourseCounter.getSavedCourseCount() < maxCoursesPerKeyword
 			&& !lastPageDiscriminator.isLastPage()) {
 			try {
-				Thread.sleep(dynamicSleepTime);
+				Thread.sleep(sleepTimeManager.getDynamicSleepTime());
 			} catch (InterruptedException e) {
 				Thread.currentThread().interrupt();
 				break;
@@ -67,26 +61,25 @@ public class InflearnCrawlerService implements CrawlerService {
 			String currentUrl = createInflearnSearchUrl(skillKeyword, pageNum);
 			log.info("currentUrl: {}", currentUrl);
 
-			boolean isSuccess = scrapeAndParsePage(currentUrl, skillKeyword, pageNum, state);
-			adjustDynamicSleepTime(isSuccess);
+			boolean isSuccess = scrapeAndParsePage(currentUrl, skillKeyword, inflearnCourseCounter,
+				lastPageDiscriminator);
+			sleepTimeManager.adjustSleepTime(isSuccess);
 
-			if (isSuccess && state.getSavedCourseCount() < MAX_COURSES_PER_KEYWORD) {
+			if (isSuccess && inflearnCourseCounter.getSavedCourseCount() < maxCoursesPerKeyword) {
 				pageNum++;
 			}
 		}
-		saveCourseInfo(skillKeyword, state);
+
+		saveCourseInfo(skillKeyword, inflearnCourseCounter);
 	}
 
-	private boolean scrapeAndParsePage(String currentUrl, String skillKeyword, int pageNum,
-		InflearnCrawlerState state) {
+	private boolean scrapeAndParsePage(String currentUrl, String skillKeyword,
+		InflearnCourseCounter inflearnCourseCounter, LastPageDiscriminator lastPageDiscriminator) {
 		try {
 			Elements scrapeCourseElements = courseScraperService.scrapeCourses(currentUrl);
 			int coursesCount = scrapeCourseElements.size();
 			lastPageDiscriminator.checkIfLastPageBasedOnCourseCount(coursesCount);
-
 			parseAndCreateCourses(scrapeCourseElements, currentUrl, skillKeyword, inflearnCourseCounter);
-			state.checkIfLastPageBasedOnCourseCount(coursesCount);
-			parseAndCreateCourses(scrapeCourseElements, currentUrl, skillKeyword, pageNum, state);
 			return true;
 		} catch (Exception e) {
 			log.error("페이지 처리 중 오류 발생: {}", currentUrl, e);
@@ -94,27 +87,11 @@ public class InflearnCrawlerService implements CrawlerService {
 		}
 	}
 
-			if (inflearnCourseCounter.getSavedCourseCount() < maxCoursesPerKeyword) {
-				pageNum++;
-			}
-		}
-	private void adjustDynamicSleepTime(boolean requestSuccess) {
-		if (requestSuccess) {
-			dynamicSleepTime =
-				MIN_INITIAL_SLEEP_TIME + random.nextInt(MAX_INITIAL_SLEEP_TIME - MIN_INITIAL_SLEEP_TIME + 1);
-		} else {
-			dynamicSleepTime = Math.min(dynamicSleepTime + INCREMENT_SLEEP_TIME, MAX_SLEEP_TIME);
-		}
-	}
-
+	private void saveCourseInfo(String skillKeyword, InflearnCourseCounter inflearnCourseCounter) {
 		if (!inflearnCourseCounter.getNewCourses().isEmpty()) {
 			courseStorageService.createInflearnCourseAndInflearnJdSkill(skillKeyword,
 				inflearnCourseCounter.getNewCourses());
 			inflearnCourseCounter.resetState();
-	private void saveCourseInfo(String skillKeyword, InflearnCrawlerState state) {
-		if (!state.getNewCourses().isEmpty()) {
-			courseStorageService.createInflearnCourseAndInflearnJdSkill(skillKeyword, state.getNewCourses());
-			state.resetState();
 		}
 	}
 
