@@ -30,7 +30,7 @@ public class OAuth2SecurityConfig {
 		http.cors(corsCustomizer -> corsCustomizer.configurationSource(request -> {
 			CorsConfiguration config = new CorsConfiguration();
 			config.setAllowedOrigins(List.of("http://localhost:3000", "https://localhost:3000",
-				"https://jdon.kr"));
+				"https://jdon.kr", "https://jdon.netlify.app"));
 			config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
 			config.setAllowedHeaders(List.of("*"));
 			config.setAllowCredentials(true);
