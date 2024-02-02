@@ -12,4 +12,6 @@ public interface CoffeeChatMemberRepository extends CoffeeChatMemberDomainReposi
 	@Query("select ccm from CoffeeChatMember ccm join fetch ccm.coffeeChat cc join fetch cc.member m join fetch m.jobCategory where ccm.member.id = :memberId")
 	Page<CoffeeChatMember> findAllByMemberId(Long memberId, Pageable pageable);
 
+	boolean existsByCoffeeChatIdAndMemberId(Long coffeeChatId, Long memberId);
+
 }
