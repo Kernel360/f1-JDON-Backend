@@ -111,12 +111,16 @@ public class CoffeeChat extends BaseEntity {
 		updateStatusByRecruitCount();
 	}
 
-	public boolean isValidMeetDate(LocalDateTime newMeetDate) {
-		return !(this.meetDate.isBefore(LocalDateTime.now()) || newMeetDate.isBefore(LocalDateTime.now()));
+	public boolean isExpired() {
+		return this.meetDate.isBefore(LocalDateTime.now());
 	}
 
-	public boolean isValidRecruitCount(Long newTotalCount) {
-		return newTotalCount <= 0 || newTotalCount < this.currentRecruitCount;
+	public boolean isPastDate() {
+		return this.meetDate.isBefore(LocalDateTime.now());
+	}
+
+	public boolean isCurrentCountGreaterThan(Long newTotalCount) {
+		return this.currentRecruitCount > newTotalCount;
 	}
 
 	private void updateStatusByRecruitCount() {
