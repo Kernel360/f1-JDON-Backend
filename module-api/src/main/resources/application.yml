@@ -1,5 +1,11 @@
 server:
   port: 1221
+  servlet:
+    session:
+      cookie:
+        same-site: none
+        secure: true
+      timeout: 24h
 
 spring:
   profiles:
