@@ -57,7 +57,7 @@ public class JdonOAuth2UserService extends DefaultOAuth2UserService {
 		} else {
 			authorities = List.of(new SimpleGrantedAuthority("ROLE_TEMPORARY_USER"));
 		}
-
+		log.info("email: {}", userInfo.getEmail());
 		return new JdonOAuth2User(authorities, user.getAttributes(), getUserNameAttributeName(userRequest),
 			userInfo.getEmail(), userInfo.getSocialProvider());
 	}

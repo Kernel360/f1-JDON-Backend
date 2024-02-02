@@ -29,7 +29,7 @@ spring:
             client-name: github
             client-id: ${GITHUB_CLIENT_ID}
             client-secret: ${GITHUB_CLIENT_SECRET}
-            redirect-uri: http://api.jdon.kr/login/oauth2/code/github
+            redirect-uri: https://api.jdon.kr/login/oauth2/code/github
             scope: user:email
         provider:
           kakao:
