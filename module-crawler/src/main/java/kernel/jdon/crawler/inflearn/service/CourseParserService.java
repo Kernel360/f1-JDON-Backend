@@ -4,6 +4,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
+import kernel.jdon.crawler.config.ScrapingInflearnConfig;
 import kernel.jdon.crawler.inflearn.converter.EntityConverter;
 import kernel.jdon.crawler.inflearn.util.SkillStandardizer;
 import kernel.jdon.inflearncourse.domain.InflearnCourse;
@@ -14,11 +15,14 @@ import lombok.RequiredArgsConstructor;
 public class CourseParserService {
 
 	private final CourseKeywordAnalysisService courseKeywordAnalysisService;
+	private final ScrapingInflearnConfig scrapingInflearnConfig;
 
-	protected InflearnCourse parseCourse(Element courseElement, String lectureUrl, String skillKeyword) {
+	protected InflearnCourse parseCourse(Element courseElement, String skillKeyword) {
 		Long courseId = Long.parseLong(courseElement.attr("data-productId"));
 		String title = getText(courseElement, "div.course_title");
 		String description = getText(courseElement, "p.course_description");
+		String relativeLecturePath = courseElement.select("a.course_card_front").attr("href");
+		String lectureUrl = scrapingInflearnConfig.getDetailUrlPrefix() + relativeLecturePath;
 
 		if (!courseKeywordAnalysisService.isKeywordPresentInTitleAndDescription(title, description,
 			SkillStandardizer.standardize(skillKeyword))) {

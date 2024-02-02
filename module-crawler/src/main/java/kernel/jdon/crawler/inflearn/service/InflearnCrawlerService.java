@@ -117,7 +117,7 @@ public class InflearnCrawlerService implements CrawlerService {
 				break;
 			}
 
-			InflearnCourse parsedCourse = courseParserService.parseCourse(courseElement, lectureUrl, skillKeyword);
+			InflearnCourse parsedCourse = courseParserService.parseCourse(courseElement, skillKeyword);
 
 			if (parsedCourse != null) {
 				inflearnCourseCounter.addNewCourse(parsedCourse);

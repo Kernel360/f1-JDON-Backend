@@ -25,6 +25,7 @@ decorator:
 scraping:
   inflearn:
     url: https://www.inflearn.com/courses
+    detail_url_prefix: https://www.inflearn.com
     max_courses_per_keyword: 3
     max_courses_per_page: 24
     sleep: # 단위 millis
