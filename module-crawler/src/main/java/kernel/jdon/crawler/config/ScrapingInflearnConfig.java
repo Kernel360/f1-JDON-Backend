@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @ConfigurationProperties(prefix = "scraping.inflearn")
 public class ScrapingInflearnConfig {
+	private final String detailUrlPrefix;
 	private final String url;
 	private final int maxCoursesPerKeyword;
 	private final int maxCoursesPerPage;
