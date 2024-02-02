@@ -24,13 +24,13 @@ public class UpdateCoffeeChatRequest {
 	private LocalDateTime meetDate;
 	private String openChatUrl;
 
-	public static CoffeeChat toEntity(UpdateCoffeeChatRequest request) {
+	public CoffeeChat toEntity() {
 		return CoffeeChat.builder()
-			.title(request.title)
-			.content(request.content)
-			.totalRecruitCount(request.totalRecruitCount)
-			.meetDate(request.meetDate)
-			.openChatUrl(request.openChatUrl)
+			.title(this.title)
+			.content(this.title)
+			.totalRecruitCount(this.totalRecruitCount)
+			.meetDate(this.meetDate)
+			.openChatUrl(this.openChatUrl)
 			.build();
 	}
 }
