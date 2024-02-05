@@ -63,4 +63,4 @@ redirect-url:
       member: http://localhost:3000/oauth/login/success
       guest: http://localhost:3000/oauth/info?
   logout:
-    success: http://localhost:3000/main
+    success: http://localhost:3000
