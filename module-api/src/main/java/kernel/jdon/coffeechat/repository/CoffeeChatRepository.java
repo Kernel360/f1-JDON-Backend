@@ -7,7 +7,7 @@ import org.springframework.data.domain.Pageable;
 
 import kernel.jdon.coffeechat.domain.CoffeeChat;
 
-public interface CoffeeChatRepository extends CoffeeChatDomainRepository {
+public interface CoffeeChatRepository extends CoffeeChatDomainRepository, CustomCoffeeChatRepository {
 
 	Optional<CoffeeChat> findByIdAndIsDeletedFalse(Long id);
 
