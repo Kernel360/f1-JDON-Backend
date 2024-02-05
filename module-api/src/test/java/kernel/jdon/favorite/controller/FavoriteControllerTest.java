@@ -15,7 +15,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -54,22 +53,28 @@ class FavoriteControllerTest {
 	@Test
 	void givenValidRequest_whenFindfavoriteCourseList_thenReturnFindFavoriteCourseList() throws Exception {
 		// given
+		PageRequest expectedPageRequest = PageRequest.of(0, 12);
+
 		List<FindFavoriteResponse> findFavoriteResponseList = createFavorites();
-		PageImpl<FindFavoriteResponse> pageImpl = new PageImpl<>(findFavoriteResponseList, PageRequest.of(0, 12),
+		PageImpl<FindFavoriteResponse> pageImpl = new PageImpl<>(findFavoriteResponseList, expectedPageRequest,
 			findFavoriteResponseList.size());
 		CommonResponse expectedResponse = CommonResponse.of(CustomPageResponse.of(pageImpl));
 
-		given(favoriteService.findList(anyLong(), any(PageRequest.class))).willReturn(CustomPageResponse.of(pageImpl));
+		given(favoriteService.findList(anyLong(), eq(expectedPageRequest))).willReturn(
+			CustomPageResponse.of(pageImpl));
 
 		// when
-		ResultActions resultActions = mockMvc.perform(get(GET_FAVORITE_LIST_URL));
+		ResultActions resultActions = mockMvc.perform(get(GET_FAVORITE_LIST_URL)
+			.contentType(MediaType.APPLICATION_JSON)
+			.param("page", "0")
+			.param("size", "12"));
 
 		// then
 		resultActions
 			.andExpect(status().isOk())
 			.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 			.andExpect(content().json(objectMapper.writeValueAsString(expectedResponse), true));
-		then(favoriteService).should().findList(any(Long.class), any(Pageable.class));
+		then(favoriteService).should().findList(anyLong(), eq(expectedPageRequest));
 	}
 
 	@WithMockUser
