@@ -84,10 +84,7 @@ class FavoriteControllerTest {
 		// given
 		Long lectureId = 1L;
 		Boolean isFavorite = true;
-		UpdateFavoriteRequest updateFavoriteRequest = UpdateFavoriteRequest.builder()
-			.lectureId(lectureId)
-			.isFavorite(isFavorite)
-			.build();
+		UpdateFavoriteRequest updateFavoriteRequest = createUpdateFavoriteRequest(lectureId, isFavorite);
 		UpdateFavoriteResponse updateFavoriteResponse = UpdateFavoriteResponse.of(lectureId);
 		CommonResponse expectedResponse = CommonResponse.of(updateFavoriteResponse);
 
@@ -136,5 +133,12 @@ class FavoriteControllerTest {
 		return inflearnCourseList.stream()
 			.map(FindFavoriteResponse::of)
 			.toList();
+	}
+
+	private UpdateFavoriteRequest createUpdateFavoriteRequest(Long lectureId, Boolean isFavorite) {
+		return UpdateFavoriteRequest.builder()
+			.lectureId(lectureId)
+			.isFavorite(isFavorite)
+			.build();
 	}
 }
