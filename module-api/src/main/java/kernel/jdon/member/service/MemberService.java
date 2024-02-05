@@ -120,7 +120,7 @@ public class MemberService {
 				throw new ApiException(MemberErrorCode.UNAUTHORIZED_EMAIL_OAUTH2);
 			}
 		} catch (Exception e) {
-			throw new ApiException(MemberErrorCode.SERVER_ERROR_DECRYPTION);
+			throw new ApiException(MemberErrorCode.BAD_REQUEST_INVALID_ENCRYPT_STRING);
 		}
 		return emailAndProvider;
 	}
@@ -139,7 +139,7 @@ public class MemberService {
 				params.put(key, value);
 			}
 		} catch (UnsupportedEncodingException e) {
-			throw new ApiException(MemberErrorCode.SERVER_ERROR_PARSE_QUERY_STRING);
+			throw new ApiException(MemberErrorCode.BAD_REQUEST_FAIL_PARSE_QUERY_STRING);
 		}
 		return params;
 	}
