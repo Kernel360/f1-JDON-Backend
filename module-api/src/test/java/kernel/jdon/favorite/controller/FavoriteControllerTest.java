@@ -74,7 +74,7 @@ class FavoriteControllerTest {
 			.andExpect(status().isOk())
 			.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 			.andExpect(content().json(objectMapper.writeValueAsString(expectedResponse), true));
-		then(favoriteService).should().findList(anyLong(), eq(expectedPageRequest));
+		then(favoriteService).should(times(1)).findList(anyLong(), eq(expectedPageRequest));
 	}
 
 	@WithMockUser
@@ -102,8 +102,9 @@ class FavoriteControllerTest {
 			.andExpect(status().isCreated())
 			.andExpect(header().string("Location", UPDATE_FAVORITE_COURSE_REDIRECT_PREFIX + lectureId))
 			.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-			.andExpect(content().json(objectMapper.writeValueAsString(expectedResponse)));
-		then(favoriteService).should().update(any(Long.class), any(UpdateFavoriteRequest.class));
+			.andExpect(content().json(objectMapper.writeValueAsString(expectedResponse), true));
+
+		then(favoriteService).should(times(1)).update(any(Long.class), any(UpdateFavoriteRequest.class));
 	}
 
 	private List<FindFavoriteResponse> createFavorites() {
