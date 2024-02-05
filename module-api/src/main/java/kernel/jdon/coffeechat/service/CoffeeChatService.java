@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kernel.jdon.coffeechat.domain.CoffeeChat;
 import kernel.jdon.coffeechat.domain.CoffeeChatActiveStatus;
+import kernel.jdon.coffeechat.dto.request.CoffeeChatCondition;
 import kernel.jdon.coffeechat.dto.request.CreateCoffeeChatRequest;
 import kernel.jdon.coffeechat.dto.request.UpdateCoffeeChatRequest;
 import kernel.jdon.coffeechat.dto.response.ApplyCoffeeChatResponse;
@@ -86,6 +87,12 @@ public class CoffeeChatService {
 			.map(FindCoffeeChatListResponse::of);
 
 		return CustomPageResponse.of(guestCoffeeChatPage);
+	}
+
+	public CustomPageResponse findCoffeeChatList(Pageable pageable, CoffeeChatCondition coffeeChatCondition) {
+		Page<FindCoffeeChatListResponse> findCoffeeChatList = coffeeChatRepository.findCoffeeChatList(pageable,
+			coffeeChatCondition);
+		return CustomPageResponse.of(findCoffeeChatList);
 	}
 
 	@Transactional

@@ -1,9 +1,6 @@
 package kernel.jdon.coffeechat.controller;
 
 import java.net.URI;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -14,9 +11,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import kernel.jdon.auth.dto.SessionUserInfo;
+import kernel.jdon.coffeechat.dto.request.CoffeeChatCondition;
+import kernel.jdon.coffeechat.dto.request.CoffeeChatSortCondition;
 import kernel.jdon.coffeechat.dto.request.CreateCoffeeChatRequest;
 import kernel.jdon.coffeechat.dto.request.UpdateCoffeeChatRequest;
 import kernel.jdon.coffeechat.dto.response.ApplyCoffeeChatResponse;
@@ -79,24 +79,16 @@ public class CoffeeChatController {
 	}
 
 	@GetMapping("/api/v1/coffeechats")
-	public ResponseEntity<CommonResponse> getCoffeeChatList() {
-		List<FindCoffeeChatListResponse> list = new ArrayList<>();
-		for (long i = 10; i <= 20; i++) {
-			FindCoffeeChatListResponse response = FindCoffeeChatListResponse.builder()
-				.coffeeChatId(i)
-				.nickname("김영한" + i)
-				.job("backend")
-				.title("주니어 백엔드 개발자를 대상으로 커피챗을 엽니다." + i)
-				.status("모집중")
-				.meetDate(LocalDateTime.now().plusMinutes(i))
-				.createdDate(LocalDateTime.now())
-				.currentRecruitCount(5L)
-				.totalRecruitCount(i)
-				.build();
-			list.add(response);
-		}
+	public ResponseEntity<CommonResponse> getCoffeeChatList(
+		@PageableDefault(size = 12) Pageable pageable,
+		@RequestParam(value = "sort", defaultValue = "") CoffeeChatSortCondition sort,
+		@RequestParam(value = "keyword", defaultValue = "") String keyword,
+		@RequestParam(value = "jobCategory", defaultValue = "") Long jobCategory) {
 
-		return ResponseEntity.ok(CommonResponse.of(list));
+		CustomPageResponse<FindCoffeeChatListResponse> response =
+			coffeeChatService.findCoffeeChatList(pageable, new CoffeeChatCondition(sort, keyword, jobCategory));
+
+		return ResponseEntity.ok(CommonResponse.of(response));
 	}
 
 	@PutMapping("/api/v1/coffeechats/{id}")
