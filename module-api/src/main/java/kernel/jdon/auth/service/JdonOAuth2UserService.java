@@ -32,6 +32,7 @@ public class JdonOAuth2UserService extends DefaultOAuth2UserService {
 	private final MemberRepository memberRepository;
 	private final HttpSession httpSession;
 
+	@Transactional
 	@Override
 	public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
 		OAuth2User user = super.loadUser(userRequest);
@@ -53,11 +54,11 @@ public class JdonOAuth2UserService extends DefaultOAuth2UserService {
 		if (findMember != null && findMember.isActiveMember()) {
 			checkRightSocialProvider(findMember, userInfo.getSocialProvider());
 			httpSession.setAttribute("USER", SessionUserInfo.of(findMember, userInfo));
+			findMember.updateLastLoginDate();
 			authorities = List.of(new SimpleGrantedAuthority("ROLE_USER"));
 		} else {
 			authorities = List.of(new SimpleGrantedAuthority("ROLE_TEMPORARY_USER"));
 		}
-		log.info("email: {}", userInfo.getEmail());
 		return new JdonOAuth2User(authorities, user.getAttributes(), getUserNameAttributeName(userRequest),
 			userInfo.getEmail(), userInfo.getSocialProvider());
 	}

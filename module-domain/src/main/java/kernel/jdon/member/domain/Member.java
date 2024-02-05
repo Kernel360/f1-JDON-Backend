@@ -122,4 +122,8 @@ public class Member {
 		this.accountStatus = MemberAccountStatus.WITHDRAW;
 		this.withdrawDate = LocalDateTime.now();
 	}
+
+	public void updateLastLoginDate() {
+		this.lastLoginDate = LocalDateTime.now();
+	}
 }
