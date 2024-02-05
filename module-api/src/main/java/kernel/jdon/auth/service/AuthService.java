@@ -27,11 +27,6 @@ public class AuthService {
     private final MemberRepository memberRepository;
     private final WithdrawConfig withdrawConfig;
 
-    // @Value("${spring.security.oauth2.client.registration.kakao.app-admin-key}")
-    // private String kakaoAppAdminKey;
-    // @Value("${spring.security.oauth2.client.provider.kakao.delete-user-url}")
-    // private String kakaoDeleteAccountUrl;
-
     @Transactional
     public Long withdraw(SessionUserInfo userInfo) {
         sendDeleteRequestToOAuth2(userInfo);
