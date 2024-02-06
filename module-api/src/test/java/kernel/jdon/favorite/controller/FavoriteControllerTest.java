@@ -123,6 +123,9 @@ class FavoriteControllerTest {
 			.andExpect(status().isOk())
 			.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 			.andExpect(jsonPath("$.data.content", hasSize(size)))
+			// case 1
+			.andExpect(content().json(objectMapper.writeValueAsString(expectedResponse), true))
+			// case 2
 			.andExpect(jsonPath("$.data.pageInfo.pageNumber").value(page))
 			.andExpect(jsonPath("$.data.pageInfo.pageSize").value(size))
 			.andExpect(jsonPath("$.data.pageInfo.totalPages").value(5))
