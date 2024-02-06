@@ -27,7 +27,7 @@ public class OAuth2SecurityConfig {
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		String[] permitAllGET = {
+		final String[] permitAllGET = {
 			"/oauth2/authorization/**",
 			"/api/v1/coffeechats/**",
 			"/api/v1/skills/hot",
@@ -36,11 +36,11 @@ public class OAuth2SecurityConfig {
 			"/api/v1/faqs",
 			"/api/v1/skills/search",
 		};
-		String[] permitAllPOST = {
+		final String[] permitAllPOST = {
 			"/api/v1/register",
 			"/api/v1/nickname/duplicate",
 		};
-		String[] authenticatedGET = {
+		final String[] authenticatedGET = {
 			"/api/v1/coffeechats/guest",
 			"/api/v1/coffeechats/host",
 			"/api/v1/skills/member",
