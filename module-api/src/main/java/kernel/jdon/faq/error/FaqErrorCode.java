@@ -30,10 +30,9 @@ public enum FaqErrorCode implements ErrorCode, BaseThrowException<FaqErrorCode.F
 	}
 
 	public class FaqBaseException extends ApiException {
-		public FaqBaseException(ErrorCode errorCode) {
-			super(errorCode);
+		public FaqBaseException(FaqErrorCode faqErrorCode) {
+			super(faqErrorCode);
 		}
 	}
-
 
 }
