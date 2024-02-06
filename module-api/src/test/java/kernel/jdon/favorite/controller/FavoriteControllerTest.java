@@ -56,8 +56,9 @@ class FavoriteControllerTest {
 		PageRequest expectedPageRequest = PageRequest.of(0, 12);
 
 		List<FindFavoriteResponse> findFavoriteResponseList = createFavorites();
+		int favoriteListSize = findFavoriteResponseList.size();
 		PageImpl<FindFavoriteResponse> pageImpl = new PageImpl<>(findFavoriteResponseList, expectedPageRequest,
-			findFavoriteResponseList.size());
+			favoriteListSize);
 		CommonResponse expectedResponse = CommonResponse.of(CustomPageResponse.of(pageImpl));
 
 		given(favoriteService.findList(anyLong(), eq(expectedPageRequest))).willReturn(
@@ -73,7 +74,18 @@ class FavoriteControllerTest {
 		resultActions
 			.andExpect(status().isOk())
 			.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-			.andExpect(content().json(objectMapper.writeValueAsString(expectedResponse), true));
+			// case 1
+			.andExpect(content().json(objectMapper.writeValueAsString(expectedResponse), true))
+			// case 2
+			.andExpect(jsonPath("$.data.content[0].lectureId").value(findFavoriteResponseList.get(0).getLectureId()))
+			.andExpect(jsonPath("$.data.content[0].title").value(findFavoriteResponseList.get(0).getTitle()))
+			.andExpect(jsonPath("$.data.content[0].lectureUrl").value(findFavoriteResponseList.get(0).getLectureUrl()))
+			.andExpect(jsonPath("$.data.content[0].imageUrl").value(findFavoriteResponseList.get(0).getImageUrl()))
+			.andExpect(jsonPath("$.data.content[0].instructor").value(findFavoriteResponseList.get(0).getInstructor()))
+			.andExpect(
+				jsonPath("$.data.content[0].studentCount").value(findFavoriteResponseList.get(0).getStudentCount()))
+			.andExpect(jsonPath("$.data.content[0].price").value(findFavoriteResponseList.get(0).getPrice()))
+			.andExpect(jsonPath("$.data.content.length()").value(favoriteListSize));
 		then(favoriteService).should(times(1)).findList(anyLong(), eq(expectedPageRequest));
 	}
 
@@ -102,7 +114,10 @@ class FavoriteControllerTest {
 			.andExpect(status().isCreated())
 			.andExpect(header().string("Location", UPDATE_FAVORITE_COURSE_REDIRECT_PREFIX + lectureId))
 			.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-			.andExpect(content().json(objectMapper.writeValueAsString(expectedResponse), true));
+			// case 1
+			.andExpect(content().json(objectMapper.writeValueAsString(expectedResponse), true))
+			// case 2
+			.andExpect(jsonPath("$.data.lectureId").value(lectureId));
 
 		then(favoriteService).should(times(1)).update(any(Long.class), any(UpdateFavoriteRequest.class));
 	}
