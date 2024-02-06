@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -26,6 +27,25 @@ public class OAuth2SecurityConfig {
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+		String[] permitAllGET = {
+			"/oauth2/authorization/**",
+			"/api/v1/coffeechats/**",
+			"/api/v1/skills/hot",
+			"/api/v1/skills/job-category/**",
+			"/api/v1/job-categories",
+			"/api/v1/faqs",
+			"/api/v1/skills/search?**",
+		};
+		String[] permitAllPOST = {
+			"/api/v1/register",
+			"/api/v1/nickname/duplicate",
+			"/api/v1/verify-email"
+		};
+		String[] authenticatedGET = {
+			"/api/v1/coffeechats/guest",
+			"/api/v1/coffeechats/host",
+			"/api/v1/skills/member"
+		};
 
 		http.cors(corsCustomizer -> corsCustomizer.configurationSource(request -> {
 			CorsConfiguration config = new CorsConfiguration();
@@ -36,21 +56,19 @@ public class OAuth2SecurityConfig {
 			config.setAllowCredentials(true);
 			config.setMaxAge(3600L);
 
-			return config;
-		}));
+			return config;}));
 		http.exceptionHandling(exceptionConfig -> exceptionConfig
 			.authenticationEntryPoint(jdonAuthExceptionHandler)
 			.accessDeniedHandler(jdonAuthExceptionHandler));
 		http.csrf(AbstractHttpConfigurer::disable);
 		http.sessionManagement(sessionManagementConfigurer -> sessionManagementConfigurer
 			.maximumSessions(1)
-			.maxSessionsPreventsLogin(false)
-		);
+			.maxSessionsPreventsLogin(false));
 		http.authorizeHttpRequests(config -> config
-			//TODO: 테스트용으로 임시로 모든 요청을 허용하도록 설정
-			// .requestMatchers("/api/v1/member").hasAnyRole("USER")
-			.requestMatchers("api/**").permitAll()
-			.anyRequest().permitAll());
+			.requestMatchers(HttpMethod.GET, permitAllGET).permitAll()
+			.requestMatchers(HttpMethod.POST, permitAllPOST).permitAll()
+			.requestMatchers(HttpMethod.GET, authenticatedGET).authenticated()
+			.anyRequest().authenticated());
 		http.oauth2Login(oauth2Configurer -> oauth2Configurer
 			.successHandler(jdonOAuth2AuthenticationSuccessHandler)
 			.failureHandler(jdonAuthExceptionHandler)
