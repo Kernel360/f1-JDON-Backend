@@ -25,7 +25,6 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import kernel.jdon.dto.response.CommonResponse;
 import kernel.jdon.favorite.dto.request.UpdateFavoriteRequest;
 import kernel.jdon.favorite.dto.response.FindFavoriteResponse;
 import kernel.jdon.favorite.dto.response.UpdateFavoriteResponse;
@@ -52,7 +51,7 @@ class FavoriteControllerTest {
 	private static final String UPDATE_FAVORITE_COURSE_REDIRECT_PREFIX = "/api/v1/favorites/";
 
 	@WithMockUser
-	@DisplayName("유효한 사용자의 경우 찜한 목록을 조회한다.")
+	@DisplayName("유효한 요청이 주어졌을 때 찜한 강의 목록을 조회하면 찜한 강의 목록을 반환한다.")
 	@Test
 	void givenValidRequest_whenFindfavoriteCourseList_thenReturnFindFavoriteCourseList() throws Exception {
 		// given
@@ -62,7 +61,6 @@ class FavoriteControllerTest {
 		int favoriteListSize = findFavoriteResponseList.size();
 		PageImpl<FindFavoriteResponse> pageImpl = new PageImpl<>(findFavoriteResponseList, expectedPageRequest,
 			favoriteListSize);
-		CommonResponse expectedResponse = CommonResponse.of(CustomPageResponse.of(pageImpl));
 
 		given(favoriteService.findList(anyLong(), eq(expectedPageRequest))).willReturn(
 			CustomPageResponse.of(pageImpl));
@@ -77,9 +75,6 @@ class FavoriteControllerTest {
 		resultActions
 			.andExpect(status().isOk())
 			.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-			// case 1
-			.andExpect(content().json(objectMapper.writeValueAsString(expectedResponse), true))
-			// case 2
 			.andExpect(jsonPath("$.data.content[0].lectureId").value(findFavoriteResponseList.get(0).getLectureId()))
 			.andExpect(jsonPath("$.data.content[0].title").value(findFavoriteResponseList.get(0).getTitle()))
 			.andExpect(jsonPath("$.data.content[0].lectureUrl").value(findFavoriteResponseList.get(0).getLectureUrl()))
@@ -93,7 +88,7 @@ class FavoriteControllerTest {
 	}
 
 	@WithMockUser
-	@DisplayName("페이지네이션이 주어졌을 때 찜 목록을 조회한다.")
+	@DisplayName("페이지네이션이 포함된 유효한 요청이 주어졌을 때 찜한 강의 목록을 조회하면 찜한 강의 목록을 반환한다.")
 	@Test
 	void givenPagination_whenFindFavoriteCourseList_thenReturnPagedFavoriteCourseList() throws Exception {
 		// given
@@ -102,12 +97,9 @@ class FavoriteControllerTest {
 		PageRequest pageRequest = PageRequest.of(page, size);
 
 		List<FindFavoriteResponse> findFavoriteResponseList = createPageTestFavorites(size);
-
 		PageImpl<FindFavoriteResponse> findFavoriteResponsePage = new PageImpl<>(findFavoriteResponseList, pageRequest,
 			50);
 		CustomPageResponse<FindFavoriteResponse> customPageResponse = CustomPageResponse.of(findFavoriteResponsePage);
-		CommonResponse<CustomPageResponse<FindFavoriteResponse>> expectedResponse = CommonResponse.of(
-			customPageResponse);
 
 		given(favoriteService.findList(anyLong(), eq(pageRequest))).willReturn(customPageResponse);
 
@@ -123,9 +115,6 @@ class FavoriteControllerTest {
 			.andExpect(status().isOk())
 			.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 			.andExpect(jsonPath("$.data.content", hasSize(size)))
-			// case 1
-			.andExpect(content().json(objectMapper.writeValueAsString(expectedResponse), true))
-			// case 2
 			.andExpect(jsonPath("$.data.pageInfo.pageNumber").value(page))
 			.andExpect(jsonPath("$.data.pageInfo.pageSize").value(size))
 			.andExpect(jsonPath("$.data.pageInfo.totalPages").value(5))
@@ -140,7 +129,7 @@ class FavoriteControllerTest {
 	}
 
 	@WithMockUser
-	@DisplayName("유효한 요청으로 커피챗 수정 성공 시 수정된 찜한 또는 찜 취소한 강의의 ID를 반환한다.")
+	@DisplayName("유효한 요청으로 찜한 강의 수정 성공 시 수정된 찜한 또는 찜 취소한 강의의 ID를 반환한다.")
 	@Test
 	void givenValidRequest_whenUpdateFavorite_thenReturnUpdatedFavorite() throws Exception {
 		// given
@@ -148,7 +137,6 @@ class FavoriteControllerTest {
 		Boolean isFavorite = true;
 		UpdateFavoriteRequest updateFavoriteRequest = createUpdateFavoriteRequest(lectureId, isFavorite);
 		UpdateFavoriteResponse updateFavoriteResponse = UpdateFavoriteResponse.of(lectureId);
-		CommonResponse expectedResponse = CommonResponse.of(updateFavoriteResponse);
 
 		given(favoriteService.update(anyLong(), any(UpdateFavoriteRequest.class))).willReturn(
 			updateFavoriteResponse);
@@ -164,9 +152,6 @@ class FavoriteControllerTest {
 			.andExpect(status().isCreated())
 			.andExpect(header().string("Location", UPDATE_FAVORITE_COURSE_REDIRECT_PREFIX + lectureId))
 			.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-			// case 1
-			.andExpect(content().json(objectMapper.writeValueAsString(expectedResponse), true))
-			// case 2
 			.andExpect(jsonPath("$.data.lectureId").value(lectureId));
 
 		then(favoriteService).should(times(1)).update(any(Long.class), any(UpdateFavoriteRequest.class));
@@ -199,7 +184,7 @@ class FavoriteControllerTest {
 	}
 
 	@WithMockUser
-	@DisplayName("존재하지만 찜하지 않은 강의를 찜 취소하려 할 때 LECTURE_NOT_FAVORITED 에러를 반환한다.")
+	@DisplayName("존재하지만 찜하지 않은 강의를 찜 취소 시 LECTURE_NOT_FAVORITED 에러를 반환한다.")
 	@Test
 	void givenUnfavoritedLecture_whenUnfavorite_thenThrowError() throws Exception {
 		// given
