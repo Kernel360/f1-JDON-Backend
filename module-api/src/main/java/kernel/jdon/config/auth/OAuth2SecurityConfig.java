@@ -34,17 +34,17 @@ public class OAuth2SecurityConfig {
 			"/api/v1/skills/job-category/**",
 			"/api/v1/job-categories",
 			"/api/v1/faqs",
-			"/api/v1/skills/search?**",
+			"/api/v1/skills/search",
 		};
 		String[] permitAllPOST = {
 			"/api/v1/register",
 			"/api/v1/nickname/duplicate",
-			"/api/v1/verify-email"
 		};
 		String[] authenticatedGET = {
 			"/api/v1/coffeechats/guest",
 			"/api/v1/coffeechats/host",
-			"/api/v1/skills/member"
+			"/api/v1/skills/member",
+			"/api/v1/logout"
 		};
 
 		http.cors(corsCustomizer -> corsCustomizer.configurationSource(request -> {
