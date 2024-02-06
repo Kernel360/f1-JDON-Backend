@@ -62,7 +62,7 @@ public class FavoriteService {
 	public UpdateFavoriteResponse delete(Long memberId, @Valid UpdateFavoriteRequest updateFavoriteRequest) {
 		Favorite findFavorite = favoriteRepository.findFavoriteByMemberIdAndInflearnCourseId(memberId,
 				updateFavoriteRequest.getLectureId())
-			.orElseThrow(() -> new ApiException(FavoriteErrorCode.NOT_FOUND_FAVORITE));
+			.orElseThrow(() -> new ApiException(FavoriteErrorCode.LECTURE_NOT_FAVORITED));
 
 		favoriteRepository.delete(findFavorite);
 

@@ -29,7 +29,9 @@ import kernel.jdon.dto.response.CommonResponse;
 import kernel.jdon.favorite.dto.request.UpdateFavoriteRequest;
 import kernel.jdon.favorite.dto.response.FindFavoriteResponse;
 import kernel.jdon.favorite.dto.response.UpdateFavoriteResponse;
+import kernel.jdon.favorite.error.FavoriteErrorCode;
 import kernel.jdon.favorite.service.FavoriteService;
+import kernel.jdon.global.exception.ApiException;
 import kernel.jdon.global.page.CustomPageResponse;
 import kernel.jdon.inflearncourse.domain.InflearnCourse;
 
@@ -94,7 +96,7 @@ class FavoriteControllerTest {
 	@WithMockUser
 	@DisplayName("페이지네이션이 주어졌을 때 찜 목록을 조회한다.")
 	@Test
-	void givenPagination_whenFindFavoriteCourseList_thenReturnsPagedFavoriteCourseList() throws Exception {
+	void givenPagination_whenFindFavoriteCourseList_thenReturnPagedFavoriteCourseList() throws Exception {
 		// given
 		int page = 0;
 		int size = 10;
@@ -166,6 +168,57 @@ class FavoriteControllerTest {
 			.andExpect(jsonPath("$.data.lectureId").value(lectureId));
 
 		then(favoriteService).should(times(1)).update(any(Long.class), any(UpdateFavoriteRequest.class));
+	}
+
+	@WithMockUser
+	@DisplayName("존재하지 않는 강의 id로 찜 정보 업데이트 시 NOT_FOUND_FAVORITE 에러를 반환한다.")
+	@Test
+	void givenInvalidFavoriteId_whenUpdateFavorite_thenThrowError() throws Exception {
+		// given
+		Long invalidLectureId = 999L;
+		Boolean isFavorite = true;
+		UpdateFavoriteRequest updateFavoriteRequest = createUpdateFavoriteRequest(invalidLectureId, isFavorite);
+
+		given(favoriteService.update(anyLong(), any(UpdateFavoriteRequest.class)))
+			.willThrow(new ApiException(FavoriteErrorCode.NOT_FOUND_FAVORITE));
+
+		// when
+		ResultActions resultActions = mockMvc.perform(post(UPDATE_FAVORITE_COURSE_URL)
+			.contentType(MediaType.APPLICATION_JSON)
+			.content(objectMapper.writeValueAsString(updateFavoriteRequest))
+			.with(csrf()));
+
+		// then
+		resultActions
+			.andExpect(status().isNotFound())
+			.andExpect(jsonPath("$.message").value(FavoriteErrorCode.NOT_FOUND_FAVORITE.getMessage()));
+
+		then(favoriteService).should().update(anyLong(), any(UpdateFavoriteRequest.class));
+	}
+
+	@WithMockUser
+	@DisplayName("존재하지만 찜하지 않은 강의를 찜 취소하려 할 때 에러를 반환한다.")
+	@Test
+	void givenUnfavoritedLecture_whenUnfavorite_thenThrowError() throws Exception {
+		// given
+		Long lectureId = 1L;
+		Boolean isFavorite = false;
+		UpdateFavoriteRequest updateFavoriteRequest = createUpdateFavoriteRequest(lectureId, isFavorite);
+
+		given(favoriteService.update(anyLong(), any(UpdateFavoriteRequest.class)))
+			.willThrow(new ApiException(FavoriteErrorCode.LECTURE_NOT_FAVORITED));
+
+		// when
+		ResultActions resultActions = mockMvc.perform(
+			post(UPDATE_FAVORITE_COURSE_URL)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(updateFavoriteRequest))
+				.with(csrf())
+		);
+
+		// then
+		resultActions.andExpect(status().isBadRequest())
+			.andExpect(jsonPath("$.message").value(FavoriteErrorCode.LECTURE_NOT_FAVORITED.getMessage()));
 	}
 
 	private List<FindFavoriteResponse> createFavorites() {
