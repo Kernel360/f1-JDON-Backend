@@ -1,11 +1,13 @@
 package kernel.jdon.favorite.controller;
 
+import static org.hamcrest.collection.IsCollectionWithSize.*;
 import static org.mockito.BDDMockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.util.List;
+import java.util.stream.IntStream;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -90,6 +92,50 @@ class FavoriteControllerTest {
 	}
 
 	@WithMockUser
+	@DisplayName("페이지네이션이 주어졌을 때 찜 목록을 조회한다.")
+	@Test
+	void givenPagination_whenFindFavoriteCourseList_thenReturnsPagedFavoriteCourseList() throws Exception {
+		// given
+		int page = 0;
+		int size = 10;
+		PageRequest pageRequest = PageRequest.of(page, size);
+
+		List<FindFavoriteResponse> findFavoriteResponseList = createPageTestFavorites(size);
+
+		PageImpl<FindFavoriteResponse> findFavoriteResponsePage = new PageImpl<>(findFavoriteResponseList, pageRequest,
+			50);
+		CustomPageResponse<FindFavoriteResponse> customPageResponse = CustomPageResponse.of(findFavoriteResponsePage);
+		CommonResponse<CustomPageResponse<FindFavoriteResponse>> expectedResponse = CommonResponse.of(
+			customPageResponse);
+
+		given(favoriteService.findList(anyLong(), eq(pageRequest))).willReturn(customPageResponse);
+
+		// when
+		ResultActions resultActions = mockMvc.perform(get(GET_FAVORITE_LIST_URL)
+			.param("page", String.valueOf(page))
+			.param("size", String.valueOf(size))
+			.with(csrf())
+			.contentType(MediaType.APPLICATION_JSON));
+
+		// then
+		resultActions
+			.andExpect(status().isOk())
+			.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+			.andExpect(jsonPath("$.data.content", hasSize(size)))
+			.andExpect(jsonPath("$.data.pageInfo.pageNumber").value(page))
+			.andExpect(jsonPath("$.data.pageInfo.pageSize").value(size))
+			.andExpect(jsonPath("$.data.pageInfo.totalPages").value(5))
+			.andExpect(jsonPath("$.data.pageInfo.first").value(true))
+			.andExpect(jsonPath("$.data.pageInfo.last").value(false))
+			.andExpect(jsonPath("$.data.pageInfo.empty").value(false))
+			.andExpect(
+				jsonPath("$.data.content[0].lectureId").value(findFavoriteResponseList.get(0).getLectureId()))
+			.andExpect(jsonPath("$.data.content[0].title").value(findFavoriteResponseList.get(0).getTitle()));
+
+		then(favoriteService).should().findList(anyLong(), eq(pageRequest));
+	}
+
+	@WithMockUser
 	@DisplayName("유효한 요청으로 커피챗 수정 성공 시 수정된 찜한 또는 찜 취소한 강의의 ID를 반환한다.")
 	@Test
 	void givenValidRequest_whenUpdateFavorite_thenReturnUpdatedFavorite() throws Exception {
@@ -148,6 +194,20 @@ class FavoriteControllerTest {
 
 		return inflearnCourseList.stream()
 			.map(FindFavoriteResponse::of)
+			.toList();
+	}
+
+	private List<FindFavoriteResponse> createPageTestFavorites(int size) {
+		return IntStream.range(0, size)
+			.mapToObj(i -> new FindFavoriteResponse(
+				(long)i,
+				"강의 제목 " + i,
+				"강의 URL " + i,
+				"이미지 URL " + i,
+				"지식 공유자 " + i,
+				100L * i,
+				10000 * i
+			))
 			.toList();
 	}
 
