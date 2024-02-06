@@ -1,11 +1,11 @@
 package kernel.jdon.faq.dto.request;
 
 import kernel.jdon.faq.domain.Faq;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
+@AllArgsConstructor
 public class CreateFaqRequest {
 	private String title;
 	private String content;

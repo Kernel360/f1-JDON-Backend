@@ -36,5 +36,12 @@ out/
 ### VS Code ###
 .vscode/
 
+### MAC ###
+**/.DS_Store
+
+## Fixture monkey ##
+**/.jqwik-database
+
 # Ignore QType files
 **/src/main/generated/
+
