@@ -35,8 +35,8 @@ public class FaqServiceTest {
 	private FaqService faqService;
 
 	@Test
-	@DisplayName("findList 메서드가 존재하는 faq 개수만큼 잘 반환하는지")
-	public void givenValidFaqList_whenFindList_thenReturn_whenCorrectFaqList() {
+	@DisplayName("findList 메서드가 존재하는 faq 개수 만큼 데이터를 응답한다.")
+	void givenValidFaqList_whenFindList_thenReturn_whenCorrectFaqList() {
 		// given
 		List<Faq> faqs = Collections.singletonList(Faq.builder().id(1L).title("title1").content("content1").build());
 
@@ -50,7 +50,7 @@ public class FaqServiceTest {
 	}
 
 	@Test
-	@DisplayName("create 메서드가 유효한 faq 정보가 주어졌을 때 FAQ 등록이 잘 동작하는지")
+	@DisplayName("유효한 FAQ 정보가 주어졌을 때 create 메서드가 등록한 FAQ의 ID를 반환한다.")
 	void givenValidCreateRequest_whenCreate_thenReturnCreatedFaqId() throws Exception {
 		// given
 		final String title = "FAQ 제목";
@@ -71,8 +71,8 @@ public class FaqServiceTest {
 	}
 
 	@Test
-	@DisplayName("delete 메서드가 유효한 faq Id가 주어졌을 때 Faq 삭제가 잘 동작하는지")
-	public void givenValidFaqId_whenDelete_thenReturnDeletedFaqId() throws Exception {
+	@DisplayName("유효한 FAQ ID가 주어졌을 때 delete 메서드에서 삭제한 FAQ의 ID를 반환한다.")
+	void givenValidFaqId_whenDelete_thenReturnDeletedFaqId() throws Exception {
 		//given
 		final Long faqId = 1L;
 		Faq faq = Faq.builder().id(1L).title("제목").content("내용").build();
@@ -89,7 +89,7 @@ public class FaqServiceTest {
 	}
 
 	@Test
-	@DisplayName("delete 메서드가 유효하지 않은 faq ID가 주어졌을 때 예외를 잘 발생시키는지")
+	@DisplayName("유효하지 않은 FAQ ID가 주어졌을 때 delete 메서드에서 NOT_FOUND_FAQ 예외를 던진다.")
 	void givenInvalidFaqId_whenDelete_thenThrowException() throws Exception {
 	    //given
 		final Long faqId = 1L;
@@ -104,7 +104,7 @@ public class FaqServiceTest {
 	}
 
 	@Test
-	@DisplayName("update 메서드가 유효한 faq Id가 주어졌을 때 Faq 수정이 잘 동작하는지")
+	@DisplayName("유효한 FAQ ID가 주어졌을 때 update 메서드에서 수정한 FAQ의 ID를 반환한다.")
 	void givenValidFaqId_whenUpdate_thenUpdatedFaqId() throws Exception {
 	    //given
 	    final Long faqId = 1L;
@@ -123,7 +123,7 @@ public class FaqServiceTest {
 	}
 
 	@Test
-	@DisplayName("update 메서드가 유효하지 않은 faq Id가 주어졌을 때 예외가 잘 동작하는지")
+	@DisplayName("유효하지 않은 FAQ ID가 주어졌을 때 update 메서드에서 NOT_FOUND_FAQ 예외를 던진다.")
 	void givenInvalidFaqId_whenUpdate_thenThrowException() throws Exception {
 		// given
 		final Long faqId = 1L;
