@@ -63,4 +63,4 @@ redirect-url:
       member: https://jdon.kr/oauth/login/success
       guest: https://jdon.kr/oauth/info?
   logout:
-    success: https://jdon.kr/main
+    success: https://jdon.kr
