@@ -72,17 +72,18 @@ class FavoriteControllerTest {
 			.param("size", "12"));
 
 		// then
+		FindFavoriteResponse firstItem = findFavoriteResponseList.get(0);
+
 		resultActions
 			.andExpect(status().isOk())
 			.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-			.andExpect(jsonPath("$.data.content[0].lectureId").value(findFavoriteResponseList.get(0).getLectureId()))
-			.andExpect(jsonPath("$.data.content[0].title").value(findFavoriteResponseList.get(0).getTitle()))
-			.andExpect(jsonPath("$.data.content[0].lectureUrl").value(findFavoriteResponseList.get(0).getLectureUrl()))
-			.andExpect(jsonPath("$.data.content[0].imageUrl").value(findFavoriteResponseList.get(0).getImageUrl()))
-			.andExpect(jsonPath("$.data.content[0].instructor").value(findFavoriteResponseList.get(0).getInstructor()))
-			.andExpect(
-				jsonPath("$.data.content[0].studentCount").value(findFavoriteResponseList.get(0).getStudentCount()))
-			.andExpect(jsonPath("$.data.content[0].price").value(findFavoriteResponseList.get(0).getPrice()))
+			.andExpect(jsonPath("$.data.content[0].lectureId").value(firstItem.getLectureId()))
+			.andExpect(jsonPath("$.data.content[0].title").value(firstItem.getTitle()))
+			.andExpect(jsonPath("$.data.content[0].lectureUrl").value(firstItem.getLectureUrl()))
+			.andExpect(jsonPath("$.data.content[0].imageUrl").value(firstItem.getImageUrl()))
+			.andExpect(jsonPath("$.data.content[0].instructor").value(firstItem.getInstructor()))
+			.andExpect(jsonPath("$.data.content[0].studentCount").value(firstItem.getStudentCount()))
+			.andExpect(jsonPath("$.data.content[0].price").value(firstItem.getPrice()))
 			.andExpect(jsonPath("$.data.content.length()").value(favoriteListSize));
 		then(favoriteService).should(times(1)).findList(anyLong(), eq(expectedPageRequest));
 	}
@@ -111,6 +112,8 @@ class FavoriteControllerTest {
 			.contentType(MediaType.APPLICATION_JSON));
 
 		// then
+		FindFavoriteResponse firstItem = findFavoriteResponseList.get(0);
+
 		resultActions
 			.andExpect(status().isOk())
 			.andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -122,8 +125,8 @@ class FavoriteControllerTest {
 			.andExpect(jsonPath("$.data.pageInfo.last").value(false))
 			.andExpect(jsonPath("$.data.pageInfo.empty").value(false))
 			.andExpect(
-				jsonPath("$.data.content[0].lectureId").value(findFavoriteResponseList.get(0).getLectureId()))
-			.andExpect(jsonPath("$.data.content[0].title").value(findFavoriteResponseList.get(0).getTitle()));
+				jsonPath("$.data.content[0].lectureId").value(firstItem.getLectureId()))
+			.andExpect(jsonPath("$.data.content[0].title").value(firstItem.getTitle()));
 
 		then(favoriteService).should().findList(anyLong(), eq(pageRequest));
 	}
