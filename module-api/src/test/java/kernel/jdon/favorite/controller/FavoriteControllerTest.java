@@ -33,7 +33,6 @@ import kernel.jdon.favorite.error.FavoriteErrorCode;
 import kernel.jdon.favorite.service.FavoriteService;
 import kernel.jdon.global.exception.ApiException;
 import kernel.jdon.global.page.CustomPageResponse;
-import kernel.jdon.inflearncourse.domain.InflearnCourse;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(FavoriteController.class)
@@ -197,7 +196,7 @@ class FavoriteControllerTest {
 	}
 
 	@WithMockUser
-	@DisplayName("존재하지만 찜하지 않은 강의를 찜 취소하려 할 때 에러를 반환한다.")
+	@DisplayName("존재하지만 찜하지 않은 강의를 찜 취소하려 할 때 LECTURE_NOT_FAVORITED 에러를 반환한다.")
 	@Test
 	void givenUnfavoritedLecture_whenUnfavorite_thenThrowError() throws Exception {
 		// given
@@ -222,32 +221,16 @@ class FavoriteControllerTest {
 	}
 
 	private List<FindFavoriteResponse> createFavorites() {
-		List<InflearnCourse> inflearnCourseList = List.of(
-			InflearnCourse.builder()
-				.courseId(328238L)
-				.title("자바스크립트 : 기초부터 실전까지 올인원")
-				.lectureUrl("https://www.inflearn.com/course/자바스크립트-올인원")
-				.imageUrl(
-					"https://cdn.inflearn.com/public/courses/328238/cover/f3821bcd-cac4-470a-b3bc-edc8d699a604/328238-eng.png")
-				.instructor("코딩알려주는누나")
-				.studentCount(500L)
-				.price(81400)
-				.build(),
-			InflearnCourse.builder()
-				.courseId(332113L)
-				.title("따라하며 배우는 자바스크립트 A-Z")
-				.lectureUrl("https://www.inflearn.com/course/따라하며-배우는-자바스크립트")
-				.imageUrl(
-					"https://cdn.inflearn.com/public/courses/332113/cover/2e916cc7-0294-4db6-ae97-8acae5f1d512/332113-eng.png")
-				.instructor("John Ahn")
-				.studentCount(200L)
-				.price(55000)
-				.build()
+		return List.of(
+			new FindFavoriteResponse(328238L, "자바스크립트 : 기초부터 실전까지 올인원",
+				"https://www.inflearn.com/course/자바스크립트-올인원",
+				"https://cdn.inflearn.com/public/courses/328238/cover/f3821bcd-cac4-470a-b3bc-edc8d699a604/328238-eng.png",
+				"코딩알려주는누나", 500L, 81400),
+			new FindFavoriteResponse(332113L, "따라하며 배우는 자바스크립트 A-Z",
+				"https://www.inflearn.com/course/따라하며-배우는-자바스크립트",
+				"https://cdn.inflearn.com/public/courses/332113/cover/2e916cc7-0294-4db6-ae97-8acae5f1d512/332113-eng.png",
+				"John Ahn", 200L, 55000)
 		);
-
-		return inflearnCourseList.stream()
-			.map(FindFavoriteResponse::of)
-			.toList();
 	}
 
 	private List<FindFavoriteResponse> createPageTestFavorites(int size) {
