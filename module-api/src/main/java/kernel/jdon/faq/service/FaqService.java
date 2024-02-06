@@ -14,7 +14,6 @@ import kernel.jdon.faq.dto.response.FindListFaqResponse;
 import kernel.jdon.faq.dto.response.UpdateFaqResponse;
 import kernel.jdon.faq.error.FaqErrorCode;
 import kernel.jdon.faq.repository.FaqRepository;
-import kernel.jdon.global.exception.ApiException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -25,7 +24,7 @@ public class FaqService {
 
 	private Faq findById(final Long faqId) {
 		return faqRepository.findById(faqId)
-			.orElseThrow(() -> new ApiException(FaqErrorCode.NOT_FOUND_FAQ));
+			.orElseThrow(FaqErrorCode.NOT_FOUND_FAQ::throwException);
 	}
 
 	@Transactional
