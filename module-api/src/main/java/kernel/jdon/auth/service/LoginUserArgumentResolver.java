@@ -33,12 +33,6 @@ public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver 
 	public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
 		NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
 
-		// TODO: 테스트용으로 임시로 로그인을 안해도 userId=2로 처리되도록 설정
-		Object object = httpSession.getAttribute("USER");
-		if (object == null) {
-			return SessionUserInfo.of(Member.builder().id(2L).build(), UserInfoFromOAuth2.of("test.test", "test", SocialProviderType.KAKAO));
-		} else {
-			return object;
-		}
+		return  httpSession.getAttribute("USER");
 	}
 }
