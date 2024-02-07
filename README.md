@@ -71,12 +71,14 @@
     <tr>
     <td align="center">
         <a href="https://github.com/yoonseon12">
+          Leader <br>
           <img src="https://avatars.githubusercontent.com/u/59242594?v=4" width="130px;" alt=""/>
-          <br /><sub><b>yoonseon12</b><br></sub>
+          <br /> <sub><b>yoonseon12</b><br></sub>
         </a>
     </td>
     <td align="center">
         <a href="https://github.com/aqrms">
+          <br>
           <img src="https://avatars.githubusercontent.com/u/111513287?v=4" width="130px;" alt=""/>
           <br /><sub><b>aqrms</b></sub>
         </a>
@@ -84,12 +86,14 @@
     </td>
     <td align="center">
         <a href="https://github.com/aacara">
+          <br>
           <img src="https://avatars.githubusercontent.com/u/86637372?v=4" width="130px;" alt=""/>
           <br /><sub><b>aacara</b><br></sub>
         </a>
     </td>
     <td align="center">
         <a href="https://github.com/anso33">
+          <br>
           <img src="https://avatars.githubusercontent.com/u/68376744?v=4" width="130px;" alt=""/>
           <br /><sub><b>anso33</b></sub>
         </a>
