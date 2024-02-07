@@ -127,7 +127,7 @@ public class CoffeeChatService {
 
 	private void checkIfMemberIsHost(Member findMember, CoffeeChat findCoffeeChat) {
 		if (findMember.getId().equals(findCoffeeChat.getMember().getId())) {
-			throw new ApiException(CoffeeChatErrorCode.CAN_NOT_JOIN_OWN_COFFEECHAT);
+			throw new ApiException(CoffeeChatErrorCode.CANNOT_JOIN_OWN_COFFEECHAT);
 		}
 	}
 
@@ -142,29 +142,30 @@ public class CoffeeChatService {
 	@Transactional
 	public UpdateCoffeeChatResponse update(Long coffeeChatId, UpdateCoffeeChatRequest request) {
 		CoffeeChat findCoffeeChat = findExistCoffeeChat(coffeeChatId);
-		CoffeeChat target = UpdateCoffeeChatRequest.toEntity(request);
+		CoffeeChat updateCoffeeChat = request.toEntity();
 
-		validateUpdate(findCoffeeChat, target);
-		findCoffeeChat.updateCoffeeChat(target);
+		validateUpdateRequest(findCoffeeChat, updateCoffeeChat);
+		findCoffeeChat.updateCoffeeChat(updateCoffeeChat);
 
 		return UpdateCoffeeChatResponse.of(findCoffeeChat.getId());
 	}
 
-	private void validateUpdate(CoffeeChat findCoffeeChat, CoffeeChat target) {
-		checkRecruitCount(findCoffeeChat, target);
-		checkMeetDate(findCoffeeChat, target);
-
+	private void validateUpdateRequest(CoffeeChat findCoffeeChat, CoffeeChat updateCoffeeChat) {
+		checkMeetDate(findCoffeeChat, updateCoffeeChat);
+		checkTotalRecruitCount(findCoffeeChat, updateCoffeeChat);
 	}
 
-	private void checkMeetDate(CoffeeChat findCoffeeChat, CoffeeChat target) {
-		if (findCoffeeChat.isValidMeetDate(target.getMeetDate())) {
+	private void checkMeetDate(CoffeeChat findCoffeeChat, CoffeeChat updateCoffeeChat) {
+		if (findCoffeeChat.isExpired()) {
+			throw new ApiException(CoffeeChatErrorCode.EXPIRED_COFFEECHAT);
+		} else if (updateCoffeeChat.isPastDate()) {
 			throw new ApiException(CoffeeChatErrorCode.MEET_DATE_ISBEFORE_NOW);
 		}
 	}
 
-	private void checkRecruitCount(CoffeeChat findCoffeeChat, CoffeeChat target) {
-		if (findCoffeeChat.isValidRecruitCount(target.getTotalRecruitCount())) {
-			throw new ApiException(CoffeeChatErrorCode.EXPIRED_COFFEECHAT);
+	private void checkTotalRecruitCount(CoffeeChat findCoffeeChat, CoffeeChat updateCoffeeChat) {
+		if (findCoffeeChat.isCurrentCountGreaterThan(updateCoffeeChat.getTotalRecruitCount())) {
+			throw new ApiException(CoffeeChatErrorCode.INVALID_TOTAL_RECRUIT_COUNT);
 		}
 	}
 
