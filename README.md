@@ -1,4 +1,4 @@
-# 💡 f1-JDON
+# 💡 JDON
 
 원티드 JD, 인프런 강의, 그리고 네트워킹을 한 곳에서!
 
@@ -12,15 +12,15 @@
 ### 🔍️ JDON 미리 보기
 | 메인페이지                                                                                                                                         | 기술 스택 검색 페이지                                                                                       |
 |-----------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------|
-| <img width="1792" src="https://github.com/Kernel360/f1-JDON-Backend/docs/images/jdon_main_page.png"> | <img width="1792" src="https://github.com/Kernel360/f1-JDON-Backend/docs/images/jdon_search_page.png"> |
+| <img width="1792" src="https://github.com/Kernel360/f1-JDON-Backend/blob/develop/docs/images/jdon_main_page.png"> | <img width="1792" src="https://github.com/Kernel360/f1-JDON-Backend/blob/develop/docs/images/jdon_search_page.png"> |
 
 | 커피챗 페이지                                                                                                         | 커피챗 상세 조회 페이지                                                                                                                  |
 |-----------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------|
-| <img width="1792" src="https://github.com/Kernel360/f1-JDON-Backend/docs/images/jdon_coffeechat_list.png"> | <img width="1792" src="https://github.com/Kernel360/f1-JDON-Backend/docs/images/jdon_coffeechat_detail.png"> |
+| <img width="1792" src="https://github.com/Kernel360/f1-JDON-Backend/blob/develop/docs/images/jdon_coffeechat_list.png"> | <img width="1792" src="https://github.com/Kernel360/f1-JDON-Backend/blob/develop/docs/images/jdon_coffeechat_detail.png"> |
 
 | 로그인 페이지                                                                                               | 마이페이지                                                                                              |
 |-------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------|
-| <img width="1792" src="https://github.com/Kernel360/f1-JDON-Backend/docs/images/jdon_login_page.png"> | <img width="1792" src="https://github.com/Kernel360/f1-JDON-Backend/docs/images/jdon_my_page.png"> |
+| <img width="1792" src="https://github.com/Kernel360/f1-JDON-Backend/blob/develop/docs/images/jdon_login_page.png"> | <img width="1792" src="https://github.com/Kernel360/f1-JDON-Backend/docs/images/jdon_my_page.png"> |
 
 
 ## 🗃️ 개발 기록
@@ -45,7 +45,7 @@
     </div>
 </div>
 
-### ERD
+### 📦️ ERD
 
 ![](docs/images/jdon_erd.png)
 
