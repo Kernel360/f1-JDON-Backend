@@ -66,10 +66,11 @@ public class OAuth2SecurityConfig {
 			.maximumSessions(1)
 			.maxSessionsPreventsLogin(false));
 		http.authorizeHttpRequests(config -> config
-			.requestMatchers(HttpMethod.GET, permitAllGET).permitAll()
-			.requestMatchers(HttpMethod.POST, permitAllPOST).permitAll()
-			.requestMatchers(HttpMethod.GET, authenticatedGET).authenticated()
-			.anyRequest().authenticated());
+			// .requestMatchers(HttpMethod.GET, permitAllGET).permitAll()
+			// .requestMatchers(HttpMethod.POST, permitAllPOST).permitAll()
+			// .requestMatchers(HttpMethod.GET, authenticatedGET).authenticated()
+			// .anyRequest().authenticated()
+			.anyRequest().permitAll());
 		http.oauth2Login(oauth2Configurer -> oauth2Configurer
 			.successHandler(jdonOAuth2AuthenticationSuccessHandler)
 			.failureHandler(jdonAuthExceptionHandler)

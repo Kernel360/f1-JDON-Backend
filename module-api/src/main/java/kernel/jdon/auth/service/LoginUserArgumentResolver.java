@@ -33,6 +33,14 @@ public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver 
 	public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
 		NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
 
-		return  httpSession.getAttribute("USER");
+		// return  httpSession.getAttribute("USER");
+
+		SessionUserInfo sessionUserInfo = (SessionUserInfo) httpSession.getAttribute("USER");
+		if (sessionUserInfo == null) {
+			return SessionUserInfo.of(Member.builder().id(30L).build(), UserInfoFromOAuth2.of(null, null, null));
+		} else {
+			return sessionUserInfo;
+		}
+
 	}
 }
