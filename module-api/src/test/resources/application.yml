@@ -52,3 +52,8 @@ redirect-url:
       guest: http://localhost:3000/oauth/info?
   logout:
     success: http://localhost:3000/main
+redis:
+  lock:
+    coffee-chat:
+      wait-time: 5
+      lease-time: 1
