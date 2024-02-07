@@ -15,6 +15,7 @@ import lombok.Getter;
 public class FindCoffeeChatResponse {
 
 	private Long coffeeChatId;
+	private Long hostId;
 	private String nickname;
 	private String job;
 	private String title;
@@ -32,6 +33,7 @@ public class FindCoffeeChatResponse {
 	public static FindCoffeeChatResponse of(CoffeeChat coffeeChat) {
 		return FindCoffeeChatResponse.builder()
 			.coffeeChatId(coffeeChat.getId())
+			.hostId(coffeeChat.getMember().getId())
 			.nickname(coffeeChat.getMember().getNickname())
 			.job(coffeeChat.getMember().getJobCategory().getName())
 			.title(coffeeChat.getTitle())
