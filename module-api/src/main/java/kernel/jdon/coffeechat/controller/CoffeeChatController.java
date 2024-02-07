@@ -24,6 +24,7 @@ import kernel.jdon.coffeechat.dto.response.CreateCoffeeChatResponse;
 import kernel.jdon.coffeechat.dto.response.DeleteCoffeeChatResponse;
 import kernel.jdon.coffeechat.dto.response.FindCoffeeChatListResponse;
 import kernel.jdon.coffeechat.dto.response.UpdateCoffeeChatResponse;
+import kernel.jdon.coffeechat.service.CoffeeChatApplyFacade;
 import kernel.jdon.coffeechat.service.CoffeeChatService;
 import kernel.jdon.dto.response.CommonResponse;
 import kernel.jdon.global.annotation.LoginUser;
@@ -37,6 +38,7 @@ import lombok.extern.slf4j.Slf4j;
 public class CoffeeChatController {
 
 	private final CoffeeChatService coffeeChatService;
+	private final CoffeeChatApplyFacade coffeeChatApplyFacade;
 
 	@GetMapping("/api/v1/coffeechats/{id}")
 	public ResponseEntity<CommonResponse> get(@PathVariable(name = "id") Long coffeeChatId) {
@@ -113,7 +115,7 @@ public class CoffeeChatController {
 		@PathVariable(name = "id") Long coffeeChatId,
 		@LoginUser SessionUserInfo sessionUser) {
 
-		ApplyCoffeeChatResponse response = coffeeChatService.apply(coffeeChatId, sessionUser.getId());
+		ApplyCoffeeChatResponse response = coffeeChatApplyFacade.apply(coffeeChatId, sessionUser.getId());
 
 		return ResponseEntity.ok().body(CommonResponse.of(response));
 	}
