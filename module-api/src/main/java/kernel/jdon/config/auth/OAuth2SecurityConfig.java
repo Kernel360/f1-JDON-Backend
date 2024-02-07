@@ -35,7 +35,6 @@ public class OAuth2SecurityConfig {
 			"/api/v1/job-categories",
 			"/api/v1/faqs",
 			"/api/v1/skills/search",
-			"/api/v1/favorites", // TODO: delete plz
 		};
 		final String[] permitAllPOST = {
 			"/api/v1/register",
@@ -66,11 +65,10 @@ public class OAuth2SecurityConfig {
 			.maximumSessions(1)
 			.maxSessionsPreventsLogin(false));
 		http.authorizeHttpRequests(config -> config
-			// .requestMatchers(HttpMethod.GET, permitAllGET).permitAll()
-			// .requestMatchers(HttpMethod.POST, permitAllPOST).permitAll()
-			// .requestMatchers(HttpMethod.GET, authenticatedGET).authenticated()
-			// .anyRequest().authenticated()
-			.anyRequest().permitAll());
+			.requestMatchers(HttpMethod.GET, permitAllGET).permitAll()
+			.requestMatchers(HttpMethod.POST, permitAllPOST).permitAll()
+			.requestMatchers(HttpMethod.GET, authenticatedGET).authenticated()
+			.anyRequest().authenticated());
 		http.oauth2Login(oauth2Configurer -> oauth2Configurer
 			.successHandler(jdonOAuth2AuthenticationSuccessHandler)
 			.failureHandler(jdonAuthExceptionHandler)
