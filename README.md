@@ -25,7 +25,7 @@
 
 | 로그인 페이지                                                                                     | 마이페이지                                                                                     |
 |---------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------|
-| <img width="1792" src="https://github.com/Kernel360/f1-JDON-Backend/blob/develop/docs/images/jdon_login_page.png"> | <img width="1792" src="https://github.com/Kernel360/f1-JDON-Backend/docs/images/jdon_my_page.png"> |
+| <img width="1792" src="https://github.com/Kernel360/f1-JDON-Backend/blob/develop/docs/images/jdon_login_page.png"> | <img width="1792" src="https://github.com/Kernel360/f1-JDON-Backend/blob/develop/docs/images/jdon_my_page.png"> |
 | JDON은 카카오와 깃헙을 통해서 로그인하실 수 있습니다.                                                            | 마이페이지에서는 내가 찜한 강의 목록, 신청한 커피챗 목록, 오픈한 커피챗 목록을 확인할 수 있습니다.                                 |
 
 
