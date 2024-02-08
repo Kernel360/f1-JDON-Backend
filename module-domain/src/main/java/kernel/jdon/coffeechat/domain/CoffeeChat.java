@@ -74,8 +74,9 @@ public class CoffeeChat extends BaseEntity {
 	private List<CoffeeChatMember> coffeeChatMemberList = new ArrayList<>();
 
 	@Builder
-	public CoffeeChat(String title, String content, LocalDateTime meetDate, String openChatUrl,
+	public CoffeeChat(Long id, String title, String content, LocalDateTime meetDate, String openChatUrl,
 		Long totalRecruitCount, Member member) {
+		this.id = id;
 		this.title = title;
 		this.content = content;
 		this.totalRecruitCount = totalRecruitCount;

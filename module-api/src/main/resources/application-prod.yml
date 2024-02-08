@@ -64,3 +64,9 @@ redirect-url:
       guest: https://jdon.kr/oauth/info?
   logout:
     success: https://jdon.kr
+
+redis:
+  lock:
+    coffee-chat:
+      wait-time: 5
+      lease-time: 1

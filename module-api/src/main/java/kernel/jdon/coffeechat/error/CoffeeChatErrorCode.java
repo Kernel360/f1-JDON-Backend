@@ -13,6 +13,8 @@ public enum CoffeeChatErrorCode implements ErrorCode {
 	CANNOT_JOIN_OWN_COFFEECHAT(HttpStatus.CONFLICT, "본인이 개설한 커피챗에 참여할 수 없습니다."),
 	EXPIRED_COFFEECHAT(HttpStatus.CONFLICT, "지난 일자의 커피챗은 수정할 수 없습니다."),
 	MEET_DATE_ISBEFORE_NOW(HttpStatus.BAD_REQUEST, "지금보다 이전 시점으로 설정할 수 없습니다."),
+	LOCK_ACQUISITION_FAILURE(HttpStatus.SERVICE_UNAVAILABLE, "현재 많은 요청으로 인해 처리가 지연되고 있습니다. 잠시 후 다시 시도해주세요."),
+	THREAD_INTERRUPTED(HttpStatus.SERVICE_UNAVAILABLE, "처리 중 문제가 발생했습니다. 잠시 후 다시 시도해주세요."),
 	ALREADY_JOINED_COFFEECHAT(HttpStatus.CONFLICT, "이미 참여한 커피챗 입니다.");
 
 	private final HttpStatus httpStatus;
