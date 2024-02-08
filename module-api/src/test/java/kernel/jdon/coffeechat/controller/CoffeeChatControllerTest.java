@@ -86,7 +86,6 @@ class CoffeeChatControllerTest {
 			.andExpect(jsonPath("$.data.totalRecruitCount").value(5))
 			.andExpect(jsonPath("$.data.currentRecruitCount").value(3))
 			.andExpect(jsonPath("$.data.nickname").value("마틴 파울러"));
-
 	}
 
 	@DisplayName("유효한 요청으로 커피챗 수정 성공시 수정된 커피챗의 ID를 반환한다.")
