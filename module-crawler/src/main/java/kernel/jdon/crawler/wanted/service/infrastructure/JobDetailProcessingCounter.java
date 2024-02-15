@@ -1,6 +1,6 @@
 package kernel.jdon.crawler.wanted.service.infrastructure;
 
-import kernel.jdon.crawler.config.ScrapingWantedConfig;
+import kernel.jdon.crawler.config.ScrapingWantedProperties;
 
 public class JobDetailProcessingCounter {
 	private final int thresholdCount;
@@ -8,9 +8,9 @@ public class JobDetailProcessingCounter {
 	private int sleepCount = 0;
 	private int consecutiveFailCount = 0;
 
-	public JobDetailProcessingCounter(ScrapingWantedConfig scrapingWantedConfig) {
-		this.thresholdCount = scrapingWantedConfig.getSleep().getThresholdCount();
-		this.failLimitCount = scrapingWantedConfig.getLimit().getFailCount();
+	public JobDetailProcessingCounter(ScrapingWantedProperties scrapingWantedProperties) {
+		this.thresholdCount = scrapingWantedProperties.getSleepThresholdCount();
+		this.failLimitCount = scrapingWantedProperties.getLimitFailCount();
 	}
 
 	public void incrementSleepCounter() {
