@@ -62,6 +62,8 @@ public class CoffeeChatController {
 	@GetMapping("/api/v1/coffeechats/guest")
 	public ResponseEntity<CommonResponse> getGuestCoffeeChatList(
 		@LoginUser SessionUserInfo sessionUser,
+
+		//
 		@PageableDefault(size = 12) Pageable pageable) {
 
 		CustomPageResponse<FindCoffeeChatListResponse> response = coffeeChatService.findGuestCoffeeChatList(
