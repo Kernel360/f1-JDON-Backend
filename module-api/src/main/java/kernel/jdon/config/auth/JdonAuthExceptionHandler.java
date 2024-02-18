@@ -37,6 +37,8 @@ public class JdonAuthExceptionHandler implements AuthenticationEntryPoint, Acces
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
+
+        // 상수
         throwAuthException(response, AuthErrorCode.UNAUTHORIZED, "/");
     }
 
