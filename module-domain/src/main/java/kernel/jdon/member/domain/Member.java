@@ -78,6 +78,7 @@ public class Member {
 	private JobCategory jobCategory;
 
 	@Builder
+	// 빌더는 지양
 	public Member(Long id, String email, String nickname, String birth, Gender gender, LocalDateTime joinDate,
 		LocalDateTime lastLoginDate, MemberRole role, MemberAccountStatus accountStatus, LocalDateTime withdrawDate,
 		SocialProviderType socialProvider, JobCategory jobCategory) {
