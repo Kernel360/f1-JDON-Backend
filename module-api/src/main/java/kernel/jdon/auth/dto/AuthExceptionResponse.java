@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import kernel.jdon.util.DateParserUtil;
 import lombok.Getter;
 
+//
 @Getter
 public class AuthExceptionResponse {
 
