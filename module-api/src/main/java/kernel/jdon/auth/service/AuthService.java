@@ -37,6 +37,8 @@ public class AuthService {
     }
 
     private void sendDeleteRequestToOAuth2(SessionUserInfo userInfo) {
+
+        //
         if (SocialProviderType.KAKAO == userInfo.getSocialProvider()) {
             deleteKakaoAccount(userInfo);
         } else if (SocialProviderType.GITHUB == userInfo.getSocialProvider()) {
