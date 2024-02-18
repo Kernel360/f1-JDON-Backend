@@ -48,6 +48,7 @@ public class CoffeeChatService {
 	private CoffeeChat findExistAndOpenCoffeeChat(Long coffeeChatId) {
 
 		CoffeeChat findCoffeeChat = findExistCoffeeChat(coffeeChatId);
+		// Enum에 메서드 구현 활용
 		if (findCoffeeChat.getCoffeeChatStatus() != CoffeeChatActiveStatus.OPEN) {
 			throw new ApiException(CoffeeChatErrorCode.NOT_OPEN_COFFEECHAT);
 		}
