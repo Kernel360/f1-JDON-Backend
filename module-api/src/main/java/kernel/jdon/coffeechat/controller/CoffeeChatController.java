@@ -73,6 +73,7 @@ public class CoffeeChatController {
 	}
 
 	@GetMapping("/api/v1/coffeechats/host")
+	//
 	public ResponseEntity<CommonResponse> getHostCoffeeChatList(
 		@LoginUser SessionUserInfo sessionUser,
 		@PageableDefault(size = 12) Pageable pageable) {
