@@ -102,6 +102,8 @@ public class CoffeeChatService {
 	@Transactional
 	public CreateCoffeeChatResponse create(CreateCoffeeChatRequest request, Long memberId) {
 		Member findMember = findMember(memberId);
+
+		//
 		CoffeeChat savedCoffeeChat = coffeeChatRepository.save(request.toEntity(findMember));
 
 		return CreateCoffeeChatResponse.of(savedCoffeeChat.getId());
