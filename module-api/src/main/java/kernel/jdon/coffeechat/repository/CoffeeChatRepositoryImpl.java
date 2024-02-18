@@ -76,7 +76,6 @@ public class CoffeeChatRepositoryImpl implements CustomCoffeeChatRepository {
 	private OrderSpecifier[] coffeeChatSort(CoffeeChatSortCondition sort) {
 		ArrayList<Object> orderSpecifiers = new ArrayList<>();
 
-		//
 		if (VIEW_COUNT == sort)
 			orderSpecifiers.add(new OrderSpecifier<>(Order.DESC, coffeeChat.viewCount));
 		else
