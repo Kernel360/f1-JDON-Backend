@@ -42,6 +42,7 @@ public class FaqController {
 		return ResponseEntity.ok(CommonResponse.of(deleteFaqResponse));
 	}
 
+	// Patch
 	@PutMapping("/api/v1/faqs")
 	public ResponseEntity<CommonResponse> modify(@RequestBody UpdateFaqRequest updateFaqRequest) {
 		UpdateFaqResponse updateFaqResponse = faqService.update(updateFaqRequest);
