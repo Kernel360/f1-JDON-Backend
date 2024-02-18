@@ -38,6 +38,7 @@ public class CoffeeChatService {
 	private final MemberRepository memberRepository;
 	private final CoffeeChatMemberRepository coffeeChatMemberRepository;
 
+	//
 	private CoffeeChat findExistCoffeeChat(Long coffeeChatId) {
 
 		return coffeeChatRepository.findByIdAndIsDeletedFalse(coffeeChatId)
