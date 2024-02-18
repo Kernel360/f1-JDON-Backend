@@ -29,6 +29,7 @@ public class JdonOAuth2AuthenticationSuccessHandler implements AuthenticationSuc
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
         JdonOAuth2User jdonOAuth2User = (JdonOAuth2User) authentication.getPrincipal();
+        // return 활용
         if (isTemporaryUser(jdonOAuth2User)) {
             String query = createUserInfoString(jdonOAuth2User.getEmail(), jdonOAuth2User.getSocialProviderType());
             String encodedQueryString = createEncryptQueryString(query);;
