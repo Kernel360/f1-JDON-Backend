@@ -40,6 +40,7 @@ public class JdonOAuth2AuthenticationSuccessHandler implements AuthenticationSuc
     }
 
     private boolean isTemporaryUser(JdonOAuth2User jdonOAuth2User) {
+        // 상수 처리
         return jdonOAuth2User.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_TEMPORARY_USER"));
     }
 
