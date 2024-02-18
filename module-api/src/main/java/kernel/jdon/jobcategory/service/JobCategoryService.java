@@ -18,6 +18,8 @@ public class JobCategoryService {
 
 	public FindListJobGroupResponse findJobGroupList() {
 		List<JobCategory> findJobGroupList = jobCategoryRepository.findByParentIdIsNull();
+
+		//
 		Map<Long, List<JobCategory>> groupedCategoryList = findJobGroupList.stream()
 			.collect(Collectors.toMap(JobCategory::getId, jobGroup ->
 				jobCategoryRepository.findByParentId(jobGroup.getId())));
