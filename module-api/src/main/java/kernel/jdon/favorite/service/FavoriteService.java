@@ -32,6 +32,8 @@ public class FavoriteService {
 
 	@Transactional
 	public UpdateFavoriteResponse update(Long memberId, @Valid UpdateFavoriteRequest updateFavoriteRequest) {
+
+		//
 		if (updateFavoriteRequest.getIsFavorite()) {
 			return create(memberId, updateFavoriteRequest);
 		} else {
