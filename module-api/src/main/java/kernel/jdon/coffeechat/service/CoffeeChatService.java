@@ -162,6 +162,7 @@ public class CoffeeChatService {
 	}
 
 	private void checkMeetDate(CoffeeChat findCoffeeChat, CoffeeChat updateCoffeeChat) {
+		//
 		if (findCoffeeChat.isExpired()) {
 			throw new ApiException(CoffeeChatErrorCode.EXPIRED_COFFEECHAT);
 		} else if (updateCoffeeChat.isPastDate()) {
