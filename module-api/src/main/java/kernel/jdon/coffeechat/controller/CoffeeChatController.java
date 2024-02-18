@@ -40,6 +40,7 @@ public class CoffeeChatController {
 	private final CoffeeChatService coffeeChatService;
 	private final CoffeeChatApplyFacade coffeeChatApplyFacade;
 
+	// api version
 	@GetMapping("/api/v1/coffeechats/{id}")
 	public ResponseEntity<CommonResponse> get(@PathVariable(name = "id") Long coffeeChatId) {
 
