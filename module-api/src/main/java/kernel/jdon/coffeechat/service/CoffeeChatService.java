@@ -65,6 +65,8 @@ public class CoffeeChatService {
 	@Transactional
 	public FindCoffeeChatResponse find(Long coffeeChatId) {
 		CoffeeChat findCoffeeChat = findExistCoffeeChat(coffeeChatId);
+
+		//
 		increaseViewCount(findCoffeeChat);
 
 		return FindCoffeeChatResponse.of(findCoffeeChat);
