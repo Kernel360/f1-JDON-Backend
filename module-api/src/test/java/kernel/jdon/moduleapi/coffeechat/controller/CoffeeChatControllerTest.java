@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -20,6 +21,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import kernel.jdon.auth.dto.SessionUserInfo;
 import kernel.jdon.coffeechat.controller.CoffeeChatController;
 import kernel.jdon.coffeechat.dto.request.CreateCoffeeChatRequest;
 import kernel.jdon.coffeechat.dto.request.UpdateCoffeeChatRequest;
@@ -27,6 +29,7 @@ import kernel.jdon.coffeechat.dto.response.CreateCoffeeChatResponse;
 import kernel.jdon.coffeechat.dto.response.DeleteCoffeeChatResponse;
 import kernel.jdon.coffeechat.dto.response.FindCoffeeChatResponse;
 import kernel.jdon.coffeechat.dto.response.UpdateCoffeeChatResponse;
+import kernel.jdon.coffeechat.service.CoffeeChatApplyFacade;
 import kernel.jdon.coffeechat.service.CoffeeChatService;
 
 @WebMvcTest(CoffeeChatController.class)
@@ -34,6 +37,9 @@ class CoffeeChatControllerTest {
 
 	@MockBean
 	private CoffeeChatService coffeeChatService;
+
+	@MockBean
+	private CoffeeChatApplyFacade coffeeChatApplyFacade;
 
 	@Autowired
 	private MockMvc mockMvc;
@@ -73,11 +79,18 @@ class CoffeeChatControllerTest {
 		//given
 		Long coffeeChatId = 1L;
 		FindCoffeeChatResponse response = findCoffeeChatResponse();
-		when(coffeeChatService.find(coffeeChatId)).thenReturn(response);
+		when(coffeeChatService.find(coffeeChatId, 1L)).thenReturn(response);
+
+		SessionUserInfo sessionUser = mock(SessionUserInfo.class);
+		when(sessionUser.getId()).thenReturn(1L);
+
+		MockHttpSession session = new MockHttpSession();
+		session.setAttribute("USER", sessionUser);
 
 		//when
 		ResultActions resultActions = mockMvc.perform(
-			MockMvcRequestBuilders.get("/api/v1/coffeechats/{id}", coffeeChatId));
+			MockMvcRequestBuilders.get("/api/v1/coffeechats/{id}", coffeeChatId)
+				.session(session));
 
 		//then
 		resultActions.andExpect(status().isOk())
