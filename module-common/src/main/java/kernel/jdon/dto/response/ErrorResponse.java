@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 
 import jakarta.servlet.http.HttpServletRequest;
 import kernel.jdon.error.ErrorCode;
@@ -38,6 +39,15 @@ public class ErrorResponse {
 			.timestamp(getCurrentDateTimeAsString())
 			.status(errorCode.getHttpStatus().value())
 			.message(errorCode.getMessage())
+			.path(request.getRequestURI())
+			.build();
+	}
+
+	public static ErrorResponse of(HttpStatusCode statusCode, String message, HttpServletRequest request) {
+		return ErrorResponse.builder()
+			.timestamp(getCurrentDateTimeAsString())
+			.status(statusCode.value())
+			.message(message)
 			.path(request.getRequestURI())
 			.build();
 	}

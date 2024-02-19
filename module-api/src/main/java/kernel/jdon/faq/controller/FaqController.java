@@ -21,13 +21,13 @@ import kernel.jdon.faq.dto.response.UpdateFaqResponse;
 import kernel.jdon.faq.service.FaqService;
 import lombok.RequiredArgsConstructor;
 
-@RestController
+// @RestController
 @RequiredArgsConstructor
 public class FaqController {
 
 	private final FaqService faqService;
 
-	@PostMapping("/api/v1/faqs")
+	// @PostMapping("/api/v1/faqs")
 	public ResponseEntity<CommonResponse> save(@RequestBody CreateFaqRequest createFaqRequest) {
 		CreateFaqResponse createFaqResponse = faqService.create(createFaqRequest);
 		URI uri = URI.create("/api/v1/faqs/" + createFaqResponse.getFaqId());
@@ -35,21 +35,21 @@ public class FaqController {
 		return ResponseEntity.created(uri).body(CommonResponse.of(createFaqResponse));
 	}
 
-	@DeleteMapping("/api/v1/faqs/{faqId}")
+	// @DeleteMapping("/api/v1/faqs/{faqId}")
 	public ResponseEntity<CommonResponse> remove(@PathVariable(name = "faqId") Long faqId) {
 		DeleteFaqResponse deleteFaqResponse = faqService.delete(faqId);
 
 		return ResponseEntity.ok(CommonResponse.of(deleteFaqResponse));
 	}
 
-	@PutMapping("/api/v1/faqs")
+	// @PutMapping("/api/v1/faqs")
 	public ResponseEntity<CommonResponse> modify(@RequestBody UpdateFaqRequest updateFaqRequest) {
 		UpdateFaqResponse updateFaqResponse = faqService.update(updateFaqRequest);
 
 		return ResponseEntity.ok().body(CommonResponse.of(updateFaqResponse));
 	}
 
-	@GetMapping("/api/v1/faqs")
+	// @GetMapping("/api/v1/faqs")
 	public ResponseEntity<CommonResponse> getList() {
 		FindListFaqResponse findListFaqResponse = faqService.findList();
 
