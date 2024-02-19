@@ -63,7 +63,7 @@ public class CoffeeChatService {
 	@Transactional
 	public FindCoffeeChatResponse find(Long coffeeChatId, Long memberId) {
 		CoffeeChat findCoffeeChat = findExistCoffeeChat(coffeeChatId);
-		Boolean isAuthor = findCoffeeChat.getMember().getId().equals(memberId);
+		Boolean isAuthor = findCoffeeChat.isAuthor(memberId);
 		increaseViewCount(findCoffeeChat);
 
 		return FindCoffeeChatResponse.of(findCoffeeChat, isAuthor);
