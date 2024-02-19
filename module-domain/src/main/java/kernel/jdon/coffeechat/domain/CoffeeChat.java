@@ -86,7 +86,6 @@ public class CoffeeChat extends BaseEntity {
 	}
 
 	public boolean isAuthor(Long memberId) {
-		
 		return member.getId().equals(memberId);
 	}
 
