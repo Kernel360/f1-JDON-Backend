@@ -85,6 +85,10 @@ public class CoffeeChat extends AbstractEntity {
 		this.member = member;
 	}
 
+	public boolean isAuthor(Long memberId) {
+		return member.getId().equals(memberId);
+	}
+
 	public void increaseViewCount() {
 		this.viewCount += 1;
 	}
