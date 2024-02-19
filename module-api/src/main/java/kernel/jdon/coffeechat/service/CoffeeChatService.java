@@ -61,11 +61,12 @@ public class CoffeeChatService {
 	}
 
 	@Transactional
-	public FindCoffeeChatResponse find(Long coffeeChatId) {
+	public FindCoffeeChatResponse find(Long coffeeChatId, Long memberId) {
 		CoffeeChat findCoffeeChat = findExistCoffeeChat(coffeeChatId);
+		Boolean isAuthor = findCoffeeChat.isAuthor(memberId);
 		increaseViewCount(findCoffeeChat);
 
-		return FindCoffeeChatResponse.of(findCoffeeChat);
+		return FindCoffeeChatResponse.of(findCoffeeChat, isAuthor);
 	}
 
 	private void increaseViewCount(CoffeeChat coffeeChat) {
