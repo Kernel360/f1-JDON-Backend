@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 
 import kernel.jdon.coffeechat.dto.response.ApplyCoffeeChatResponse;
 import kernel.jdon.coffeechat.error.CoffeeChatErrorCode;
-import kernel.jdon.config.redis.CoffeeChatLockConfig;
-import kernel.jdon.global.exception.ApiException;
+import kernel.jdon.moduleapi.global.config.redis.CoffeeChatLockConfig;
+import kernel.jdon.moduleapi.global.exception.ApiException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

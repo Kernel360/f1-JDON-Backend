@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import kernel.jdon.auth.dto.SessionUserInfo;
 import kernel.jdon.dto.response.CommonResponse;
-import kernel.jdon.global.annotation.LoginUser;
+import kernel.jdon.moduleapi.global.annotation.LoginUser;
 import kernel.jdon.member.dto.request.NicknameDuplicateRequest;
 import kernel.jdon.member.dto.request.UpdateMemberRequest;
 import kernel.jdon.member.dto.response.FindMemberResponse;

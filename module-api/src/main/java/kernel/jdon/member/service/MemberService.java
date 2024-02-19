@@ -17,7 +17,7 @@ import kernel.jdon.auth.encrypt.AesUtil;
 import kernel.jdon.jobcategory.error.JobCategoryErrorCode;
 import kernel.jdon.member.error.MemberErrorCode;
 import kernel.jdon.skill.error.SkillErrorCode;
-import kernel.jdon.global.exception.ApiException;
+import kernel.jdon.moduleapi.global.exception.ApiException;
 import kernel.jdon.jobcategory.domain.JobCategory;
 import kernel.jdon.jobcategory.repository.JobCategoryRepository;
 import kernel.jdon.member.domain.Member;

@@ -1,4 +1,4 @@
-package kernel.jdon.faq.error;
+package kernel.jdon.moduleapi.domain.faq.error;
 
 import org.springframework.http.HttpStatus;
 
@@ -25,8 +25,8 @@ public enum FaqErrorCode implements ErrorCode, BaseThrowException<FaqErrorCode.F
 	}
 
 	@Override
-	public FaqErrorCode.FaqBaseException throwException() {
-		return new FaqErrorCode.FaqBaseException(this);
+	public FaqBaseException throwException() {
+		return new FaqBaseException(this);
 	}
 
 	public class FaqBaseException extends ApiException {

@@ -1,9 +1,6 @@
-package kernel.jdon.faq.repository;
-
-import org.springframework.stereotype.Repository;
+package kernel.jdon.moduleapi.domain.faq.infrastructure;
 
 import kernel.jdon.moduledomain.faq.repository.FaqDomainRepository;
 
-@Repository("legacyFaqRepository")
 public interface FaqRepository extends FaqDomainRepository {
 }

@@ -30,8 +30,8 @@ import kernel.jdon.favorite.dto.response.FindFavoriteResponse;
 import kernel.jdon.favorite.dto.response.UpdateFavoriteResponse;
 import kernel.jdon.favorite.error.FavoriteErrorCode;
 import kernel.jdon.favorite.service.FavoriteService;
-import kernel.jdon.global.exception.ApiException;
-import kernel.jdon.global.page.CustomPageResponse;
+import kernel.jdon.moduleapi.global.exception.ApiException;
+import kernel.jdon.moduleapi.global.page.CustomPageResponse;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(FavoriteController.class)

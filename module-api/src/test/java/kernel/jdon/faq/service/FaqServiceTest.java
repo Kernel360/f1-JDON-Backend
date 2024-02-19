@@ -15,7 +15,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import kernel.jdon.faq.domain.Faq;
+import kernel.jdon.moduledomain.faq.domain.Faq;
 import kernel.jdon.faq.dto.request.CreateFaqRequest;
 import kernel.jdon.faq.dto.request.UpdateFaqRequest;
 import kernel.jdon.faq.dto.response.CreateFaqResponse;
@@ -24,7 +24,7 @@ import kernel.jdon.faq.dto.response.FindListFaqResponse;
 import kernel.jdon.faq.dto.response.UpdateFaqResponse;
 import kernel.jdon.faq.error.FaqErrorCode;
 import kernel.jdon.faq.repository.FaqRepository;
-import kernel.jdon.global.exception.ApiException;
+import kernel.jdon.moduleapi.global.exception.ApiException;
 
 @DisplayName("FAQ 서비스 테스트")
 @ExtendWith(MockitoExtension.class)

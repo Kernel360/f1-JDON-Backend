@@ -2,7 +2,7 @@ package kernel.jdon.faq.dto.response;
 
 import java.util.List;
 
-import kernel.jdon.faq.domain.Faq;
+import kernel.jdon.moduledomain.faq.domain.Faq;
 import lombok.Builder;
 import lombok.Getter;
 
