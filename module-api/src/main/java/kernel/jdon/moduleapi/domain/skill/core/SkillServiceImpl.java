@@ -21,8 +21,8 @@ public class SkillServiceImpl implements SkillService {
 	}
 
 	@Override
-	public SkillInfo.FinMemberSkillListResponse getMemberSkillList(final Long memberId) {
+	public SkillInfo.FindMemberSkillListResponse getMemberSkillList(final Long memberId) {
 		final List<SkillInfo.FindMemberSkill> memberSkillList = skillReader.findMemberSkillList(memberId);
-		return new SkillInfo.FinMemberSkillListResponse(memberSkillList);
+		return new SkillInfo.FindMemberSkillListResponse(memberSkillList);
 	}
 }

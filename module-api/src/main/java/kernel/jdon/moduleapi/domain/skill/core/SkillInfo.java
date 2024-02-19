@@ -13,6 +13,7 @@ public class SkillInfo {
 
 	@Getter
 	@Builder
+	@AllArgsConstructor
 	public static class FindHotSkillListResponse {
 		private List<FindHotSkill> skillList;
 	}
@@ -26,7 +27,8 @@ public class SkillInfo {
 
 	@Getter
 	@Builder
-	public static class FinMemberSkillListResponse {
+	@AllArgsConstructor
+	public static class FindMemberSkillListResponse {
 		private List<FindMemberSkill> skillList;
 	}
 

@@ -15,7 +15,7 @@ public class SkillFacade {
 		return skillService.getHotSkillList();
 	}
 
-	public SkillInfo.FinMemberSkillListResponse getMemberSkillList(final Long memberId) {
+	public SkillInfo.FindMemberSkillListResponse getMemberSkillList(final Long memberId) {
 		return skillService.getMemberSkillList(memberId);
 	}
 }
