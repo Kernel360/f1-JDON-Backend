@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import kernel.jdon.faq.domain.Faq;
+import kernel.jdon.moduledomain.faq.domain.Faq;
 import kernel.jdon.faq.dto.request.CreateFaqRequest;
 import kernel.jdon.faq.dto.request.UpdateFaqRequest;
 import kernel.jdon.faq.dto.response.CreateFaqResponse;

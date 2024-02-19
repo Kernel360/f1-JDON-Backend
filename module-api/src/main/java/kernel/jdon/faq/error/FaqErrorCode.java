@@ -3,8 +3,8 @@ package kernel.jdon.faq.error;
 import org.springframework.http.HttpStatus;
 
 import kernel.jdon.error.ErrorCode;
-import kernel.jdon.global.exception.ApiException;
-import kernel.jdon.global.exception.BaseThrowException;
+import kernel.jdon.moduleapi.global.exception.ApiException;
+import kernel.jdon.moduleapi.global.exception.BaseThrowException;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor

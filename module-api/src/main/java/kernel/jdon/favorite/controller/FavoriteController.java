@@ -16,8 +16,8 @@ import kernel.jdon.favorite.dto.request.UpdateFavoriteRequest;
 import kernel.jdon.favorite.dto.response.FindFavoriteResponse;
 import kernel.jdon.favorite.dto.response.UpdateFavoriteResponse;
 import kernel.jdon.favorite.service.FavoriteService;
-import kernel.jdon.global.annotation.LoginUser;
-import kernel.jdon.global.page.CustomPageResponse;
+import kernel.jdon.moduleapi.global.annotation.LoginUser;
+import kernel.jdon.moduleapi.global.page.CustomPageResponse;
 import lombok.RequiredArgsConstructor;
 
 @RestController

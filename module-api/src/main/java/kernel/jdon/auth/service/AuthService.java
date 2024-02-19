@@ -2,8 +2,8 @@ package kernel.jdon.auth.service;
 
 import kernel.jdon.auth.dto.SessionUserInfo;
 import kernel.jdon.auth.error.AuthErrorCode;
-import kernel.jdon.config.auth.WithdrawConfig;
-import kernel.jdon.global.exception.ApiException;
+import kernel.jdon.moduleapi.global.config.auth.WithdrawConfig;
+import kernel.jdon.moduleapi.global.exception.ApiException;
 import kernel.jdon.member.domain.SocialProviderType;
 import kernel.jdon.member.error.MemberErrorCode;
 import kernel.jdon.member.repository.MemberRepository;

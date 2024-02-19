@@ -5,7 +5,7 @@ import kernel.jdon.auth.dto.JdonOAuth2User;
 import kernel.jdon.auth.dto.SessionUserInfo;
 import kernel.jdon.auth.dto.UserInfoFromOAuth2;
 import kernel.jdon.auth.error.AuthErrorCode;
-import kernel.jdon.global.exception.UnAuthorizedException;
+import kernel.jdon.moduleapi.global.exception.UnAuthorizedException;
 import kernel.jdon.member.domain.Member;
 import kernel.jdon.member.domain.SocialProviderType;
 import kernel.jdon.member.repository.MemberRepository;

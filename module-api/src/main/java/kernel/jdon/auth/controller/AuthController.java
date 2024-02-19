@@ -6,7 +6,7 @@ import kernel.jdon.auth.dto.response.RegisterResponse;
 import kernel.jdon.auth.dto.response.WithdrawResponse;
 import kernel.jdon.auth.service.AuthService;
 import kernel.jdon.dto.response.CommonResponse;
-import kernel.jdon.global.annotation.LoginUser;
+import kernel.jdon.moduleapi.global.annotation.LoginUser;
 import kernel.jdon.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,6 +1,6 @@
 package kernel.jdon.faq.dto.request;
 
-import kernel.jdon.faq.domain.Faq;
+import kernel.jdon.moduledomain.faq.domain.Faq;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

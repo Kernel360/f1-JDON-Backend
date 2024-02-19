@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import kernel.jdon.auth.dto.SessionUserInfo;
 import kernel.jdon.dto.response.CommonResponse;
-import kernel.jdon.global.annotation.LoginUser;
+import kernel.jdon.moduleapi.global.annotation.LoginUser;
 import kernel.jdon.skill.dto.response.FindListDataBySkillResponse;
 import kernel.jdon.skill.dto.response.FindListHotSkillResponse;
 import kernel.jdon.skill.dto.response.FindListJobCategorySkillResponse;
