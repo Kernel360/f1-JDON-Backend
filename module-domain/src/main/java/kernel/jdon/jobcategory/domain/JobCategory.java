@@ -10,7 +10,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import kernel.jdon.base.BaseEntity;
+import kernel.jdon.base.AbstractEntity;
 import kernel.jdon.skill.domain.Skill;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "job_category")
-public class JobCategory extends BaseEntity {
+public class JobCategory extends AbstractEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

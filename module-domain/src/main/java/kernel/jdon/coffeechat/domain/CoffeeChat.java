@@ -19,7 +19,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import kernel.jdon.base.BaseEntity;
+import kernel.jdon.base.AbstractEntity;
 import kernel.jdon.coffeechatmember.domain.CoffeeChatMember;
 import kernel.jdon.member.domain.Member;
 import lombok.AccessLevel;
@@ -32,7 +32,7 @@ import lombok.NoArgsConstructor;
 @SQLDelete(sql = "UPDATE coffee_chat SET is_deleted = true WHERE id = ?")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "coffee_chat")
-public class CoffeeChat extends BaseEntity {
+public class CoffeeChat extends AbstractEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
