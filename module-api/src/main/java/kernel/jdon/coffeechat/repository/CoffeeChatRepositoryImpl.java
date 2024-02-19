@@ -48,6 +48,7 @@ public class CoffeeChatRepositoryImpl implements CustomCoffeeChatRepository {
 			.join(jobCategory)
 			.on(member.jobCategory.eq(jobCategory))
 			.where(
+				excludeDeleteCoffeeChat(),
 				coffeeChatTitleContains(coffeeChatCondition.getKeyword()),
 				memberJobCategoryEq(coffeeChatCondition.getJobCategory())
 			)
@@ -64,6 +65,7 @@ public class CoffeeChatRepositoryImpl implements CustomCoffeeChatRepository {
 			.join(member)
 			.on(coffeeChat.member.eq(member))
 			.where(
+				excludeDeleteCoffeeChat(),
 				coffeeChatTitleContains(coffeeChatCondition.getKeyword()),
 				memberJobCategoryEq(coffeeChatCondition.getJobCategory())
 			)
@@ -89,6 +91,10 @@ public class CoffeeChatRepositoryImpl implements CustomCoffeeChatRepository {
 
 	private BooleanExpression coffeeChatTitleContains(String keyword) {
 		return hasText(keyword) ? coffeeChat.title.contains(keyword) : null;
+	}
+
+	private BooleanExpression excludeDeleteCoffeeChat() {
+		return coffeeChat.isDeleted.eq(false);
 	}
 
 }
