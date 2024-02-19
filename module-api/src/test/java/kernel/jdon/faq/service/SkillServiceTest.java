@@ -28,7 +28,7 @@ import kernel.jdon.moduleapi.global.exception.ApiException;
 
 @DisplayName("FAQ 서비스 테스트")
 @ExtendWith(MockitoExtension.class)
-public class FaqServiceTest {
+public class SkillServiceTest {
 	@Mock
 	private FaqRepository faqRepository;
 	@InjectMocks

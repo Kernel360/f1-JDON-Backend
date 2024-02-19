@@ -16,19 +16,20 @@ import kernel.jdon.skill.dto.response.FindListMemberSkillResponse;
 import kernel.jdon.skill.service.SkillService;
 import lombok.RequiredArgsConstructor;
 
-@RestController
+// @RestController
 @RequiredArgsConstructor
 public class SkillController {
+
 	private final SkillService skillService;
 
-	@GetMapping("/api/v1/skills/hot")
+	// @GetMapping("/api/v1/skills/hot")
 	public ResponseEntity<CommonResponse> getHotSkillList() {
 		FindListHotSkillResponse hotSkillList = skillService.findHotSkillList();
 
 		return ResponseEntity.ok(CommonResponse.of(hotSkillList));
 	}
 
-	@GetMapping("/api/v1/skills/member")
+	// @GetMapping("/api/v1/skills/member")
 	public ResponseEntity<CommonResponse> getMemberSkillList(@LoginUser SessionUserInfo sessionUser) {
 		Long memberId = sessionUser.getId();
 		FindListMemberSkillResponse findMemberSkillList = skillService.findMemberSkillList(memberId);
