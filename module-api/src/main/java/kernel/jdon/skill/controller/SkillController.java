@@ -36,7 +36,7 @@ public class SkillController {
 		return ResponseEntity.ok(CommonResponse.of(findMemberSkillList));
 	}
 
-	@GetMapping("/api/v1/skills/job-category/{jobCategoryId}")
+	// @GetMapping("/api/v1/skills/job-category/{jobCategoryId}")
 	public ResponseEntity<CommonResponse> getJobCategorySkillList(@PathVariable Long jobCategoryId) {
 		FindListJobCategorySkillResponse findListJobCategorySkillResponse =
 			skillService.findJobCategorySkillList(jobCategoryId);

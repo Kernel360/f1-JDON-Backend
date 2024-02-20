@@ -35,4 +35,17 @@ public class SkillDto {
 		private Long id;
 		private String keyword;
 	}
+
+	@Getter
+	@Builder
+	public static class FindJobCategorySkillListResponse {
+		private List<FindJobCategorySkill> skillList;
+	}
+
+	@Getter
+	@Builder
+	public static class FindJobCategorySkill {
+		private Long skillId;
+		private String keyword;
+	}
 }

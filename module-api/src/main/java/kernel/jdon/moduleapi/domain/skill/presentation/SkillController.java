@@ -2,6 +2,7 @@ package kernel.jdon.moduleapi.domain.skill.presentation;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import kernel.jdon.auth.dto.SessionUserInfo;
@@ -34,4 +35,13 @@ public class SkillController {
 		return ResponseEntity.ok().body(CommonResponse.of(response));
 	}
 
+	@GetMapping("/api/v1/skills/job-category/{jobCategoryId}")
+	public ResponseEntity<CommonResponse<SkillDto.FindJobCategorySkillListResponse>> getJobCategorySkillList(
+		final @PathVariable Long jobCategoryId) {
+		final SkillInfo.FindJobCategorySkillListResponse info = skillFacade.getJobCategorySkillList(jobCategoryId);
+		final SkillDto.FindJobCategorySkillListResponse response = skillDtoMapper.of(info);
+
+		return ResponseEntity.ok().body(CommonResponse.of(response));
+
+	}
 }

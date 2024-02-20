@@ -15,4 +15,6 @@ public interface SkillDtoMapper {
 	SkillDto.FindHotSkillListResponse of(SkillInfo.FindHotSkillListResponse info);
 
 	SkillDto.FindMemberSkillListResponse of(SkillInfo.FindMemberSkillListResponse info);
+
+	SkillDto.FindJobCategorySkillListResponse of(SkillInfo.FindJobCategorySkillListResponse info);
 }

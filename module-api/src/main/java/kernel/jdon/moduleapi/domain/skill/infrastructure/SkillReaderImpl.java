@@ -6,6 +6,8 @@ import org.springframework.stereotype.Component;
 
 import kernel.jdon.moduleapi.domain.skill.core.SkillInfo;
 import kernel.jdon.moduleapi.domain.skill.core.SkillReader;
+import kernel.jdon.moduleapi.domain.skill.error.SkillErrorCode;
+import kernel.jdon.skill.domain.Skill;
 import lombok.RequiredArgsConstructor;
 
 @Component
@@ -27,5 +29,19 @@ public class SkillReaderImpl implements SkillReader {
 		return memberSkillList.stream()
 			.map(skill -> new SkillInfo.FindMemberSkill(skill.getSkillId(), skill.getKeyword()))
 			.toList();
+	}
+
+	@Override
+	public List<SkillInfo.FindJobCategorySkill> findJobCategorySkillList(final Long jobCategoryId) {
+		final List<Skill> findJobCategorySkillList = skillRepository.findByJobCategoryId(jobCategoryId);
+		return findJobCategorySkillList.stream()
+			.map(skill -> new SkillInfo.FindJobCategorySkill(skill.getId(), skill.getKeyword()))
+			.toList();
+	}
+
+	@Override
+	public Skill findById(Long jobCategoryId) {
+		return skillRepository.findById(jobCategoryId)
+			.orElseThrow(SkillErrorCode.NOT_FOUND_SKILL::throwException);
 	}
 }

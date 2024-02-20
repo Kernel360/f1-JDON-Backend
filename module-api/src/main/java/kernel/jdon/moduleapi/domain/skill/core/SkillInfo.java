@@ -39,4 +39,17 @@ public class SkillInfo {
 		private String keyword;
 	}
 
+	@Getter
+	@AllArgsConstructor
+	public static class FindJobCategorySkillListResponse {
+		private List<FindJobCategorySkill> skillList;
+	}
+
+	@Getter
+	@AllArgsConstructor
+	public static class FindJobCategorySkill {
+		private Long skillId;
+		private String keyword;
+	}
+
 }

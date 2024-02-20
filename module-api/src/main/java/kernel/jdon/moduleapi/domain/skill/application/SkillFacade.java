@@ -18,4 +18,8 @@ public class SkillFacade {
 	public SkillInfo.FindMemberSkillListResponse getMemberSkillList(final Long memberId) {
 		return skillService.getMemberSkillList(memberId);
 	}
+
+	public SkillInfo.FindJobCategorySkillListResponse getJobCategorySkillList(final Long jobCategoryId) {
+		return skillService.getJobCategorySkillList(jobCategoryId);
+	}
 }
