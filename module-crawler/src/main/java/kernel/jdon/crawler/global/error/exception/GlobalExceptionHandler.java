@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import jakarta.servlet.http.HttpServletRequest;
-import kernel.jdon.dto.response.ErrorResponse;
+import kernel.jdon.modulecommon.dto.response.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 
 @RestControllerAdvice

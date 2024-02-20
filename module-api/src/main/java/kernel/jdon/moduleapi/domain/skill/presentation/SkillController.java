@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import kernel.jdon.auth.dto.SessionUserInfo;
-import kernel.jdon.dto.response.CommonResponse;
+import kernel.jdon.modulecommon.dto.response.CommonResponse;
 import kernel.jdon.moduleapi.domain.skill.application.SkillFacade;
 import kernel.jdon.moduleapi.domain.skill.core.SkillInfo;
 import kernel.jdon.moduleapi.global.annotation.LoginUser;

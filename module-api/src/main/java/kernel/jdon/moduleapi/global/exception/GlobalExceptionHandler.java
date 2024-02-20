@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import jakarta.servlet.http.HttpServletRequest;
-import kernel.jdon.dto.response.ErrorResponse;
+import kernel.jdon.modulecommon.dto.response.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 
 @RestControllerAdvice
@@ -21,7 +21,8 @@ public class GlobalExceptionHandler {
 	}
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public ResponseEntity<ErrorResponse> handlerMethodArgumentNotValidException(MethodArgumentNotValidException e, HttpServletRequest request) {
+	public ResponseEntity<ErrorResponse> handlerMethodArgumentNotValidException(MethodArgumentNotValidException e,
+		HttpServletRequest request) {
 		log.warn(e.getMessage(), e);
 		String firstErrorMessage = e.getBindingResult().getFieldErrors().get(0).getDefaultMessage();
 		return ResponseEntity.status(e.getStatusCode())

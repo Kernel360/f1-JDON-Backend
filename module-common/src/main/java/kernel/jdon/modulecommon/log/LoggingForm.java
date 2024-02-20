@@ -1,4 +1,4 @@
-package kernel.jdon.log;
+package kernel.jdon.modulecommon.log;
 
 import lombok.Getter;
 import lombok.Setter;

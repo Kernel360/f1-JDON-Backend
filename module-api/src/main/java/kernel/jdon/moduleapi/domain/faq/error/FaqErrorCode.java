@@ -2,7 +2,7 @@ package kernel.jdon.moduleapi.domain.faq.error;
 
 import org.springframework.http.HttpStatus;
 
-import kernel.jdon.error.ErrorCode;
+import kernel.jdon.modulecommon.error.ErrorCode;
 import kernel.jdon.moduleapi.global.exception.ApiException;
 import kernel.jdon.moduleapi.global.exception.BaseThrowException;
 import lombok.AllArgsConstructor;

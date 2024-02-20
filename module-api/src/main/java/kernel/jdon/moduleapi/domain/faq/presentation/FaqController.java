@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
-import kernel.jdon.dto.response.CommonResponse;
+import kernel.jdon.modulecommon.dto.response.CommonResponse;
 import kernel.jdon.moduleapi.domain.faq.application.FaqFacade;
 import kernel.jdon.moduleapi.domain.faq.core.FaqCommand;
 import kernel.jdon.moduleapi.domain.faq.core.FaqInfo;
@@ -25,7 +25,8 @@ public class FaqController {
 	private final FaqDtoMapper faqDtoMapper;
 
 	@PostMapping("/api/v1/faqs")
-	public ResponseEntity<CommonResponse<FaqDto.CreateResponse>> save(@RequestBody @Valid FaqDto.CreateRequest request) {
+	public ResponseEntity<CommonResponse<FaqDto.CreateResponse>> save(
+		@RequestBody @Valid FaqDto.CreateRequest request) {
 		FaqCommand.CreateRequest command = faqDtoMapper.of(request);
 		FaqInfo.CreateResponse info = faqFacade.create(command);
 		FaqDto.CreateResponse response = faqDtoMapper.of(info);
@@ -43,7 +44,8 @@ public class FaqController {
 	}
 
 	@PutMapping("/api/v1/faqs")
-	public ResponseEntity<CommonResponse<FaqDto.UpdateResponse>> modify(@RequestBody @Valid FaqDto.UpdateRequest request) {
+	public ResponseEntity<CommonResponse<FaqDto.UpdateResponse>> modify(
+		@RequestBody @Valid FaqDto.UpdateRequest request) {
 		FaqCommand.UpdateRequest command = faqDtoMapper.of(request);
 		FaqInfo.UpdateResponse info = faqFacade.update(command);
 		FaqDto.UpdateResponse response = faqDtoMapper.of(info);

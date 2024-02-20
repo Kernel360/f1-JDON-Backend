@@ -1,6 +1,6 @@
 package kernel.jdon.crawler.global.error.exception;
 
-import kernel.jdon.error.ErrorCode;
+import kernel.jdon.modulecommon.error.ErrorCode;
 import lombok.Getter;
 
 @Getter

@@ -1,6 +1,6 @@
 package kernel.jdon.crawler.inflearn.service;
 
-import static kernel.jdon.util.StringUtil.*;
+import static kernel.jdon.modulecommon.util.StringUtil.*;
 
 import java.util.ArrayList;
 import java.util.List;

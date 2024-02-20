@@ -1,4 +1,4 @@
-package kernel.jdon.log.interceptor;
+package kernel.jdon.modulecommon.log.interceptor;
 
 import java.lang.reflect.Method;
 import java.util.List;
@@ -7,7 +7,7 @@ import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 
 import jakarta.annotation.Nullable;
-import kernel.jdon.log.LoggingForm;
+import kernel.jdon.modulecommon.log.LoggingForm;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

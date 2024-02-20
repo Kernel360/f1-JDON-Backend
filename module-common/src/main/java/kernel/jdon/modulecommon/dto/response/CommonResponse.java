@@ -1,4 +1,4 @@
-package kernel.jdon.dto.response;
+package kernel.jdon.modulecommon.dto.response;
 
 import lombok.Getter;
 
@@ -11,7 +11,7 @@ public class CommonResponse<T> {
 		this.data = data;
 	}
 
-	public static <T> CommonResponse of(T data){
+	public static <T> CommonResponse of(T data) {
 		return new CommonResponse(data);
 	}
 }

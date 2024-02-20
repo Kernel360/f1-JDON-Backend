@@ -1,4 +1,4 @@
-package kernel.jdon.dto.response;
+package kernel.jdon.modulecommon.dto.response;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 
 import jakarta.servlet.http.HttpServletRequest;
-import kernel.jdon.error.ErrorCode;
+import kernel.jdon.modulecommon.error.ErrorCode;
 import lombok.Builder;
 import lombok.Getter;
 

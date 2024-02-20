@@ -26,7 +26,7 @@ import kernel.jdon.coffeechat.dto.response.FindCoffeeChatListResponse;
 import kernel.jdon.coffeechat.dto.response.UpdateCoffeeChatResponse;
 import kernel.jdon.coffeechat.service.CoffeeChatApplyFacade;
 import kernel.jdon.coffeechat.service.CoffeeChatService;
-import kernel.jdon.dto.response.CommonResponse;
+import kernel.jdon.modulecommon.dto.response.CommonResponse;
 import kernel.jdon.moduleapi.global.annotation.LoginUser;
 import kernel.jdon.moduleapi.global.page.CustomPageResponse;
 import lombok.RequiredArgsConstructor;

@@ -1,11 +1,11 @@
-package kernel.jdon.log.interceptor;
+package kernel.jdon.modulecommon.log.interceptor;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.springframework.aop.framework.ProxyFactory;
 
 import jakarta.annotation.Nullable;
-import kernel.jdon.log.LoggingForm;
+import kernel.jdon.modulecommon.log.LoggingForm;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

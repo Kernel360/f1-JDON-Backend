@@ -1,6 +1,6 @@
 package kernel.jdon.crawler.wanted.service;
 
-import static kernel.jdon.util.StringUtil.*;
+import static kernel.jdon.modulecommon.util.StringUtil.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -90,7 +90,8 @@ public class WantedCrawlerService {
 		}
 	}
 
-	private void createJobDetail(final JobSearchJobPosition jobPosition, final JobCategory jobCategory, final Long jobDetailId) {
+	private void createJobDetail(final JobSearchJobPosition jobPosition, final JobCategory jobCategory,
+		final Long jobDetailId) {
 		WantedJobDetailResponse jobDetailResponse = getJobDetail(jobCategory, jobDetailId);
 		WantedJd savedWantedJd = createWantedJd(jobDetailResponse);
 
@@ -114,7 +115,8 @@ public class WantedCrawlerService {
 		}
 	}
 
-	private void createWantedJdSkill(final JobSearchJobPosition jobPosition, final JobCategory jobCategory, WantedJd wantedJd,
+	private void createWantedJdSkill(final JobSearchJobPosition jobPosition, final JobCategory jobCategory,
+		WantedJd wantedJd,
 		List<WantedJobDetailResponse.WantedSkill> wantedDetailSkillList) {
 		//TODO : 전략패턴으로 리팩토링 필요
 		SkillType[] skillTypes = (jobPosition == JobSearchJobPosition.JOB_POSITION_SERVER)
@@ -159,7 +161,8 @@ public class WantedCrawlerService {
 		return wantedJobDetailResponse;
 	}
 
-	private void addWantedJobDetailResponse(final WantedJobDetailResponse jobDetailResponse, final JobCategory jobCategory,
+	private void addWantedJobDetailResponse(final WantedJobDetailResponse jobDetailResponse,
+		final JobCategory jobCategory,
 		final Long jobDetailId) {
 		final String jobUrlDetail = scrapingWantedConfig.getUrl().getDetail();
 		jobDetailResponse.addDetailInfo(joinToString(jobUrlDetail, jobDetailId), jobCategory);

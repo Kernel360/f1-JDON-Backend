@@ -1,6 +1,4 @@
-package kernel.jdon.log.filter;
-
-import static kernel.jdon.log.MdcPreference.*;
+package kernel.jdon.modulecommon.log.filter;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -18,6 +16,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
+import kernel.jdon.modulecommon.log.MdcPreference;
 import lombok.extern.slf4j.Slf4j;
 
 @Component
@@ -37,10 +36,10 @@ public class MdcLoggingFilter implements Filter {
 	private void setMdc(final HttpServletRequest request) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
 
-		MDC.put(REQUEST_ID.name(), UUID.randomUUID().toString());
-		MDC.put(REQUEST_METHOD.name(), request.getMethod());
-		MDC.put(REQUEST_URI.name(), request.getRequestURI());
-		MDC.put(REQUEST_TIME.name(), LocalDateTime.now().format(formatter));
-		MDC.put(REQUEST_IP.name(), request.getRemoteAddr());
+		MDC.put(MdcPreference.REQUEST_ID.name(), UUID.randomUUID().toString());
+		MDC.put(MdcPreference.REQUEST_METHOD.name(), request.getMethod());
+		MDC.put(MdcPreference.REQUEST_URI.name(), request.getRequestURI());
+		MDC.put(MdcPreference.REQUEST_TIME.name(), LocalDateTime.now().format(formatter));
+		MDC.put(MdcPreference.REQUEST_IP.name(), request.getRemoteAddr());
 	}
 }

@@ -2,7 +2,7 @@ package kernel.jdon.coffeechat.error;
 
 import org.springframework.http.HttpStatus;
 
-import kernel.jdon.error.ErrorCode;
+import kernel.jdon.modulecommon.error.ErrorCode;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor

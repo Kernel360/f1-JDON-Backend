@@ -1,4 +1,4 @@
-package kernel.jdon.util;
+package kernel.jdon.modulecommon.util;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
