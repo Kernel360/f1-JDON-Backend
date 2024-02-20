@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 import kernel.jdon.auth.dto.SessionUserInfo;
 import kernel.jdon.coffeechat.dto.request.CoffeeChatCondition;
@@ -26,13 +25,13 @@ import kernel.jdon.coffeechat.dto.response.FindCoffeeChatListResponse;
 import kernel.jdon.coffeechat.dto.response.UpdateCoffeeChatResponse;
 import kernel.jdon.coffeechat.service.CoffeeChatApplyFacade;
 import kernel.jdon.coffeechat.service.CoffeeChatService;
-import kernel.jdon.modulecommon.dto.response.CommonResponse;
 import kernel.jdon.moduleapi.global.annotation.LoginUser;
 import kernel.jdon.moduleapi.global.page.CustomPageResponse;
+import kernel.jdon.modulecommon.dto.response.CommonResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-@RestController
+// @RestController
 @RequiredArgsConstructor
 @Slf4j
 public class CoffeeChatController {
@@ -40,7 +39,7 @@ public class CoffeeChatController {
 	private final CoffeeChatService coffeeChatService;
 	private final CoffeeChatApplyFacade coffeeChatApplyFacade;
 
-	@GetMapping("/api/v1/coffeechats/{id}")
+	// @GetMapping("/api/v1/coffeechats/{id}")
 	public ResponseEntity<CommonResponse> get(@PathVariable(name = "id") Long coffeeChatId) {
 
 		return ResponseEntity.ok().body(CommonResponse.of(coffeeChatService.find(coffeeChatId)));
