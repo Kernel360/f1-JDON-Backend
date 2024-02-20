@@ -1,15 +1,14 @@
 package kernel.jdon.moduleapi.domain.skill.application;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import java.util.Arrays;
 import java.util.Collections;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -34,11 +33,11 @@ class SkillFacadeTest {
 
 		// when
 		when(skillService.getHotSkillList()).thenReturn(hotSkillListResponse);
-		SkillInfo.FindHotSkillListResponse response = skillFacade.getHotSkillList();
+		var response = skillFacade.getHotSkillList();
 
 		// then
-		Assertions.assertThat(response.getSkillList()).hasSize(1);
-		BDDMockito.verify(skillService, times(1)).getHotSkillList();
+		assertThat(response.getSkillList()).hasSize(1);
+		verify(skillService, times(1)).getHotSkillList();
 	}
 
 	@Test
@@ -50,14 +49,14 @@ class SkillFacadeTest {
 			new SkillInfo.FindMemberSkill(2L, "member_skill_keyword_2"),
 			new SkillInfo.FindMemberSkill(3L, "member_skill_keyword_3"));
 		var memberSkillListResponse = new SkillInfo.FindMemberSkillListResponse(memberSkillList);
-		var loginMemberId = 1L;
+		var memberId = 1L;
 
 		// when
-		when(skillService.getMemberSkillList(loginMemberId)).thenReturn(memberSkillListResponse);
-		SkillInfo.FindMemberSkillListResponse response = skillFacade.getMemberSkillList(loginMemberId);
+		when(skillService.getMemberSkillList(memberId)).thenReturn(memberSkillListResponse);
+		var response = skillFacade.getMemberSkillList(memberId);
 
 		// then
-		Assertions.assertThat(response.getSkillList()).hasSize(3);
-		verify(skillService, times(1)).getMemberSkillList(loginMemberId);
+		assertThat(response.getSkillList()).hasSize(3);
+		verify(skillService, times(1)).getMemberSkillList(memberId);
 	}
 }

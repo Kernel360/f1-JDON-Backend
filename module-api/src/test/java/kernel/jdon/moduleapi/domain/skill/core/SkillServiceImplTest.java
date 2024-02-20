@@ -50,10 +50,10 @@ class SkillServiceImplTest {
 
 		// when
 		when(skillReader.findMemberSkillList(memberId)).thenReturn(memberSkillList);
-		var findMemberSkillList = skillReader.findMemberSkillList(memberId);
+		var response = skillServiceImpl.getMemberSkillList(memberId);
 
 		// then
-		assertThat(findMemberSkillList).hasSize(3);
+		assertThat(response.getSkillList()).hasSize(3);
 		verify(skillReader, times(1)).findMemberSkillList(memberId);
 	}
 }
