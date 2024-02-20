@@ -1,4 +1,4 @@
-package kernel.jdon.coffeechat.error;
+package kernel.jdon.moduleapi.domain.coffeechat.error;
 
 import org.springframework.http.HttpStatus;
 
