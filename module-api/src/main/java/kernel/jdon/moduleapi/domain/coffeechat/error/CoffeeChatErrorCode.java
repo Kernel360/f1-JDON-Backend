@@ -2,11 +2,13 @@ package kernel.jdon.moduleapi.domain.coffeechat.error;
 
 import org.springframework.http.HttpStatus;
 
+import kernel.jdon.moduleapi.global.exception.ApiException;
+import kernel.jdon.moduleapi.global.exception.BaseThrowException;
 import kernel.jdon.modulecommon.error.ErrorCode;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public enum CoffeeChatErrorCode implements ErrorCode {
+public enum CoffeeChatErrorCode implements ErrorCode, BaseThrowException<CoffeeChatErrorCode.CoffeeChatBaseException> {
 	NOT_FOUND_COFFEECHAT(HttpStatus.NOT_FOUND, "존재하지 않는 커피챗 입니다."),
 	NOT_OPEN_COFFEECHAT(HttpStatus.BAD_REQUEST, "모집중이 아닌 커피챗 입니다."),
 	INVALID_TOTAL_RECRUIT_COUNT(HttpStatus.BAD_REQUEST, "총 모집인원을 현재 모집인원보다 작게 설정할 수 없습니다."),
@@ -28,5 +30,16 @@ public enum CoffeeChatErrorCode implements ErrorCode {
 	@Override
 	public String getMessage() {
 		return message;
+	}
+
+	@Override
+	public CoffeeChatErrorCode.CoffeeChatBaseException throwException() {
+		return new CoffeeChatErrorCode.CoffeeChatBaseException(this);
+	}
+
+	public class CoffeeChatBaseException extends ApiException {
+		public CoffeeChatBaseException(CoffeeChatErrorCode coffeeChatErrorCode) {
+			super(coffeeChatErrorCode);
+		}
 	}
 }
