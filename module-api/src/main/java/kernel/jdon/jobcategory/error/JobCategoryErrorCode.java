@@ -1,4 +1,4 @@
-package kernel.jdon.moduleapi.domain.skill.error;
+package kernel.jdon.jobcategory.error;
 
 import org.springframework.http.HttpStatus;
 
@@ -6,8 +6,8 @@ import kernel.jdon.modulecommon.error.ErrorCode;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public enum SkillErrorCode implements ErrorCode {
-	NOT_FOUND_SKILL(HttpStatus.NOT_FOUND, "존재하지 않는 기술 스킬입니다.");
+public enum JobCategoryErrorCode implements ErrorCode {
+	NOT_FOUND_JOB_CATEGORY(HttpStatus.NOT_FOUND, "존재하지 않는 직군 또는 직무입니다.");
 
 	private final HttpStatus httpStatus;
 	private final String message;

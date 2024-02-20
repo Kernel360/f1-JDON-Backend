@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import kernel.jdon.auth.dto.SessionUserInfo;
-import kernel.jdon.dto.response.CommonResponse;
+import kernel.jdon.modulecommon.dto.response.CommonResponse;
 import kernel.jdon.favorite.dto.request.UpdateFavoriteRequest;
 import kernel.jdon.favorite.dto.response.FindFavoriteResponse;
 import kernel.jdon.favorite.dto.response.UpdateFavoriteResponse;

@@ -1,13 +1,16 @@
 package kernel.jdon.moduleapi.global.config.auth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import kernel.jdon.auth.dto.AuthExceptionResponse;
 import kernel.jdon.auth.error.AuthErrorCode;
-import kernel.jdon.error.ErrorCode;
+import kernel.jdon.config.auth.LoginRedirectUrlProperties;
+import kernel.jdon.modulecommon.error.ErrorCode;
 import kernel.jdon.moduleapi.global.exception.UnAuthorizedException;
+
 import org.springframework.http.MediaType;
 import java.io.IOException;
 
@@ -19,11 +22,6 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerExceptionResolver;
-
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import kernel.jdon.auth.error.AuthErrorCode;
-import kernel.jdon.global.exception.AuthException;
 
 @Component
 public class JdonAuthExceptionHandler

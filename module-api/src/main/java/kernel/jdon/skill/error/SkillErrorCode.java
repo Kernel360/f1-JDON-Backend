@@ -1,4 +1,4 @@
-package kernel.jdon.moduleapi.domain.skill.error;
+package kernel.jdon.skill.error;
 
 import org.springframework.http.HttpStatus;
 
