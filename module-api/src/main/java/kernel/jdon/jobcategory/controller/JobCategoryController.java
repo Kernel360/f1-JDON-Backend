@@ -4,7 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import kernel.jdon.dto.response.CommonResponse;
+import kernel.jdon.modulecommon.dto.response.CommonResponse;
 import kernel.jdon.jobcategory.dto.response.FindListJobGroupResponse;
 import kernel.jdon.jobcategory.service.JobCategoryService;
 import lombok.RequiredArgsConstructor;

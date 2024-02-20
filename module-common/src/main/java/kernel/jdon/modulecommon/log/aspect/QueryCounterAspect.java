@@ -1,4 +1,4 @@
-package kernel.jdon.log.aspect;
+package kernel.jdon.modulecommon.log.aspect;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.After;
@@ -9,8 +9,8 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import jakarta.servlet.http.HttpServletRequest;
-import kernel.jdon.log.LoggingForm;
-import kernel.jdon.log.interceptor.ConnectionProxyHandler;
+import kernel.jdon.modulecommon.log.LoggingForm;
+import kernel.jdon.modulecommon.log.interceptor.ConnectionProxyHandler;
 import lombok.extern.slf4j.Slf4j;
 
 @Component

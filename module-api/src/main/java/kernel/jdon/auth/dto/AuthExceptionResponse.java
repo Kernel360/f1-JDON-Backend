@@ -2,7 +2,7 @@ package kernel.jdon.auth.dto;
 
 import java.time.LocalDateTime;
 
-import kernel.jdon.util.DateParserUtil;
+import kernel.jdon.modulecommon.util.DateParserUtil;
 import lombok.Getter;
 
 @Getter

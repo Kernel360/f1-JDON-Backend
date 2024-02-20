@@ -2,7 +2,7 @@ package kernel.jdon.moduleapi.domain.skill.error;
 
 import org.springframework.http.HttpStatus;
 
-import kernel.jdon.error.ErrorCode;
+import kernel.jdon.modulecommon.error.ErrorCode;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

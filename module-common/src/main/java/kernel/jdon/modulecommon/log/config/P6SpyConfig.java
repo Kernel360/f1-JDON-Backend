@@ -1,4 +1,4 @@
-package kernel.jdon.log.config;
+package kernel.jdon.modulecommon.log.config;
 
 import java.util.Locale;
 
