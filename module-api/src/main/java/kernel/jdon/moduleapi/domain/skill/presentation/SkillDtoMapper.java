@@ -14,5 +14,5 @@ import kernel.jdon.moduleapi.domain.skill.core.SkillInfo;
 public interface SkillDtoMapper {
 	SkillDto.FindHotSkillListResponse of(SkillInfo.FindHotSkillListResponse info);
 
-	SkillDto.FinMemberSkillListResponse of(SkillInfo.FindMemberSkillListResponse info);
+	SkillDto.FindMemberSkillListResponse of(SkillInfo.FindMemberSkillListResponse info);
 }

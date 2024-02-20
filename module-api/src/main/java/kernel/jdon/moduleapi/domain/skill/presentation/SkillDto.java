@@ -25,7 +25,7 @@ public class SkillDto {
 
 	@Getter
 	@Builder
-	public static class FinMemberSkillListResponse {
+	public static class FindMemberSkillListResponse {
 		private List<FindMemberSkill> skillList;
 	}
 

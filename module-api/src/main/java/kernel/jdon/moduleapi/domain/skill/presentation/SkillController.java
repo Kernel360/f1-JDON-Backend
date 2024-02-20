@@ -26,10 +26,10 @@ public class SkillController {
 	}
 
 	@GetMapping("/api/v1/skills/member")
-	public ResponseEntity<CommonResponse<SkillDto.FinMemberSkillListResponse>> getMemberSkillList(
+	public ResponseEntity<CommonResponse<SkillDto.FindMemberSkillListResponse>> getMemberSkillList(
 		final @LoginUser SessionUserInfo sessionUser) {
 		final SkillInfo.FindMemberSkillListResponse info = skillFacade.getMemberSkillList(sessionUser.getId());
-		final SkillDto.FinMemberSkillListResponse response = skillDtoMapper.of(info);
+		final SkillDto.FindMemberSkillListResponse response = skillDtoMapper.of(info);
 
 		return ResponseEntity.ok().body(CommonResponse.of(response));
 	}
