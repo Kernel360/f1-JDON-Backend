@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import kernel.jdon.moduleapi.domain.skill.application.SkillReader;
 import kernel.jdon.moduleapi.domain.skill.core.SkillInfo;
+import kernel.jdon.moduleapi.domain.skill.core.SkillReader;
 import lombok.RequiredArgsConstructor;
 
 @Component

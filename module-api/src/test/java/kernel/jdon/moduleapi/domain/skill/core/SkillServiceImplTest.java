@@ -13,8 +13,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import kernel.jdon.moduleapi.domain.skill.application.SkillReader;
-
 @DisplayName("Skill Service Impl 테스트")
 @ExtendWith(MockitoExtension.class)
 class SkillServiceImplTest {
