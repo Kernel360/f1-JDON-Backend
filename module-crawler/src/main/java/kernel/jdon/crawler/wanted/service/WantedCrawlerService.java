@@ -2,15 +2,15 @@ package kernel.jdon.crawler.wanted.service;
 
 import static kernel.jdon.modulecommon.util.StringUtil.*;
 
-import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
-import kernel.jdon.crawler.config.ScrapingWantedConfig;
+import kernel.jdon.crawler.config.ScrapingWantedProperties;
 import kernel.jdon.crawler.global.error.code.WantedErrorCode;
 import kernel.jdon.crawler.global.error.exception.CrawlerException;
 import kernel.jdon.crawler.wanted.dto.response.WantedJobDetailResponse;
@@ -27,8 +27,6 @@ import kernel.jdon.crawler.wanted.search.JobSearchLocation;
 import kernel.jdon.crawler.wanted.search.JobSearchSort;
 import kernel.jdon.crawler.wanted.service.infrastructure.JobDetailProcessingCounter;
 import kernel.jdon.crawler.wanted.service.infrastructure.JobListProcessingCounter;
-import kernel.jdon.crawler.wanted.skill.BackendSkillType;
-import kernel.jdon.crawler.wanted.skill.FrontendSkillType;
 import kernel.jdon.crawler.wanted.skill.SkillType;
 import kernel.jdon.jobcategory.domain.JobCategory;
 import kernel.jdon.skill.domain.Skill;
@@ -42,7 +40,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class WantedCrawlerService {
 	private final RestTemplate restTemplate;
-	private final ScrapingWantedConfig scrapingWantedConfig;
+	private final ScrapingWantedProperties scrapingWantedProperties;
 	private final WantedJdRepository wantedJdRepository;
 	private final WantedJdSkillRepository wantedJdSkillRepository;
 	private final SkillRepository skillRepository;
@@ -67,7 +65,7 @@ public class WantedCrawlerService {
 
 	private void processJobDetails(final JobSearchJobPosition jobPosition, final JobCategory jobCategory,
 		final Set<Long> fetchJobIds) throws InterruptedException {
-		JobDetailProcessingCounter jobProcessingCounter = new JobDetailProcessingCounter(scrapingWantedConfig);
+		JobDetailProcessingCounter jobProcessingCounter = new JobDetailProcessingCounter(scrapingWantedProperties);
 
 		for (Long jobDetailId : fetchJobIds) {
 			if (jobProcessingCounter.isBreakRequired()) {
@@ -98,7 +96,9 @@ public class WantedCrawlerService {
 		List<WantedJobDetailResponse.WantedSkill> wantedDetailSkillList =
 			jobDetailResponse.getJob().getSkill();
 
+		// todo : 기술 이력을 쌓는 로직은 비동기로 처리하도록 고려 가능(ApplicationEventPublisher)
 		createSkillHistory(jobCategory, savedWantedJd, wantedDetailSkillList);
+
 		createWantedJdSkill(jobPosition, jobCategory, savedWantedJd, wantedDetailSkillList);
 	}
 
@@ -109,7 +109,7 @@ public class WantedCrawlerService {
 	private void createSkillHistory(final JobCategory jobCategory, final WantedJd wantedJd,
 		List<WantedJobDetailResponse.WantedSkill> wantedDetailSkillList) {
 		for (WantedJobDetailResponse.WantedSkill wantedJdDetailSkill : wantedDetailSkillList) {
-			SkillHistory skillHistory = new SkillHistory(wantedJdDetailSkill.getKeyword(), jobCategory, wantedJd);
+			final SkillHistory skillHistory = new SkillHistory(wantedJdDetailSkill.getKeyword(), jobCategory, wantedJd);
 
 			skillHistoryRepository.save(skillHistory);
 		}
@@ -118,34 +118,18 @@ public class WantedCrawlerService {
 	private void createWantedJdSkill(final JobSearchJobPosition jobPosition, final JobCategory jobCategory,
 		WantedJd wantedJd,
 		List<WantedJobDetailResponse.WantedSkill> wantedDetailSkillList) {
-		//TODO : 전략패턴으로 리팩토링 필요
-		SkillType[] skillTypes = (jobPosition == JobSearchJobPosition.JOB_POSITION_SERVER)
-			? BackendSkillType.values()
-			: FrontendSkillType.values();
-
 		for (WantedJobDetailResponse.WantedSkill wantedSkill : wantedDetailSkillList) {
 			String skillKeyword = wantedSkill.getKeyword();
-			boolean isSkillInJobPosition = Arrays.stream(skillTypes)
-				.anyMatch(skillType -> skillType.getKeyword().equalsIgnoreCase(skillKeyword));
-			Skill findSkill = null;
 
-			if (isSkillInJobPosition) {
-				SkillType matchedSkillType = Arrays.stream(skillTypes)
-					.filter(skillType -> skillType.getKeyword().equalsIgnoreCase(skillKeyword))
-					.findFirst()
-					.get();
+			final Optional<SkillType> findSkillType = jobPosition.getSkillTypeList().stream()
+				.filter(skillType -> skillType.getKeyword().equalsIgnoreCase(skillKeyword))
+				.findFirst();
 
-				findSkill = findByJobCategoryIdAndKeyword(jobCategory, matchedSkillType.getKeyword());
-			} else {
-				findSkill = findByJobCategoryIdAndKeyword(jobCategory, SkillType.getOrderKeyword());
-			}
+			final Skill findSkill = findSkillType
+				.map(skillType -> findByJobCategoryIdAndKeyword(jobCategory, skillType.getKeyword()))
+				.orElseGet(() -> findByJobCategoryIdAndKeyword(jobCategory, SkillType.getOrderKeyword()));
 
-			WantedJdSkill wantedJdSkill = WantedJdSkill.builder()
-				.wantedJd(wantedJd)
-				.skill(findSkill)
-				.build();
-
-			wantedJdSkillRepository.save(wantedJdSkill);
+			wantedJdSkillRepository.save(new WantedJdSkill(findSkill, wantedJd));
 		}
 	}
 
@@ -164,7 +148,7 @@ public class WantedCrawlerService {
 	private void addWantedJobDetailResponse(final WantedJobDetailResponse jobDetailResponse,
 		final JobCategory jobCategory,
 		final Long jobDetailId) {
-		final String jobUrlDetail = scrapingWantedConfig.getUrl().getDetail();
+		final String jobUrlDetail = scrapingWantedProperties.getDetailUrl();
 		jobDetailResponse.addDetailInfo(joinToString(jobUrlDetail, jobDetailId), jobCategory);
 	}
 
@@ -173,25 +157,26 @@ public class WantedCrawlerService {
 	}
 
 	private WantedJobDetailResponse fetchJobDetail(final Long jobId) {
-		final String jobApiDetailUrl = scrapingWantedConfig.getUrl().getApi().getDetail();
+		final String jobApiDetailUrl = scrapingWantedProperties.getApiDetailUrl();
 		final String jobDetailUrl = joinToString(jobApiDetailUrl, jobId);
 
 		return restTemplate.getForObject(jobDetailUrl, WantedJobDetailResponse.class);
 	}
 
 	private Set<Long> fetchJobIdList(final JobSearchJobPosition jobPosition) {
-		JobListProcessingCounter jobListCounter = new JobListProcessingCounter(scrapingWantedConfig);
+		JobListProcessingCounter jobListCounter = new JobListProcessingCounter(scrapingWantedProperties);
 
-		while (jobListCounter.isBelowSizeLimit()) {
+		while (jobListCounter.isMaxFetchSizeLimit()) {
 			WantedJobListResponse jobListResponse = fetchJobList(jobPosition, jobListCounter.getOffset());
 
+			// todo : 일급 컬렉션을 고려 가능
 			List<Long> jobIdList = jobListResponse.getData().stream()
 				.map(WantedJobListResponse.Data::getId)
 				.toList();
 
 			jobListCounter.addFetchedJobIds(jobIdList);
 
-			if (jobListCounter.isBelowOffsetLimit(jobIdList.size())) {
+			if (jobListCounter.isMaxFetchOffsetLimit(jobIdList.size())) {
 				break;
 			}
 
@@ -208,8 +193,8 @@ public class WantedCrawlerService {
 	}
 
 	private String createJobListUrl(final JobSearchJobPosition jobPosition, final int offset) {
-		final int maxFetchJDListOffset = scrapingWantedConfig.getMaxFetchJdList().getOffset();
-		final String jobApiListUrl = scrapingWantedConfig.getUrl().getApi().getList();
+		final int maxFetchJDListOffset = scrapingWantedProperties.getMaxFetchJdListOffset();
+		final String jobApiListUrl = scrapingWantedProperties.getApiListUrl();
 
 		return joinToString(
 			jobApiListUrl,
@@ -224,7 +209,7 @@ public class WantedCrawlerService {
 	}
 
 	private void performSleep() throws InterruptedException {
-		final int sleepTimeMillis = scrapingWantedConfig.getSleep().getTimeMillis();
+		final int sleepTimeMillis = scrapingWantedProperties.getSleepTimeMillis();
 		Thread.sleep(sleepTimeMillis);
 	}
 }

@@ -8,15 +8,15 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 @ConfigurationProperties(prefix = "scraping.wanted")
-public class ScrapingWantedConfig {
-	private final MaxFetchJdListConfig maxFetchJdList;
+public class ScrapingWantedProperties {
+	private final MaxFetchJdList maxFetchJdList;
 	private final Limit limit;
 	private final Sleep sleep;
 	private final Url url;
 
 	@Getter
 	@RequiredArgsConstructor
-	public static class MaxFetchJdListConfig {
+	public static class MaxFetchJdList {
 		private final int size;
 		private final int offset;
 	}
@@ -46,5 +46,37 @@ public class ScrapingWantedConfig {
 	public static class Api {
 		private final String detail;
 		private final String list;
+	}
+
+	public String getDetailUrl() {
+		return this.url.detail;
+	}
+
+	public String getApiDetailUrl() {
+		return this.url.api.detail;
+	}
+
+	public String getApiListUrl() {
+		return this.url.api.list;
+	}
+
+	public int getMaxFetchJdListOffset() {
+		return this.maxFetchJdList.offset;
+	}
+
+	public int getMaxFetchJdListSize() {
+		return this.maxFetchJdList.size;
+	}
+
+	public int getSleepTimeMillis() {
+		return this.sleep.timeMillis;
+	}
+
+	public int getSleepThresholdCount() {
+		return this.sleep.thresholdCount;
+	}
+
+	public int getLimitFailCount() {
+		return this.limit.failCount;
 	}
 }

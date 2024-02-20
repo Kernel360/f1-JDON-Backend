@@ -4,7 +4,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import kernel.jdon.crawler.config.ScrapingWantedConfig;
+import kernel.jdon.crawler.config.ScrapingWantedProperties;
 
 public class JobListProcessingCounter {
 	private final int maxFetchJDListSize;
@@ -12,16 +12,16 @@ public class JobListProcessingCounter {
 	private int offset = 0;
 	private Set<Long> fetchedJobIds = new LinkedHashSet<>();
 
-	public JobListProcessingCounter(ScrapingWantedConfig scrapingWantedConfig) {
-		this.maxFetchJDListSize = scrapingWantedConfig.getMaxFetchJdList().getSize();
-		this.maxFetchJDListOffset = scrapingWantedConfig.getMaxFetchJdList().getOffset();
+	public JobListProcessingCounter(final ScrapingWantedProperties scrapingWantedProperties) {
+		this.maxFetchJDListSize = scrapingWantedProperties.getMaxFetchJdListSize();
+		this.maxFetchJDListOffset = scrapingWantedProperties.getMaxFetchJdListOffset();
 	}
 
-	public boolean isBelowSizeLimit() {
+	public boolean isMaxFetchSizeLimit() {
 		return fetchedJobIds.size() < maxFetchJDListSize;
 	}
 
-	public boolean isBelowOffsetLimit(int jobIdListSize) {
+	public boolean isMaxFetchOffsetLimit(final int jobIdListSize) {
 		return jobIdListSize < maxFetchJDListOffset;
 	}
 
@@ -37,7 +37,7 @@ public class JobListProcessingCounter {
 		return fetchedJobIds;
 	}
 
-	public void addFetchedJobIds(List<Long> jobIdList) {
+	public void addFetchedJobIds(final List<Long> jobIdList) {
 		fetchedJobIds.addAll(jobIdList);
 	}
 }
