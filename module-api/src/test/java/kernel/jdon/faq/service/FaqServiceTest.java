@@ -15,7 +15,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import kernel.jdon.moduledomain.faq.domain.Faq;
 import kernel.jdon.faq.dto.request.CreateFaqRequest;
 import kernel.jdon.faq.dto.request.UpdateFaqRequest;
 import kernel.jdon.faq.dto.response.CreateFaqResponse;
@@ -25,10 +24,11 @@ import kernel.jdon.faq.dto.response.UpdateFaqResponse;
 import kernel.jdon.faq.error.FaqErrorCode;
 import kernel.jdon.faq.repository.FaqRepository;
 import kernel.jdon.moduleapi.global.exception.ApiException;
+import kernel.jdon.moduledomain.faq.domain.Faq;
 
 @DisplayName("FAQ 서비스 테스트")
 @ExtendWith(MockitoExtension.class)
-public class FaqServiceTest {
+class FaqServiceTest {
 	@Mock
 	private FaqRepository faqRepository;
 	@InjectMocks
@@ -55,7 +55,7 @@ public class FaqServiceTest {
 		// given
 		final String title = "FAQ 제목";
 		final String content = "FAQ 내용";
-		CreateFaqRequest createFaqRequest =  new CreateFaqRequest(title, content);
+		CreateFaqRequest createFaqRequest = new CreateFaqRequest(title, content);
 		Faq faq = createFaqRequest.toEntity();
 
 		// when
@@ -91,10 +91,10 @@ public class FaqServiceTest {
 	@Test
 	@DisplayName("유효하지 않은 FAQ ID가 주어졌을 때 delete 메서드에서 NOT_FOUND_FAQ 예외를 던진다.")
 	void givenInvalidFaqId_whenDelete_thenThrowException() throws Exception {
-	    //given
+		//given
 		final Long faqId = 1L;
 
-	    // when
+		// when
 		when(faqRepository.findById(faqId)).thenReturn(Optional.empty());
 
 		// then
@@ -106,14 +106,14 @@ public class FaqServiceTest {
 	@Test
 	@DisplayName("유효한 FAQ ID가 주어졌을 때 update 메서드에서 수정한 FAQ의 ID를 반환한다.")
 	void givenValidFaqId_whenUpdate_thenUpdatedFaqId() throws Exception {
-	    //given
-	    final Long faqId = 1L;
+		//given
+		final Long faqId = 1L;
 		final String title = "FAQ 제목";
 		final String content = "FAQ 내용";
 		UpdateFaqRequest request = new UpdateFaqRequest(faqId, title, content);
 		Faq faq = Faq.builder().id(faqId).title(title).content(content).build();
 
-	    //when
+		//when
 		when(faqRepository.findById(faqId)).thenReturn(Optional.of(faq));
 		UpdateFaqResponse update = faqService.update(request);
 
