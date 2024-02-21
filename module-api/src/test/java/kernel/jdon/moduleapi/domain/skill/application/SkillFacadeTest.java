@@ -59,4 +59,23 @@ class SkillFacadeTest {
 		assertThat(response.getSkillList()).hasSize(3);
 		verify(skillService, times(1)).getMemberSkillList(memberId);
 	}
+
+	@Test
+	@DisplayName("올바른 직군 ID가 주어졌을 때 getJobCategorySkillList 메서드가 직군별 기술스택 데이터 개수 만큼 데이터를 응답한다.")
+	void givenValidJobCategoryId_whenFindList_thenReturnCorrectJobCategorySkillList() throws Exception {
+		//given
+		Long jobCategoryId = 1L;
+		var jobCategorySkillListResponse = new SkillInfo.FindJobCategorySkillListResponse(Arrays.asList(
+			new SkillInfo.FindJobCategorySkill(1L, "JAVA"),
+			new SkillInfo.FindJobCategorySkill(2L, "GO"),
+			new SkillInfo.FindJobCategorySkill(3L, "Python")));
+
+		//when
+		when(skillService.getJobCategorySkillList(jobCategoryId)).thenReturn(jobCategorySkillListResponse);
+		var response = skillFacade.getJobCategorySkillList(jobCategoryId);
+
+		//then
+		assertThat(response.getSkillList()).hasSize(3);
+		verify(skillService, times(1)).getJobCategorySkillList(jobCategoryId);
+	}
 }
