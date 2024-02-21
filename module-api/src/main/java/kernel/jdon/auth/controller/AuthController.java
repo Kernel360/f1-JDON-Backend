@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import kernel.jdon.auth.dto.SessionUserInfo;
 import kernel.jdon.auth.dto.request.RegisterRequest;
+import kernel.jdon.auth.dto.response.GetLoginStatusResponse;
 import kernel.jdon.auth.dto.response.RegisterResponse;
 import kernel.jdon.auth.dto.response.WithdrawResponse;
 import kernel.jdon.auth.service.AuthService;
@@ -46,8 +47,12 @@ public class AuthController {
 	}
 
 	@GetMapping("/api/v1/authenticate")
-	public ResponseEntity<Void> authenticate() {
+	public ResponseEntity<CommonResponse> authenticate(@LoginUser SessionUserInfo sessionUser) {
+		Boolean isLoginUser = false;
+		if (null != sessionUser) {
+			isLoginUser = true;
+		}
 
-		return ResponseEntity.noContent().build();
+		return ResponseEntity.ok().body(CommonResponse.of(GetLoginStatusResponse.of(isLoginUser)));
 	}
 }
