@@ -72,13 +72,14 @@ class SkillServiceImplTest {
 		ObjectMapper objectMapper = new ObjectMapper();
 		InputStream inputStream = new ClassPathResource(filePath).getInputStream();
 		JobCategory jobCategory = objectMapper.readValue(inputStream, JobCategory.class);
+		final Long jobCategoryId = 1L;
 
 		//when
-		when(jobCategoryReader.findById(jobCategory.getId())).thenReturn(jobCategory);
-		var response = skillServiceImpl.getJobCategorySkillList(jobCategory.getId());
+		when(jobCategoryReader.findById(jobCategoryId)).thenReturn(jobCategory);
+		var response = skillServiceImpl.getJobCategorySkillList(jobCategoryId);
 
 		//then
 		assertThat(response.getSkillList()).hasSize(2);
-		verify(jobCategoryReader, times(1)).findById(jobCategory.getId());
+		verify(jobCategoryReader, times(1)).findById(jobCategoryId);
 	}
 }
