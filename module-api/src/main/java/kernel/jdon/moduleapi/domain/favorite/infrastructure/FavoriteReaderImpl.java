@@ -5,8 +5,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import kernel.jdon.favorite.domain.Favorite;
-import kernel.jdon.moduleapi.domain.favorite.application.FavoriteReader;
 import kernel.jdon.moduleapi.domain.favorite.core.FavoriteInfo;
+import kernel.jdon.moduleapi.domain.favorite.core.FavoriteReader;
 import kernel.jdon.moduleapi.global.page.CustomPageResponse;
 import lombok.RequiredArgsConstructor;
 
