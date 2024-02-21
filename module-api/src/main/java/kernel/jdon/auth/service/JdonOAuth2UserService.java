@@ -19,6 +19,7 @@ import kernel.jdon.auth.dto.UserInfoFromOAuth2;
 import kernel.jdon.auth.error.AuthErrorCode;
 import kernel.jdon.global.exception.AuthException;
 import kernel.jdon.member.domain.Member;
+import kernel.jdon.member.domain.MemberRole;
 import kernel.jdon.member.domain.SocialProviderType;
 import kernel.jdon.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -56,9 +57,9 @@ public class JdonOAuth2UserService extends DefaultOAuth2UserService {
 			checkRightSocialProvider(findMember, userInfo.getSocialProvider());
 			httpSession.setAttribute("USER", SessionUserInfo.of(findMember, userInfo));
 			findMember.updateLastLoginDate();
-			authorities = List.of(new SimpleGrantedAuthority("ROLE_USER"));
+			authorities = List.of(new SimpleGrantedAuthority(MemberRole.ROLE_USER.name()));
 		} else {
-			authorities = List.of(new SimpleGrantedAuthority("ROLE_TEMPORARY_USER"));
+			authorities = List.of(new SimpleGrantedAuthority(MemberRole.ROLE_GUEST.name()));
 		}
 		return new JdonOAuth2User(authorities, user.getAttributes(), getUserNameAttributeName(userRequest),
 			userInfo.getEmail(), userInfo.getSocialProvider());
