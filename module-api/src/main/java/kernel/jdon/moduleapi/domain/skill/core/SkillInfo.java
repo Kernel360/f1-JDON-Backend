@@ -49,4 +49,33 @@ public class SkillInfo {
 		private String keyword;
 	}
 
+	@Getter
+	@AllArgsConstructor
+	public static class FindDataListBySkillResponse {
+		private String keyword;
+		private List<FindLecture> lectureList;
+		private List<FindJd> jdList;
+	}
+
+	@Getter
+	@AllArgsConstructor
+	public static class FindLecture {
+		private Long lectureId;
+		private String title;
+		private String lectureUrl;
+		private String imageUrl;
+		private String instructor;
+		private Long studentCount;
+		private Integer price;
+		private Boolean isFavorite;
+	}
+
+	@Getter
+	@AllArgsConstructor
+	public static class FindJd {
+		private String company;
+		private String title;
+		private String imageUrl;
+		private String jdUrl;
+	}
 }

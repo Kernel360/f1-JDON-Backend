@@ -1,13 +1,12 @@
 package kernel.jdon.skill.controller;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import kernel.jdon.auth.dto.SessionUserInfo;
-import kernel.jdon.modulecommon.dto.response.CommonResponse;
 import kernel.jdon.moduleapi.global.annotation.LoginUser;
+import kernel.jdon.modulecommon.dto.response.CommonResponse;
 import kernel.jdon.skill.dto.response.FindListDataBySkillResponse;
 import kernel.jdon.skill.dto.response.FindListHotSkillResponse;
 import kernel.jdon.skill.dto.response.FindListJobCategorySkillResponse;
@@ -44,7 +43,7 @@ public class SkillController {
 		return ResponseEntity.ok(CommonResponse.of(findListJobCategorySkillResponse));
 	}
 
-	@GetMapping("/api/v1/skills/search")
+	// @GetMapping("/api/v1/skills/search")
 	public ResponseEntity<CommonResponse> getDataListBySkill(
 		@RequestParam(name = "keyword", defaultValue = "") String keyword,
 		@LoginUser SessionUserInfo sessionUser) {

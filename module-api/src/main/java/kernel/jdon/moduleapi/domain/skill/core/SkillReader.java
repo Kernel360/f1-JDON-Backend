@@ -9,7 +9,5 @@ public interface SkillReader {
 
 	List<SkillInfo.FindMemberSkill> findMemberSkillList(final Long memberId);
 
-	List<SkillInfo.FindJobCategorySkill> findJobCategorySkillList(final Long jobCategoryId);
-
 	Skill findById(final Long jobCategoryId);
 }

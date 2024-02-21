@@ -32,4 +32,45 @@ public class SkillReaderInfo {
 			this.keyword = keyword;
 		}
 	}
+
+	@Getter
+	public static class FindWantedJd {
+		private String company;
+		private String title;
+		private String imageUrl;
+		private String jdUrl;
+
+		@QueryProjection
+		public FindWantedJd(String company, String title, String imageUrl, String jdUrl) {
+			this.company = company;
+			this.title = title;
+			this.imageUrl = imageUrl;
+			this.jdUrl = jdUrl;
+		}
+	}
+
+	@Getter
+	public static class FindInflearnLecture {
+		private Long lectureId;
+		private String title;
+		private String lectureUrl;
+		private String imageUrl;
+		private String instructor;
+		private Long studentCount;
+		private Integer price;
+		private Boolean isFavorite;
+
+		@QueryProjection
+		public FindInflearnLecture(Long lectureId, String title, String lectureUrl, String imageUrl, String instructor,
+			Long studentCount, Integer price, boolean isFavorite) {
+			this.lectureId = lectureId;
+			this.title = title;
+			this.lectureUrl = lectureUrl;
+			this.imageUrl = imageUrl;
+			this.instructor = instructor;
+			this.studentCount = studentCount;
+			this.price = price;
+			this.isFavorite = isFavorite;
+		}
+	}
 }

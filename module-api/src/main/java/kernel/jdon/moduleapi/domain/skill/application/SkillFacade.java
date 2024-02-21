@@ -22,4 +22,8 @@ public class SkillFacade {
 	public SkillInfo.FindJobCategorySkillListResponse getJobCategorySkillList(final Long jobCategoryId) {
 		return skillService.getJobCategorySkillList(jobCategoryId);
 	}
+
+	public SkillInfo.FindDataListBySkillResponse getDataListBySkill(final String keyword, final Long memberId) {
+		return skillService.getDataListBySkill(keyword, memberId);
+	}
 }

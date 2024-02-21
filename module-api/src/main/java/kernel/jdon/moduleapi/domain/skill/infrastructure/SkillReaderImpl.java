@@ -32,14 +32,6 @@ public class SkillReaderImpl implements SkillReader {
 	}
 
 	@Override
-	public List<SkillInfo.FindJobCategorySkill> findJobCategorySkillList(final Long jobCategoryId) {
-		final List<Skill> findJobCategorySkillList = skillRepository.findByJobCategoryId(jobCategoryId);
-		return findJobCategorySkillList.stream()
-			.map(skill -> new SkillInfo.FindJobCategorySkill(skill.getId(), skill.getKeyword()))
-			.toList();
-	}
-
-	@Override
 	public Skill findById(Long jobCategoryId) {
 		return skillRepository.findById(jobCategoryId)
 			.orElseThrow(SkillErrorCode.NOT_FOUND_SKILL::throwException);
