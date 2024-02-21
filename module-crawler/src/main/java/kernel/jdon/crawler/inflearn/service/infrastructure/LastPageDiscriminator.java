@@ -1,13 +1,13 @@
 package kernel.jdon.crawler.inflearn.service.infrastructure;
 
-import kernel.jdon.crawler.config.ScrapingInflearnConfig;
+import kernel.jdon.crawler.config.ScrapingInflearnProperties;
 
 public class LastPageDiscriminator {
 	private boolean isLastPage = false;
 	private final int maxCoursesPerPage;
 
-	public LastPageDiscriminator(ScrapingInflearnConfig scrapingInflearnConfig) {
-		this.maxCoursesPerPage = scrapingInflearnConfig.getMaxCoursesPerPage();
+	public LastPageDiscriminator(ScrapingInflearnProperties scrapingInflearnProperties) {
+		this.maxCoursesPerPage = scrapingInflearnProperties.getMaxCoursesPerPage();
 	}
 
 	public boolean isLastPage() {

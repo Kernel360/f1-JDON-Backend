@@ -34,9 +34,8 @@ public class FavoriteService {
 	public UpdateFavoriteResponse update(Long memberId, @Valid UpdateFavoriteRequest updateFavoriteRequest) {
 		if (updateFavoriteRequest.getIsFavorite()) {
 			return create(memberId, updateFavoriteRequest);
-		} else {
-			return delete(memberId, updateFavoriteRequest);
 		}
+		return delete(memberId, updateFavoriteRequest);
 	}
 
 	public UpdateFavoriteResponse create(Long memberId, @Valid UpdateFavoriteRequest updateFavoriteRequest) {

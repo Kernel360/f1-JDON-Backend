@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 @ConfigurationProperties(prefix = "scraping.inflearn")
-public class ScrapingInflearnConfig {
+public class ScrapingInflearnProperties {
 	private final String detailUrlPrefix;
 	private final String url;
 	private final int maxCoursesPerKeyword;
@@ -22,5 +22,21 @@ public class ScrapingInflearnConfig {
 		private final int maxInitial;
 		private final int max;
 		private final int increment;
+	}
+
+	public int getMinInitialSleepTime() {
+		return this.sleep.minInitial;
+	}
+
+	public int getMaxInitialSleepTime() {
+		return this.sleep.maxInitial;
+	}
+
+	public int getMaxSleepTime() {
+		return this.sleep.max;
+	}
+
+	public int getSleepTimeIncrement() {
+		return this.sleep.increment;
 	}
 }
