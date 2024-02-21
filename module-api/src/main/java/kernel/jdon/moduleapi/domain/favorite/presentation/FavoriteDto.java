@@ -1,5 +1,6 @@
 package kernel.jdon.moduleapi.domain.favorite.presentation;
 
+import jakarta.validation.constraints.NotNull;
 import kernel.jdon.moduleapi.domain.favorite.core.FavoriteInfo;
 import kernel.jdon.moduleapi.global.page.CustomPageResponse;
 import lombok.AccessLevel;
@@ -26,6 +27,19 @@ public class FavoriteDto {
 		private String instructor;
 		private Long studentCount;
 		private Integer price;
+	}
+
+	@Getter
+	public static class UpdateRequest {
+		private Long lectureId;
+		@NotNull(message = "isFavorite은 null이 될 수 없습니다.")
+		private Boolean isFavorite;
+
+		// @Builder
+		// public UpdateRequest(Long lectureId, Boolean isFavorite) {
+		// 	this.lectureId = lectureId;
+		// 	this.isFavorite = isFavorite;
+		// }
 	}
 
 	@Getter

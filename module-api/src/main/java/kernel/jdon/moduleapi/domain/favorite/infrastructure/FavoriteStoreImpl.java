@@ -19,6 +19,7 @@ import kernel.jdon.moduleapi.global.exception.ApiException;
 import lombok.RequiredArgsConstructor;
 
 @Component
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class FavoriteStoreImpl implements FavoriteStore {
 	private final FavoriteRepository favoriteRepository;
