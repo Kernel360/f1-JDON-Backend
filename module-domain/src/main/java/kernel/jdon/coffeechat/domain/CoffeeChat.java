@@ -112,6 +112,10 @@ public class CoffeeChat extends AbstractEntity {
 		updateStatusByRecruitCount();
 	}
 
+	public boolean isNotOpen() {
+		return coffeeChatStatus != CoffeeChatActiveStatus.OPEN;
+	}
+
 	public boolean isExpired() {
 		return this.meetDate.isBefore(LocalDateTime.now());
 	}

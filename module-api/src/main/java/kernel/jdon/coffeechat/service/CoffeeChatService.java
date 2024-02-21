@@ -47,7 +47,7 @@ public class CoffeeChatService {
 	private CoffeeChat findExistAndOpenCoffeeChat(Long coffeeChatId) {
 
 		CoffeeChat findCoffeeChat = findExistCoffeeChat(coffeeChatId);
-		if (findCoffeeChat.getCoffeeChatStatus() != CoffeeChatActiveStatus.OPEN) {
+		if (findCoffeeChat.isNotOpen()) {
 			throw new ApiException(CoffeeChatErrorCode.NOT_OPEN_COFFEECHAT);
 		}
 
