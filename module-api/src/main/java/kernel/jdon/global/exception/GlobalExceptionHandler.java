@@ -18,4 +18,11 @@ public class GlobalExceptionHandler {
 		return ResponseEntity.status(e.getErrorCode().getHttpStatus().value())
 			.body(ErrorResponse.of(e.getErrorCode(), request));
 	}
+
+	@ExceptionHandler({AuthException.class})
+	public ResponseEntity<ErrorResponse> handleAuthenticationException(AuthException e, HttpServletRequest request) {
+		log.warn(e.getMessage(), e);
+		return ResponseEntity.status(e.getErrorCode().getHttpStatus().value())
+			.body(ErrorResponse.of(e.getErrorCode(), request));
+	}
 }
