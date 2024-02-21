@@ -22,12 +22,12 @@ public class JdonAuthExceptionHandler
 	implements AuthenticationEntryPoint, AccessDeniedHandler, AuthenticationFailureHandler {
 
 	private final HandlerExceptionResolver resolver;
-	private final LoginRedirectUrlConfig loginRedirectUrlConfig;
+	private final LoginRedirectUrlProperties loginRedirectUrlProperties;
 
 	public JdonAuthExceptionHandler(@Qualifier("handlerExceptionResolver") HandlerExceptionResolver resolver,
-		LoginRedirectUrlConfig config) {
+		LoginRedirectUrlProperties config) {
 		this.resolver = resolver;
-		this.loginRedirectUrlConfig = config;
+		this.loginRedirectUrlProperties = config;
 	}
 
 	@Override
@@ -46,10 +46,10 @@ public class JdonAuthExceptionHandler
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
 		AuthenticationException exception) throws IOException, ServletException {
 		if (AuthErrorCode.UNAUTHORIZED_OAUTH_RETURN_NULL_EMAIL == ((AuthException)exception).getErrorCode()) {
-			response.sendRedirect(loginRedirectUrlConfig.getFailureNotFoundEmail());
+			response.sendRedirect(loginRedirectUrlProperties.getFailureNotFoundEmail());
 		}
 		if (AuthErrorCode.UNAUTHORIZED_NOT_MATCH_PROVIDER_TYPE == ((AuthException)exception).getErrorCode()) {
-			response.sendRedirect(loginRedirectUrlConfig.getFailureNotMatchProvider());
+			response.sendRedirect(loginRedirectUrlProperties.getFailureNotMatchProvider());
 		}
 	}
 }

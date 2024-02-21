@@ -24,7 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Slf4j
 public class JdonOAuth2AuthenticationSuccessHandler implements AuthenticationSuccessHandler {
-	private final LoginRedirectUrlConfig loginRedirectUrlConfig;
+	private final LoginRedirectUrlProperties loginRedirectUrlProperties;
 
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -33,10 +33,10 @@ public class JdonOAuth2AuthenticationSuccessHandler implements AuthenticationSuc
 		if (isTemporaryUser(jdonOAuth2User)) {
 			String query = createUserInfoString(jdonOAuth2User.getEmail(), jdonOAuth2User.getSocialProviderType());
 			String encodedQueryString = createEncryptQueryString(query);
-			response.sendRedirect(joinToString(loginRedirectUrlConfig.getSuccess().getGuest(), encodedQueryString));
+			response.sendRedirect(joinToString(loginRedirectUrlProperties.getSuccess().getGuest(), encodedQueryString));
 			return;
 		}
-		response.sendRedirect(loginRedirectUrlConfig.getSuccess().getMember());
+		response.sendRedirect(loginRedirectUrlProperties.getSuccess().getMember());
 	}
 
 	private boolean isTemporaryUser(JdonOAuth2User jdonOAuth2User) {

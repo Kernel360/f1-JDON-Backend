@@ -7,8 +7,8 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-@ConfigurationProperties(prefix = "custom-oauth2.kakao")
-public class WithdrawConfig {
-	private final String appAdminKey;
-	private final String deleteUserUrl;
+@ConfigurationProperties(prefix = "redirect-url.logout")
+public class LogoutRedirectUrlProperties {
+	private final String success;
+	private final String localSuccess;
 }

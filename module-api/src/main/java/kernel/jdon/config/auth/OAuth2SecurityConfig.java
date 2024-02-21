@@ -23,7 +23,7 @@ public class OAuth2SecurityConfig {
 	private final JdonOAuth2UserService jdonOAuth2UserService;
 	private final JdonOAuth2AuthenticationSuccessHandler jdonOAuth2AuthenticationSuccessHandler;
 	private final JdonAuthExceptionHandler jdonAuthExceptionHandler;
-	private final LogoutRedirectUrlConfig logoutRedirectUrlConfig;
+	private final LogoutRedirectUrlProperties logoutRedirectUrlProperties;
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -78,7 +78,7 @@ public class OAuth2SecurityConfig {
 				.userService(jdonOAuth2UserService)));
 		http.logout(logoutConfigurer -> logoutConfigurer
 			.logoutUrl("/api/v1/logout")
-			.logoutSuccessUrl(logoutRedirectUrlConfig.getSuccess())
+			.logoutSuccessUrl(logoutRedirectUrlProperties.getSuccess())
 			.invalidateHttpSession(true)
 			.deleteCookies("JSESSIONID"));
 
