@@ -26,14 +26,14 @@ class CoffeeChatFacadeTest {
 	void givenValidId_whenGetCoffeeChat_thenIncreaseViewCount_thenReturnCorrectResponse() {
 		//given
 		Long coffeeChatId = 1L;
-		CoffeeChatInfo.FindResponse responseMock = mock(CoffeeChatInfo.FindResponse.class);
-		when(coffeeChatService.getCoffeeChat(coffeeChatId)).thenReturn(responseMock);
+		CoffeeChatInfo.FindResponse mockFindResponse = mock(CoffeeChatInfo.FindResponse.class);
+		when(coffeeChatService.getCoffeeChat(coffeeChatId)).thenReturn(mockFindResponse);
 
 		//when
 		CoffeeChatInfo.FindResponse response = coffeeChatFacade.getCoffeeChat(coffeeChatId);
 
 		//then
-		assertThat(response).isEqualTo(responseMock);
+		assertThat(response).isEqualTo(mockFindResponse);
 
 		//verify
 		verify(coffeeChatService, times(1)).getCoffeeChat(coffeeChatId);
