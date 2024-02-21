@@ -51,6 +51,7 @@ public class SkillInfo {
 
 	@Getter
 	@AllArgsConstructor
+	@NoArgsConstructor
 	public static class FindDataListBySkillResponse {
 		private String keyword;
 		private List<FindLecture> lectureList;
@@ -59,6 +60,7 @@ public class SkillInfo {
 
 	@Getter
 	@AllArgsConstructor
+	@NoArgsConstructor
 	public static class FindLecture {
 		private Long lectureId;
 		private String title;
@@ -72,6 +74,7 @@ public class SkillInfo {
 
 	@Getter
 	@AllArgsConstructor
+	@NoArgsConstructor
 	public static class FindJd {
 		private String company;
 		private String title;
