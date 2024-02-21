@@ -1,10 +1,8 @@
-package kernel.jdon.member.repository;
-
-import org.springframework.stereotype.Repository;
+package kernel.jdon.moduleapi.domain.member.infrastructure;
 
 import kernel.jdon.member.domain.Member;
+import kernel.jdon.member.repository.MemberDomainRepository;
 
-@Repository("legacyMemberRepository")
 public interface MemberRepository extends MemberDomainRepository {
 	Member findByEmail(String email);
 

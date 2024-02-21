@@ -1,12 +1,10 @@
-package kernel.jdon.inflearncourse.repository;
+package kernel.jdon.moduleapi.domain.inflearncourse.infrastructure;
 
 import java.util.Optional;
 
-import org.springframework.stereotype.Repository;
-
 import kernel.jdon.inflearncourse.domain.InflearnCourse;
+import kernel.jdon.inflearncourse.repository.InflearnCourseDomainRepository;
 
-@Repository("legacyInflearnCourseRepository")
 public interface InflearnCourseRepository extends InflearnCourseDomainRepository {
 
 	Optional<InflearnCourse> findByTitle(String title);

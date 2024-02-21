@@ -1,12 +1,12 @@
 package kernel.jdon.moduleapi.domain.favorite.core;
 
-import java.awt.print.Pageable;
-
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import kernel.jdon.moduleapi.domain.favorite.application.FavoriteReader;
 import kernel.jdon.moduleapi.domain.favorite.application.FavoriteStore;
+import kernel.jdon.moduleapi.global.page.CustomPageResponse;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -22,7 +22,9 @@ public class FavoriteServiceImpl implements FavoriteService {
 	}
 
 	@Override
-	public FavoriteInfo.FindResponse getList(Long memberId, Pageable pageable) {
-		return null;
+	public FavoriteInfo.FindPageResponse getList(Long memberId, Pageable pageable) {
+		CustomPageResponse<FavoriteInfo.FindResponse> favoritePage = favoriteReader.findList(memberId, pageable);
+
+		return new FavoriteInfo.FindPageResponse(favoritePage);
 	}
 }
