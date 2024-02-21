@@ -67,6 +67,9 @@ redirect-url:
     success:
       member: https://localhost:3000/oauth/login/success
       guest: https://localhost:3000/oauth/info?
+    failure:
+      not-found-email: https://localhost:3000/oauth/login/fail/not-found-email
+      not-match-provider: https://localhost:3000/oauth/login/fail/not-match-provider
   logout:
     success: https://localhost:3000
 
