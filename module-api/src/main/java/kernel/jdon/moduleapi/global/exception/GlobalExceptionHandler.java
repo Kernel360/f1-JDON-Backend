@@ -28,4 +28,11 @@ public class GlobalExceptionHandler {
 		return ResponseEntity.status(e.getStatusCode())
 			.body(ErrorResponse.of(e.getStatusCode(), firstErrorMessage, request));
 	}
+
+	@ExceptionHandler({kernel.jdon.moduleapi.global.exception.AuthException.class})
+	public ResponseEntity<ErrorResponse> handleAuthenticationException(AuthException e, HttpServletRequest request) {
+		log.warn(e.getMessage(), e);
+		return ResponseEntity.status(e.getErrorCode().getHttpStatus().value())
+			.body(ErrorResponse.of(e.getErrorCode(), request));
+	}
 }

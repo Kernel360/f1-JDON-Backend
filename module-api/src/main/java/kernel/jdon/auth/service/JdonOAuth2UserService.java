@@ -1,16 +1,8 @@
 package kernel.jdon.auth.service;
 
-import jakarta.servlet.http.HttpSession;
-import kernel.jdon.auth.dto.JdonOAuth2User;
-import kernel.jdon.auth.dto.SessionUserInfo;
-import kernel.jdon.auth.dto.UserInfoFromOAuth2;
-import kernel.jdon.auth.error.AuthErrorCode;
-import kernel.jdon.moduleapi.global.exception.UnAuthorizedException;
-import kernel.jdon.member.domain.Member;
-import kernel.jdon.member.domain.SocialProviderType;
-import kernel.jdon.member.repository.MemberRepository;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -20,8 +12,17 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Map;
+import jakarta.servlet.http.HttpSession;
+import kernel.jdon.auth.dto.JdonOAuth2User;
+import kernel.jdon.auth.dto.SessionUserInfo;
+import kernel.jdon.auth.dto.UserInfoFromOAuth2;
+import kernel.jdon.auth.error.AuthErrorCode;
+import kernel.jdon.global.exception.AuthException;
+import kernel.jdon.member.domain.Member;
+import kernel.jdon.member.domain.SocialProviderType;
+import kernel.jdon.member.repository.MemberRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
@@ -82,12 +83,12 @@ public class JdonOAuth2UserService extends DefaultOAuth2UserService {
 
 	private void isEmailExist(String email) {
 		if (email == null)
-			throw new UnAuthorizedException(AuthErrorCode.UNAUTHORIZED_OAUTH_RETURN_NULL_EMAIL);
+			throw new AuthException(AuthErrorCode.UNAUTHORIZED_OAUTH_RETURN_NULL_EMAIL);
 	}
 
 	private void checkRightSocialProvider(Member findMember, SocialProviderType socialProvider) {
 		if (!findMember.isRightSocialProvider(socialProvider))
-			throw new UnAuthorizedException(AuthErrorCode.UNAUTHORIZED_NOT_MATCH_PROVIDER_TYPE);
+			throw new AuthException(AuthErrorCode.UNAUTHORIZED_NOT_MATCH_PROVIDER_TYPE);
 	}
 
 	private SocialProviderType getSocialProvider(OAuth2UserRequest userRequest) {
