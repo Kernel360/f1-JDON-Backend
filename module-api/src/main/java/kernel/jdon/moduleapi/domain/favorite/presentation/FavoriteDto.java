@@ -34,12 +34,6 @@ public class FavoriteDto {
 		private Long lectureId;
 		@NotNull(message = "isFavorite은 null이 될 수 없습니다.")
 		private Boolean isFavorite;
-
-		// @Builder
-		// public UpdateRequest(Long lectureId, Boolean isFavorite) {
-		// 	this.lectureId = lectureId;
-		// 	this.isFavorite = isFavorite;
-		// }
 	}
 
 	@Getter
