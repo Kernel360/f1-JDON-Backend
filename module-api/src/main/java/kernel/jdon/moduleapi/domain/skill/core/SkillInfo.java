@@ -4,7 +4,6 @@ import java.util.List;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -12,7 +11,6 @@ import lombok.NoArgsConstructor;
 public class SkillInfo {
 
 	@Getter
-	@Builder
 	@AllArgsConstructor
 	public static class FindHotSkillListResponse {
 		private List<FindHotSkill> skillList;
@@ -26,7 +24,6 @@ public class SkillInfo {
 	}
 
 	@Getter
-	@Builder
 	@AllArgsConstructor
 	public static class FindMemberSkillListResponse {
 		private List<FindMemberSkill> skillList;
