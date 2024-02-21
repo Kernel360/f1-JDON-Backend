@@ -10,7 +10,7 @@ import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import kernel.jdon.crawler.config.ScrapingInflearnConfig;
+import kernel.jdon.crawler.config.ScrapingInflearnProperties;
 import kernel.jdon.crawler.inflearn.search.CourseSearchSort;
 import kernel.jdon.crawler.inflearn.service.infrastructure.DynamicSleepTimeManager;
 import kernel.jdon.crawler.inflearn.service.infrastructure.InflearnCourseCounter;
@@ -27,7 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class InflearnCrawlerService implements CrawlerService {
 
-	private final ScrapingInflearnConfig scrapingInflearnConfig;
+	private final ScrapingInflearnProperties scrapingInflearnProperties;
 	private final CourseScraperService courseScraperService;
 	private final CourseParserService courseParserService;
 	private final CourseStorageService courseStorageService;
@@ -45,10 +45,10 @@ public class InflearnCrawlerService implements CrawlerService {
 	}
 
 	private void processKeyword(String skillKeyword, int pageNum) {
-		final int maxCoursesPerKeyword = scrapingInflearnConfig.getMaxCoursesPerKeyword();
+		final int maxCoursesPerKeyword = scrapingInflearnProperties.getMaxCoursesPerKeyword();
 		InflearnCourseCounter inflearnCourseCounter = new InflearnCourseCounter();
-		LastPageDiscriminator lastPageDiscriminator = new LastPageDiscriminator(scrapingInflearnConfig);
-		DynamicSleepTimeManager sleepTimeManager = new DynamicSleepTimeManager(scrapingInflearnConfig);
+		LastPageDiscriminator lastPageDiscriminator = new LastPageDiscriminator(scrapingInflearnProperties);
+		DynamicSleepTimeManager sleepTimeManager = new DynamicSleepTimeManager(scrapingInflearnProperties);
 
 		while (inflearnCourseCounter.getSavedCourseCount() < maxCoursesPerKeyword
 			&& !lastPageDiscriminator.isLastPage()) {
@@ -96,7 +96,7 @@ public class InflearnCrawlerService implements CrawlerService {
 	}
 
 	private String createInflearnSearchUrl(String skillKeyword, int pageNum) {
-		final String courseListUrl = scrapingInflearnConfig.getUrl();
+		final String courseListUrl = scrapingInflearnProperties.getUrl();
 		String path = joinToString(courseListUrl, "/");
 
 		String queryString = joinToString(
@@ -110,7 +110,7 @@ public class InflearnCrawlerService implements CrawlerService {
 
 	private void parseAndCreateCourses(Elements courseElements, String lectureUrl, String skillKeyword,
 		InflearnCourseCounter inflearnCourseCounter) {
-		final int maxCoursesPerKeyword = scrapingInflearnConfig.getMaxCoursesPerKeyword();
+		final int maxCoursesPerKeyword = scrapingInflearnProperties.getMaxCoursesPerKeyword();
 
 		for (Element courseElement : courseElements) {
 			if (inflearnCourseCounter.getSavedCourseCount() >= maxCoursesPerKeyword) {

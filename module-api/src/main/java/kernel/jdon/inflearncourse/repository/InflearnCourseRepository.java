@@ -9,8 +9,6 @@ import kernel.jdon.inflearncourse.domain.InflearnCourse;
 @Repository("legacyInflearnCourseRepository")
 public interface InflearnCourseRepository extends InflearnCourseDomainRepository {
 
-	Optional<InflearnCourse> findByTitle(String title);
-
 	Optional<InflearnCourse> findById(Long id);
 
 }
