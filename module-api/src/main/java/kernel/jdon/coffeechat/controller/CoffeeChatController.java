@@ -30,7 +30,6 @@ import kernel.jdon.dto.response.CommonResponse;
 import kernel.jdon.global.annotation.LoginUser;
 import kernel.jdon.global.page.CustomPageResponse;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
@@ -45,8 +44,9 @@ public class CoffeeChatController {
 	public ResponseEntity<CommonResponse> get(
 		@PathVariable(name = "id") Long coffeeChatId,
 		@LoginUser SessionUserInfo sessionUser) {
+		Long userId = sessionUser == null ? null : sessionUser.getId();
 
-		return ResponseEntity.ok().body(CommonResponse.of(coffeeChatService.find(coffeeChatId, sessionUser.getId())));
+		return ResponseEntity.ok().body(CommonResponse.of(coffeeChatService.find(coffeeChatId, userId)));
 	}
 
 	@PostMapping("/api/v1/coffeechats")
