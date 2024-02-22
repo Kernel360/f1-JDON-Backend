@@ -15,8 +15,6 @@ import kernel.jdon.auth.dto.object.RegisterMemberDto;
 import kernel.jdon.auth.dto.request.RegisterRequest;
 import kernel.jdon.auth.encrypt.AesUtil;
 import kernel.jdon.jobcategory.domain.JobCategory;
-import kernel.jdon.jobcategory.error.JobCategoryErrorCode;
-import kernel.jdon.jobcategory.repository.JobCategoryRepository;
 import kernel.jdon.member.domain.Member;
 import kernel.jdon.member.domain.MemberRole;
 import kernel.jdon.member.domain.SocialProviderType;
@@ -27,6 +25,8 @@ import kernel.jdon.member.error.MemberErrorCode;
 import kernel.jdon.member.repository.MemberRepository;
 import kernel.jdon.memberskill.domain.MemberSkill;
 import kernel.jdon.memberskill.repository.MemberSkillRepository;
+import kernel.jdon.moduleapi.domain.jobcategory.error.JobCategoryErrorCode;
+import kernel.jdon.moduleapi.domain.jobcategory.infrastructure.JobCategoryRepository;
 import kernel.jdon.moduleapi.domain.skill.error.SkillErrorCode;
 import kernel.jdon.moduleapi.domain.skill.infrastructure.SkillRepository;
 import kernel.jdon.moduleapi.global.exception.ApiException;
@@ -108,7 +108,7 @@ public class MemberService {
 
 	private JobCategory findJobCategory(Long jobCategoryId) {
 		return jobCategoryRepository.findById(jobCategoryId)
-			.orElseThrow(() -> new ApiException(JobCategoryErrorCode.NOT_FOUND_JOB_CATEGORY));
+			.orElseThrow(JobCategoryErrorCode.NOT_FOUND_JOB_CATEGORY::throwException);
 	}
 
 	private String getEmailAndProviderString(String hmac, String encrypted) {
