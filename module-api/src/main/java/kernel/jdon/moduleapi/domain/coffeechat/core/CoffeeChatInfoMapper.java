@@ -20,4 +20,5 @@ public interface CoffeeChatInfoMapper {
 	@Mapping(expression = "java(coffeeChat.getMember().getJobCategory().getName())", target = "job")
 	@Mapping(expression = "java(coffeeChat.getCoffeeChatStatus().getActiveStatus())", target = "status")
 	CoffeeChatInfo.FindResponse of(CoffeeChat coffeeChat);
+
 }

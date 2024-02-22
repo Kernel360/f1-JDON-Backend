@@ -14,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class CoffeeChatFacade {
 
-	private final CoffeeChatService coffeeChatService;
+    private final CoffeeChatService coffeeChatService;
 
 	public CoffeeChatInfo.FindCoffeeChatListResponse getCoffeeChatList(
 		final PageInfoRequest pageInfoRequest,
@@ -26,6 +26,18 @@ public class CoffeeChatFacade {
 		CoffeeChatInfo.FindResponse findResponse = coffeeChatService.getCoffeeChat(coffeeChatId);
 		coffeeChatService.increaseViewCount(coffeeChatId);
 
-		return findResponse;
-	}
+        return findResponse;
+    }
+
+    public Long saveCoffeeChat(CoffeeChatCommand.CreateRequest request, Long memberId) {
+        return coffeeChatService.createCoffeeChat(request, memberId);
+    }
+
+    public Long updateCoffeeChat(CoffeeChatCommand.UpdateRequest request, Long coffeeChatId) {
+        return coffeeChatService.updateCoffeeChat(request, coffeeChatId);
+    }
+
+    public Long deleteCoffeeChat(Long coffeeChatId) {
+        return coffeeChatService.deleteCoffeeChat(coffeeChatId);
+    }
 }

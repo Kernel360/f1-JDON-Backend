@@ -14,25 +14,47 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class CoffeeChatDto {
-	@Getter
-	@Builder
-	public static class FindResponse {
-		private Long coffeeChatId;
-		private Long hostId;
-		private String nickname;
-		private String job;
-		private String title;
-		private String content;
-		private Long viewCount;
-		private String status;
-		@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
-		private LocalDateTime meetDate;
-		@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
-		private LocalDateTime createdDate;
-		private String openChatUrl;
-		private Long totalRecruitCount;
-		private Long currentRecruitCount;
-	}
+    @Getter
+    @Builder
+    public static class FindResponse {
+        private Long coffeeChatId;
+        private Long hostId;
+        private String nickname;
+        private String job;
+        private String title;
+        private String content;
+        private Long viewCount;
+        private String status;
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
+        private LocalDateTime meetDate;
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
+        private LocalDateTime createdDate;
+        private String openChatUrl;
+        private Long totalRecruitCount;
+        private Long currentRecruitCount;
+    }
+
+    @Getter
+    @Builder
+    public static class CreateRequest {
+        private String title;
+        private String content;
+        private Long totalRecruitCount;
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
+        private LocalDateTime meetDate;
+        private String openChatUrl;
+    }
+
+    @Getter
+    @Builder
+    public static class UpdateRequest {
+        private String title;
+        private String content;
+        private Long totalRecruitCount;
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
+        private LocalDateTime meetDate;
+        private String openChatUrl;
+    }
 
 	@Getter
 	@Builder

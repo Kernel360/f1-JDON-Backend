@@ -8,12 +8,16 @@ import kernel.jdon.moduleapi.domain.coffeechat.core.CoffeeChatCommand;
 import kernel.jdon.moduleapi.domain.coffeechat.core.CoffeeChatInfo;
 
 @Mapper(
-	componentModel = "spring",
-	injectionStrategy = InjectionStrategy.CONSTRUCTOR,
-	unmappedTargetPolicy = ReportingPolicy.WARN
+    componentModel = "spring",
+    injectionStrategy = InjectionStrategy.CONSTRUCTOR,
+    unmappedTargetPolicy = ReportingPolicy.ERROR
 )
 public interface CoffeeChatDtoMapper {
-	CoffeeChatDto.FindResponse of(CoffeeChatInfo.FindResponse info);
+    CoffeeChatDto.FindResponse of(CoffeeChatInfo.FindResponse info);
+
+    CoffeeChatCommand.CreateRequest of(CoffeeChatDto.CreateRequest request);
+
+    CoffeeChatCommand.UpdateRequest of(CoffeeChatDto.UpdateRequest request);
 
 	CoffeeChatCommand.FindCoffeeChatListRequest of(CoffeeChatCondition request);
 
