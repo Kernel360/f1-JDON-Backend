@@ -14,7 +14,12 @@ public class FavoriteFacade {
 	private final FavoriteService favoriteService;
 
 	public FavoriteInfo.UpdateResponse update(final Long memberId, FavoriteCommand.UpdateRequest request) {
-		return favoriteService.update(memberId, request);
+		if (request.getIsFavorite()) {
+			return favoriteService.create(memberId, request);
+		}
+		favoriteService.delete(memberId, request.getLectureId());
+
+		return new FavoriteInfo.UpdateResponse(request.getLectureId());
 	}
 
 	public FavoriteInfo.FindPageResponse getList(final Long memberId, Pageable pageable) {

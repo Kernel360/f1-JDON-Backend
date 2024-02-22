@@ -11,12 +11,15 @@ import lombok.RequiredArgsConstructor;
 public class FavoriteServiceImpl implements FavoriteService {
 	private final FavoriteReader favoriteReader;
 	private final FavoriteStore favoriteStore;
+	
+	@Override
+	public FavoriteInfo.UpdateResponse create(Long memberId, FavoriteCommand.UpdateRequest command) {
+		return favoriteStore.create(memberId, command);
+	}
 
 	@Override
-	public FavoriteInfo.UpdateResponse update(Long memberId, FavoriteCommand.UpdateRequest command) {
-		final FavoriteInfo.UpdateResponse updateFavorite = favoriteStore.update(memberId, command);
-
-		return new FavoriteInfo.UpdateResponse(updateFavorite.getLectureId());
+	public void delete(Long memberId, Long lectureId) {
+		favoriteStore.delete(memberId, lectureId);
 	}
 
 	@Override

@@ -27,15 +27,7 @@ public class FavoriteStoreImpl implements FavoriteStore {
 
 	@Transactional
 	@Override
-	public FavoriteInfo.UpdateResponse update(Long memberId, @Valid FavoriteCommand.UpdateRequest command) {
-		if (command.getIsFavorite()) {
-			return create(memberId, command);
-		}
-
-		return delete(memberId, command);
-	}
-
-	private FavoriteInfo.UpdateResponse create(Long memberId, @Valid FavoriteCommand.UpdateRequest command) {
+	public FavoriteInfo.UpdateResponse create(Long memberId, @Valid FavoriteCommand.UpdateRequest command) {
 		Member findMember = memberRepository.findById(memberId)
 			.orElseThrow(MemberErrorCode.NOT_FOUND_MEMBER::throwException);
 		InflearnCourse findInflearnCourse = inflearnCourseRepository.findById(
@@ -54,9 +46,10 @@ public class FavoriteStoreImpl implements FavoriteStore {
 		return new FavoriteInfo.UpdateResponse(savedFavorite.getId());
 	}
 
-	private FavoriteInfo.UpdateResponse delete(Long memberId, FavoriteCommand.UpdateRequest command) {
-		Favorite favorite = favoriteRepository.findFavoriteByMemberIdAndInflearnCourseId(memberId,
-				command.getLectureId())
+	@Transactional
+	@Override
+	public void delete(Long memberId, Long lectureId) {
+		Favorite favorite = favoriteRepository.findFavoriteByMemberIdAndInflearnCourseId(memberId, lectureId)
 			.map(favoriteResponse -> {
 				return favoriteRepository.findById(favoriteResponse.getId())
 					.orElseThrow(FavoriteErrorCode.NOT_FOUND_FAVORITE::throwException);
@@ -64,8 +57,6 @@ public class FavoriteStoreImpl implements FavoriteStore {
 			.orElseThrow(FavoriteErrorCode.NOT_FOUND_FAVORITE::throwException);
 
 		favoriteRepository.delete(favorite);
-
-		return new FavoriteInfo.UpdateResponse(favorite.getId());
 	}
 
 }
