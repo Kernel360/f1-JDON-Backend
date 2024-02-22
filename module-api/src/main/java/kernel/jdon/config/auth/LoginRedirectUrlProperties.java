@@ -12,36 +12,36 @@ public class LoginRedirectUrlProperties {
 	private final Success success;
 	private final Failure failure;
 
-	public String getSuccessMember() {
+	public String getSuccessMember(String referer) {
+		if (requestFromLocal(referer)) {
+			return this.success.getLocalMember();
+		}
 		return this.success.getMember();
 	}
 
-	public String getSuccessLocalMember() {
-		return this.success.getLocalMember();
-	}
-
-	public String getSuccessGuest() {
+	public String getSuccessGuest(String referer) {
+		if (requestFromLocal(referer)) {
+			return this.success.getLocalGuest();
+		}
 		return this.success.getGuest();
 	}
 
-	public String getSuccessLocalGuest() {
-		return this.success.getLocalGuest();
-	}
-
-	public String getFailureNotFoundEmail() {
+	public String getFailureNotFoundEmail(String referer) {
+		if (requestFromLocal(referer)) {
+			return this.failure.getLocalNotFoundEmail();
+		}
 		return this.failure.getNotFoundEmail();
 	}
 
-	public String getFailureLocalNotFoundEmail() {
-		return this.failure.getLocalNotFoundEmail();
-	}
-
-	public String getFailureNotMatchProvider() {
+	public String getFailureNotMatchProvider(String referer) {
+		if (requestFromLocal(referer)) {
+			return this.failure.getLocalNotMatchProvider();
+		}
 		return this.failure.getNotMatchProvider();
 	}
 
-	public String getFailureLocalNotMatchProvider() {
-		return this.failure.getLocalNotMatchProvider();
+	private boolean requestFromLocal(String referer) {
+		return referer.contains("localhost:3000");
 	}
 
 	@Getter

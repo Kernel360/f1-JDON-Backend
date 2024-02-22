@@ -33,10 +33,11 @@ public class JdonOAuth2AuthenticationSuccessHandler implements AuthenticationSuc
 		if (isTemporaryUser(jdonOAuth2User)) {
 			String query = createUserInfoString(jdonOAuth2User.getEmail(), jdonOAuth2User.getSocialProviderType());
 			String encodedQueryString = createEncryptQueryString(query);
-			response.sendRedirect(joinToString(loginRedirectUrlProperties.getSuccess().getGuest(), encodedQueryString));
+			response.sendRedirect(joinToString(loginRedirectUrlProperties.getSuccessGuest(request.getHeader("Referer")),
+				encodedQueryString));
 			return;
 		}
-		response.sendRedirect(loginRedirectUrlProperties.getSuccess().getMember());
+		response.sendRedirect(loginRedirectUrlProperties.getSuccessMember(request.getHeader("Referer")));
 	}
 
 	private boolean isTemporaryUser(JdonOAuth2User jdonOAuth2User) {

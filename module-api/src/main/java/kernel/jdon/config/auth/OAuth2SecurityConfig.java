@@ -23,7 +23,7 @@ public class OAuth2SecurityConfig {
 	private final JdonOAuth2UserService jdonOAuth2UserService;
 	private final JdonOAuth2AuthenticationSuccessHandler jdonOAuth2AuthenticationSuccessHandler;
 	private final JdonAuthExceptionHandler jdonAuthExceptionHandler;
-	private final LogoutRedirectUrlProperties logoutRedirectUrlProperties;
+	private final JdonLogoutSuccessHandler jdonLogoutSuccessHandler;
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -78,9 +78,9 @@ public class OAuth2SecurityConfig {
 				.userService(jdonOAuth2UserService)));
 		http.logout(logoutConfigurer -> logoutConfigurer
 			.logoutUrl("/api/v1/logout")
-			.logoutSuccessUrl(logoutRedirectUrlProperties.getSuccess())
-			.invalidateHttpSession(true)
-			.deleteCookies("JSESSIONID"));
+			.logoutSuccessUrl("http://localhost:3000")
+			.logoutSuccessHandler(jdonLogoutSuccessHandler)
+		);
 
 		return http.build();
 	}
