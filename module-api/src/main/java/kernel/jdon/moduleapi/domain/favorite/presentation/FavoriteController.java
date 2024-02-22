@@ -26,19 +26,19 @@ public class FavoriteController {
 	private final FavoriteDtoMapper favoriteDtoMapper;
 
 	@GetMapping("/api/v1/favorites")
-	public ResponseEntity<CommonResponse<FavoriteDto.FindPageResponse>> getList(@LoginUser SessionUserInfo user,
+	public ResponseEntity<CommonResponse<FavoriteDto.FindPageResponse>> getList(@LoginUser SessionUserInfo member,
 		@PageableDefault(size = 12) Pageable pageable) {
-		final FavoriteInfo.FindPageResponse info = favoriteFacade.getList(user.getId(), pageable);
+		final FavoriteInfo.FindPageResponse info = favoriteFacade.getList(member.getId(), pageable);
 		final FavoriteDto.FindPageResponse response = favoriteDtoMapper.of(info);
 
 		return ResponseEntity.ok(CommonResponse.of(response));
 	}
 
 	@PostMapping("/api/v1/favorites")
-	public ResponseEntity<CommonResponse<FavoriteDto.UpdateResponse>> update(@LoginUser SessionUserInfo user,
+	public ResponseEntity<CommonResponse<FavoriteDto.UpdateResponse>> update(@LoginUser SessionUserInfo member,
 		@RequestBody @Valid FavoriteDto.UpdateRequest request) {
 		final FavoriteCommand.UpdateRequest command = favoriteDtoMapper.of(request);
-		final FavoriteInfo.UpdateResponse info = favoriteFacade.update(user.getId(), command);
+		final FavoriteInfo.UpdateResponse info = favoriteFacade.update(member.getId(), command);
 		final FavoriteDto.UpdateResponse response = favoriteDtoMapper.of(info);
 
 		URI uri = URI.create("/api/v1/favorites/" + response.getLectureId());
