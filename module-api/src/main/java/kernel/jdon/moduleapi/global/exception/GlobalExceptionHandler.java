@@ -1,5 +1,6 @@
 package kernel.jdon.moduleapi.global.exception;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -29,10 +30,17 @@ public class GlobalExceptionHandler {
 			.body(ErrorResponse.of(e.getStatusCode(), firstErrorMessage, request));
 	}
 
-	@ExceptionHandler({kernel.jdon.moduleapi.global.exception.AuthException.class})
+	@ExceptionHandler(AuthException.class)
 	public ResponseEntity<ErrorResponse> handleAuthenticationException(AuthException e, HttpServletRequest request) {
 		log.warn(e.getMessage(), e);
 		return ResponseEntity.status(e.getErrorCode().getHttpStatus().value())
 			.body(ErrorResponse.of(e.getErrorCode(), request));
+	}
+
+	@ExceptionHandler(Exception.class)
+	public ResponseEntity<ErrorResponse> handlerException(Exception e, HttpServletRequest request) {
+		log.warn(e.getMessage(), e);
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR.value())
+			.body(ErrorResponse.of(HttpStatus.INTERNAL_SERVER_ERROR, request));
 	}
 }

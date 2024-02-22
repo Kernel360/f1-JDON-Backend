@@ -65,10 +65,18 @@ custom-oauth2:
 redirect-url:
   login:
     success:
-      member: https://localhost:3000/oauth/login/success
-      guest: https://localhost:3000/oauth/info?
+      member: https://jdon-test.netlify.app/oauth/login/success
+      local-member: https://localhost:3000/oauth/login/success
+      guest: https://jdon-test.netlify.app/oauth/info?
+      local-guest: https://localhost:3000/oauth/info?
+    failure:
+      not-found-email: https://jdon-test.netlify.app/oauth/login/fail/not-found-email
+      local-not-found-email: https://localhost:3000/oauth/login/fail/not-found-email
+      not-match-provider: https://jdon-test.netlify.app/oauth/login/fail/not-match-provider
+      local-not-match-provider: https://localhost:3000/oauth/login/fail/not-match-provider
   logout:
-    success: https://localhost:3000
+    success: https://jdon-test.netlify.app
+    local-success: https://localhost:3000
 
 redis:
   lock:

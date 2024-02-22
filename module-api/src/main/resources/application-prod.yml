@@ -66,6 +66,9 @@ redirect-url:
     success:
       member: https://jdon.kr/oauth/login/success
       guest: https://jdon.kr/oauth/info?
+    failure:
+      not-found-email: https://jdon.kr/oauth/login/fail/not-found-email
+      not-match-provider: https://jdon.kr/oauth/login/fail/not-match-provider
   logout:
     success: https://jdon.kr
 
