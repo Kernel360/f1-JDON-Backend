@@ -7,7 +7,7 @@ import org.redisson.api.RedissonClient;
 import org.springframework.stereotype.Service;
 
 import kernel.jdon.coffeechat.dto.response.ApplyCoffeeChatResponse;
-import kernel.jdon.coffeechat.error.CoffeeChatErrorCode;
+import kernel.jdon.moduleapi.domain.coffeechat.error.CoffeeChatErrorCode;
 import kernel.jdon.moduleapi.global.config.redis.CoffeeChatLockConfig;
 import kernel.jdon.moduleapi.global.exception.ApiException;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +33,7 @@ public class CoffeeChatApplyFacade {
 			}
 
 			return coffeeChatService.apply(coffeeChatId, memberId);
-			
+
 		} catch (InterruptedException e) {
 			log.info("커피챗 신청 lock 획득 중 thread interrupted, coffeeChatId={} memberId={}", coffeeChatId, memberId);
 			throw new ApiException(CoffeeChatErrorCode.THREAD_INTERRUPTED, e);
