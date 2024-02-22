@@ -15,7 +15,7 @@ public class FavoriteFacade {
 
 	public FavoriteInfo.UpdateResponse update(final Long memberId, FavoriteCommand.UpdateRequest request) {
 		if (request.getIsFavorite()) {
-			return favoriteService.create(memberId, request);
+			return favoriteService.create(memberId, request.getLectureId());
 		}
 		favoriteService.delete(memberId, request.getLectureId());
 

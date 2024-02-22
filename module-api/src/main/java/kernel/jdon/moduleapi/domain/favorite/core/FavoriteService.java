@@ -3,7 +3,7 @@ package kernel.jdon.moduleapi.domain.favorite.core;
 import org.springframework.data.domain.Pageable;
 
 public interface FavoriteService {
-	FavoriteInfo.UpdateResponse create(Long memberId, FavoriteCommand.UpdateRequest request);
+	FavoriteInfo.UpdateResponse create(Long memberId, Long lectureId);
 
 	void delete(Long memberId, Long lectureId);
 
