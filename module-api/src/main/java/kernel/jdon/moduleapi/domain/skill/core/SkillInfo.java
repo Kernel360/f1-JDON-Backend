@@ -4,7 +4,6 @@ import java.util.List;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -12,7 +11,6 @@ import lombok.NoArgsConstructor;
 public class SkillInfo {
 
 	@Getter
-	@Builder
 	@AllArgsConstructor
 	public static class FindHotSkillListResponse {
 		private List<FindHotSkill> skillList;
@@ -26,7 +24,6 @@ public class SkillInfo {
 	}
 
 	@Getter
-	@Builder
 	@AllArgsConstructor
 	public static class FindMemberSkillListResponse {
 		private List<FindMemberSkill> skillList;
@@ -39,4 +36,49 @@ public class SkillInfo {
 		private String keyword;
 	}
 
+	@Getter
+	@AllArgsConstructor
+	public static class FindJobCategorySkillListResponse {
+		private List<FindJobCategorySkill> skillList;
+	}
+
+	@Getter
+	@AllArgsConstructor
+	public static class FindJobCategorySkill {
+		private Long skillId;
+		private String keyword;
+	}
+
+	@Getter
+	@AllArgsConstructor
+	@NoArgsConstructor
+	public static class FindDataListBySkillResponse {
+		private String keyword;
+		private List<FindLecture> lectureList;
+		private List<FindJd> jdList;
+	}
+
+	@Getter
+	@AllArgsConstructor
+	@NoArgsConstructor
+	public static class FindLecture {
+		private Long lectureId;
+		private String title;
+		private String lectureUrl;
+		private String imageUrl;
+		private String instructor;
+		private Long studentCount;
+		private Integer price;
+		private Boolean isFavorite;
+	}
+
+	@Getter
+	@AllArgsConstructor
+	@NoArgsConstructor
+	public static class FindJd {
+		private String company;
+		private String title;
+		private String imageUrl;
+		private String jdUrl;
+	}
 }

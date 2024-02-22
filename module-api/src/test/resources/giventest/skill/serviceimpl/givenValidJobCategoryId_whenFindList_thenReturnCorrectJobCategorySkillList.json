@@ -1,0 +1,20 @@
+{
+  "id": "2",
+  "name": "서버 개발자",
+  "parentId": "1",
+  "wantedCode": "000",
+  "skillList": [
+    {
+      "id": "1",
+      "keyword": "JAVA"
+    },
+    {
+      "id": "2",
+      "keyword": "기타"
+    },
+    {
+      "id": "3",
+      "keyword": "GO"
+    }
+  ]
+}

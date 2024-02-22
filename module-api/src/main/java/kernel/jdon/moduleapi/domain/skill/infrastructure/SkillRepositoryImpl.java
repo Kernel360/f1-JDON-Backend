@@ -1,11 +1,19 @@
 package kernel.jdon.moduleapi.domain.skill.infrastructure;
 
+import static kernel.jdon.favorite.domain.QFavorite.*;
+import static kernel.jdon.inflearncourse.domain.QInflearnCourse.*;
+import static kernel.jdon.inflearnjdskill.domain.QInflearnJdSkill.*;
 import static kernel.jdon.memberskill.domain.QMemberSkill.*;
 import static kernel.jdon.skill.domain.QSkill.*;
 import static kernel.jdon.skillhistory.domain.QSkillHistory.*;
+import static kernel.jdon.wantedjd.domain.QWantedJd.*;
+import static kernel.jdon.wantedjdskill.domain.QWantedJdSkill.*;
 
 import java.util.List;
 
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import lombok.RequiredArgsConstructor;
@@ -40,5 +48,68 @@ public class SkillRepositoryImpl implements SkillRepositoryCustom {
 			.on(memberSkill.skill.id.eq(skill.id))
 			.where(memberSkill.member.id.eq(memberId))
 			.fetch();
+	}
+
+	@Override
+	public List<SkillReaderInfo.FindWantedJd> findWantedJdListBySkill(final String keyword) {
+		final int wantedJdCount = 6;
+
+		return jpaQueryFactory
+			.select(new QSkillReaderInfo_FindWantedJd(wantedJd.companyName, wantedJd.title, wantedJd.imageUrl,
+				wantedJd.detailUrl))
+			.from(wantedJdSkill)
+			.innerJoin(wantedJd)
+			.on(wantedJdSkill.wantedJd.id.eq(wantedJd.id))
+			.where(
+				wantedJdSkill.skill.id.in(
+					JPAExpressions
+						.select(skill.id)
+						.from(skill)
+						.where(skill.keyword.eq(keyword))))
+			.orderBy(Expressions.numberTemplate(Double.class, "function('rand')").asc())
+			.limit(wantedJdCount)
+			.fetch();
+	}
+
+	@Override
+	public List<SkillReaderInfo.FindInflearnLecture> findInflearnLectureListBySkill(String keyword,
+		Long memberId) {
+		final int inflearnLectureCount = 3;
+
+		return jpaQueryFactory
+			.select(new QSkillReaderInfo_FindInflearnLecture(inflearnCourse.id, inflearnCourse.title,
+				inflearnCourse.lectureUrl,
+				inflearnCourse.imageUrl, inflearnCourse.instructor, inflearnCourse.studentCount, inflearnCourse.price,
+				isFavoriteLecture(memberId)
+			))
+			.from(inflearnJdSkill)
+			.innerJoin(inflearnCourse)
+			.on(inflearnJdSkill.inflearnCourse.id.eq(inflearnCourse.id))
+			.where(
+				inflearnJdSkill.skill.id.in(
+					JPAExpressions
+						.select(skill.id)
+						.from(skill)
+						.where(skill.keyword.eq(keyword))))
+			.limit(inflearnLectureCount)
+			.fetch();
+	}
+
+	private BooleanExpression isFavoriteLecture(Long memberId) {
+		return memberId == null ? Expressions.asBoolean(false) : isFavoriteLectureByMember(memberId);
+	}
+
+	private BooleanExpression isFavoriteLectureByMember(Long userId) {
+		return Expressions.cases()
+			.when(
+				JPAExpressions
+					.select(favorite)
+					.from(favorite)
+					.where(favorite.inflearnCourse.id.eq(inflearnCourse.id)
+						.and(favorite.member.id.eq(userId)))
+					.exists()
+			)
+			.then(true)
+			.otherwise(false);
 	}
 }

@@ -17,7 +17,6 @@ import jakarta.persistence.UniqueConstraint;
 import kernel.jdon.jobcategory.domain.JobCategory;
 import kernel.jdon.wantedjdskill.domain.WantedJdSkill;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -25,9 +24,9 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "skill",
-	   uniqueConstraints = {
-			@UniqueConstraint(columnNames = {"job_category_id", "keyword"})
-})
+	uniqueConstraints = {
+		@UniqueConstraint(columnNames = {"job_category_id", "keyword"})
+	})
 public class Skill {
 
 	@Id
@@ -43,12 +42,5 @@ public class Skill {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "job_category_id", columnDefinition = "BIGINT")
 	private JobCategory jobCategory;
-
-	@Builder
-	public Skill(Long id, String keyword, JobCategory jobCategory) {
-		this.id = id;
-		this.keyword = keyword;
-		this.jobCategory = jobCategory;
-	}
 
 }

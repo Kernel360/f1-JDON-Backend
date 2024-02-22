@@ -1,0 +1,73 @@
+{
+  "keyword": "AWS",
+  "lectureList": [
+    {
+      "lectureId": 32,
+      "title": "AWS Certified Solutions Architect - Associate 자격증 준비하기",
+      "lectureUrl": "https://www.inflearn.com/courses/?s=AWS&order=popular&page=1&",
+      "imageUrl": "https://cdn.inflearn.com/public/courses/329086/cover/4faa8a80-0c3c-401e-944e-f21581807a4f/329086-eng.png",
+      "instructor": "코드바나나",
+      "studentCount": 1700,
+      "price": 148500,
+      "isFavorite": false
+    },
+    {
+      "lectureId": 33,
+      "title": "비전공자도 이해할 수 있는 AWS 입문/실전",
+      "lectureUrl": "https://www.inflearn.com/courses/?s=AWS&order=popular&page=1&",
+      "imageUrl": "https://cdn.inflearn.com/public/courses/332108/cover/1521cea7-83db-4769-a619-e7e1082b6331/inflearn-thumbnail.png",
+      "instructor": "JSCODE 박재성",
+      "studentCount": 200,
+      "price": 58300,
+      "isFavorite": true
+    },
+    {
+      "lectureId": 34,
+      "title": "AWS Certified Cloud Practitioner 자격증 준비하기",
+      "lectureUrl": "https://www.inflearn.com/courses/?s=AWS&order=popular&page=1&",
+      "imageUrl": "https://cdn.inflearn.com/public/courses/328898/cover/856ad748-de37-4076-9b46-c19efb982cf7/328898-eng.png",
+      "instructor": "코드바나나",
+      "studentCount": 600,
+      "price": 88000,
+      "isFavorite": false
+    }
+  ],
+  "jdList": [
+    {
+      "company": "한국부동산데이터연구소",
+      "title": "[내집스캔] 5년 이상 개발 리드 팀원",
+      "imageUrl": "https://static.wanted.co.kr/images/company/42012/6xqc48au24tw2qbm__1080_790.jpg",
+      "jdUrl": "https://www.wanted.co.kr/wd/190361"
+    },
+    {
+      "company": "법틀",
+      "title": "SW 웹(Back-End / Front) PL개발자 (5년 이상 ~ 7년 이하)",
+      "imageUrl": "https://static.wanted.co.kr/images/company/1909/9185_2_0.805dfdb5__1080_790.jpg",
+      "jdUrl": "https://www.wanted.co.kr/wd/166030"
+    },
+    {
+      "company": "아인잡(AINJOB)",
+      "title": "[자사 웹/앱 플랫폼] 백엔드 개발자 (자바, springboot 5년 이상)",
+      "imageUrl": "https://static.wanted.co.kr/images/company/20542/nkfoqsjo4zy3i6wy__1080_790.jpg",
+      "jdUrl": "https://www.wanted.co.kr/wd/185153"
+    },
+    {
+      "company": "펑타이그레이터차이나(피티코리아)",
+      "title": "Back-end 개발자",
+      "imageUrl": "https://static.wanted.co.kr/images/company/1100/zeftmrmizcemvzb6__1080_790.jpg",
+      "jdUrl": "https://www.wanted.co.kr/wd/202711"
+    },
+    {
+      "company": "디앤에스에버(DNS Ever)",
+      "title": "Backend 개발자(3년 이상)",
+      "imageUrl": "https://static.wanted.co.kr/images/company/8088/erkcqhx2fvcamqtw__1080_790.jpg",
+      "jdUrl": "https://www.wanted.co.kr/wd/201627"
+    },
+    {
+      "company": "쿠팡",
+      "title": "Staff, Back-end Engineer(Taiwan Engineering)",
+      "imageUrl": "https://static.wanted.co.kr/images/company/53/zkuycl59i67pmnhl__1080_790.jpg",
+      "jdUrl": "https://www.wanted.co.kr/wd/187474"
+    }
+  ]
+}
