@@ -14,23 +14,23 @@ import org.springframework.transaction.annotation.Transactional;
 import kernel.jdon.auth.dto.object.RegisterMemberDto;
 import kernel.jdon.auth.dto.request.RegisterRequest;
 import kernel.jdon.auth.encrypt.AesUtil;
-import kernel.jdon.jobcategory.error.JobCategoryErrorCode;
-import kernel.jdon.member.error.MemberErrorCode;
-import kernel.jdon.skill.error.SkillErrorCode;
-import kernel.jdon.moduleapi.global.exception.ApiException;
 import kernel.jdon.jobcategory.domain.JobCategory;
+import kernel.jdon.jobcategory.error.JobCategoryErrorCode;
 import kernel.jdon.jobcategory.repository.JobCategoryRepository;
 import kernel.jdon.member.domain.Member;
 import kernel.jdon.member.domain.MemberRole;
 import kernel.jdon.member.domain.SocialProviderType;
 import kernel.jdon.member.dto.request.UpdateMemberRequest;
-import kernel.jdon.member.dto.response.UpdateMemberResponse;
 import kernel.jdon.member.dto.response.FindMemberResponse;
+import kernel.jdon.member.dto.response.UpdateMemberResponse;
+import kernel.jdon.member.error.MemberErrorCode;
 import kernel.jdon.member.repository.MemberRepository;
 import kernel.jdon.memberskill.domain.MemberSkill;
 import kernel.jdon.memberskill.repository.MemberSkillRepository;
+import kernel.jdon.moduleapi.domain.skill.error.SkillErrorCode;
+import kernel.jdon.moduleapi.domain.skill.infrastructure.SkillRepository;
+import kernel.jdon.moduleapi.global.exception.ApiException;
 import kernel.jdon.skill.domain.Skill;
-import kernel.jdon.skill.repository.SkillRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -94,7 +94,7 @@ public class MemberService {
 	private List<Skill> findSkillList(List<Long> skillIdList) {
 		return skillIdList.stream()
 			.map(skillId -> skillRepository.findById(skillId)
-				.orElseThrow(() -> new ApiException(SkillErrorCode.NOT_FOUND_SKILL))).toList();
+				.orElseThrow(SkillErrorCode.NOT_FOUND_SKILL::throwException)).toList();
 	}
 
 	private List<MemberSkill> getMemberSkillList(List<Skill> skillList, Member member) {
@@ -111,7 +111,7 @@ public class MemberService {
 			.orElseThrow(() -> new ApiException(JobCategoryErrorCode.NOT_FOUND_JOB_CATEGORY));
 	}
 
-	private String getEmailAndProviderString (String hmac, String encrypted) {
+	private String getEmailAndProviderString(String hmac, String encrypted) {
 		String emailAndProvider = null;
 		try {
 			if (isValidHMAC(hmac, encrypted)) {
