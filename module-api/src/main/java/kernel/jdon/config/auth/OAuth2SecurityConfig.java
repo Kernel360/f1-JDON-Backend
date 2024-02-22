@@ -78,7 +78,6 @@ public class OAuth2SecurityConfig {
 				.userService(jdonOAuth2UserService)));
 		http.logout(logoutConfigurer -> logoutConfigurer
 			.logoutUrl("/api/v1/logout")
-			.logoutSuccessUrl("http://localhost:3000")
 			.logoutSuccessHandler(jdonLogoutSuccessHandler)
 		);
 
