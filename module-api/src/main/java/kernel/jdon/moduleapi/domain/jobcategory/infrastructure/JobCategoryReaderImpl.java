@@ -1,5 +1,7 @@
 package kernel.jdon.moduleapi.domain.jobcategory.infrastructure;
 
+import java.util.List;
+
 import org.springframework.stereotype.Component;
 
 import kernel.jdon.jobcategory.domain.JobCategory;
@@ -16,5 +18,15 @@ public class JobCategoryReaderImpl implements JobCategoryReader {
 	public JobCategory findById(final Long jobCategoryId) {
 		return jobCategoryRepository.findById(jobCategoryId)
 			.orElseThrow(JobCategoryErrorCode.NOT_FOUND_JOB_CATEGORY::throwException);
+	}
+
+	@Override
+	public List<JobCategory> findByParentIdIsNull() {
+		return jobCategoryRepository.findByParentIdIsNull();
+	}
+
+	@Override
+	public List<JobCategory> findByParentId(final Long parentId) {
+		return jobCategoryRepository.findByParentId(parentId);
 	}
 }
