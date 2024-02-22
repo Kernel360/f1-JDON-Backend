@@ -6,8 +6,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import kernel.jdon.moduledomain.faq.domain.Faq;
-import kernel.jdon.moduleapi.domain.faq.application.FaqReader;
-import kernel.jdon.moduleapi.domain.faq.application.FaqStore;
 import lombok.RequiredArgsConstructor;
 
 @Service
