@@ -27,7 +27,6 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Slf4j
 public class AuthService {
-
 	private final MemberRepository memberRepository;
 	private final WithdrawProperties withdrawProperties;
 
