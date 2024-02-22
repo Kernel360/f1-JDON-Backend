@@ -2,8 +2,8 @@ package kernel.jdon.moduleapi.domain.faq.infrastructure;
 
 import org.springframework.stereotype.Component;
 
+import kernel.jdon.moduleapi.domain.faq.core.FaqStore;
 import kernel.jdon.moduledomain.faq.domain.Faq;
-import kernel.jdon.moduleapi.domain.faq.application.FaqStore;
 import lombok.RequiredArgsConstructor;
 
 @Component
