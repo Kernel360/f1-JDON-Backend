@@ -5,7 +5,7 @@ import java.util.Optional;
 import kernel.jdon.coffeechat.domain.CoffeeChat;
 import kernel.jdon.coffeechat.repository.CoffeeChatDomainRepository;
 
-public interface CoffeeChatRepository extends CoffeeChatDomainRepository, CustomCoffeeChatRepository {
+public interface CoffeeChatRepository extends CoffeeChatDomainRepository {
 
 	Optional<CoffeeChat> findByIdAndIsDeletedFalse(Long id);
 }

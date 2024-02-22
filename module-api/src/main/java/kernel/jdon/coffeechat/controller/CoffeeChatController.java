@@ -29,10 +29,11 @@ import kernel.jdon.coffeechat.service.CoffeeChatService;
 import kernel.jdon.modulecommon.dto.response.CommonResponse;
 import kernel.jdon.moduleapi.global.annotation.LoginUser;
 import kernel.jdon.moduleapi.global.page.CustomPageResponse;
+import kernel.jdon.modulecommon.dto.response.CommonResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-@RestController
+// @RestController
 @RequiredArgsConstructor
 @Slf4j
 public class CoffeeChatController {
@@ -40,7 +41,7 @@ public class CoffeeChatController {
 	private final CoffeeChatService coffeeChatService;
 	private final CoffeeChatApplyFacade coffeeChatApplyFacade;
 
-	@GetMapping("/api/v1/coffeechats/{id}")
+	// @GetMapping("/api/v1/coffeechats/{id}")
 	public ResponseEntity<CommonResponse> get(
 		@PathVariable(name = "id") Long coffeeChatId,
 		@LoginUser SessionUserInfo sessionUser) {
@@ -53,7 +54,6 @@ public class CoffeeChatController {
 	public ResponseEntity<CommonResponse> save(
 		@RequestBody CreateCoffeeChatRequest request,
 		@LoginUser SessionUserInfo sessionUser) {
-
 		log.info("request: {}", request.toString());
 		log.info("sessionUser: {}", sessionUser.getId());
 		CreateCoffeeChatResponse response = coffeeChatService.create(request, sessionUser.getId());
