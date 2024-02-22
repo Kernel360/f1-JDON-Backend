@@ -15,7 +15,6 @@ import kernel.jdon.moduleapi.domain.inflearncourse.error.InflearncourseErrorCode
 import kernel.jdon.moduleapi.domain.inflearncourse.infrastructure.InflearnCourseRepository;
 import kernel.jdon.moduleapi.domain.member.error.MemberErrorCode;
 import kernel.jdon.moduleapi.domain.member.infrastructure.MemberRepository;
-import kernel.jdon.moduleapi.global.exception.ApiException;
 import lombok.RequiredArgsConstructor;
 
 @Component
@@ -32,15 +31,17 @@ public class FavoriteStoreImpl implements FavoriteStore {
 		if (command.getIsFavorite()) {
 			return create(memberId, command);
 		}
+
 		return delete(memberId, command);
 	}
 
 	private FavoriteInfo.UpdateResponse create(Long memberId, @Valid FavoriteCommand.UpdateRequest command) {
 		Member findMember = memberRepository.findById(memberId)
-			.orElseThrow(() -> new ApiException(MemberErrorCode.NOT_FOUND_MEMBER));
+			.orElseThrow(MemberErrorCode.NOT_FOUND_MEMBER::throwException);
 		InflearnCourse findInflearnCourse = inflearnCourseRepository.findById(
 				command.getLectureId())
-			.orElseThrow(() -> new ApiException(InflearncourseErrorCode.NOT_FOUND_INFLEARN_COURSE));
+			.orElseThrow(InflearncourseErrorCode.NOT_FOUND_INFLEARN_COURSE::throwException);
+
 		return favoriteRepository.findFavoriteByMemberIdAndInflearnCourseId(memberId, command.getLectureId())
 			.map(favorite -> new FavoriteInfo.UpdateResponse(favorite.getId()))
 			.orElseGet(() -> createNewFavorite(findMember, findInflearnCourse));
@@ -58,9 +59,9 @@ public class FavoriteStoreImpl implements FavoriteStore {
 				command.getLectureId())
 			.map(favoriteResponse -> {
 				return favoriteRepository.findById(favoriteResponse.getId())
-					.orElseThrow(() -> new ApiException(FavoriteErrorCode.NOT_FOUND_FAVORITE));
+					.orElseThrow(FavoriteErrorCode.NOT_FOUND_FAVORITE::throwException);
 			})
-			.orElseThrow(() -> new ApiException(FavoriteErrorCode.NOT_FOUND_FAVORITE));
+			.orElseThrow(FavoriteErrorCode.NOT_FOUND_FAVORITE::throwException);
 
 		favoriteRepository.delete(favorite);
 
