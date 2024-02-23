@@ -24,4 +24,6 @@ public interface CoffeeChatService {
     CustomPageResponse getGuestCoffeeChatList(Long memberId, Pageable pageable);
 
     CustomPageResponse getHostCoffeeChatList(Long memberId, Pageable pageable);
+
+    Long applyCoffeeChat(Long coffeeChatId, Long memberId);
 }
