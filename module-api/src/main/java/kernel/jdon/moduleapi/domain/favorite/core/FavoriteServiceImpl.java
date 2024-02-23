@@ -28,8 +28,9 @@ public class FavoriteServiceImpl implements FavoriteService {
 	public FavoriteInfo.UpdateResponse save(Long memberId, Long lectureId) {
 		Member findMember = memberFavoriteReader.findById(memberId);
 		InflearnCourse findInflearnCourse = inflearnFavoriteReader.findById(lectureId);
+		Favorite saveFavorite = favoriteStore.save(findMember, findInflearnCourse);
 
-		return favoriteStore.save(findMember, findInflearnCourse);
+		return new FavoriteInfo.UpdateResponse(saveFavorite.getId());
 	}
 
 	@Override
@@ -38,7 +39,9 @@ public class FavoriteServiceImpl implements FavoriteService {
 		if (!memberExists) {
 			throw new ApiException(MemberErrorCode.NOT_FOUND_MEMBER);
 		}
-		return favoriteStore.delete(memberId, lectureId);
+		Favorite deleteFavorite = favoriteStore.delete(memberId, lectureId);
+
+		return new FavoriteInfo.UpdateResponse(deleteFavorite.getId());
 	}
 
 	@Override
