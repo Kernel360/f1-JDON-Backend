@@ -1,11 +1,13 @@
 package kernel.jdon.moduleapi.domain.coffeechat.core;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import kernel.jdon.moduleapi.domain.coffeechat.infrastructure.CoffeeChatReaderInfo;
+import kernel.jdon.moduleapi.global.page.CustomPageInfo;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -35,8 +37,19 @@ public class CoffeeChatInfo {
 	}
 
 	@Getter
-	@Builder
 	public static class FindCoffeeChatListResponse {
+		private List<FindCoffeeChatInfo> content;
+		private CustomPageInfo pageInfo;
+
+		public FindCoffeeChatListResponse(List<FindCoffeeChatInfo> content, CustomPageInfo pageInfo) {
+			this.content = content;
+			this.pageInfo = pageInfo;
+		}
+	}
+
+	@Getter
+	@Builder
+	public static class FindCoffeeChatInfo {
 		private Long coffeeChatId;
 		private String nickname;
 		private String job;
@@ -51,8 +64,8 @@ public class CoffeeChatInfo {
 		private Long totalRecruitCount;
 		private Long currentRecruitCount;
 
-		public static FindCoffeeChatListResponse of(CoffeeChatReaderInfo.FindCoffeeChatListResponse readerInfo) {
-			return FindCoffeeChatListResponse.builder()
+		public static FindCoffeeChatInfo of(CoffeeChatReaderInfo.FindCoffeeChatListResponse readerInfo) {
+			return FindCoffeeChatInfo.builder()
 				.coffeeChatId(readerInfo.getCoffeeChatId())
 				.nickname(readerInfo.getNickname())
 				.job(readerInfo.getJob())

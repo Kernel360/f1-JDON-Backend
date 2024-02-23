@@ -1,12 +1,10 @@
 package kernel.jdon.moduleapi.domain.coffeechat.core;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-
 import kernel.jdon.coffeechat.domain.CoffeeChat;
+import kernel.jdon.moduleapi.global.page.PageInfoRequest;
 
 public interface CoffeeChatReader {
-	Page<CoffeeChatInfo.FindCoffeeChatListResponse> findCoffeeChatList(Pageable pageable,
+	CoffeeChatInfo.FindCoffeeChatListResponse findCoffeeChatList(PageInfoRequest pageInfoRequest,
 		CoffeeChatCommand.FindCoffeeChatListRequest command);
 
 	CoffeeChat findExistCoffeeChat(Long coffeeChatId);

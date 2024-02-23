@@ -16,4 +16,6 @@ public interface CoffeeChatDtoMapper {
 	CoffeeChatDto.FindResponse of(CoffeeChatInfo.FindResponse info);
 
 	CoffeeChatCommand.FindCoffeeChatListRequest of(CoffeeChatCondition request);
+
+	CoffeeChatDto.FindCoffeeChatListResponse of(CoffeeChatInfo.FindCoffeeChatListResponse info);
 }
