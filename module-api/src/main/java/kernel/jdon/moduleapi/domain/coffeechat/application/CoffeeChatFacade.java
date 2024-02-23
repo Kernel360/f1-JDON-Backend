@@ -1,5 +1,9 @@
 package kernel.jdon.moduleapi.domain.coffeechat.application;
 
+import java.util.concurrent.TimeUnit;
+
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -8,6 +12,9 @@ import kernel.jdon.moduleapi.domain.coffeechat.core.CoffeeChatCommand;
 import kernel.jdon.moduleapi.domain.coffeechat.core.CoffeeChatInfo;
 import kernel.jdon.moduleapi.domain.coffeechat.core.CoffeeChatService;
 import kernel.jdon.moduleapi.global.page.PageInfoRequest;
+import kernel.jdon.moduleapi.domain.coffeechat.error.CoffeeChatErrorCode;
+import kernel.jdon.moduleapi.global.config.redis.CoffeeChatLockConfig;
+import kernel.jdon.moduleapi.global.exception.ApiException;
 import kernel.jdon.moduleapi.global.page.CustomPageResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +25,8 @@ import lombok.extern.slf4j.Slf4j;
 public class CoffeeChatFacade {
 
     private final CoffeeChatService coffeeChatService;
+    private final RedissonClient redissonClient;
+    private final CoffeeChatLockConfig lockConfig;
 
 	public CoffeeChatInfo.FindCoffeeChatListResponse getCoffeeChatList(
 		final PageInfoRequest pageInfoRequest,
@@ -51,5 +60,25 @@ public class CoffeeChatFacade {
 
     public CustomPageResponse<CoffeeChatInfo.FindListResponse> getHostCoffeeChatList(Long memberId, Pageable pageable) {
         return coffeeChatService.getHostCoffeeChatList(memberId, pageable);
+    }
+
+    public Long applyCoffeeChat(Long coffeeChatId, Long memberId) {
+        RLock lock = redissonClient.getLock(String.format("apply:coffeeChat:%d", coffeeChatId));
+        try {
+            boolean available = lock.tryLock(lockConfig.getWaitTime(), lockConfig.getLeaseTime(),
+                TimeUnit.SECONDS);
+            if (!available) {
+                log.info("커피챗 신청 중 lock 획득 실패, coffeeChatId={} memberId={}", coffeeChatId, memberId);
+                throw new ApiException(CoffeeChatErrorCode.LOCK_ACQUISITION_FAILURE);
+            }
+
+            return coffeeChatService.applyCoffeeChat(coffeeChatId, memberId);
+
+        } catch (InterruptedException e) {
+            log.info("커피챗 신청 lock 획득 중 thread interrupted, coffeeChatId={} memberId={}", coffeeChatId, memberId);
+            throw new ApiException(CoffeeChatErrorCode.THREAD_INTERRUPTED);
+        } finally {
+            lock.unlock();
+        }
     }
 }
