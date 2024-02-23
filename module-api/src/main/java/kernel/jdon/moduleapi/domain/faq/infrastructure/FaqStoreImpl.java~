@@ -1,0 +1,200 @@
+@Component
+@RequiredArgsConstructor
+public class FavoriteStoreImpl implements FavoriteStore {
+    private final FavoriteRepository favoriteRepository;
+    private final MemberFavoriteReader memberFavoriteReader;
+    private final InflearnFavoriteReader inflearnFavoriteReader;
+
+    @Transactional
+    @Override
+    public FavoriteInfo.UpdateResponse create(Long memberId, @Valid FavoriteCommand.UpdateRequest command) {
+        Member findMember = memberFavoriteReader.findById(memberId)
+            .orElseThrow(MemberErrorCode.NOT_FOUND_MEMBER::throwException);
+        InflearnCourse findInflearnCourse = inflearnFavoriteReader.findById(command.getLectureId())
+            .orElseThrow(InflearncourseErrorCode.NOT_FOUND_INFLEARN_COURSE::throwException);
+
+        return favoriteRepository.findFavoriteByMemberIdAndInflearnCourseId(memberId, command.getLectureId())
+            .map(favorite -> new FavoriteInfo.UpdateResponse(favorite.getId()))
+            .orElseGet(() -> createNewFavorite(findMember, findInflearnCourse));
+    }
+}
+
+
+/////
+@Service
+@RequiredArgsConstructor
+public class FavoriteServiceImpl implements FavoriteService {
+    private final FavoriteReader favoriteReader;
+    private final FavoriteStore favoriteStore;
+    private final MemberReader memberReader; // 추가
+    private final InflearnCourseReader inflearnCourseReader; // 추가
+
+    @Override
+    public FavoriteInfo.UpdateResponse create(Long memberId, FavoriteCommand.UpdateRequest command) {
+        // Member와 InflearnCourse 조회 로직을 Service 레벨로 이동
+        Member member = memberReader.findById(memberId)
+            .orElseThrow(() -> new CustomException("Member not found"));
+        InflearnCourse course = inflearnCourseReader.findById(command.getLectureId())
+            .orElseThrow(() -> new CustomException("Course not found"));
+        
+        return favoriteStore.create(member, course, command);
+    }
+
+    // delete 메서드 및 getList 메서드는 생략
+}
+
+
+/////////
+package kernel.jdon.moduleapi.domain.favorite.infrastructure.inflearnFavorite;
+
+import org.springframework.stereotype.Component;
+
+import kernel.jdon.inflearncourse.domain.InflearnCourse;
+import kernel.jdon.moduleapi.domain.favorite.core.inflearnFavorite.InflearnFavoriteReader;
+import kernel.jdon.moduleapi.domain.inflearncourse.error.InflearncourseErrorCode;
+import kernel.jdon.moduleapi.domain.inflearncourse.infrastructure.InflearnCourseRepository;
+import kernel.jdon.moduleapi.global.exception.ApiException;
+import lombok.RequiredArgsConstructor;
+
+@Component
+@RequiredArgsConstructor
+public class InflearnFavoriteReaderImpl implements InflearnFavoriteReader {
+
+    private final InflearnCourseRepository inflearnCourseRepository;
+
+    @Override
+    public InflearnCourse findById(Long lectureId) {
+        return inflearnCourseRepository.findById(lectureId).orElseThrow(() -> 
+            new ApiException(InflearncourseErrorCode.NOT_FOUND_INFLEARN_COURSE));
+    }
+}
+///////
+@Component
+@Transactional
+@RequiredArgsConstructor
+public class FavoriteStoreImpl implements FavoriteStore {
+    private final FavoriteRepository favoriteRepository;
+
+    @Override
+    public Favorite save(Favorite favorite) {
+        return favoriteRepository.save(favorite);
+    }
+
+    @Override
+    public void delete(Long favoriteId) {
+        favoriteRepository.deleteById(favoriteId);
+    }
+}
+
+/////////
+@Service
+@RequiredArgsConstructor
+public class FavoriteServiceImpl implements FavoriteService {
+    private final FavoriteStore favoriteStore;
+    private final MemberFavoriteReader memberFavoriteReader;
+    private final InflearnFavoriteReader inflearnFavoriteReader;
+
+    @Override
+    public FavoriteInfo.UpdateResponse create(Long memberId, Long lectureId) {
+        Member member = memberFavoriteReader.findById(memberId)
+            .orElseThrow(MemberErrorCode.NOT_FOUND_MEMBER::throwException);
+        InflearnCourse inflearnCourse = inflearnFavoriteReader.findById(lectureId)
+            .orElseThrow(InflearncourseErrorCode.NOT_FOUND_INFLEARN_COURSE::throwException);
+
+        Favorite favorite = new Favorite(member, inflearnCourse);
+        Favorite savedFavorite = favoriteStore.save(favorite);
+        return new FavoriteInfo.UpdateResponse(savedFavorite.getId());
+    }
+
+    @Override
+    public void delete(Long memberId, Long lectureId) {
+        boolean memberExists = memberFavoriteReader.existsById(memberId);
+        if (!memberExists) {
+            throw new ApiException(MemberErrorCode.NOT_FOUND_MEMBER);
+        }
+        Favorite favorite = favoriteStore.findByMemberIdAndLectureId(memberId, lectureId)
+            .orElseThrow(FavoriteErrorCode.NOT_FOUND_FAVORITE::throwException);
+        favoriteStore.delete(favorite.getId());
+    }
+}
+
+////
+@Transactional
+	@Override
+	public Favorite save(Member member, InflearnCourse inflearnCourse) {
+		return favoriteRepository.findFavoriteByMemberIdAndInflearnCourseId(member.getId(), inflearnCourse.getId())
+			.map(favorite -> new FavoriteInfo.UpdateResponse(favorite.getId()))
+			.orElseGet(() -> createNewFavorite(member, inflearnCourse));
+	}
+
+
+
+
+
+
+
+
+
+
+//////////////
+    @Component
+@Transactional
+@RequiredArgsConstructor
+public class FavoriteStoreImpl implements FavoriteStore {
+    private final FavoriteRepository favoriteRepository;
+
+    @Override
+    public Favorite save(Favorite favorite) {
+        return favoriteRepository.save(favorite);
+    }
+
+    @Override
+    public void delete(Favorite favorite) {
+        favoriteRepository.delete(favorite);
+    }
+}
+///////////////////
+@Service
+@RequiredArgsConstructor
+public class FavoriteServiceImpl implements FavoriteService {
+    private final FavoriteReader favoriteReader;
+    private final FavoriteStore favoriteStore;
+    private final MemberFavoriteReader memberFavoriteReader;
+    private final InflearnFavoriteReader inflearnFavoriteReader;
+    private final FavoriteDtoMapper favoriteDtoMapper;
+
+    @Override
+    public FavoriteInfo.UpdateResponse save(Long memberId, Long lectureId) {
+        // 멤버와 강의 존재 여부 확인
+        Member member = memberFavoriteReader.findById(memberId)
+            .orElseThrow(() -> new ApiException(MemberErrorCode.NOT_FOUND_MEMBER));
+        InflearnCourse inflearnCourse = inflearnFavoriteReader.findById(lectureId)
+            .orElseThrow(() -> new ApiException(InflearncourseErrorCode.NOT_FOUND_INFLEARN_COURSE));
+
+        // Favorite 생성 및 저장
+        Favorite favorite = new Favorite(member, inflearnCourse);
+        Favorite savedFavorite = favoriteStore.save(favorite);
+
+        return new FavoriteInfo.UpdateResponse(savedFavorite.getId());
+    }
+
+    @Override
+    public void delete(Long memberId, Long lectureId) {
+        // 멤버 존재 여부 확인
+        memberFavoriteReader.existsById(memberId)
+            .orElseThrow(() -> new ApiException(MemberErrorCode.NOT_FOUND_MEMBER));
+
+        // Favorite 찾기 및 삭제
+        Favorite favorite = favoriteReader.findByMemberIdAndLectureId(memberId, lectureId)
+            .orElseThrow(() -> new ApiException(FavoriteErrorCode.NOT_FOUND_FAVORITE));
+        favoriteStore.delete(favorite);
+    }
+
+    @Override
+    public FavoriteInfo.FindPageResponse getList(Long memberId, Pageable pageable) {
+        Page<Favorite> favoritePage = favoriteReader.findList(memberId, pageable);
+        Page<FavoriteInfo.FindResponse> infoPage = favoritePage.map(favoriteDtoMapper::toFindResponse);
+
+        return new FavoriteInfo.FindPageResponse(CustomPageResponse.of(infoPage));
+    }
+}

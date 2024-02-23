@@ -29,10 +29,10 @@ public class FavoriteServiceImpl implements FavoriteService {
 	public FavoriteInfo.UpdateResponse save(Long memberId, Long lectureId) {
 		Member findMember = memberFavoriteReader.findById(memberId);
 		InflearnCourse findInflearnCourse = inflearnFavoriteReader.findById(lectureId);
-		Favorite favorite = favoriteReader.findFavoriteByMemberIdAndInflearnCourseId(findMember.getId(),
+		Favorite findFavorite = favoriteReader.findFavoriteByMemberIdAndInflearnCourseId(findMember.getId(),
 				findInflearnCourse.getId())
 			.orElseGet(() -> saveNewFavorite(findMember, findInflearnCourse));
-		Favorite saveFavorite = favoriteStore.save(favorite);
+		Favorite saveFavorite = favoriteStore.save(findFavorite);
 
 		return new FavoriteInfo.UpdateResponse(saveFavorite.getId());
 	}
