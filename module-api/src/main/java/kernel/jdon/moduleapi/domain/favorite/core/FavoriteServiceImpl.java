@@ -9,7 +9,6 @@ import kernel.jdon.member.domain.Member;
 import kernel.jdon.moduleapi.domain.favorite.core.inflearnFavorite.InflearnFavoriteReader;
 import kernel.jdon.moduleapi.domain.favorite.core.memberFavorite.MemberFavoriteReader;
 import kernel.jdon.moduleapi.domain.favorite.error.FavoriteErrorCode;
-import kernel.jdon.moduleapi.domain.favorite.presentation.FavoriteDtoMapper;
 import kernel.jdon.moduleapi.domain.member.error.MemberErrorCode;
 import kernel.jdon.moduleapi.global.exception.ApiException;
 import kernel.jdon.moduleapi.global.page.CustomPageResponse;
@@ -23,7 +22,7 @@ public class FavoriteServiceImpl implements FavoriteService {
 	private final FavoriteStore favoriteStore;
 	private final MemberFavoriteReader memberFavoriteReader;
 	private final InflearnFavoriteReader inflearnFavoriteReader;
-	private final FavoriteDtoMapper favoriteDtoMapper;
+	private final FavoriteInfoMapper favoriteInfoMapper;
 
 	@Override
 	public FavoriteInfo.UpdateResponse save(Long memberId, Long lectureId) {
@@ -61,7 +60,7 @@ public class FavoriteServiceImpl implements FavoriteService {
 	@Override
 	public FavoriteInfo.FindPageResponse getList(Long memberId, Pageable pageable) {
 		Page<Favorite> favoritePage = favoriteReader.findList(memberId, pageable);
-		Page<FavoriteInfo.FindResponse> infoPage = favoritePage.map(favoriteDtoMapper::of);
+		Page<FavoriteInfo.FindResponse> infoPage = favoritePage.map(favoriteInfoMapper::of);
 
 		return new FavoriteInfo.FindPageResponse(CustomPageResponse.of(infoPage));
 	}
