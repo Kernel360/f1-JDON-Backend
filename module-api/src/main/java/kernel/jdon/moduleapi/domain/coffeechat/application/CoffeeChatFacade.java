@@ -4,7 +4,6 @@ import java.util.concurrent.TimeUnit;
 
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -53,7 +52,7 @@ public class CoffeeChatFacade {
         return coffeeChatService.deleteCoffeeChat(coffeeChatId);
     }
 
-    public CustomPageResponse<Page<CoffeeChatInfo.FindListResponse>> getGuestCoffeeChatList(Long memberId,
+    public CustomPageResponse<CoffeeChatInfo.FindListResponse> getGuestCoffeeChatList(Long memberId,
         Pageable pageable) {
         return coffeeChatService.getGuestCoffeeChatList(memberId, pageable);
     }

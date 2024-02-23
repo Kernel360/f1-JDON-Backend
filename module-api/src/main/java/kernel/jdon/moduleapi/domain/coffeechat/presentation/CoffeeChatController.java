@@ -2,7 +2,6 @@ package kernel.jdon.moduleapi.domain.coffeechat.presentation;
 
 import java.net.URI;
 
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
@@ -106,7 +105,7 @@ public class CoffeeChatController {
         @LoginUser SessionUserInfo member,
         @PageableDefault(size = 12) Pageable pageable
     ) {
-        CustomPageResponse<Page<CoffeeChatInfo.FindListResponse>> response = coffeeChatFacade.getGuestCoffeeChatList(
+        CustomPageResponse<CoffeeChatInfo.FindListResponse> response = coffeeChatFacade.getGuestCoffeeChatList(
             member.getId(), pageable);
 
         return ResponseEntity.ok().body(CommonResponse.of(response));
