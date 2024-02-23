@@ -1,16 +1,15 @@
-package kernel.jdon.moduleapi.domain.favorite.infrastructure.inflearnFavorite;
+package kernel.jdon.moduleapi.domain.inflearncourse.infrastructure;
 
 import org.springframework.stereotype.Component;
 
 import kernel.jdon.inflearncourse.domain.InflearnCourse;
-import kernel.jdon.moduleapi.domain.favorite.core.inflearnFavorite.InflearnFavoriteReader;
-import kernel.jdon.moduleapi.domain.inflearncourse.infrastructure.InflearnCourseRepository;
+import kernel.jdon.moduleapi.domain.inflearncourse.core.InflearnReader;
 import kernel.jdon.moduleapi.domain.member.error.MemberErrorCode;
 import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
-public class InflearnFavoriteReaderImpl implements InflearnFavoriteReader {
+public class InflearnReaderImpl implements InflearnReader {
 
 	private final InflearnCourseRepository inflearnCourseRepository;
 

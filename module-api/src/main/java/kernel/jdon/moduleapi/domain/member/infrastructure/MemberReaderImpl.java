@@ -1,16 +1,15 @@
-package kernel.jdon.moduleapi.domain.favorite.infrastructure.memberFavorite;
+package kernel.jdon.moduleapi.domain.member.infrastructure;
 
 import org.springframework.stereotype.Component;
 
 import kernel.jdon.member.domain.Member;
-import kernel.jdon.moduleapi.domain.favorite.core.memberFavorite.MemberFavoriteReader;
+import kernel.jdon.moduleapi.domain.member.core.MemberReader;
 import kernel.jdon.moduleapi.domain.member.error.MemberErrorCode;
-import kernel.jdon.moduleapi.domain.member.infrastructure.MemberRepository;
 import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
-public class MemberFavoriteReaderImpl implements MemberFavoriteReader {
+public class MemberReaderImpl implements MemberReader {
 
 	private final MemberRepository memberRepository;
 

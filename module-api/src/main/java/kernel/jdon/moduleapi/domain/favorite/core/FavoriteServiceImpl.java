@@ -6,9 +6,9 @@ import org.springframework.stereotype.Service;
 
 import kernel.jdon.inflearncourse.domain.InflearnCourse;
 import kernel.jdon.member.domain.Member;
-import kernel.jdon.moduleapi.domain.favorite.core.inflearnFavorite.InflearnFavoriteReader;
-import kernel.jdon.moduleapi.domain.favorite.core.memberFavorite.MemberFavoriteReader;
 import kernel.jdon.moduleapi.domain.favorite.error.FavoriteErrorCode;
+import kernel.jdon.moduleapi.domain.inflearncourse.core.InflearnReader;
+import kernel.jdon.moduleapi.domain.member.core.MemberReader;
 import kernel.jdon.moduleapi.domain.member.error.MemberErrorCode;
 import kernel.jdon.moduleapi.global.exception.ApiException;
 import kernel.jdon.moduleapi.global.page.CustomPageResponse;
@@ -20,14 +20,14 @@ import lombok.RequiredArgsConstructor;
 public class FavoriteServiceImpl implements FavoriteService {
 	private final FavoriteReader favoriteReader;
 	private final FavoriteStore favoriteStore;
-	private final MemberFavoriteReader memberFavoriteReader;
-	private final InflearnFavoriteReader inflearnFavoriteReader;
+	private final MemberReader memberReader;
+	private final InflearnReader inflearnReader;
 	private final FavoriteInfoMapper favoriteInfoMapper;
 
 	@Override
 	public FavoriteInfo.UpdateResponse save(Long memberId, Long lectureId) {
-		Member findMember = memberFavoriteReader.findById(memberId);
-		InflearnCourse findInflearnCourse = inflearnFavoriteReader.findById(lectureId);
+		Member findMember = memberReader.findById(memberId);
+		InflearnCourse findInflearnCourse = inflearnReader.findById(lectureId);
 		Favorite findFavorite = favoriteReader.findFavoriteByMemberIdAndInflearnCourseId(findMember.getId(),
 				findInflearnCourse.getId())
 			.orElseGet(() -> saveNewFavorite(findMember, findInflearnCourse));
@@ -44,7 +44,7 @@ public class FavoriteServiceImpl implements FavoriteService {
 
 	@Override
 	public FavoriteInfo.UpdateResponse delete(Long memberId, Long lectureId) {
-		boolean memberExists = memberFavoriteReader.existsById(memberId);
+		boolean memberExists = memberReader.existsById(memberId);
 		if (!memberExists) {
 			throw new ApiException(MemberErrorCode.NOT_FOUND_MEMBER);
 		}
