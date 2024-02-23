@@ -16,24 +16,9 @@ import org.springframework.stereotype.Component;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import kernel.jdon.auth.dto.JdonOAuth2User;
-import kernel.jdon.config.auth.LoginRedirectUrlProperties;
 import kernel.jdon.member.domain.MemberRole;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.stereotype.Component;
-
-import java.io.IOException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-
-import static kernel.jdon.auth.encrypt.AesUtil.encryptAESCBC;
-import static kernel.jdon.auth.encrypt.HmacUtil.generateHMAC;
-import static kernel.jdon.modulecommon.util.StringUtil.createQueryString;
-import static kernel.jdon.modulecommon.util.StringUtil.joinToString;
 
 @Component
 @RequiredArgsConstructor

@@ -14,11 +14,11 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import kernel.jdon.auth.dto.SessionUserInfo;
 import kernel.jdon.auth.error.AuthErrorCode;
-import kernel.jdon.config.auth.WithdrawProperties;
-import kernel.jdon.global.exception.ApiException;
 import kernel.jdon.member.domain.SocialProviderType;
 import kernel.jdon.member.error.MemberErrorCode;
 import kernel.jdon.member.repository.MemberRepository;
+import kernel.jdon.moduleapi.global.config.auth.WithdrawProperties;
+import kernel.jdon.moduleapi.global.exception.ApiException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

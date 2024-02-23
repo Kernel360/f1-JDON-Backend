@@ -17,11 +17,11 @@ import kernel.jdon.auth.dto.JdonOAuth2User;
 import kernel.jdon.auth.dto.SessionUserInfo;
 import kernel.jdon.auth.dto.UserInfoFromOAuth2;
 import kernel.jdon.auth.error.AuthErrorCode;
-import kernel.jdon.global.exception.AuthException;
 import kernel.jdon.member.domain.Member;
 import kernel.jdon.member.domain.MemberRole;
 import kernel.jdon.member.domain.SocialProviderType;
 import kernel.jdon.member.repository.MemberRepository;
+import kernel.jdon.moduleapi.global.exception.AuthException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

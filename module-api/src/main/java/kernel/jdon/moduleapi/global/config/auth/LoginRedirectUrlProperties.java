@@ -1,4 +1,4 @@
-package kernel.jdon.config.auth;
+package kernel.jdon.moduleapi.global.config.auth;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
