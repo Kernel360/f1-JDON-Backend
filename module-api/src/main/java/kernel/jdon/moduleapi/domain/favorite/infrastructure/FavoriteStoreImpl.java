@@ -23,8 +23,7 @@ public class FavoriteStoreImpl implements FavoriteStore {
 
 	@Transactional
 	@Override
-	public FavoriteInfo.UpdateResponse create(Member member, InflearnCourse inflearnCourse) {
-
+	public FavoriteInfo.UpdateResponse save(Member member, InflearnCourse inflearnCourse) {
 		return favoriteRepository.findFavoriteByMemberIdAndInflearnCourseId(member.getId(), inflearnCourse.getId())
 			.map(favorite -> new FavoriteInfo.UpdateResponse(favorite.getId()))
 			.orElseGet(() -> createNewFavorite(member, inflearnCourse));

@@ -34,12 +34,12 @@ class FavoriteFacadeTest {
 		FavoriteInfo.UpdateResponse expectedResponse = new FavoriteInfo.UpdateResponse(2L);
 
 		// when
-		when(favoriteService.create(memberId, request)).thenReturn(expectedResponse);
+		when(favoriteService.save(memberId, request)).thenReturn(expectedResponse);
 		FavoriteInfo.UpdateResponse actualResponse = favoriteFacade.update(memberId, request);
 
 		// then
 		assertThat(expectedResponse.getLectureId()).isEqualTo(actualResponse.getLectureId());
-		verify(favoriteService, times(1)).create(memberId, request);
+		verify(favoriteService, times(1)).save(memberId, request);
 	}
 
 	@DisplayName("유효한 요청으로 즐겨찾기 삭제하면, 삭제된 favorite id를 응답한다.")

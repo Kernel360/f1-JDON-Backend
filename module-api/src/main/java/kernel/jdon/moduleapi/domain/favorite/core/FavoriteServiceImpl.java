@@ -25,11 +25,11 @@ public class FavoriteServiceImpl implements FavoriteService {
 	private final FavoriteDtoMapper favoriteDtoMapper;
 
 	@Override
-	public FavoriteInfo.UpdateResponse create(Long memberId, Long lectureId) {
+	public FavoriteInfo.UpdateResponse save(Long memberId, Long lectureId) {
 		Member findMember = memberFavoriteReader.findById(memberId);
 		InflearnCourse findInflearnCourse = inflearnFavoriteReader.findById(lectureId);
 
-		return favoriteStore.create(findMember, findInflearnCourse);
+		return favoriteStore.save(findMember, findInflearnCourse);
 	}
 
 	@Override
