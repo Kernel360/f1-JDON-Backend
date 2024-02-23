@@ -31,7 +31,7 @@ public class FavoriteController {
 		final FavoriteInfo.FindPageResponse info = favoriteFacade.getList(member.getId(), pageable);
 		final FavoriteDto.FindPageResponse response = favoriteDtoMapper.of(info);
 
-		return ResponseEntity.ok(CommonResponse.of(response));
+		return ResponseEntity.ok(CommonResponse.of(response.getFindPage()));
 	}
 
 	@PostMapping("/api/v1/favorites")
