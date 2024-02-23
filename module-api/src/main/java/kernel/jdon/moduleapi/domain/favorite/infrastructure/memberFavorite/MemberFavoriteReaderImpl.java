@@ -16,7 +16,6 @@ public class MemberFavoriteReaderImpl implements MemberFavoriteReader {
 
 	@Override
 	public Member findById(Long memberId) {
-
 		return memberRepository.findById(memberId)
 			.orElseThrow(MemberErrorCode.NOT_FOUND_MEMBER::throwException);
 	}
