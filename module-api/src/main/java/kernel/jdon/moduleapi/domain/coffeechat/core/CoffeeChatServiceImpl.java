@@ -1,13 +1,17 @@
 package kernel.jdon.moduleapi.domain.coffeechat.core;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import kernel.jdon.coffeechat.domain.CoffeeChat;
+import kernel.jdon.coffeechatmember.domain.CoffeeChatMember;
 import kernel.jdon.member.domain.Member;
 import kernel.jdon.moduleapi.domain.coffeechat.error.CoffeeChatErrorCode;
 import kernel.jdon.moduleapi.domain.member.error.MemberErrorCode;
 import kernel.jdon.moduleapi.domain.member.infrastructure.MemberRepository;
+import kernel.jdon.moduleapi.global.page.CustomPageResponse;
 import kernel.jdon.moduleapi.global.page.PageInfoRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -98,6 +102,17 @@ public class CoffeeChatServiceImpl implements CoffeeChatService {
         coffeeChatStore.delete(findCoffeeChat.getId());
 
         return findCoffeeChat.getId();
+    }
+
+    @Override
+    public CustomPageResponse<Page<CoffeeChatInfo.FindListResponse>> getGuestCoffeeChatList(Long memberId,
+        Pageable pageable) {
+        Page<CoffeeChatInfo.FindListResponse> guestCoffeeChatPage = coffeeChatReader.findAllByMemberId(memberId,
+                pageable)
+            .map(CoffeeChatMember::getCoffeeChat)
+            .map(coffeeChatInfoMapper::listOf);
+
+        return CustomPageResponse.of(guestCoffeeChatPage);
     }
 }
 

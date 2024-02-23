@@ -1,11 +1,14 @@
 package kernel.jdon.moduleapi.domain.coffeechat.application;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import kernel.jdon.moduleapi.domain.coffeechat.core.CoffeeChatCommand;
 import kernel.jdon.moduleapi.domain.coffeechat.core.CoffeeChatInfo;
 import kernel.jdon.moduleapi.domain.coffeechat.core.CoffeeChatService;
 import kernel.jdon.moduleapi.global.page.PageInfoRequest;
+import kernel.jdon.moduleapi.global.page.CustomPageResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -39,5 +42,10 @@ public class CoffeeChatFacade {
 
     public Long deleteCoffeeChat(Long coffeeChatId) {
         return coffeeChatService.deleteCoffeeChat(coffeeChatId);
+    }
+
+    public CustomPageResponse<Page<CoffeeChatInfo.FindListResponse>> getGuestCoffeeChatList(Long memberId,
+        Pageable pageable) {
+        return coffeeChatService.getGuestCoffeeChatList(memberId, pageable);
     }
 }

@@ -1,5 +1,9 @@
 package kernel.jdon.moduleapi.domain.coffeechat.core;
 
+import org.springframework.data.domain.Pageable;
+
+import kernel.jdon.moduleapi.global.page.CustomPageResponse;
+
 import kernel.jdon.moduleapi.global.page.PageInfoRequest;
 
 public interface CoffeeChatService {
@@ -16,4 +20,6 @@ public interface CoffeeChatService {
     Long updateCoffeeChat(CoffeeChatCommand.UpdateRequest request, Long coffeeChatId);
 
     Long deleteCoffeeChat(Long coffeeChatId);
+
+    CustomPageResponse getGuestCoffeeChatList(Long memberId, Pageable pageable);
 }
