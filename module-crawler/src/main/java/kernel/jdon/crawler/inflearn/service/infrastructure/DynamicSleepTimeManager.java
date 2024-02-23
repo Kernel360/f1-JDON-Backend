@@ -2,7 +2,7 @@ package kernel.jdon.crawler.inflearn.service.infrastructure;
 
 import java.util.Random;
 
-import kernel.jdon.crawler.config.ScrapingInflearnConfig;
+import kernel.jdon.crawler.config.ScrapingInflearnProperties;
 import lombok.Getter;
 
 @Getter
@@ -14,11 +14,11 @@ public class DynamicSleepTimeManager {
 	private final int increment;
 	private final Random random = new Random();
 
-	public DynamicSleepTimeManager(ScrapingInflearnConfig scrapingInflearnConfig) {
-		this.minInitial = scrapingInflearnConfig.getSleep().getMinInitial();
-		this.maxInitial = scrapingInflearnConfig.getSleep().getMaxInitial();
-		this.max = scrapingInflearnConfig.getSleep().getMax();
-		this.increment = scrapingInflearnConfig.getSleep().getIncrement();
+	public DynamicSleepTimeManager(ScrapingInflearnProperties scrapingInflearnProperties) {
+		this.minInitial = scrapingInflearnProperties.getMinInitialSleepTime();
+		this.maxInitial = scrapingInflearnProperties.getMaxInitialSleepTime();
+		this.max = scrapingInflearnProperties.getMaxSleepTime();
+		this.increment = scrapingInflearnProperties.getSleepTimeIncrement();
 		this.dynamicSleepTime = this.minInitial;
 	}
 

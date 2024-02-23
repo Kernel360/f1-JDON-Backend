@@ -94,7 +94,7 @@ public class MemberService {
 	private List<Skill> findSkillList(List<Long> skillIdList) {
 		return skillIdList.stream()
 			.map(skillId -> skillRepository.findById(skillId)
-				.orElseThrow(SkillErrorCode.NOT_FOUND_SKILL::throwException)).toList();
+				.orElseThrow(() -> new ApiException(SkillErrorCode.NOT_FOUND_SKILL))).toList();
 	}
 
 	private List<MemberSkill> getMemberSkillList(List<Skill> skillList, Member member) {
@@ -108,7 +108,7 @@ public class MemberService {
 
 	private JobCategory findJobCategory(Long jobCategoryId) {
 		return jobCategoryRepository.findById(jobCategoryId)
-			.orElseThrow(JobCategoryErrorCode.NOT_FOUND_JOB_CATEGORY::throwException);
+			.orElseThrow(() -> new ApiException(JobCategoryErrorCode.NOT_FOUND_JOB_CATEGORY));
 	}
 
 	private String getEmailAndProviderString(String hmac, String encrypted) {

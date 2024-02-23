@@ -1,15 +1,19 @@
 package kernel.jdon.moduleapi.global.config.auth;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
 
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-@Getter
 @RequiredArgsConstructor
 @ConfigurationProperties(prefix = "redirect-url.logout")
-public class LogoutRedirectUrlConfig {
+public class LogoutRedirectUrlProperties {
 	private final String success;
+	private final String localSuccess;
 
+	public String getSuccess(String referer) {
+		if (referer.contains("localhost:3000")) {
+			return this.localSuccess;
+		}
+		return this.success;
+	}
 }

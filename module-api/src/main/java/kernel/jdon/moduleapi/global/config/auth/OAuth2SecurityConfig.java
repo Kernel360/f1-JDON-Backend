@@ -23,7 +23,7 @@ public class OAuth2SecurityConfig {
 	private final JdonOAuth2UserService jdonOAuth2UserService;
 	private final JdonOAuth2AuthenticationSuccessHandler jdonOAuth2AuthenticationSuccessHandler;
 	private final JdonAuthExceptionHandler jdonAuthExceptionHandler;
-	private final LogoutRedirectUrlConfig logoutRedirectUrlConfig;
+	private final JdonLogoutSuccessHandler jdonLogoutSuccessHandler;
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -35,6 +35,7 @@ public class OAuth2SecurityConfig {
 			"/api/v1/job-categories",
 			"/api/v1/faqs",
 			"/api/v1/skills/search",
+			"/api/v1/authenticate"
 		};
 		final String[] permitAllPOST = {
 			"/api/v1/register",
@@ -50,13 +51,14 @@ public class OAuth2SecurityConfig {
 		http.cors(corsCustomizer -> corsCustomizer.configurationSource(request -> {
 			CorsConfiguration config = new CorsConfiguration();
 			config.setAllowedOrigins(List.of("http://localhost:3000", "https://localhost:3000",
-				"https://jdon.kr", "https://jdon.netlify.app"));
+				"https://jdon.kr", "https://jdon.netlify.app", "https://jdon-test.netlify.app/"));
 			config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
 			config.setAllowedHeaders(List.of("*"));
 			config.setAllowCredentials(true);
 			config.setMaxAge(3600L);
 
-			return config;}));
+			return config;
+		}));
 		http.exceptionHandling(exceptionConfig -> exceptionConfig
 			.authenticationEntryPoint(jdonAuthExceptionHandler)
 			.accessDeniedHandler(jdonAuthExceptionHandler));
@@ -76,9 +78,8 @@ public class OAuth2SecurityConfig {
 				.userService(jdonOAuth2UserService)));
 		http.logout(logoutConfigurer -> logoutConfigurer
 			.logoutUrl("/api/v1/logout")
-			.logoutSuccessUrl(logoutRedirectUrlConfig.getSuccess())
-			.invalidateHttpSession(true)
-			.deleteCookies("JSESSIONID"));
+			.logoutSuccessHandler(jdonLogoutSuccessHandler)
+		);
 
 		return http.build();
 	}
