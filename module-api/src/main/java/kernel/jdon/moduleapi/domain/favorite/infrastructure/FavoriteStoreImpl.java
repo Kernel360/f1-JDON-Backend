@@ -16,8 +16,8 @@ import lombok.RequiredArgsConstructor;
 public class FavoriteStoreImpl implements FavoriteStore {
 	private final FavoriteRepository favoriteRepository;
 
-	@Transactional
 	@Override
+	@Transactional
 	public Favorite save(Member member, InflearnCourse inflearnCourse) {
 		return favoriteRepository.findFavoriteByMemberIdAndInflearnCourseId(member.getId(), inflearnCourse.getId())
 			.orElseGet(() -> createNewFavorite(member, inflearnCourse));
@@ -30,8 +30,8 @@ public class FavoriteStoreImpl implements FavoriteStore {
 		return savedFavorite;
 	}
 
-	@Transactional
 	@Override
+	@Transactional
 	public Favorite delete(Long memberId, Long lectureId) {
 		Favorite findFavorite = favoriteRepository.findFavoriteByMemberIdAndInflearnCourseId(memberId, lectureId)
 			.map(favoriteResponse -> favoriteRepository.findById(favoriteResponse.getId())
