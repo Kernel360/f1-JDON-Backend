@@ -58,7 +58,7 @@ public class CoffeeChatController {
     }
 
     @PostMapping("/api/v1/coffeechats")
-    public ResponseEntity<CommonResponse<Long>> save(
+    public ResponseEntity<CommonResponse<Long>> saveCoffeeChat(
         @RequestBody CoffeeChatDto.CreateRequest request,
         @LoginUser SessionUserInfo member
     ) {
@@ -70,7 +70,7 @@ public class CoffeeChatController {
     }
 
     @PutMapping("/api/v1/coffeechats/{id}")
-    public ResponseEntity<CommonResponse<Long>> modify(
+    public ResponseEntity<CommonResponse<Long>> modifyCoffeeChat(
         @PathVariable(name = "id") Long coffeeChatId,
         @RequestBody CoffeeChatDto.UpdateRequest request
     ) {
@@ -81,7 +81,7 @@ public class CoffeeChatController {
     }
 
     @DeleteMapping("/api/v1/coffeechats/{id}")
-    public ResponseEntity<CommonResponse<Long>> remove(@PathVariable(name = "id") Long coffeeChatId) {
+    public ResponseEntity<CommonResponse<Long>> removeCoffeeChat(@PathVariable(name = "id") Long coffeeChatId) {
         Long deletedCoffeeChatId = coffeeChatFacade.deleteCoffeeChat(coffeeChatId);
 
         return ResponseEntity.ok().body(CommonResponse.of(deletedCoffeeChatId));
