@@ -46,7 +46,7 @@ public class CoffeeChatDto {
 	public static class FindCoffeeChat {
 		private Long coffeeChatId;
 		private String nickname;
-		private String job;
+		private String hostJobCategoryName;
 		private String title;
 		private String activeStatus;
 		@JsonInclude(JsonInclude.Include.NON_NULL)

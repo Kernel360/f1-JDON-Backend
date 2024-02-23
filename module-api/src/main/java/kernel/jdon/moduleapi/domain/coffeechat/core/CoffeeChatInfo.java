@@ -52,7 +52,7 @@ public class CoffeeChatInfo {
 	public static class FindCoffeeChatInfo {
 		private Long coffeeChatId;
 		private String nickname;
-		private String job;
+		private String hostJobCategoryName;
 		private String title;
 		private String activeStatus;
 		@JsonInclude(JsonInclude.Include.NON_NULL)
@@ -68,8 +68,8 @@ public class CoffeeChatInfo {
 			return FindCoffeeChatInfo.builder()
 				.coffeeChatId(readerInfo.getCoffeeChatId())
 				.nickname(readerInfo.getNickname())
-				.job(readerInfo.getJob())
-				.title(readerInfo.getJob())
+				.hostJobCategoryName(readerInfo.getHostJobCategoryName())
+				.title(readerInfo.getTitle())
 				.activeStatus(readerInfo.getActiveStatus())
 				.isDeleted(readerInfo.getIsDeleted())
 				.meetDate(readerInfo.getMeetDate())
