@@ -53,9 +53,9 @@ public class FavoriteServiceImpl implements FavoriteService {
 			.map(favoriteResponse -> favoriteReader.findById(favoriteResponse.getId())
 				.orElseThrow(FavoriteErrorCode.NOT_FOUND_FAVORITE::throwException))
 			.orElseThrow(FavoriteErrorCode.NOT_FOUND_FAVORITE::throwException);
-		Favorite deleteFavorite = favoriteStore.delete(findFavorite);
+		favoriteStore.delete(findFavorite);
 
-		return new FavoriteInfo.UpdateResponse(deleteFavorite.getId());
+		return new FavoriteInfo.UpdateResponse(findFavorite.getId());
 	}
 
 	@Override

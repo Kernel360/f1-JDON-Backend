@@ -21,10 +21,8 @@ public class FavoriteStoreImpl implements FavoriteStore {
 
 	@Override
 	@Transactional
-	public Favorite delete(Favorite favorite) {
+	public void delete(Favorite favorite) {
 		favoriteRepository.delete(favorite);
-
-		return favorite;
 	}
 
 }

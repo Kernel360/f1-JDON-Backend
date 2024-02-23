@@ -5,5 +5,5 @@ import kernel.jdon.moduledomain.favorite.domain.Favorite;
 public interface FavoriteStore {
 	Favorite save(Favorite favorite);
 
-	Favorite delete(Favorite favorite);
+	void delete(Favorite favorite);
 }
