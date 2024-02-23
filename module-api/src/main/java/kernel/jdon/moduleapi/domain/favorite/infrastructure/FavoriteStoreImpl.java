@@ -41,10 +41,8 @@ public class FavoriteStoreImpl implements FavoriteStore {
 	@Override
 	public FavoriteInfo.UpdateResponse delete(Long memberId, Long lectureId) {
 		Favorite favorite = favoriteRepository.findFavoriteByMemberIdAndInflearnCourseId(memberId, lectureId)
-			.map(favoriteResponse -> {
-				return favoriteRepository.findById(favoriteResponse.getId())
-					.orElseThrow(FavoriteErrorCode.NOT_FOUND_FAVORITE::throwException);
-			})
+			.map(favoriteResponse -> favoriteRepository.findById(favoriteResponse.getId())
+				.orElseThrow(FavoriteErrorCode.NOT_FOUND_FAVORITE::throwException))
 			.orElseThrow(FavoriteErrorCode.NOT_FOUND_FAVORITE::throwException);
 
 		favoriteRepository.delete(favorite);
