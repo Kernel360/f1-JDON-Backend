@@ -61,6 +61,16 @@ public class CoffeeChatController {
         return ResponseEntity.ok(CommonResponse.of(response));
     }
 
+    @PostMapping("/api/v1/coffeechats/{id}")
+    public ResponseEntity<CommonResponse<Long>> applyCoffeeChat(
+        @PathVariable(name = "id") Long coffeeChatId,
+        @LoginUser SessionUserInfo member
+    ) {
+        Long appliedCoffeeChatId = coffeeChatFacade.applyCoffeeChat(coffeeChatId, member.getId());
+
+        return ResponseEntity.ok().body(CommonResponse.of(appliedCoffeeChatId));
+    }
+
     @PostMapping("/api/v1/coffeechats")
     public ResponseEntity<CommonResponse<Long>> saveCoffeeChat(
         @RequestBody CoffeeChatDto.CreateRequest request,
