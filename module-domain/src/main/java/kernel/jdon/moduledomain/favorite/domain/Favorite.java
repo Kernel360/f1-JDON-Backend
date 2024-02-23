@@ -1,4 +1,4 @@
-package kernel.jdon.favorite.domain;
+package kernel.jdon.moduledomain.favorite.domain;
 
 import java.time.LocalDateTime;
 
