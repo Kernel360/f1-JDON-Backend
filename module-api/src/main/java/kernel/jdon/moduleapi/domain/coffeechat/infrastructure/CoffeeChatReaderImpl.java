@@ -36,6 +36,11 @@ public class CoffeeChatReaderImpl implements CoffeeChatReader {
     public Page<CoffeeChatMember> findAllByMemberId(Long memberId, Pageable pageable) {
         return coffeeChatMemberRepository.findAllByMemberId(memberId, pageable);
     }
+
+    @Override
+    public Page<CoffeeChat> findHostCoffeeChatList(Long memberId, Pageable pageable) {
+        return coffeeChatRepository.findAllByMemberIdAndIsDeletedFalse(memberId, pageable);
+    }
 	@Override
 	public CoffeeChatInfo.FindCoffeeChatListResponse findCoffeeChatList(final PageInfoRequest pageInfoRequest,
 		final CoffeeChatCommand.FindCoffeeChatListRequest command) {

@@ -12,6 +12,8 @@ public interface CoffeeChatReader {
 
     Page<CoffeeChatMember> findAllByMemberId(Long memberId, Pageable pageable);
 
+    Page<CoffeeChat> findHostCoffeeChatList(Long memberId, Pageable pageable);
+
 	CoffeeChatInfo.FindCoffeeChatListResponse findCoffeeChatList(PageInfoRequest pageInfoRequest,
 		CoffeeChatCommand.FindCoffeeChatListRequest command);
 

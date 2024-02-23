@@ -48,4 +48,8 @@ public class CoffeeChatFacade {
         Pageable pageable) {
         return coffeeChatService.getGuestCoffeeChatList(memberId, pageable);
     }
+
+    public CustomPageResponse<CoffeeChatInfo.FindListResponse> getHostCoffeeChatList(Long memberId, Pageable pageable) {
+        return coffeeChatService.getHostCoffeeChatList(memberId, pageable);
+    }
 }

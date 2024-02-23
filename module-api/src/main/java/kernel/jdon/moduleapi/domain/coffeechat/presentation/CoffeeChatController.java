@@ -92,7 +92,7 @@ public class CoffeeChatController {
     }
 
     @GetMapping("/api/v1/coffeechats/guest")
-    public ResponseEntity<CommonResponse<CustomPageResponse<Page<CoffeeChatInfo.FindListResponse>>>> getGuestCoffeeChatList(
+    public ResponseEntity<CommonResponse<CustomPageResponse<CoffeeChatInfo.FindListResponse>>> getGuestCoffeeChatList(
         @LoginUser SessionUserInfo member,
         @PageableDefault(size = 12) Pageable pageable
     ) {
@@ -102,4 +102,14 @@ public class CoffeeChatController {
         return ResponseEntity.ok().body(CommonResponse.of(response));
     }
 
+    @GetMapping("/api/v1/coffeechats/host")
+    public ResponseEntity<CommonResponse<CustomPageResponse<CoffeeChatInfo.FindListResponse>>> getHostCoffeeChatList(
+        @LoginUser SessionUserInfo member,
+        @PageableDefault(size = 12) Pageable pageable
+    ) {
+        CustomPageResponse<CoffeeChatInfo.FindListResponse> response = coffeeChatFacade.getHostCoffeeChatList(
+            member.getId(), pageable);
+
+        return ResponseEntity.ok().body(CommonResponse.of(response));
+    }
 }

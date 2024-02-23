@@ -22,4 +22,6 @@ public interface CoffeeChatService {
     Long deleteCoffeeChat(Long coffeeChatId);
 
     CustomPageResponse getGuestCoffeeChatList(Long memberId, Pageable pageable);
+
+    CustomPageResponse getHostCoffeeChatList(Long memberId, Pageable pageable);
 }

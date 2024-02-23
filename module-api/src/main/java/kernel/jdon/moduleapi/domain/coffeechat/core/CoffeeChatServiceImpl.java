@@ -114,6 +114,16 @@ public class CoffeeChatServiceImpl implements CoffeeChatService {
 
         return CustomPageResponse.of(guestCoffeeChatPage);
     }
+
+    @Override
+    public CustomPageResponse<Page<CoffeeChatInfo.FindListResponse>> getHostCoffeeChatList(Long memberId,
+        Pageable pageable) {
+        Page<CoffeeChatInfo.FindListResponse> hostCoffeeChatPage = coffeeChatReader.findHostCoffeeChatList(memberId,
+                pageable)
+            .map(coffeeChatInfoMapper::listOf);
+
+        return CustomPageResponse.of(hostCoffeeChatPage);
+    }
 }
 
 
