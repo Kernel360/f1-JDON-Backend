@@ -1,7 +1,6 @@
-package kernel.jdon.coffeechat.repository;
+package kernel.jdon.moduleapi.domain.coffeechat.infrastructure;
 
 import static kernel.jdon.coffeechat.domain.QCoffeeChat.*;
-import static kernel.jdon.coffeechat.dto.request.CoffeeChatSortCondition.*;
 import static kernel.jdon.jobcategory.domain.QJobCategory.*;
 import static kernel.jdon.member.domain.QMember.*;
 import static org.springframework.util.StringUtils.*;
@@ -18,10 +17,8 @@ import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
-import kernel.jdon.coffeechat.dto.request.CoffeeChatCondition;
-import kernel.jdon.coffeechat.dto.request.CoffeeChatSortCondition;
-import kernel.jdon.coffeechat.dto.response.FindCoffeeChatListResponse;
-import kernel.jdon.coffeechat.dto.response.QFindCoffeeChatListResponse;
+import kernel.jdon.moduleapi.domain.coffeechat.core.CoffeeChatCommand;
+import kernel.jdon.moduleapi.domain.coffeechat.core.CoffeeChatSortCondition;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -29,10 +26,10 @@ public class CoffeeChatRepositoryImpl implements CustomCoffeeChatRepository {
 	private final JPAQueryFactory jpaQueryFactory;
 
 	@Override
-	public Page<FindCoffeeChatListResponse> findCoffeeChatList(Pageable pageable,
-		CoffeeChatCondition coffeeChatCondition) {
-		List<FindCoffeeChatListResponse> content = jpaQueryFactory
-			.select(new QFindCoffeeChatListResponse(
+	public Page<CoffeeChatReaderInfo.FindCoffeeChatListResponse> findCoffeeChatList(final Pageable pageable,
+		final CoffeeChatCommand.FindCoffeeChatListRequest command) {
+		List<CoffeeChatReaderInfo.FindCoffeeChatListResponse> content = jpaQueryFactory
+			.select(new QCoffeeChatReaderInfo_FindCoffeeChatListResponse(
 				coffeeChat.id,
 				member.nickname,
 				jobCategory.name,
@@ -49,11 +46,11 @@ public class CoffeeChatRepositoryImpl implements CustomCoffeeChatRepository {
 			.on(member.jobCategory.eq(jobCategory))
 			.where(
 				excludeDeleteCoffeeChat(),
-				coffeeChatTitleContains(coffeeChatCondition.getKeyword()),
-				memberJobCategoryEq(coffeeChatCondition.getJobCategory())
+				coffeeChatTitleContains(command.getKeyword()),
+				memberJobCategoryEq(command.getJobCategory())
 			)
 			.orderBy(
-				coffeeChatSort(coffeeChatCondition.getSort())
+				coffeeChatSort(command.getSort())
 			)
 			.offset(pageable.getOffset())
 			.limit(pageable.getPageSize())
@@ -66,21 +63,21 @@ public class CoffeeChatRepositoryImpl implements CustomCoffeeChatRepository {
 			.on(coffeeChat.member.eq(member))
 			.where(
 				excludeDeleteCoffeeChat(),
-				coffeeChatTitleContains(coffeeChatCondition.getKeyword()),
-				memberJobCategoryEq(coffeeChatCondition.getJobCategory())
+				coffeeChatTitleContains(command.getKeyword()),
+				memberJobCategoryEq(command.getJobCategory())
 			)
 			.fetchOne();
 
 		return new PageImpl<>(content, pageable, totalCount);
-
 	}
 
 	private OrderSpecifier[] coffeeChatSort(CoffeeChatSortCondition sort) {
 		ArrayList<Object> orderSpecifiers = new ArrayList<>();
-		if (VIEW_COUNT == sort)
+		if (CoffeeChatSortCondition.VIEW_COUNT == sort) {
 			orderSpecifiers.add(new OrderSpecifier<>(Order.DESC, coffeeChat.viewCount));
-		else
+		} else {
 			orderSpecifiers.add(new OrderSpecifier<>(Order.DESC, coffeeChat.createdDate));
+		}
 
 		return orderSpecifiers.toArray(new OrderSpecifier[orderSpecifiers.size()]);
 	}

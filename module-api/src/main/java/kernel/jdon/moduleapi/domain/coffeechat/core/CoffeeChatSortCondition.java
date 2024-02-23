@@ -1,4 +1,4 @@
-package kernel.jdon.coffeechat.dto.request;
+package kernel.jdon.moduleapi.domain.coffeechat.core;
 
 import static org.springframework.util.StringUtils.*;
 
@@ -15,7 +15,8 @@ public enum CoffeeChatSortCondition {
 	}
 
 	public static CoffeeChatSortCondition of(String webNaming) {
-		if (!hasText(webNaming)) return null;
+		if (!hasText(webNaming))
+			return null;
 		return Arrays.stream(values())
 			.filter(name -> name.webNaming.equals(webNaming))
 			.findFirst()
