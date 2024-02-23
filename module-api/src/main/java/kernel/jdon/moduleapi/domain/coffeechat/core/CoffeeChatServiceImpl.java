@@ -9,8 +9,10 @@ import kernel.jdon.coffeechat.domain.CoffeeChat;
 import kernel.jdon.coffeechatmember.domain.CoffeeChatMember;
 import kernel.jdon.member.domain.Member;
 import kernel.jdon.moduleapi.domain.coffeechat.error.CoffeeChatErrorCode;
+import kernel.jdon.moduleapi.domain.coffeechat.infrastructure.CoffeeChatMemberRepository;
 import kernel.jdon.moduleapi.domain.member.error.MemberErrorCode;
 import kernel.jdon.moduleapi.domain.member.infrastructure.MemberRepository;
+import kernel.jdon.moduleapi.global.exception.ApiException;
 import kernel.jdon.moduleapi.global.page.CustomPageResponse;
 import kernel.jdon.moduleapi.global.page.PageInfoRequest;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +27,8 @@ public class CoffeeChatServiceImpl implements CoffeeChatService {
     private final CoffeeChatReader coffeeChatReader;
     private final CoffeeChatInfoMapper coffeeChatInfoMapper;
     private final CoffeeChatStore coffeeChatStore;
+    //TODO: MemberReader 추상화에 의존하도록 변경?
+    private final CoffeeChatMemberRepository coffeeChatMemberRepository;
     //TODO: MemberReader 추상화에 의존하도록 변경
     private final MemberRepository memberRepository;
 
@@ -83,15 +87,15 @@ public class CoffeeChatServiceImpl implements CoffeeChatService {
 
     private void checkMeetDate(CoffeeChat findCoffeeChat, CoffeeChat updateCoffeeChat) {
         if (findCoffeeChat.isExpired()) {
-            CoffeeChatErrorCode.EXPIRED_COFFEECHAT.throwException();
+            throw CoffeeChatErrorCode.EXPIRED_COFFEECHAT.throwException();
         } else if (updateCoffeeChat.isPastDate()) {
-            CoffeeChatErrorCode.MEET_DATE_ISBEFORE_NOW.throwException();
+            throw CoffeeChatErrorCode.MEET_DATE_ISBEFORE_NOW.throwException();
         }
     }
 
     private void checkTotalRecruitCount(CoffeeChat findCoffeeChat, CoffeeChat updateCoffeeChat) {
         if (findCoffeeChat.isCurrentCountGreaterThan(updateCoffeeChat.getTotalRecruitCount())) {
-            CoffeeChatErrorCode.INVALID_TOTAL_RECRUIT_COUNT.throwException();
+            throw CoffeeChatErrorCode.INVALID_TOTAL_RECRUIT_COUNT.throwException();
         }
     }
 
@@ -123,6 +127,46 @@ public class CoffeeChatServiceImpl implements CoffeeChatService {
             .map(coffeeChatInfoMapper::listOf);
 
         return CustomPageResponse.of(hostCoffeeChatPage);
+    }
+
+    @Override
+    @Transactional
+    public Long applyCoffeeChat(Long coffeeChatId, Long memberId) {
+        CoffeeChat findCoffeeChat = findExistAndOpenCoffeeChat(coffeeChatId);
+        Member findMember = memberRepository.findById(memberId)
+            .orElseThrow(MemberErrorCode.NOT_FOUND_MEMBER::throwException);
+
+        validateApplyRequest(findMember, findCoffeeChat);
+        findCoffeeChat.addCoffeeChatMember(findMember);
+
+        return findCoffeeChat.getId();
+    }
+
+    private void validateApplyRequest(Member findMember, CoffeeChat findCoffeeChat) {
+        checkIfMemberIsHost(findMember, findCoffeeChat);
+        checkIfAlreadyJoined(findMember, findCoffeeChat);
+    }
+
+    private void checkIfAlreadyJoined(Member findMember, CoffeeChat findCoffeeChat) {
+        //TODO: MemberReader? 추상화에 의존하도록 변경
+        if (coffeeChatMemberRepository.existsByCoffeeChatIdAndMemberId(findCoffeeChat.getId(), findMember.getId())) {
+            throw new ApiException(CoffeeChatErrorCode.ALREADY_JOINED_COFFEECHAT);
+        }
+    }
+
+    private void checkIfMemberIsHost(Member findMember, CoffeeChat findCoffeeChat) {
+        if (findMember.getId().equals(findCoffeeChat.getMember().getId())) {
+            throw new ApiException(CoffeeChatErrorCode.CANNOT_JOIN_OWN_COFFEECHAT);
+        }
+    }
+
+    private CoffeeChat findExistAndOpenCoffeeChat(Long coffeeChatId) {
+        CoffeeChat findCoffeeChat = coffeeChatReader.findExistCoffeeChat(coffeeChatId);
+        if (findCoffeeChat.isNotOpen()) {
+            throw new ApiException(CoffeeChatErrorCode.NOT_OPEN_COFFEECHAT);
+        }
+
+        return findCoffeeChat;
     }
 }
 
