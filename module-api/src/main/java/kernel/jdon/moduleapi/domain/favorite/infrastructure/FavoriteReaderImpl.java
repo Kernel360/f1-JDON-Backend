@@ -1,5 +1,7 @@
 package kernel.jdon.moduleapi.domain.favorite.infrastructure;
 
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
@@ -15,9 +17,22 @@ public class FavoriteReaderImpl implements FavoriteReader {
 
 	@Override
 	public Page<Favorite> findList(Long memberId, Pageable pageable) {
-		Page<Favorite> favoritePage = favoriteRepository.findFavoriteByMemberId(memberId, pageable);
+		return favoriteRepository.findFavoriteByMemberId(memberId, pageable);
+	}
 
-		return favoritePage;
+	@Override
+	public Optional<Favorite> findFavoriteByMemberIdAndInflearnCourseId(Long memberId, Long lectureId) {
+		return favoriteRepository.findFavoriteByMemberIdAndInflearnCourseId(memberId, lectureId);
+	}
+
+	@Override
+	public Optional<Favorite> findById(Long favoriteId) {
+		return favoriteRepository.findById(favoriteId);
+	}
+
+	@Override
+	public Favorite save(Favorite favorite) {
+		return favoriteRepository.save(favorite);
 	}
 }
 

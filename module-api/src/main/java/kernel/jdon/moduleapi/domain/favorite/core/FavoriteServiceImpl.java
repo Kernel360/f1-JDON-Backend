@@ -9,6 +9,7 @@ import kernel.jdon.inflearncourse.domain.InflearnCourse;
 import kernel.jdon.member.domain.Member;
 import kernel.jdon.moduleapi.domain.favorite.core.inflearnFavorite.InflearnFavoriteReader;
 import kernel.jdon.moduleapi.domain.favorite.core.memberFavorite.MemberFavoriteReader;
+import kernel.jdon.moduleapi.domain.favorite.error.FavoriteErrorCode;
 import kernel.jdon.moduleapi.domain.favorite.presentation.FavoriteDtoMapper;
 import kernel.jdon.moduleapi.domain.member.error.MemberErrorCode;
 import kernel.jdon.moduleapi.global.exception.ApiException;
@@ -28,9 +29,18 @@ public class FavoriteServiceImpl implements FavoriteService {
 	public FavoriteInfo.UpdateResponse save(Long memberId, Long lectureId) {
 		Member findMember = memberFavoriteReader.findById(memberId);
 		InflearnCourse findInflearnCourse = inflearnFavoriteReader.findById(lectureId);
-		Favorite saveFavorite = favoriteStore.save(findMember, findInflearnCourse);
+		Favorite favorite = favoriteReader.findFavoriteByMemberIdAndInflearnCourseId(findMember.getId(),
+				findInflearnCourse.getId())
+			.orElseGet(() -> saveNewFavorite(findMember, findInflearnCourse));
+		Favorite saveFavorite = favoriteStore.save(favorite);
 
 		return new FavoriteInfo.UpdateResponse(saveFavorite.getId());
+	}
+
+	private Favorite saveNewFavorite(Member member, InflearnCourse inflearnCourse) {
+		Favorite favorite = new Favorite(member, inflearnCourse);
+
+		return favoriteReader.save(favorite);
 	}
 
 	@Override
@@ -39,7 +49,11 @@ public class FavoriteServiceImpl implements FavoriteService {
 		if (!memberExists) {
 			throw new ApiException(MemberErrorCode.NOT_FOUND_MEMBER);
 		}
-		Favorite deleteFavorite = favoriteStore.delete(memberId, lectureId);
+		Favorite findFavorite = favoriteReader.findFavoriteByMemberIdAndInflearnCourseId(memberId, lectureId)
+			.map(favoriteResponse -> favoriteReader.findById(favoriteResponse.getId())
+				.orElseThrow(FavoriteErrorCode.NOT_FOUND_FAVORITE::throwException))
+			.orElseThrow(FavoriteErrorCode.NOT_FOUND_FAVORITE::throwException);
+		Favorite deleteFavorite = favoriteStore.delete(findFavorite);
 
 		return new FavoriteInfo.UpdateResponse(deleteFavorite.getId());
 	}

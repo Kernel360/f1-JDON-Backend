@@ -4,10 +4,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import kernel.jdon.favorite.domain.Favorite;
-import kernel.jdon.inflearncourse.domain.InflearnCourse;
-import kernel.jdon.member.domain.Member;
 import kernel.jdon.moduleapi.domain.favorite.core.FavoriteStore;
-import kernel.jdon.moduleapi.domain.favorite.error.FavoriteErrorCode;
 import lombok.RequiredArgsConstructor;
 
 @Component
@@ -18,29 +15,16 @@ public class FavoriteStoreImpl implements FavoriteStore {
 
 	@Override
 	@Transactional
-	public Favorite save(Member member, InflearnCourse inflearnCourse) {
-		return favoriteRepository.findFavoriteByMemberIdAndInflearnCourseId(member.getId(), inflearnCourse.getId())
-			.orElseGet(() -> saveNewFavorite(member, inflearnCourse));
-	}
-
-	private Favorite saveNewFavorite(Member member, InflearnCourse inflearnCourse) {
-		Favorite favorite = new Favorite(member, inflearnCourse);
-		Favorite savedFavorite = favoriteRepository.save(favorite);
-
-		return savedFavorite;
+	public Favorite save(Favorite favorite) {
+		return favoriteRepository.save(favorite);
 	}
 
 	@Override
 	@Transactional
-	public Favorite delete(Long memberId, Long lectureId) {
-		Favorite findFavorite = favoriteRepository.findFavoriteByMemberIdAndInflearnCourseId(memberId, lectureId)
-			.map(favoriteResponse -> favoriteRepository.findById(favoriteResponse.getId())
-				.orElseThrow(FavoriteErrorCode.NOT_FOUND_FAVORITE::throwException))
-			.orElseThrow(FavoriteErrorCode.NOT_FOUND_FAVORITE::throwException);
+	public Favorite delete(Favorite favorite) {
+		favoriteRepository.delete(favorite);
 
-		favoriteRepository.delete(findFavorite);
-
-		return findFavorite;
+		return favorite;
 	}
 
 }
