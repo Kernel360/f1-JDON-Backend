@@ -20,7 +20,7 @@ public class FavoriteStoreImpl implements FavoriteStore {
 	private final FavoriteRepository favoriteRepository;
 	private final MemberRepository memberRepository;
 	private final InflearnCourseRepository inflearnCourseRepository;
-	
+
 	@Transactional
 	@Override
 	public FavoriteInfo.UpdateResponse create(Member member, InflearnCourse inflearnCourse) {
@@ -39,7 +39,7 @@ public class FavoriteStoreImpl implements FavoriteStore {
 
 	@Transactional
 	@Override
-	public void delete(Long memberId, Long lectureId) {
+	public FavoriteInfo.UpdateResponse delete(Long memberId, Long lectureId) {
 		Favorite favorite = favoriteRepository.findFavoriteByMemberIdAndInflearnCourseId(memberId, lectureId)
 			.map(favoriteResponse -> {
 				return favoriteRepository.findById(favoriteResponse.getId())
@@ -48,6 +48,8 @@ public class FavoriteStoreImpl implements FavoriteStore {
 			.orElseThrow(FavoriteErrorCode.NOT_FOUND_FAVORITE::throwException);
 
 		favoriteRepository.delete(favorite);
+
+		return new FavoriteInfo.UpdateResponse(lectureId);
 	}
 
 }

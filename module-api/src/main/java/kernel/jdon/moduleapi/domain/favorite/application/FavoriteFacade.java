@@ -17,9 +17,7 @@ public class FavoriteFacade {
 		if (request.getIsFavorite()) {
 			return favoriteService.create(memberId, request.getLectureId());
 		}
-		favoriteService.delete(memberId, request.getLectureId());
-
-		return new FavoriteInfo.UpdateResponse(request.getLectureId());
+		return favoriteService.delete(memberId, request.getLectureId());
 	}
 
 	public FavoriteInfo.FindPageResponse getList(final Long memberId, Pageable pageable) {

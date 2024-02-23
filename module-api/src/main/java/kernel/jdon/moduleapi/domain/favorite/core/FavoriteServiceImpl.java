@@ -33,12 +33,12 @@ public class FavoriteServiceImpl implements FavoriteService {
 	}
 
 	@Override
-	public void delete(Long memberId, Long lectureId) {
+	public FavoriteInfo.UpdateResponse delete(Long memberId, Long lectureId) {
 		boolean memberExists = memberFavoriteReader.existsById(memberId);
 		if (!memberExists) {
 			throw new ApiException(MemberErrorCode.NOT_FOUND_MEMBER);
 		}
-		favoriteStore.delete(memberId, lectureId);
+		return favoriteStore.delete(memberId, lectureId);
 	}
 
 	@Override

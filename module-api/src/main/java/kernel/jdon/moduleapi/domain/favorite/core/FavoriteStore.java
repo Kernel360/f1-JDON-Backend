@@ -6,5 +6,5 @@ import kernel.jdon.member.domain.Member;
 public interface FavoriteStore {
 	FavoriteInfo.UpdateResponse create(Member member, InflearnCourse inflearnCourse);
 
-	void delete(Long memberId, Long lectureId);
+	FavoriteInfo.UpdateResponse delete(Long memberId, Long lectureId);
 }
