@@ -3,8 +3,8 @@ package kernel.jdon.moduleapi.domain.favorite.infrastructure;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import kernel.jdon.favorite.domain.Favorite;
 import kernel.jdon.moduleapi.domain.favorite.core.FavoriteStore;
+import kernel.jdon.moduledomain.favorite.domain.Favorite;
 import lombok.RequiredArgsConstructor;
 
 @Component

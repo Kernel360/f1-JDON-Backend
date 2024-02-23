@@ -1,9 +1,9 @@
 package kernel.jdon.moduleapi.domain.skill.infrastructure;
 
-import static kernel.jdon.favorite.domain.QFavorite.*;
 import static kernel.jdon.inflearncourse.domain.QInflearnCourse.*;
 import static kernel.jdon.inflearnjdskill.domain.QInflearnJdSkill.*;
 import static kernel.jdon.memberskill.domain.QMemberSkill.*;
+import static kernel.jdon.moduledomain.favorite.domain.QFavorite.*;
 import static kernel.jdon.skill.domain.QSkill.*;
 import static kernel.jdon.skillhistory.domain.QSkillHistory.*;
 import static kernel.jdon.wantedjd.domain.QWantedJd.*;

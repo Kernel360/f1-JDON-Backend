@@ -5,7 +5,7 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import kernel.jdon.favorite.domain.Favorite;
+import kernel.jdon.moduledomain.favorite.domain.Favorite;
 
 public interface FavoriteReader {
 	Page<Favorite> findList(final Long memberId, Pageable pageable);

@@ -6,9 +6,9 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import org.mapstruct.ReportingPolicy;
 
-import kernel.jdon.favorite.domain.Favorite;
 import kernel.jdon.moduleapi.domain.favorite.core.FavoriteCommand;
 import kernel.jdon.moduleapi.domain.favorite.core.FavoriteInfo;
+import kernel.jdon.moduledomain.favorite.domain.Favorite;
 
 @Mapper(
 	componentModel = "spring",

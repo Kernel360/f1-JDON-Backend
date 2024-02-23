@@ -4,7 +4,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import kernel.jdon.favorite.domain.Favorite;
 import kernel.jdon.inflearncourse.domain.InflearnCourse;
 import kernel.jdon.member.domain.Member;
 import kernel.jdon.moduleapi.domain.favorite.core.inflearnFavorite.InflearnFavoriteReader;
@@ -14,6 +13,7 @@ import kernel.jdon.moduleapi.domain.favorite.presentation.FavoriteDtoMapper;
 import kernel.jdon.moduleapi.domain.member.error.MemberErrorCode;
 import kernel.jdon.moduleapi.global.exception.ApiException;
 import kernel.jdon.moduleapi.global.page.CustomPageResponse;
+import kernel.jdon.moduledomain.favorite.domain.Favorite;
 import lombok.RequiredArgsConstructor;
 
 @Service
