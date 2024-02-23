@@ -20,10 +20,10 @@ public class FavoriteStoreImpl implements FavoriteStore {
 	@Transactional
 	public Favorite save(Member member, InflearnCourse inflearnCourse) {
 		return favoriteRepository.findFavoriteByMemberIdAndInflearnCourseId(member.getId(), inflearnCourse.getId())
-			.orElseGet(() -> createNewFavorite(member, inflearnCourse));
+			.orElseGet(() -> saveNewFavorite(member, inflearnCourse));
 	}
 
-	private Favorite createNewFavorite(Member member, InflearnCourse inflearnCourse) {
+	private Favorite saveNewFavorite(Member member, InflearnCourse inflearnCourse) {
 		Favorite favorite = new Favorite(member, inflearnCourse);
 		Favorite savedFavorite = favoriteRepository.save(favorite);
 
