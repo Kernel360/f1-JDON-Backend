@@ -11,11 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import kernel.jdon.auth.dto.SessionUserInfo;
-import kernel.jdon.coffeechat.dto.request.CoffeeChatCondition;
-import kernel.jdon.coffeechat.dto.request.CoffeeChatSortCondition;
 import kernel.jdon.coffeechat.dto.request.CreateCoffeeChatRequest;
 import kernel.jdon.coffeechat.dto.request.UpdateCoffeeChatRequest;
 import kernel.jdon.coffeechat.dto.response.ApplyCoffeeChatResponse;
@@ -79,18 +76,18 @@ public class CoffeeChatController {
 		return ResponseEntity.ok().body(CommonResponse.of(response));
 	}
 
-	@GetMapping("/api/v1/coffeechats")
-	public ResponseEntity<CommonResponse> getCoffeeChatList(
-		@PageableDefault(size = 12) Pageable pageable,
-		@RequestParam(value = "sort", defaultValue = "") CoffeeChatSortCondition sort,
-		@RequestParam(value = "keyword", defaultValue = "") String keyword,
-		@RequestParam(value = "jobCategory", defaultValue = "") Long jobCategory) {
-
-		CustomPageResponse<FindCoffeeChatListResponse> response =
-			coffeeChatService.findCoffeeChatList(pageable, new CoffeeChatCondition(sort, keyword, jobCategory));
-
-		return ResponseEntity.ok(CommonResponse.of(response));
-	}
+	// @GetMapping("/api/v1/coffeechats")
+	// public ResponseEntity<CommonResponse> getCoffeeChatList(
+	// 	@PageableDefault(size = 12) Pageable pageable,
+	// 	@RequestParam(value = "sort", defaultValue = "") CoffeeChatSortCondition sort,
+	// 	@RequestParam(value = "keyword", defaultValue = "") String keyword,
+	// 	@RequestParam(value = "jobCategory", defaultValue = "") Long jobCategory) {
+	//
+	// 	CustomPageResponse<FindCoffeeChatListResponse> response =
+	// 		coffeeChatService.findCoffeeChatList(pageable, new CoffeeChatCondition(sort, keyword, jobCategory));
+	//
+	// 	return ResponseEntity.ok(CommonResponse.of(response));
+	// }
 
 	@PutMapping("/api/v1/coffeechats/{id}")
 	public ResponseEntity<CommonResponse> modify(

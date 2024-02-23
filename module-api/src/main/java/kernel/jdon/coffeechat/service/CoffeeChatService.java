@@ -6,8 +6,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import kernel.jdon.coffeechat.domain.CoffeeChat;
-import kernel.jdon.coffeechat.domain.CoffeeChatActiveStatus;
-import kernel.jdon.coffeechat.dto.request.CoffeeChatCondition;
 import kernel.jdon.coffeechat.dto.request.CreateCoffeeChatRequest;
 import kernel.jdon.coffeechat.dto.request.UpdateCoffeeChatRequest;
 import kernel.jdon.coffeechat.dto.response.ApplyCoffeeChatResponse;
@@ -16,15 +14,15 @@ import kernel.jdon.coffeechat.dto.response.DeleteCoffeeChatResponse;
 import kernel.jdon.coffeechat.dto.response.FindCoffeeChatListResponse;
 import kernel.jdon.coffeechat.dto.response.FindCoffeeChatResponse;
 import kernel.jdon.coffeechat.dto.response.UpdateCoffeeChatResponse;
-import kernel.jdon.moduleapi.domain.coffeechat.error.CoffeeChatErrorCode;
 import kernel.jdon.coffeechat.repository.CoffeeChatRepository;
 import kernel.jdon.coffeechatmember.domain.CoffeeChatMember;
 import kernel.jdon.coffeechatmember.repsitory.CoffeeChatMemberRepository;
-import kernel.jdon.moduleapi.global.exception.ApiException;
-import kernel.jdon.moduleapi.global.page.CustomPageResponse;
 import kernel.jdon.member.domain.Member;
 import kernel.jdon.member.error.MemberErrorCode;
 import kernel.jdon.member.repository.MemberRepository;
+import kernel.jdon.moduleapi.domain.coffeechat.error.CoffeeChatErrorCode;
+import kernel.jdon.moduleapi.global.exception.ApiException;
+import kernel.jdon.moduleapi.global.page.CustomPageResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -89,11 +87,11 @@ public class CoffeeChatService {
 		return CustomPageResponse.of(guestCoffeeChatPage);
 	}
 
-	public CustomPageResponse findCoffeeChatList(Pageable pageable, CoffeeChatCondition coffeeChatCondition) {
-		Page<FindCoffeeChatListResponse> findCoffeeChatList = coffeeChatRepository.findCoffeeChatList(pageable,
-			coffeeChatCondition);
-		return CustomPageResponse.of(findCoffeeChatList);
-	}
+	// public CustomPageResponse findCoffeeChatList(Pageable pageable, CoffeeChatCondition coffeeChatCondition) {
+	// 	Page<FindCoffeeChatListResponse> findCoffeeChatList = coffeeChatRepository.findCoffeeChatList(pageable,
+	// 		coffeeChatCondition);
+	// 	return CustomPageResponse.of(findCoffeeChatList);
+	// }
 
 	@Transactional
 	public CreateCoffeeChatResponse create(CreateCoffeeChatRequest request, Long memberId) {

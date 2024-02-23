@@ -2,78 +2,69 @@ package kernel.jdon.coffeechat.repository;
 
 import static kernel.jdon.coffeechat.domain.QCoffeeChat.*;
 import static kernel.jdon.coffeechat.dto.request.CoffeeChatSortCondition.*;
-import static kernel.jdon.jobcategory.domain.QJobCategory.*;
 import static kernel.jdon.member.domain.QMember.*;
 import static org.springframework.util.StringUtils.*;
 
 import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
-import kernel.jdon.coffeechat.dto.request.CoffeeChatCondition;
 import kernel.jdon.coffeechat.dto.request.CoffeeChatSortCondition;
-import kernel.jdon.coffeechat.dto.response.FindCoffeeChatListResponse;
-import kernel.jdon.coffeechat.dto.response.QFindCoffeeChatListResponse;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class CoffeeChatRepositoryImpl implements CustomCoffeeChatRepository {
 	private final JPAQueryFactory jpaQueryFactory;
 
-	@Override
-	public Page<FindCoffeeChatListResponse> findCoffeeChatList(Pageable pageable,
-		CoffeeChatCondition coffeeChatCondition) {
-		List<FindCoffeeChatListResponse> content = jpaQueryFactory
-			.select(new QFindCoffeeChatListResponse(
-				coffeeChat.id,
-				member.nickname,
-				jobCategory.name,
-				coffeeChat.title,
-				coffeeChat.coffeeChatStatus,
-				coffeeChat.meetDate,
-				coffeeChat.createdDate,
-				coffeeChat.totalRecruitCount,
-				coffeeChat.currentRecruitCount))
-			.from(coffeeChat)
-			.join(member)
-			.on(coffeeChat.member.eq(member))
-			.join(jobCategory)
-			.on(member.jobCategory.eq(jobCategory))
-			.where(
-				excludeDeleteCoffeeChat(),
-				coffeeChatTitleContains(coffeeChatCondition.getKeyword()),
-				memberJobCategoryEq(coffeeChatCondition.getJobCategory())
-			)
-			.orderBy(
-				coffeeChatSort(coffeeChatCondition.getSort())
-			)
-			.offset(pageable.getOffset())
-			.limit(pageable.getPageSize())
-			.fetch();
-
-		Long totalCount = jpaQueryFactory
-			.select(coffeeChat.count())
-			.from(coffeeChat)
-			.join(member)
-			.on(coffeeChat.member.eq(member))
-			.where(
-				excludeDeleteCoffeeChat(),
-				coffeeChatTitleContains(coffeeChatCondition.getKeyword()),
-				memberJobCategoryEq(coffeeChatCondition.getJobCategory())
-			)
-			.fetchOne();
-
-		return new PageImpl<>(content, pageable, totalCount);
-
-	}
+	// @Override
+	// public Page<FindCoffeeChatListResponse> findCoffeeChatList(Pageable pageable,
+	// 	CoffeeChatCondition coffeeChatCondition) {
+	// 	List<FindCoffeeChatListResponse> content = jpaQueryFactory
+	// 		.select(new QFindCoffeeChatListResponse(
+	// 			coffeeChat.id,
+	// 			member.nickname,
+	// 			jobCategory.name,
+	// 			coffeeChat.title,
+	// 			coffeeChat.coffeeChatStatus,
+	// 			coffeeChat.meetDate,
+	// 			coffeeChat.createdDate,
+	// 			coffeeChat.totalRecruitCount,
+	// 			coffeeChat.currentRecruitCount))
+	// 		.from(coffeeChat)
+	// 		.join(member)
+	// 		.on(coffeeChat.member.eq(member))
+	// 		.join(jobCategory)
+	// 		.on(member.jobCategory.eq(jobCategory))
+	// 		.where(
+	// 			excludeDeleteCoffeeChat(),
+	// 			coffeeChatTitleContains(coffeeChatCondition.getKeyword()),
+	// 			memberJobCategoryEq(coffeeChatCondition.getJobCategory())
+	// 		)
+	// 		.orderBy(
+	// 			coffeeChatSort(coffeeChatCondition.getSort())
+	// 		)
+	// 		.offset(pageable.getOffset())
+	// 		.limit(pageable.getPageSize())
+	// 		.fetch();
+	//
+	// 	Long totalCount = jpaQueryFactory
+	// 		.select(coffeeChat.count())
+	// 		.from(coffeeChat)
+	// 		.join(member)
+	// 		.on(coffeeChat.member.eq(member))
+	// 		.where(
+	// 			excludeDeleteCoffeeChat(),
+	// 			coffeeChatTitleContains(coffeeChatCondition.getKeyword()),
+	// 			memberJobCategoryEq(coffeeChatCondition.getJobCategory())
+	// 		)
+	// 		.fetchOne();
+	//
+	// 	return new PageImpl<>(content, pageable, totalCount);
+	//
+	// }
 
 	private OrderSpecifier[] coffeeChatSort(CoffeeChatSortCondition sort) {
 		ArrayList<Object> orderSpecifiers = new ArrayList<>();
