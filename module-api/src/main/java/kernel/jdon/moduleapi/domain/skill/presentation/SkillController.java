@@ -59,7 +59,7 @@ public class SkillController {
 	}
 
 	private Long getSessionUserId(SessionUserInfo sessionUser) {
-		return Optional.of(sessionUser)
+		return Optional.ofNullable(sessionUser)
 			.map(session -> sessionUser.getId())
 			.orElse(null);
 	}

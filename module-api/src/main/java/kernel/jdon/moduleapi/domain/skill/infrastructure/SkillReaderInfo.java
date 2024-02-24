@@ -35,13 +35,15 @@ public class SkillReaderInfo {
 
 	@Getter
 	public static class FindWantedJd {
+		private Long id;
 		private String company;
 		private String title;
 		private String imageUrl;
 		private String jdUrl;
 
 		@QueryProjection
-		public FindWantedJd(String company, String title, String imageUrl, String jdUrl) {
+		public FindWantedJd(Long id, String company, String title, String imageUrl, String jdUrl) {
+			this.id = id;
 			this.company = company;
 			this.title = title;
 			this.imageUrl = imageUrl;

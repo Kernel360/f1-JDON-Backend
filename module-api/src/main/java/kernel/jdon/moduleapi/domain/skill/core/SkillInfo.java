@@ -76,6 +76,7 @@ public class SkillInfo {
 	@AllArgsConstructor
 	@NoArgsConstructor
 	public static class FindJd {
+		private Long id;
 		private String company;
 		private String title;
 		private String imageUrl;

@@ -55,8 +55,9 @@ public class SkillRepositoryImpl implements SkillRepositoryCustom {
 		final int wantedJdCount = 6;
 
 		return jpaQueryFactory
-			.select(new QSkillReaderInfo_FindWantedJd(wantedJd.companyName, wantedJd.title, wantedJd.imageUrl,
-				wantedJd.detailUrl))
+			.select(
+				new QSkillReaderInfo_FindWantedJd(wantedJd.id, wantedJd.companyName, wantedJd.title, wantedJd.imageUrl,
+					wantedJd.detailUrl))
 			.from(wantedJdSkill)
 			.innerJoin(wantedJd)
 			.on(wantedJdSkill.wantedJd.id.eq(wantedJd.id))

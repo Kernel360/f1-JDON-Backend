@@ -17,8 +17,8 @@ public class WantedJdSkillReaderImpl implements WantedJdSkillReader {
 	@Override
 	public List<SkillInfo.FindJd> findWantedJdListBySkill(String keyword) {
 		return skillRepository.findWantedJdListBySkill(keyword).stream()
-			.map(wantedJd -> new SkillInfo.FindJd(wantedJd.getCompany(), wantedJd.getTitle(), wantedJd.getImageUrl(),
-				wantedJd.getJdUrl()))
+			.map(wantedJd -> new SkillInfo.FindJd(wantedJd.getId(), wantedJd.getCompany(), wantedJd.getTitle(),
+				wantedJd.getImageUrl(), wantedJd.getJdUrl()))
 			.toList();
 	}
 }
