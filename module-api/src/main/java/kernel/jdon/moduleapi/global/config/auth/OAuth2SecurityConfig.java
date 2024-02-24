@@ -35,6 +35,7 @@ public class OAuth2SecurityConfig {
 			"/api/v1/job-categories",
 			"/api/v1/faqs",
 			"/api/v1/skills/search",
+			"/api/v1/jds/**",
 			"/api/v1/authenticate"
 		};
 		final String[] permitAllPOST = {
