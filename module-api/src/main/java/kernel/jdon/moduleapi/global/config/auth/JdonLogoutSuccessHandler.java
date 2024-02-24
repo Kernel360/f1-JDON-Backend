@@ -10,12 +10,13 @@ import org.springframework.stereotype.Component;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import kernel.jdon.auth.util.RedirectUrlUtil;
 import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
 public class JdonLogoutSuccessHandler implements LogoutSuccessHandler {
-	private final LogoutRedirectUrlProperties logoutRedirectUrlProperties;
+	private final RedirectUrlUtil redirectUrlUtil;
 
 	@Override
 	public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -25,6 +26,6 @@ public class JdonLogoutSuccessHandler implements LogoutSuccessHandler {
 		if (session != null) {
 			session.invalidate();
 		}
-		response.sendRedirect(logoutRedirectUrlProperties.getSuccess(request.getHeader("Referer")));
+		response.sendRedirect(redirectUrlUtil.getLogoutSuccess(request.getHeader("Referer")));
 	}
 }

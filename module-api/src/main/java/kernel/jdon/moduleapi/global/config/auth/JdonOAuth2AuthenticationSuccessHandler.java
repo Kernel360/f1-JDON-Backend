@@ -1,7 +1,7 @@
 package kernel.jdon.moduleapi.global.config.auth;
 
-import static kernel.jdon.auth.encrypt.AesUtil.*;
-import static kernel.jdon.auth.encrypt.HmacUtil.*;
+import static kernel.jdon.auth.util.AesUtil.*;
+import static kernel.jdon.auth.util.HmacUtil.*;
 import static kernel.jdon.modulecommon.util.StringUtil.*;
 
 import java.io.IOException;
@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import kernel.jdon.auth.dto.JdonOAuth2User;
+import kernel.jdon.auth.util.RedirectUrlUtil;
 import kernel.jdon.member.domain.MemberRole;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Slf4j
 public class JdonOAuth2AuthenticationSuccessHandler implements AuthenticationSuccessHandler {
-	private final LoginRedirectUrlProperties loginRedirectUrlProperties;
+	private final RedirectUrlUtil redirectUrlUtil;
 
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -33,11 +34,11 @@ public class JdonOAuth2AuthenticationSuccessHandler implements AuthenticationSuc
 		if (isTemporaryUser(jdonOAuth2User)) {
 			String query = createUserInfoString(jdonOAuth2User.getEmail(), jdonOAuth2User.getSocialProviderType());
 			String encodedQueryString = createEncryptQueryString(query);
-			response.sendRedirect(joinToString(loginRedirectUrlProperties.getSuccessGuest(request.getHeader("Referer")),
+			response.sendRedirect(joinToString(redirectUrlUtil.getLoginSuccessGuest(request.getHeader("Referer")),
 				encodedQueryString));
 			return;
 		}
-		response.sendRedirect(loginRedirectUrlProperties.getSuccessMember(request.getHeader("Referer")));
+		response.sendRedirect(redirectUrlUtil.getLoginSuccessMember(request.getHeader("Referer")));
 	}
 
 	private boolean isTemporaryUser(JdonOAuth2User jdonOAuth2User) {

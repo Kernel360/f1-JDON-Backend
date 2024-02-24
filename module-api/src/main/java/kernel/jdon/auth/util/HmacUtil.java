@@ -1,4 +1,4 @@
-package kernel.jdon.auth.encrypt;
+package kernel.jdon.auth.util;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
@@ -24,7 +24,7 @@ public class HmacUtil {
 
 	public static boolean isValidHMAC(String receivedHMAC, String data) throws Exception {
 		String calculatedHMAC = generateHMAC(data);
-		
+
 		return receivedHMAC.equals(calculatedHMAC);
 	}
 }

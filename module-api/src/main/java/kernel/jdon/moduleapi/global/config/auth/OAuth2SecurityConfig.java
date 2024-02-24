@@ -24,6 +24,7 @@ public class OAuth2SecurityConfig {
 	private final JdonOAuth2AuthenticationSuccessHandler jdonOAuth2AuthenticationSuccessHandler;
 	private final JdonAuthExceptionHandler jdonAuthExceptionHandler;
 	private final JdonLogoutSuccessHandler jdonLogoutSuccessHandler;
+	private final AllowOriginProperties allowOriginProperties;
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -50,8 +51,7 @@ public class OAuth2SecurityConfig {
 
 		http.cors(corsCustomizer -> corsCustomizer.configurationSource(request -> {
 			CorsConfiguration config = new CorsConfiguration();
-			config.setAllowedOrigins(List.of("http://localhost:3000", "https://localhost:3000",
-				"https://jdon.kr", "https://jdon.netlify.app", "https://jdon-test.netlify.app/"));
+			config.setAllowedOrigins(allowOriginProperties.getUrl());
 			config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
 			config.setAllowedHeaders(List.of("*"));
 			config.setAllowCredentials(true);
