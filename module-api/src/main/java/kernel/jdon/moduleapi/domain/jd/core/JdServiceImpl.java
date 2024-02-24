@@ -1,5 +1,7 @@
 package kernel.jdon.moduleapi.domain.jd.core;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import kernel.jdon.wantedjd.domain.WantedJd;
@@ -14,6 +16,8 @@ public class JdServiceImpl implements JdService {
 	@Override
 	public JdInfo.FindWantedJdResponse getJd(final Long jdId) {
 		final WantedJd findWantedJd = jdReader.findWantedJd(jdId);
-		return jdInfoMapper.of(findWantedJd);
+		final List<JdInfo.FindSkill> findSkillList = jdReader.findSkillListByWantedJd(findWantedJd);
+
+		return jdInfoMapper.of(findWantedJd, findSkillList);
 	}
 }

@@ -1,5 +1,8 @@
 package kernel.jdon.wantedjd.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -12,9 +15,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import kernel.jdon.jobcategory.domain.JobCategory;
+import kernel.jdon.wantedjdskill.domain.WantedJdSkill;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -65,15 +70,17 @@ public class WantedJd {
 	@Column(name = "scraping_date", columnDefinition = "TEXT", nullable = false)
 	private String scrapingDate;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "job_category_id", columnDefinition = "BIGINT")
 	private JobCategory jobCategory;
 
+	@OneToMany(mappedBy = "wantedJd")
+	private List<WantedJdSkill> skillList = new ArrayList<>();
+
 	@Builder
 	public WantedJd(String companyName, String title, Long detailId, String detailUrl, String imageUrl,
-		String requirements,
-		String mainTasks, String intro, String benefits, String preferredPoints, String scrapingDate,
-		JobCategory jobCategory) {
+		String requirements, String mainTasks, String intro, String benefits, String preferredPoints,
+		String scrapingDate, JobCategory jobCategory) {
 		this.companyName = companyName;
 		this.title = title;
 		this.detailId = detailId;

@@ -1,5 +1,8 @@
 package kernel.jdon.moduleapi.domain.jd.core;
 
+import java.util.List;
+
+import kernel.jdon.skill.domain.Skill;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,5 +25,17 @@ public class JdInfo {
 		private String benefits;
 		private String preferredPoints;
 		private String jobCategoryName;
+		private List<FindSkill> skillList;
+	}
+
+	@Getter
+	public static class FindSkill {
+		private Long id;
+		private String keyword;
+
+		public FindSkill(Skill skill) {
+			this.id = skill.getId();
+			this.keyword = skill.getKeyword();
+		}
 	}
 }

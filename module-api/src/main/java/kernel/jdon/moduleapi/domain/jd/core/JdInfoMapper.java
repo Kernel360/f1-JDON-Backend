@@ -1,5 +1,7 @@
 package kernel.jdon.moduleapi.domain.jd.core;
 
+import java.util.List;
+
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -24,5 +26,5 @@ public interface JdInfoMapper {
 	@Mapping(source = "wantedJd.benefits", target = "benefits")
 	@Mapping(source = "wantedJd.preferredPoints", target = "preferredPoints")
 	@Mapping(expression = "java(wantedJd.getJobCategory().getName())", target = "jobCategoryName")
-	JdInfo.FindWantedJdResponse of(WantedJd wantedJd);
+	JdInfo.FindWantedJdResponse of(WantedJd wantedJd, List<JdInfo.FindSkill> skillList);
 }

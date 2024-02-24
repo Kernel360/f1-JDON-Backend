@@ -1,5 +1,7 @@
 package kernel.jdon.moduleapi.domain.jd.presentation;
 
+import java.util.List;
+
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,5 +23,13 @@ public class JdDto {
 		private String benefits;
 		private String preferredPoints;
 		private String jobCategoryName;
+		private List<FindSkill> skillList;
+	}
+
+	@Getter
+	@Builder
+	public static class FindSkill {
+		private Long id;
+		private String keyword;
 	}
 }
