@@ -40,7 +40,6 @@ public class RedirectUrlUtil {
 	private String isReferer(String referer) {
 		if (referer == null) {
 			referer = allowOriginProperties.getOrigin();
-			System.out.println(referer + "-------------------------");
 		}
 		return referer;
 	}
