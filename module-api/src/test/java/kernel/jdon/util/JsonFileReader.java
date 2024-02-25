@@ -9,7 +9,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class JsonFileReader {
 
-	public static <T> T readJsonFile(String filePath, Class<T> valueType) throws IOException {
+	private JsonFileReader() {
+	}
+
+	public static <T> T readJsonFileToObject(String filePath, Class<T> valueType) throws IOException {
 		ObjectMapper objectMapper = new ObjectMapper();
 		InputStream inputStream = new ClassPathResource(filePath).getInputStream();
 		return objectMapper.readValue(inputStream, valueType);

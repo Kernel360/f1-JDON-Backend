@@ -90,7 +90,7 @@ class SkillFacadeTest {
 		final int lectureCount = 3;
 
 		String filePath = "giventest/skill/facade/givenValidKeyword_whenFindList_thenReturnCorrectDataListBySkill.json";
-		var dataListBySkillResponse = JsonFileReader.readJsonFile(filePath,
+		var dataListBySkillResponse = JsonFileReader.readJsonFileToObject(filePath,
 			SkillInfo.FindDataListBySkillResponse.class);
 
 		//when

@@ -75,7 +75,7 @@ class SkillServiceImplTest {
 	void givenValidJobCategoryId_whenFindList_thenReturnCorrectJobCategorySkillList() throws Exception {
 		//given
 		String filePath = "giventest/skill/serviceimpl/givenValidJobCategoryId_whenFindList_thenReturnCorrectJobCategorySkillList.json";
-		JobCategory jobCategory = JsonFileReader.readJsonFile(filePath, JobCategory.class);
+		JobCategory jobCategory = JsonFileReader.readJsonFileToObject(filePath, JobCategory.class);
 		final Long jobCategoryId = 1L;
 
 		//when

@@ -27,7 +27,7 @@ class JobCategoryFacadeTest {
 	void givenNone_whenFindList_thenReturnCorrectJobGroupList() throws Exception {
 		//given
 		String filePath = "giventest/jobcategory/facade/givenNone_whenFindList_thenReturnCorrectJobGroupList.json";
-		var jobGroupListResponse = JsonFileReader.readJsonFile(filePath,
+		var jobGroupListResponse = JsonFileReader.readJsonFileToObject(filePath,
 			JobCategoryInfo.FindJobGroupListResponse.class);
 
 		//when

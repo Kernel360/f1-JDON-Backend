@@ -51,7 +51,7 @@ class JobCategoryServiceImplTest {
 	}
 
 	private List<JobCategory> getMockJobCategories(String filePath) throws IOException {
-		JobCategory parentJobCategory = JsonFileReader.readJsonFile(filePath, JobCategory.class);
+		JobCategory parentJobCategory = JsonFileReader.readJsonFileToObject(filePath, JobCategory.class);
 		List<JobCategory> parentJobCategoryList = Collections.singletonList(parentJobCategory);
 		return parentJobCategoryList;
 	}
