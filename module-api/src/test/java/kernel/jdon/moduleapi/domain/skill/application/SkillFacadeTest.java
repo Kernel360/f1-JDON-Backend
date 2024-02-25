@@ -3,7 +3,6 @@ package kernel.jdon.moduleapi.domain.skill.application;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -13,12 +12,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.core.io.ClassPathResource;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import kernel.jdon.moduleapi.domain.skill.core.SkillInfo;
 import kernel.jdon.moduleapi.domain.skill.core.SkillService;
+import kernel.jdon.util.JsonFileReader;
 
 @DisplayName("Skill Facade 테스트")
 @ExtendWith(MockitoExtension.class)
@@ -93,9 +90,8 @@ class SkillFacadeTest {
 		final int lectureCount = 3;
 
 		String filePath = "giventest/skill/facade/givenValidKeyword_whenFindList_thenReturnCorrectDataListBySkill.json";
-		ObjectMapper objectMapper = new ObjectMapper();
-		InputStream inputStream = new ClassPathResource(filePath).getInputStream();
-		var dataListBySkillResponse = objectMapper.readValue(inputStream, SkillInfo.FindDataListBySkillResponse.class);
+		var dataListBySkillResponse = JsonFileReader.readJsonFile(filePath,
+			SkillInfo.FindDataListBySkillResponse.class);
 
 		//when
 		when(skillService.getDataListBySkill(keyword, memberId)).thenReturn(dataListBySkillResponse);
