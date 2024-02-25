@@ -3,7 +3,6 @@ package kernel.jdon.moduleapi.domain.skill.core;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -16,14 +15,12 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.core.io.ClassPathResource;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import kernel.jdon.jobcategory.domain.JobCategory;
 import kernel.jdon.moduleapi.domain.jobcategory.core.JobCategoryReader;
 import kernel.jdon.moduleapi.domain.skill.core.inflearnjd.InflearnJdSkillReader;
 import kernel.jdon.moduleapi.domain.skill.core.wantedjd.WantedJdSkillReader;
+import kernel.jdon.util.JsonFileReader;
 
 @DisplayName("Skill Service Impl 테스트")
 @ExtendWith(MockitoExtension.class)
@@ -78,9 +75,7 @@ class SkillServiceImplTest {
 	void givenValidJobCategoryId_whenFindList_thenReturnCorrectJobCategorySkillList() throws Exception {
 		//given
 		String filePath = "giventest/skill/serviceimpl/givenValidJobCategoryId_whenFindList_thenReturnCorrectJobCategorySkillList.json";
-		ObjectMapper objectMapper = new ObjectMapper();
-		InputStream inputStream = new ClassPathResource(filePath).getInputStream();
-		JobCategory jobCategory = objectMapper.readValue(inputStream, JobCategory.class);
+		JobCategory jobCategory = JsonFileReader.readJsonFile(filePath, JobCategory.class);
 		final Long jobCategoryId = 1L;
 
 		//when
