@@ -3,6 +3,7 @@ package kernel.jdon.moduleapi.domain.favorite.core;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import kernel.jdon.inflearncourse.domain.InflearnCourse;
 import kernel.jdon.member.domain.Member;
@@ -16,6 +17,7 @@ import kernel.jdon.moduledomain.favorite.domain.Favorite;
 import lombok.RequiredArgsConstructor;
 
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class FavoriteServiceImpl implements FavoriteService {
 	private final FavoriteReader favoriteReader;
@@ -25,6 +27,7 @@ public class FavoriteServiceImpl implements FavoriteService {
 	private final FavoriteInfoMapper favoriteInfoMapper;
 
 	@Override
+	@Transactional
 	public FavoriteInfo.UpdateResponse save(Long memberId, Long lectureId) {
 		Member findMember = memberReader.findById(memberId);
 		InflearnCourse findInflearnCourse = inflearnReader.findById(lectureId);
@@ -43,6 +46,7 @@ public class FavoriteServiceImpl implements FavoriteService {
 	}
 
 	@Override
+	@Transactional
 	public FavoriteInfo.UpdateResponse delete(Long memberId, Long lectureId) {
 		boolean memberExists = memberReader.existsById(memberId);
 		if (!memberExists) {
