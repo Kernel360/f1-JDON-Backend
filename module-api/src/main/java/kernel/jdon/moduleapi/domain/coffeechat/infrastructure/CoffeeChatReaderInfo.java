@@ -18,7 +18,7 @@ public class CoffeeChatReaderInfo {
 	public static class FindCoffeeChatListResponse {
 		private Long coffeeChatId;
 		private String nickname;
-		private String job;
+		private String hostJobCategoryName;
 		private String title;
 		private String activeStatus;
 		@JsonInclude(JsonInclude.Include.NON_NULL)
@@ -36,7 +36,7 @@ public class CoffeeChatReaderInfo {
 			LocalDateTime meetDate, LocalDateTime createdDate, Long totalRecruitCount, Long currentRecruitCount) {
 			this.coffeeChatId = coffeeChatId;
 			this.nickname = nickname;
-			this.job = job;
+			this.hostJobCategoryName = job;
 			this.title = title;
 			this.activeStatus = activeStatus.getActiveStatus();
 			this.meetDate = meetDate;
