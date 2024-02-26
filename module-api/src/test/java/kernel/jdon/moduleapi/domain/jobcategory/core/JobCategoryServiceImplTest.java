@@ -18,7 +18,7 @@ import kernel.jdon.jobcategory.domain.JobCategory;
 import kernel.jdon.util.JsonFileReader;
 
 @ExtendWith(MockitoExtension.class)
-@DisplayName("JobCategory Facade 테스트")
+@DisplayName("JobCategory Service Impl 테스트")
 class JobCategoryServiceImplTest {
 	@InjectMocks
 	private JobCategoryServiceImpl jobCategoryServiceImpl;
