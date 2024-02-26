@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import kernel.jdon.moduleapi.domain.jd.core.JdInfo;
 import kernel.jdon.moduleapi.domain.jd.core.JdReader;
 import kernel.jdon.moduleapi.domain.jd.error.JdErrorCode;
-import kernel.jdon.moduleapi.global.page.CustomPageInfo;
+import kernel.jdon.moduleapi.global.page.CustomJpaPageInfo;
 import kernel.jdon.moduleapi.global.page.PageInfoRequest;
 import kernel.jdon.wantedjd.domain.WantedJd;
 import lombok.RequiredArgsConstructor;
@@ -46,10 +46,6 @@ public class JdReaderImpl implements JdReader {
 			.map(jdReaderImplMapper::of)
 			.toList();
 
-		final CustomPageInfo customPageInfo = new CustomPageInfo(readerInfo.getPageable().getPageNumber(),
-			readerInfo.getTotalElements(), readerInfo.getPageable().getPageSize(), readerInfo.isFirst(),
-			readerInfo.isLast(), readerInfo.isEmpty());
-
-		return new JdInfo.FindWantedJdListResponse(content, customPageInfo);
+		return new JdInfo.FindWantedJdListResponse(content, new CustomJpaPageInfo(readerInfo));
 	}
 }
