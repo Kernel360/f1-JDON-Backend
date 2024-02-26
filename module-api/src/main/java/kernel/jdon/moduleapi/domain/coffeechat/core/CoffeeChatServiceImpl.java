@@ -44,19 +44,19 @@ public class CoffeeChatServiceImpl implements CoffeeChatService {
 
     }
 
-	@Override
-	public CoffeeChatInfo.FindCoffeeChatListResponse getCoffeeChatList(
-		final PageInfoRequest pageInfoRequest,
-		final CoffeeChatCommand.FindCoffeeChatListRequest command) {
-		final CoffeeChatInfo.FindCoffeeChatListResponse coffeeChatList = coffeeChatReader.findCoffeeChatList(
-			pageInfoRequest, command);
+    @Override
+    public CoffeeChatInfo.FindCoffeeChatListResponse getCoffeeChatList(
+        final PageInfoRequest pageInfoRequest,
+        final CoffeeChatCommand.FindCoffeeChatListRequest command) {
+        final CoffeeChatInfo.FindCoffeeChatListResponse coffeeChatList = coffeeChatReader.findCoffeeChatList(
+            pageInfoRequest, command);
 
-		return coffeeChatList;
-	}
+        return coffeeChatList;
+    }
 
-	@Override
-	public CoffeeChatInfo.FindResponse getCoffeeChat(Long coffeeChatId) {
-		CoffeeChat findCoffeeChat = coffeeChatReader.findExistCoffeeChat(coffeeChatId);
+    @Override
+    public CoffeeChatInfo.FindCoffeeChatResponse getCoffeeChat(Long coffeeChatId) {
+        CoffeeChat findCoffeeChat = coffeeChatReader.findExistCoffeeChat(coffeeChatId);
 
         return coffeeChatInfoMapper.of(findCoffeeChat);
     }
@@ -109,9 +109,10 @@ public class CoffeeChatServiceImpl implements CoffeeChatService {
     }
 
     @Override
-    public CustomPageResponse<Page<CoffeeChatInfo.FindListResponse>> getGuestCoffeeChatList(Long memberId,
+    public CustomPageResponse<CoffeeChatInfo.FindCoffeeChat> getGuestCoffeeChatList(Long memberId,
         Pageable pageable) {
-        Page<CoffeeChatInfo.FindListResponse> guestCoffeeChatPage = coffeeChatReader.findAllByMemberId(memberId,
+        Page<CoffeeChatInfo.FindCoffeeChat> guestCoffeeChatPage = coffeeChatReader.findCoffeeChatMemberListByMemberId(
+                memberId,
                 pageable)
             .map(CoffeeChatMember::getCoffeeChat)
             .map(coffeeChatInfoMapper::listOf);
@@ -120,9 +121,9 @@ public class CoffeeChatServiceImpl implements CoffeeChatService {
     }
 
     @Override
-    public CustomPageResponse<Page<CoffeeChatInfo.FindListResponse>> getHostCoffeeChatList(Long memberId,
+    public CustomPageResponse<CoffeeChatInfo.FindCoffeeChat> getHostCoffeeChatList(Long memberId,
         Pageable pageable) {
-        Page<CoffeeChatInfo.FindListResponse> hostCoffeeChatPage = coffeeChatReader.findHostCoffeeChatList(memberId,
+        Page<CoffeeChatInfo.FindCoffeeChat> hostCoffeeChatPage = coffeeChatReader.findCoffeeChatListByMemberId(memberId,
                 pageable)
             .map(coffeeChatInfoMapper::listOf);
 

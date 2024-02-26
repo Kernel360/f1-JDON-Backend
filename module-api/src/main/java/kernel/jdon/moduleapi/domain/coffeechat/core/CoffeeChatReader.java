@@ -10,11 +10,11 @@ import kernel.jdon.moduleapi.global.page.PageInfoRequest;
 public interface CoffeeChatReader {
     CoffeeChat findExistCoffeeChat(Long coffeeChatId);
 
-    Page<CoffeeChatMember> findAllByMemberId(Long memberId, Pageable pageable);
+    Page<CoffeeChatMember> findCoffeeChatMemberListByMemberId(Long memberId, Pageable pageable);
 
-    Page<CoffeeChat> findHostCoffeeChatList(Long memberId, Pageable pageable);
+    Page<CoffeeChat> findCoffeeChatListByMemberId(Long memberId, Pageable pageable);
 
-	CoffeeChatInfo.FindCoffeeChatListResponse findCoffeeChatList(PageInfoRequest pageInfoRequest,
-		CoffeeChatCommand.FindCoffeeChatListRequest command);
+    CoffeeChatInfo.FindCoffeeChatListResponse findCoffeeChatList(PageInfoRequest pageInfoRequest,
+        CoffeeChatCommand.FindCoffeeChatListRequest command);
 
 }
