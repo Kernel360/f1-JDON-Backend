@@ -46,7 +46,6 @@ spring:
       host: 127.0.0.1
       password: ${REDIS_PASSWORD}
 
-
 logging:
   level:
     root: info
@@ -61,16 +60,25 @@ custom-oauth2:
     app-admin-key: ${KAKAO_APP_ADMIN_KEY}
     delete-user-url: https://kapi.kakao.com/v1/user/unlink
 
+allowed-origins:
+  origin: https://jdon.kr/
+  url:
+    - "http://localhost:3000"
+    - "https://localhost:3000"
+    - "https://jdon.kr"
+    - "https://jdon.netlify.app"
+    - "https://jdon-test.netlify.app/"
+
+#https://jdon.kr
 redirect-url:
   login:
     success:
-      member: https://jdon.kr/oauth/login/success
-      guest: https://jdon.kr/oauth/info?
+      member: oauth/login/success
+      guest: oauth/info?
     failure:
-      not-found-email: https://jdon.kr/oauth/login/fail/not-found-email
-      not-match-provider: https://jdon.kr/oauth/login/fail/not-match-provider
-  logout:
-    success: https://jdon.kr
+      not-found-email: oauth/login/fail/not-found-email
+      not-match-provider: oauth/login/fail/not-match-provider
+
 
 redis:
   lock:

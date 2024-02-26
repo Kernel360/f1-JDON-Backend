@@ -1,4 +1,4 @@
-package kernel.jdon.auth.encrypt;
+package kernel.jdon.auth.util;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;

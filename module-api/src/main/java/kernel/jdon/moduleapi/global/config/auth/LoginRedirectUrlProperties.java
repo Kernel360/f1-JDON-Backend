@@ -1,5 +1,7 @@
 package kernel.jdon.moduleapi.global.config.auth;
 
+import static kernel.jdon.modulecommon.util.StringUtil.*;
+
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import lombok.Getter;
@@ -13,52 +15,33 @@ public class LoginRedirectUrlProperties {
 	private final Failure failure;
 
 	public String getSuccessMember(String referer) {
-		if (requestFromLocal(referer)) {
-			return this.success.getLocalMember();
-		}
-		return this.success.getMember();
+		System.out.println(joinToString(referer, this.success.getMember()));
+		return joinToString(referer, this.success.getMember());
 	}
 
 	public String getSuccessGuest(String referer) {
-		if (requestFromLocal(referer)) {
-			return this.success.getLocalGuest();
-		}
-		return this.success.getGuest();
+		return joinToString(referer, this.success.getGuest());
 	}
 
 	public String getFailureNotFoundEmail(String referer) {
-		if (requestFromLocal(referer)) {
-			return this.failure.getLocalNotFoundEmail();
-		}
-		return this.failure.getNotFoundEmail();
+		return joinToString(referer, this.failure.getNotFoundEmail());
 	}
 
 	public String getFailureNotMatchProvider(String referer) {
-		if (requestFromLocal(referer)) {
-			return this.failure.getLocalNotMatchProvider();
-		}
-		return this.failure.getNotMatchProvider();
-	}
-
-	private boolean requestFromLocal(String referer) {
-		return referer.contains("localhost:3000");
+		return joinToString(referer, this.failure.getNotMatchProvider());
 	}
 
 	@Getter
 	@RequiredArgsConstructor
 	public static class Success {
 		private final String member;
-		private final String localMember;
 		private final String guest;
-		private final String localGuest;
 	}
 
 	@Getter
 	@RequiredArgsConstructor
 	public static class Failure {
 		private final String notFoundEmail;
-		private final String localNotFoundEmail;
 		private final String notMatchProvider;
-		private final String localNotMatchProvider;
 	}
 }

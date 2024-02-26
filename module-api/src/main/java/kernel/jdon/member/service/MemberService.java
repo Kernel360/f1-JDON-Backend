@@ -1,6 +1,6 @@
 package kernel.jdon.member.service;
 
-import static kernel.jdon.auth.encrypt.HmacUtil.*;
+import static kernel.jdon.auth.util.HmacUtil.*;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kernel.jdon.auth.dto.object.RegisterMemberDto;
 import kernel.jdon.auth.dto.request.RegisterRequest;
-import kernel.jdon.auth.encrypt.AesUtil;
+import kernel.jdon.auth.util.AesUtil;
 import kernel.jdon.jobcategory.domain.JobCategory;
 import kernel.jdon.member.domain.Member;
 import kernel.jdon.member.domain.MemberRole;

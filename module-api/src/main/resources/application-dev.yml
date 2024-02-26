@@ -62,21 +62,25 @@ custom-oauth2:
     app-admin-key: ${KAKAO_APP_ADMIN_KEY}
     delete-user-url: https://kapi.kakao.com/v1/user/unlink
 
+allowed-origins:
+  origin: https://jdon-test.netlify.app/
+  url:
+    - "http://localhost:3000"
+    - "https://localhost:3000"
+    - "https://jdon.kr"
+    - "https://jdon.netlify.app"
+    - "https://jdon-test.netlify.app/"
+
+#  https://jdon-test.netlify.app/
+#  https://localhost:3000/
 redirect-url:
   login:
     success:
-      member: https://jdon-test.netlify.app/oauth/login/success
-      local-member: https://localhost:3000/oauth/login/success
-      guest: https://jdon-test.netlify.app/oauth/info?
-      local-guest: https://localhost:3000/oauth/info?
+      member: oauth/login/success
+      guest: oauth/info?
     failure:
-      not-found-email: https://jdon-test.netlify.app/oauth/login/fail/not-found-email
-      local-not-found-email: https://localhost:3000/oauth/login/fail/not-found-email
-      not-match-provider: https://jdon-test.netlify.app/oauth/login/fail/not-match-provider
-      local-not-match-provider: https://localhost:3000/oauth/login/fail/not-match-provider
-  logout:
-    success: https://jdon-test.netlify.app
-    local-success: https://localhost:3000
+      not-found-email: oauth/login/fail/not-found-email
+      not-match-provider: oauth/login/fail/not-match-provider
 
 redis:
   lock:

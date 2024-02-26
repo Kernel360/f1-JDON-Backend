@@ -14,19 +14,19 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import kernel.jdon.auth.error.AuthErrorCode;
+import kernel.jdon.auth.util.RedirectUrlUtil;
 import kernel.jdon.moduleapi.global.exception.AuthException;
 
 @Component
 public class JdonAuthExceptionHandler
 	implements AuthenticationEntryPoint, AccessDeniedHandler, AuthenticationFailureHandler {
-
 	private final HandlerExceptionResolver resolver;
-	private final LoginRedirectUrlProperties loginRedirectUrlProperties;
+	private final RedirectUrlUtil redirectUrlUtil;
 
 	public JdonAuthExceptionHandler(@Qualifier("handlerExceptionResolver") HandlerExceptionResolver resolver,
-		LoginRedirectUrlProperties config) {
+		RedirectUrlUtil redirectUrlUtil) {
 		this.resolver = resolver;
-		this.loginRedirectUrlProperties = config;
+		this.redirectUrlUtil = redirectUrlUtil;
 	}
 
 	@Override
@@ -45,10 +45,10 @@ public class JdonAuthExceptionHandler
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
 		AuthenticationException exception) throws IOException {
 		if (AuthErrorCode.UNAUTHORIZED_OAUTH_RETURN_NULL_EMAIL == ((AuthException)exception).getErrorCode()) {
-			response.sendRedirect(loginRedirectUrlProperties.getFailureNotFoundEmail(request.getHeader("Referer")));
+			response.sendRedirect(redirectUrlUtil.getLoginFailureNotFoundEmail(request.getHeader("Referer")));
 		}
 		if (AuthErrorCode.UNAUTHORIZED_NOT_MATCH_PROVIDER_TYPE == ((AuthException)exception).getErrorCode()) {
-			response.sendRedirect(loginRedirectUrlProperties.getFailureNotMatchProvider(request.getHeader("Referer")));
+			response.sendRedirect(redirectUrlUtil.getLoginFailureNotMatchProvider(request.getHeader("Referer")));
 		}
 	}
 }
