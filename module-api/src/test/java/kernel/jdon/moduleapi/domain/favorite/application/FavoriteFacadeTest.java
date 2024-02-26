@@ -25,7 +25,7 @@ class FavoriteFacadeTest {
 	@InjectMocks
 	private FavoriteFacade favoriteFacade;
 
-	@DisplayName("유효한 요청이 주어졌을 때, 찜하기를 하면 favorite id를 응답한다.")
+	@DisplayName("1: 유효한 요청이 주어졌을 때, 찜하기를 하면 favorite id를 응답한다.")
 	@Test
 	void givenValidRequest_whenCreateFavorite_thenReturnCreatedFavorite() {
 		// given
@@ -42,7 +42,7 @@ class FavoriteFacadeTest {
 		verify(favoriteService, times(1)).save(memberId, request.getLectureId());
 	}
 
-	@DisplayName("유효한 요청으로 즐겨찾기 삭제하면, 삭제된 favorite id를 응답한다.")
+	@DisplayName("2: 유효한 요청으로 즐겨찾기 삭제하면, 삭제된 favorite id를 응답한다.")
 	@Test
 	void givenValidRequest_whenDeleteFavorite_thenReturnDeletedFavorite() {
 		// given
@@ -60,7 +60,7 @@ class FavoriteFacadeTest {
 		verify(favoriteService, times(1)).delete(memberId, lectureId);
 	}
 
-	@DisplayName("내가 찜한 목록을 요청하면, 찜한 목록을 응답한다.")
+	@DisplayName("3: 내가 찜한 목록을 요청하면, 찜한 목록을 응답한다.")
 	@Test
 	void whenGetList_thenReturnList() {
 		// given
