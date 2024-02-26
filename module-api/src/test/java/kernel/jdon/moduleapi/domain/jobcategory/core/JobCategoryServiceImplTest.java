@@ -26,13 +26,13 @@ class JobCategoryServiceImplTest {
 	private JobCategoryReader jobCategoryReader;
 
 	@Test
-	@DisplayName("getJobGroupList 메서드가 존재하는 직군별 직무 목록 데이터를 응답한다.")
-	void givenNone_whenFindList_thenReturnCorrectJobGroupList() throws Exception {
+	@DisplayName("1: getJobGroupList 메서드가 존재하는 직군별 직무 목록 데이터를 응답한다.")
+	void whenFindList_thenReturnCorrectJobGroupList() throws Exception {
 		//given
-		String filePath1 = "giventest/jobcategory/serviceimpl/givenNone_whenFindList_thenReturnCorrectJobGroupList_1.json";
+		String filePath1 = "giventest/jobcategory/serviceimpl/1_jobcategory_1.json";
 		List<JobCategory> parentJobCategoryList = getMockJobCategories(filePath1);
 
-		String filePath2 = "giventest/jobcategory/serviceimpl/givenNone_whenFindList_thenReturnCorrectJobGroupList_2.json";
+		String filePath2 = "giventest/jobcategory/serviceimpl/1_jobcategory_2.json";
 		List<JobCategory> subJobCategoryList = getMockJobCategories(filePath2);
 
 		//when
