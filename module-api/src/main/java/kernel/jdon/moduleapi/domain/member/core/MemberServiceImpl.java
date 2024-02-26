@@ -15,7 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
 	private final MemberReader memberReader;
-	private final MemberStore memberStore;
 	private final MemberInfoMapper memberInfoMapper;
 	private final MemberFactory memberFactory;
 

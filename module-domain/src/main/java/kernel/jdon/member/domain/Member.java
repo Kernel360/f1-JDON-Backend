@@ -106,7 +106,6 @@ public class Member {
 		this.withdrawDate = withdrawDate;
 		this.socialProvider = socialProvider;
 		this.jobCategory = jobCategory;
-		this.memberSkillList = memberSkillList;
 	}
 
 	public boolean isActiveMember() {

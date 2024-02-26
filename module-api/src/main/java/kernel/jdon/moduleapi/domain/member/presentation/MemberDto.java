@@ -43,5 +43,4 @@ public class MemberDto {
 	public static class UpdateMemberResponse {
 		private Long memberId;
 	}
-
 }
