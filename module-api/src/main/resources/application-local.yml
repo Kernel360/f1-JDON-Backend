@@ -80,3 +80,9 @@ redis:
     coffee-chat:
       wait-time: 5
       lease-time: 1
+
+api:
+  search:
+    hot_skill_keyword_count: 10
+    wanted_jd_count: 6
+    inflearn_lecture_count: 3

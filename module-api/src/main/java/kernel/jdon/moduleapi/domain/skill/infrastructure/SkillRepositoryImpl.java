@@ -16,17 +16,24 @@ import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
-import lombok.RequiredArgsConstructor;
+import kernel.jdon.moduleapi.domain.config.SearchingSkillProperties;
 
-@RequiredArgsConstructor
 public class SkillRepositoryImpl implements SkillRepositoryCustom {
 
 	private final JPAQueryFactory jpaQueryFactory;
-	List<String> allKeywordAssociatedTerms = SkillTypeManager.getAllKeywordAssociatedTerms();
+	private final int hotSkillKeywordCount;
+	private final int wantedJdCount;
+	private final int inflearnLectureCount;
+
+	public SkillRepositoryImpl(JPAQueryFactory jpaQueryFactory, SearchingSkillProperties searchingSkillProperties) {
+		this.jpaQueryFactory = jpaQueryFactory;
+		this.hotSkillKeywordCount = searchingSkillProperties.getHotSkillKeywordCount();
+		this.wantedJdCount = searchingSkillProperties.getWantedJdCount();
+		this.inflearnLectureCount = searchingSkillProperties.getInflearnLectureCount();
+	}
 
 	@Override
 	public List<SkillReaderInfo.FindHotSkill> findHotSkillList() {
-		final int hotSkillKeywordCount = 10;
 
 		return jpaQueryFactory
 			.select(new QSkillReaderInfo_FindHotSkill(skill.id, skill.keyword))
@@ -53,7 +60,7 @@ public class SkillRepositoryImpl implements SkillRepositoryCustom {
 
 	@Override
 	public List<SkillReaderInfo.FindWantedJd> findWantedJdListBySkill(final String keyword) {
-		final int wantedJdCount = 6;
+		List<String> allKeywordAssociatedTerms = SkillTypeManager.getAllKeywordAssociatedTerms(keyword);
 
 		return jpaQueryFactory
 			.select(
@@ -76,7 +83,7 @@ public class SkillRepositoryImpl implements SkillRepositoryCustom {
 	@Override
 	public List<SkillReaderInfo.FindInflearnLecture> findInflearnLectureListBySkill(String keyword,
 		Long memberId) {
-		final int inflearnLectureCount = 3;
+		List<String> allKeywordAssociatedTerms = SkillTypeManager.getAllKeywordAssociatedTerms(keyword);
 
 		return jpaQueryFactory
 			.select(new QSkillReaderInfo_FindInflearnLecture(inflearnCourse.id, inflearnCourse.title,
