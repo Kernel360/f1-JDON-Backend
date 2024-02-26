@@ -26,7 +26,7 @@ class SkillFacadeTest {
 	private SkillFacade skillFacade;
 
 	@Test
-	@DisplayName("getHotSkillList 메서드가 존재하는 HotSkill 개수 만큼 데이터를 응답한다.")
+	@DisplayName("1: getHotSkillList 메서드가 존재하는 HotSkill 개수 만큼 데이터를 응답한다.")
 	void givenValidHotSkillList_whenFindList_thenReturnCorrectHotSkillList() {
 		// given
 		var hotSkillList = Collections.singletonList(new SkillInfo.FindHotSkill(1L, "hot_skill_keyword"));
@@ -42,7 +42,7 @@ class SkillFacadeTest {
 	}
 
 	@Test
-	@DisplayName("getMemberSkillList 메서드가 존재하는 memberSkill 개수 만큼 데이터를 응답한다.")
+	@DisplayName("2: getMemberSkillList 메서드가 존재하는 memberSkill 개수 만큼 데이터를 응답한다.")
 	void givenValidMemberSkillList_whenFindList_thenReturnCorrectHotSkillList() {
 		// given
 		var memberSkillList = Arrays.asList(
@@ -62,7 +62,7 @@ class SkillFacadeTest {
 	}
 
 	@Test
-	@DisplayName("올바른 직군 ID가 주어졌을 때 getJobCategorySkillList 메서드가 직군별 기술스택 데이터 개수 만큼 데이터를 응답한다.")
+	@DisplayName("3: 올바른 직군 ID가 주어졌을 때 getJobCategorySkillList 메서드가 직군별 기술스택 데이터 개수 만큼 데이터를 응답한다.")
 	void givenValidJobCategoryId_whenFindList_thenReturnCorrectJobCategorySkillList() throws Exception {
 		//given
 		Long jobCategoryId = 1L;
@@ -81,7 +81,7 @@ class SkillFacadeTest {
 	}
 
 	@Test
-	@DisplayName("keyword가 주어졌을 때 getDataListBySkill 메서드가 keyword 기반의 JD 및 강의 데이터 개수 만큼 데이터를 응답한다.")
+	@DisplayName("4: keyword가 주어졌을 때 getDataListBySkill 메서드가 keyword 기반의 JD 및 강의 데이터 개수 만큼 데이터를 응답한다.")
 	void givenValidKeyword_whenFindList_thenReturnCorrectDataListBySkill() throws Exception {
 		//given
 		final Long memberId = 1L;
@@ -89,7 +89,7 @@ class SkillFacadeTest {
 		final int jdCount = 6;
 		final int lectureCount = 3;
 
-		String filePath = "giventest/skill/facade/givenValidKeyword_whenFindList_thenReturnCorrectDataListBySkill.json";
+		String filePath = "giventest/skill/facade/4_dataListBySkill_1.json";
 		var dataListBySkillResponse = JsonFileReader.readJsonFileToObject(filePath,
 			SkillInfo.FindDataListBySkillResponse.class);
 
