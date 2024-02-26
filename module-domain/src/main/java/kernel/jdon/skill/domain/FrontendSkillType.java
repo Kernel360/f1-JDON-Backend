@@ -31,7 +31,7 @@ public enum FrontendSkillType implements SkillType {
 	private final String keyword;
 	private final String translation;
 	private final List<String> relatedKeywords;
-	
+
 	@Override
 	public String getKeyword() {
 		return keyword;

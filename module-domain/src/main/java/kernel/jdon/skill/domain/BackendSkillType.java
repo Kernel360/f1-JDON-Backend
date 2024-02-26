@@ -53,7 +53,7 @@ public enum BackendSkillType implements SkillType {
 	private String keyword;
 	private final String translation;
 	private final List<String> relatedKeywords;
-	
+
 	@Override
 	public String getKeyword() {
 		return keyword;
