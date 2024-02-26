@@ -17,4 +17,6 @@ public interface CoffeeChatReader {
     CoffeeChatInfo.FindCoffeeChatListResponse findCoffeeChatList(PageInfoRequest pageInfoRequest,
         CoffeeChatCommand.FindCoffeeChatListRequest command);
 
+    boolean existsByCoffeeChatIdAndMemberId(Long coffeeChatId, Long memberId);
+
 }

@@ -54,6 +54,11 @@ public class CoffeeChatReaderImpl implements CoffeeChatReader {
             .map(coffeeChat -> CoffeeChatInfo.FindCoffeeChat.of(coffeeChat))
             .toList();
 
-		return new CoffeeChatInfo.FindCoffeeChatListResponse(list, new CustomJpaPageInfo(readerInfo));
-	}
+        return new CoffeeChatInfo.FindCoffeeChatListResponse(list, new CustomJpaPageInfo(readerInfo));
+    }
+
+    @Override
+    public boolean existsByCoffeeChatIdAndMemberId(Long coffeeChatId, Long memberId) {
+        return coffeeChatMemberRepository.existsByCoffeeChatIdAndMemberId(coffeeChatId, coffeeChatId);
+    }
 }

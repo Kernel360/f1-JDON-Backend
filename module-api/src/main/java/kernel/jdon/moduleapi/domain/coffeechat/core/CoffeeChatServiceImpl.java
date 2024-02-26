@@ -9,7 +9,6 @@ import kernel.jdon.coffeechat.domain.CoffeeChat;
 import kernel.jdon.coffeechatmember.domain.CoffeeChatMember;
 import kernel.jdon.member.domain.Member;
 import kernel.jdon.moduleapi.domain.coffeechat.error.CoffeeChatErrorCode;
-import kernel.jdon.moduleapi.domain.coffeechat.infrastructure.CoffeeChatMemberRepository;
 import kernel.jdon.moduleapi.domain.member.core.MemberReader;
 import kernel.jdon.moduleapi.global.exception.ApiException;
 import kernel.jdon.moduleapi.global.page.CustomPageResponse;
@@ -26,8 +25,6 @@ public class CoffeeChatServiceImpl implements CoffeeChatService {
     private final CoffeeChatReader coffeeChatReader;
     private final CoffeeChatStore coffeeChatStore;
     private final CoffeeChatInfoMapper coffeeChatInfoMapper;
-    //TODO: MemberReader 추상화에 의존하도록 변경?
-    private final CoffeeChatMemberRepository coffeeChatMemberRepository;
     private final MemberReader memberReader;
 
     @Override
@@ -37,7 +34,6 @@ public class CoffeeChatServiceImpl implements CoffeeChatService {
         CoffeeChat savedCoffeeChat = coffeeChatStore.save(request.toEntity(findMember));
 
         return savedCoffeeChat.getId();
-
     }
 
     @Override
@@ -144,8 +140,7 @@ public class CoffeeChatServiceImpl implements CoffeeChatService {
     }
 
     private void checkIfAlreadyJoined(Member findMember, CoffeeChat findCoffeeChat) {
-        //TODO: MemberReader? 추상화에 의존하도록 변경
-        if (coffeeChatMemberRepository.existsByCoffeeChatIdAndMemberId(findCoffeeChat.getId(), findMember.getId())) {
+        if (coffeeChatReader.existsByCoffeeChatIdAndMemberId(findCoffeeChat.getId(), findMember.getId())) {
             throw new ApiException(CoffeeChatErrorCode.ALREADY_JOINED_COFFEECHAT);
         }
     }
