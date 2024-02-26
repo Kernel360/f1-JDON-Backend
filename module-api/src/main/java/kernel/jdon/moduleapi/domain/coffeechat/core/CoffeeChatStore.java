@@ -4,7 +4,7 @@ import kernel.jdon.coffeechat.domain.CoffeeChat;
 
 public interface CoffeeChatStore {
 
-    CoffeeChat store(CoffeeChat coffeeChat);
+    CoffeeChat save(CoffeeChat coffeeChat);
 
     void delete(Long id);
 }

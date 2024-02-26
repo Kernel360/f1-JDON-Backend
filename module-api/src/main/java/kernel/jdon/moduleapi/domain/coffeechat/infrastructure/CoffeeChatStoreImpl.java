@@ -15,7 +15,7 @@ public class CoffeeChatStoreImpl implements CoffeeChatStore {
     private final CoffeeChatRepository coffeeChatRepository;
 
     @Override
-    public CoffeeChat store(CoffeeChat coffeeChat) {
+    public CoffeeChat save(CoffeeChat coffeeChat) {
         return coffeeChatRepository.save(coffeeChat);
     }
 
