@@ -15,13 +15,13 @@ public class FavoriteDto {
 	@Getter
 	@AllArgsConstructor
 	public static class FindFavoriteListResponse {
-		private List<FavoriteDto.FindFavoriteDto> content;
+		private List<FindFavorite> content;
 		private CustomPageInfo pageInfo;
 	}
 
 	@Getter
 	@AllArgsConstructor
-	public static class FindFavoriteDto {
+	public static class FindFavorite {
 		private Long lectureId;
 		private String title;
 		private String lectureUrl;

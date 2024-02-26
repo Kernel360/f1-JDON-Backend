@@ -29,8 +29,8 @@ public class FavoriteReaderImpl implements FavoriteReader {
 		Page<Favorite> favoritePage = favoriteRepository.findFavoriteByMemberId(memberId, pageable);
 		Page<FavoriteReaderInfo.FindFavoriteListResponse> favoritesPage = favoritePage.map(favoriteInfoMapper::of);
 
-		List<FavoriteInfo.FindFavoriteInfo> list = favoritesPage.getContent().stream()
-			.map(FavoriteInfo.FindFavoriteInfo::of)
+		List<FavoriteInfo.FindFavorite> list = favoritesPage.getContent().stream()
+			.map(FavoriteInfo.FindFavorite::of)
 			.toList();
 
 		CustomPageInfo customPageInfo = new CustomPageInfo(

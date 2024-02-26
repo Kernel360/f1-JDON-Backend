@@ -17,13 +17,13 @@ public class FavoriteInfo {
 	@Getter
 	@AllArgsConstructor
 	public static class FindFavoriteListResponse {
-		private List<FindFavoriteInfo> content;
+		private List<FindFavorite> content;
 		private CustomPageInfo pageInfo;
 	}
 
 	@Getter
 	@AllArgsConstructor
-	public static class FindFavoriteInfo {
+	public static class FindFavorite {
 		private Long lectureId;
 		private String title;
 		private String lectureUrl;
@@ -32,8 +32,8 @@ public class FavoriteInfo {
 		private Long studentCount;
 		private Integer price;
 
-		public static FindFavoriteInfo of(FavoriteReaderInfo.FindFavoriteListResponse favorite) {
-			return new FindFavoriteInfo(
+		public static FindFavorite of(FavoriteReaderInfo.FindFavoriteListResponse favorite) {
+			return new FindFavorite(
 				favorite.getLectureId(),
 				favorite.getTitle(),
 				favorite.getLectureUrl(),
