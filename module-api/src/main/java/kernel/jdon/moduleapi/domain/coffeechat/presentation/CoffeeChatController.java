@@ -88,7 +88,7 @@ public class CoffeeChatController {
         @RequestBody CoffeeChatDto.UpdateCoffeeChatRequest request
     ) {
         CoffeeChatCommand.UpdateCoffeeChatRequest updateCommand = coffeeChatDtoMapper.of(request);
-        Long updatedCoffeeChatId = coffeeChatFacade.updateCoffeeChat(updateCommand, coffeeChatId);
+        Long updatedCoffeeChatId = coffeeChatFacade.modifyCoffeeChat(updateCommand, coffeeChatId);
 
         return ResponseEntity.ok().body(CommonResponse.of(updatedCoffeeChatId));
     }

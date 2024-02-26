@@ -25,8 +25,8 @@ import lombok.extern.slf4j.Slf4j;
 public class CoffeeChatServiceImpl implements CoffeeChatService {
 
     private final CoffeeChatReader coffeeChatReader;
-    private final CoffeeChatInfoMapper coffeeChatInfoMapper;
     private final CoffeeChatStore coffeeChatStore;
+    private final CoffeeChatInfoMapper coffeeChatInfoMapper;
     //TODO: MemberReader 추상화에 의존하도록 변경?
     private final CoffeeChatMemberRepository coffeeChatMemberRepository;
     //TODO: MemberReader 추상화에 의존하도록 변경
@@ -70,12 +70,12 @@ public class CoffeeChatServiceImpl implements CoffeeChatService {
 
     @Override
     @Transactional
-    public Long updateCoffeeChat(CoffeeChatCommand.UpdateCoffeeChatRequest request, Long coffeeChatId) {
+    public Long modifyCoffeeChat(CoffeeChatCommand.UpdateCoffeeChatRequest request, Long coffeeChatId) {
         CoffeeChat findCoffeeChat = coffeeChatReader.findExistCoffeeChat(coffeeChatId);
         CoffeeChat updateCoffeeChat = request.toEntity();
 
         validateUpdateRequest(findCoffeeChat, updateCoffeeChat);
-        findCoffeeChat.updateCoffeeChat(updateCoffeeChat);
+        coffeeChatStore.update(findCoffeeChat, updateCoffeeChat);
 
         return findCoffeeChat.getId();
     }
@@ -103,7 +103,7 @@ public class CoffeeChatServiceImpl implements CoffeeChatService {
     @Transactional
     public Long deleteCoffeeChat(Long coffeeChatId) {
         CoffeeChat findCoffeeChat = coffeeChatReader.findExistCoffeeChat(coffeeChatId);
-        coffeeChatStore.delete(findCoffeeChat.getId());
+        coffeeChatStore.deleteById(findCoffeeChat.getId());
 
         return findCoffeeChat.getId();
     }

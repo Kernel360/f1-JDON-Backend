@@ -16,7 +16,7 @@ public interface CoffeeChatService {
 
     void increaseViewCount(Long coffeeChatId);
 
-    Long updateCoffeeChat(CoffeeChatCommand.UpdateCoffeeChatRequest request, Long coffeeChatId);
+    Long modifyCoffeeChat(CoffeeChatCommand.UpdateCoffeeChatRequest request, Long coffeeChatId);
 
     Long deleteCoffeeChat(Long coffeeChatId);
 
