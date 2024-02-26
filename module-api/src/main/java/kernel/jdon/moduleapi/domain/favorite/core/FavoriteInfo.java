@@ -13,14 +13,7 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class FavoriteInfo {
-
-	// @Getter
-	// @Builder
-	// @AllArgsConstructor
-	// public static class FindPageResponse {
-	// 	private CustomPageResponse<FindResponse> findPage;
-	// }
-	//
+	
 	@Getter
 	@AllArgsConstructor
 	public static class FindResponse {

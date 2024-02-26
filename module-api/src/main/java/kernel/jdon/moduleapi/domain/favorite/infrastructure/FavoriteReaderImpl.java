@@ -22,11 +22,6 @@ public class FavoriteReaderImpl implements FavoriteReader {
 	private final FavoriteRepository favoriteRepository;
 	private final FavoriteInfoMapper favoriteInfoMapper;
 
-	// @Override
-	// public Page<Favorite> findList(Long memberId, Pageable pageable) {
-	// 	return favoriteRepository.findFavoriteByMemberId(memberId, pageable);
-	// }
-
 	@Override
 	public FavoriteInfo.FindFavoriteListResponse findList(Long memberId, PageInfoRequest pageInfoRequest) {
 		Pageable pageable = PageRequest.of(pageInfoRequest.getPage(), pageInfoRequest.getSize());

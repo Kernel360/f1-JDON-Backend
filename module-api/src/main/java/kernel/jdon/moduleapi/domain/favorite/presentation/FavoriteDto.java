@@ -12,12 +12,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class FavoriteDto {
 
-	// @Getter
-	// @AllArgsConstructor
-	// public static class FindPageResponse {
-	// 	private CustomPageResponse<FavoriteInfo.FindResponse> findPage;
-	// }
-
 	@Getter
 	@AllArgsConstructor
 	public static class FindResponse {

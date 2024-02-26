@@ -20,14 +20,10 @@ public class FavoriteFacade {
 		return favoriteService.delete(memberId, request.getLectureId());
 	}
 
-	// public FavoriteInfo.FindPageResponse getList(final Long memberId, Pageable pageable) {
-	// 	return favoriteService.getList(memberId, pageable);
-	// }
-
 	public FavoriteInfo.FindFavoriteListResponse getList(
 		final Long memberId,
 		final PageInfoRequest pageInfoRequest) {
-		
+
 		return favoriteService.getList(memberId, pageInfoRequest);
 	}
 }

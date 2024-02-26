@@ -58,14 +58,6 @@ public class FavoriteServiceImpl implements FavoriteService {
 		return new FavoriteInfo.UpdateResponse(findFavorite.getId());
 	}
 
-	// @Override
-	// public FavoriteInfo.FindPageResponse getList(Long memberId, Pageable pageable) {
-	// 	Page<Favorite> favoritePage = favoriteReader.findList(memberId, pageable);
-	// 	Page<FavoriteInfo.FindResponse> infoPage = favoritePage.map(favoriteInfoMapper::of);
-	//
-	// 	return new FavoriteInfo.FindPageResponse(CustomPageResponse.of(infoPage));
-	// }
-
 	@Override
 	public FavoriteInfo.FindFavoriteListResponse getList(Long memberId, PageInfoRequest pageInfoRequest) {
 		FavoriteInfo.FindFavoriteListResponse favoriteList = favoriteReader.findList(memberId, pageInfoRequest);

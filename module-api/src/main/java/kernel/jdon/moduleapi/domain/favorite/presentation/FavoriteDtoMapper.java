@@ -13,7 +13,6 @@ import kernel.jdon.moduleapi.domain.favorite.core.FavoriteInfo;
 	unmappedTargetPolicy = ReportingPolicy.ERROR
 )
 public interface FavoriteDtoMapper {
-	// FavoriteDto.FindPageResponse of(FavoriteInfo.FindPageResponse info);
 	FavoriteDto.FindFavoriteListResponse of(FavoriteInfo.FindFavoriteListResponse info);
 
 	FavoriteCommand.UpdateRequest of(FavoriteDto.UpdateRequest request);

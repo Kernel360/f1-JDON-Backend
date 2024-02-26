@@ -24,15 +24,7 @@ import lombok.RequiredArgsConstructor;
 public class FavoriteController {
 	private final FavoriteFacade favoriteFacade;
 	private final FavoriteDtoMapper favoriteDtoMapper;
-
-	// @GetMapping("/api/v1/favorites")
-	// public ResponseEntity<CommonResponse<FavoriteDto.FindPageResponse>> getList(@LoginUser SessionUserInfo member,
-	// 	@PageableDefault(size = 12) Pageable pageable) {
-	// 	final FavoriteInfo.FindPageResponse info = favoriteFacade.getList(member.getId(), pageable);
-	// 	final FavoriteDto.FindPageResponse response = favoriteDtoMapper.of(info);
-	//
-	// 	return ResponseEntity.ok(CommonResponse.of(response.getFindPage()));
-	// }
+	
 	@GetMapping("/api/v1/favorites")
 	public ResponseEntity<CommonResponse<FavoriteDto.FindFavoriteListResponse>> getList(
 		@LoginUser SessionUserInfo member,
