@@ -10,8 +10,7 @@ import kernel.jdon.coffeechatmember.domain.CoffeeChatMember;
 import kernel.jdon.member.domain.Member;
 import kernel.jdon.moduleapi.domain.coffeechat.error.CoffeeChatErrorCode;
 import kernel.jdon.moduleapi.domain.coffeechat.infrastructure.CoffeeChatMemberRepository;
-import kernel.jdon.moduleapi.domain.member.error.MemberErrorCode;
-import kernel.jdon.moduleapi.domain.member.infrastructure.MemberRepository;
+import kernel.jdon.moduleapi.domain.member.core.MemberReader;
 import kernel.jdon.moduleapi.global.exception.ApiException;
 import kernel.jdon.moduleapi.global.page.CustomPageResponse;
 import kernel.jdon.moduleapi.global.page.PageInfoRequest;
@@ -29,15 +28,12 @@ public class CoffeeChatServiceImpl implements CoffeeChatService {
     private final CoffeeChatInfoMapper coffeeChatInfoMapper;
     //TODO: MemberReader 추상화에 의존하도록 변경?
     private final CoffeeChatMemberRepository coffeeChatMemberRepository;
-    //TODO: MemberReader 추상화에 의존하도록 변경
-    private final MemberRepository memberRepository;
+    private final MemberReader memberReader;
 
     @Override
     @Transactional
     public Long createCoffeeChat(CoffeeChatCommand.CreateCoffeeChatRequest request, Long memberId) {
-        //TODO: MemberReader 추상화에 의존하도록 변경
-        Member findMember = memberRepository.findById(memberId)
-            .orElseThrow(MemberErrorCode.NOT_FOUND_MEMBER::throwException);
+        Member findMember = memberReader.findById(memberId);
         CoffeeChat savedCoffeeChat = coffeeChatStore.save(request.toEntity(findMember));
 
         return savedCoffeeChat.getId();
@@ -134,8 +130,7 @@ public class CoffeeChatServiceImpl implements CoffeeChatService {
     @Transactional
     public Long applyCoffeeChat(Long coffeeChatId, Long memberId) {
         CoffeeChat findCoffeeChat = findExistAndOpenCoffeeChat(coffeeChatId);
-        Member findMember = memberRepository.findById(memberId)
-            .orElseThrow(MemberErrorCode.NOT_FOUND_MEMBER::throwException);
+        Member findMember = memberReader.findById(memberId);
 
         validateApplyRequest(findMember, findCoffeeChat);
         findCoffeeChat.addCoffeeChatMember(findMember);
