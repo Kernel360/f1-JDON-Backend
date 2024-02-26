@@ -18,7 +18,7 @@ public class CoffeeChatInfo {
 
     @Getter
     @Builder
-    public static class FindResponse {
+    public static class FindCoffeeChatResponse {
         private Long coffeeChatId;
         private Long hostId;
         private String nickname;
@@ -36,57 +36,26 @@ public class CoffeeChatInfo {
         private Long currentRecruitCount;
     }
 
-	@Getter
-	public static class FindCoffeeChatListResponse {
-		private List<FindCoffeeChatInfo> content;
-		private CustomPageInfo pageInfo;
+    @Getter
+    public static class FindCoffeeChatListResponse {
+        private List<FindCoffeeChat> content;
+        private CustomPageInfo pageInfo;
 
-		public FindCoffeeChatListResponse(List<FindCoffeeChatInfo> content, CustomPageInfo pageInfo) {
-			this.content = content;
-			this.pageInfo = pageInfo;
-		}
-	}
+        public FindCoffeeChatListResponse(List<FindCoffeeChat> content, CustomPageInfo pageInfo) {
+            this.content = content;
+            this.pageInfo = pageInfo;
+        }
+    }
 
-	@Getter
-	@Builder
-	public static class FindCoffeeChatInfo {
-		private Long coffeeChatId;
-		private String nickname;
-		private String hostJobCategoryName;
-		private String title;
-		private String activeStatus;
-		@JsonInclude(JsonInclude.Include.NON_NULL)
-		private Boolean isDeleted;
-		@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
-		private LocalDateTime meetDate;
-		@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
-		private LocalDateTime createdDate;
-		private Long totalRecruitCount;
-		private Long currentRecruitCount;
-
-		public static FindCoffeeChatInfo of(CoffeeChatReaderInfo.FindCoffeeChatListResponse readerInfo) {
-			return FindCoffeeChatInfo.builder()
-				.coffeeChatId(readerInfo.getCoffeeChatId())
-				.nickname(readerInfo.getNickname())
-				.hostJobCategoryName(readerInfo.getHostJobCategoryName())
-				.title(readerInfo.getTitle())
-				.activeStatus(readerInfo.getActiveStatus())
-				.isDeleted(readerInfo.getIsDeleted())
-				.meetDate(readerInfo.getMeetDate())
-				.createdDate(readerInfo.getCreatedDate())
-				.totalRecruitCount(readerInfo.getTotalRecruitCount())
-				.currentRecruitCount(readerInfo.getCurrentRecruitCount())
-				.build();
-		}
-	}
     @Getter
     @Builder
-    public static class FindListResponse {
+    public static class FindCoffeeChat {
         private Long coffeeChatId;
         private String nickname;
-        private String job;
+        private String hostJobCategoryName;
         private String title;
         private String activeStatus;
+        @JsonInclude(JsonInclude.Include.NON_NULL)
         private Boolean isDeleted;
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
         private LocalDateTime meetDate;
@@ -94,5 +63,20 @@ public class CoffeeChatInfo {
         private LocalDateTime createdDate;
         private Long totalRecruitCount;
         private Long currentRecruitCount;
+
+        public static FindCoffeeChat of(CoffeeChatReaderInfo.FindCoffeeChatListResponse readerInfo) {
+            return FindCoffeeChat.builder()
+                .coffeeChatId(readerInfo.getCoffeeChatId())
+                .nickname(readerInfo.getNickname())
+                .hostJobCategoryName(readerInfo.getHostJobCategoryName())
+                .title(readerInfo.getTitle())
+                .activeStatus(readerInfo.getActiveStatus())
+                .isDeleted(readerInfo.getIsDeleted())
+                .meetDate(readerInfo.getMeetDate())
+                .createdDate(readerInfo.getCreatedDate())
+                .totalRecruitCount(readerInfo.getTotalRecruitCount())
+                .currentRecruitCount(readerInfo.getCurrentRecruitCount())
+                .build();
+        }
     }
 }
