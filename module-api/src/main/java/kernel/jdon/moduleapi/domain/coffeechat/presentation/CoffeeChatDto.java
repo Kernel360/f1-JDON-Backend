@@ -16,11 +16,11 @@ import lombok.NoArgsConstructor;
 public class CoffeeChatDto {
     @Getter
     @Builder
-    public static class FindResponse {
+    public static class FindCoffeeChatResponse {
         private Long coffeeChatId;
         private Long hostId;
         private String nickname;
-        private String job;
+        private String hostJobCategoryName;
         private String title;
         private String content;
         private Long viewCount;
@@ -36,7 +36,7 @@ public class CoffeeChatDto {
 
     @Getter
     @Builder
-    public static class CreateRequest {
+    public static class CreateCoffeeChatRequest {
         private String title;
         private String content;
         private Long totalRecruitCount;
@@ -47,7 +47,7 @@ public class CoffeeChatDto {
 
     @Getter
     @Builder
-    public static class UpdateRequest {
+    public static class UpdateCoffeeChatRequest {
         private String title;
         private String content;
         private Long totalRecruitCount;
@@ -56,28 +56,28 @@ public class CoffeeChatDto {
         private String openChatUrl;
     }
 
-	@Getter
-	@Builder
-	public static class FindCoffeeChatListResponse {
-		private List<FindCoffeeChat> content;
-		private CustomPageInfo pageInfo;
-	}
+    @Getter
+    @Builder
+    public static class FindCoffeeChatListResponse {
+        private List<FindCoffeeChat> content;
+        private CustomPageInfo pageInfo;
+    }
 
-	@Getter
-	@Builder
-	public static class FindCoffeeChat {
-		private Long coffeeChatId;
-		private String nickname;
-		private String hostJobCategoryName;
-		private String title;
-		private String activeStatus;
-		@JsonInclude(JsonInclude.Include.NON_NULL)
-		private Boolean isDeleted;
-		@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
-		private LocalDateTime meetDate;
-		@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
-		private LocalDateTime createdDate;
-		private Long totalRecruitCount;
-		private Long currentRecruitCount;
-	}
+    @Getter
+    @Builder
+    public static class FindCoffeeChat {
+        private Long coffeeChatId;
+        private String nickname;
+        private String hostJobCategoryName;
+        private String title;
+        private String activeStatus;
+        @JsonInclude(JsonInclude.Include.NON_NULL)
+        private Boolean isDeleted;
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
+        private LocalDateTime meetDate;
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
+        private LocalDateTime createdDate;
+        private Long totalRecruitCount;
+        private Long currentRecruitCount;
+    }
 }

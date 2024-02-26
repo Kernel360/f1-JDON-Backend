@@ -16,27 +16,28 @@ import kernel.jdon.moduleapi.domain.coffeechat.core.CoffeeChatService;
 @ExtendWith(MockitoExtension.class)
 class CoffeeChatFacadeTest {
 
-	@Mock
-	private CoffeeChatService coffeeChatService;
-	@InjectMocks
-	private CoffeeChatFacade coffeeChatFacade;
+    @Mock
+    private CoffeeChatService coffeeChatService;
+    @InjectMocks
+    private CoffeeChatFacade coffeeChatFacade;
 
-	@Test
-	@DisplayName("커피챗 조회 성공 시, 해당 커피챗 조회수를 증가시키고, 올바른 응답을 반환한다")
-	void givenValidId_whenGetCoffeeChat_thenIncreaseViewCount_thenReturnCorrectResponse() {
-		//given
-		Long coffeeChatId = 1L;
-		CoffeeChatInfo.FindResponse mockFindResponse = mock(CoffeeChatInfo.FindResponse.class);
-		when(coffeeChatService.getCoffeeChat(coffeeChatId)).thenReturn(mockFindResponse);
+    @Test
+    @DisplayName("커피챗 조회 성공 시, 해당 커피챗 조회수를 증가시키고, 올바른 응답을 반환한다")
+    void givenValidId_whenGetCoffeeChat_thenIncreaseViewCount_thenReturnCorrectResponse() {
+        //given
+        Long coffeeChatId = 1L;
+        CoffeeChatInfo.FindCoffeeChatResponse mockFindCoffeeChatResponse = mock(
+            CoffeeChatInfo.FindCoffeeChatResponse.class);
+        when(coffeeChatService.getCoffeeChat(coffeeChatId)).thenReturn(mockFindCoffeeChatResponse);
 
-		//when
-		CoffeeChatInfo.FindResponse response = coffeeChatFacade.getCoffeeChat(coffeeChatId);
+        //when
+        CoffeeChatInfo.FindCoffeeChatResponse response = coffeeChatFacade.getCoffeeChat(coffeeChatId);
 
-		//then
-		assertThat(response).isEqualTo(mockFindResponse);
+        //then
+        assertThat(response).isEqualTo(mockFindCoffeeChatResponse);
 
-		//verify
-		verify(coffeeChatService, times(1)).getCoffeeChat(coffeeChatId);
-		verify(coffeeChatService, times(1)).increaseViewCount(coffeeChatId);
-	}
+        //verify
+        verify(coffeeChatService, times(1)).getCoffeeChat(coffeeChatId);
+        verify(coffeeChatService, times(1)).increaseViewCount(coffeeChatId);
+    }
 }

@@ -34,13 +34,13 @@ public class CoffeeChatServiceImpl implements CoffeeChatService {
 
     @Override
     @Transactional
-    public Long createCoffeeChat(CoffeeChatCommand.CreateRequest request, Long memberId) {
+    public Long createCoffeeChat(CoffeeChatCommand.CreateCoffeeChatRequest request, Long memberId) {
         //TODO: MemberReader 추상화에 의존하도록 변경
         Member findMember = memberRepository.findById(memberId)
             .orElseThrow(MemberErrorCode.NOT_FOUND_MEMBER::throwException);
-        CoffeeChat storedCoffeeChat = coffeeChatStore.store(request.toEntity(findMember));
+        CoffeeChat savedCoffeeChat = coffeeChatStore.save(request.toEntity(findMember));
 
-        return storedCoffeeChat.getId();
+        return savedCoffeeChat.getId();
 
     }
 
@@ -70,7 +70,7 @@ public class CoffeeChatServiceImpl implements CoffeeChatService {
 
     @Override
     @Transactional
-    public Long updateCoffeeChat(CoffeeChatCommand.UpdateRequest request, Long coffeeChatId) {
+    public Long updateCoffeeChat(CoffeeChatCommand.UpdateCoffeeChatRequest request, Long coffeeChatId) {
         CoffeeChat findCoffeeChat = coffeeChatReader.findExistCoffeeChat(coffeeChatId);
         CoffeeChat updateCoffeeChat = request.toEntity();
 

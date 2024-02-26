@@ -12,17 +12,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class CoffeeChatCommand {
 
-	@Getter
-	@Builder
-	public static class FindCoffeeChatListRequest {
-		private CoffeeChatSortCondition sort;
-		private String keyword;
-		private Long jobCategory;
-	}
+    @Getter
+    @Builder
+    public static class FindCoffeeChatListRequest {
+        private CoffeeChatSortCondition sort;
+        private String keyword;
+        private Long jobCategory;
+    }
 
     @Getter
     @Builder
-    public static class CreateRequest {
+    public static class CreateCoffeeChatRequest {
 
         private String title;
         private String content;
@@ -45,7 +45,7 @@ public class CoffeeChatCommand {
 
     @Getter
     @Builder
-    public static class UpdateRequest {
+    public static class UpdateCoffeeChatRequest {
         private String title;
         private String content;
         private Long totalRecruitCount;

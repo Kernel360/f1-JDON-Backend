@@ -12,11 +12,11 @@ public interface CoffeeChatService {
 
     CoffeeChatInfo.FindCoffeeChatResponse getCoffeeChat(Long coffeeChatId);
 
-    Long createCoffeeChat(CoffeeChatCommand.CreateRequest request, Long memberId);
+    Long createCoffeeChat(CoffeeChatCommand.CreateCoffeeChatRequest request, Long memberId);
 
     void increaseViewCount(Long coffeeChatId);
 
-    Long updateCoffeeChat(CoffeeChatCommand.UpdateRequest request, Long coffeeChatId);
+    Long updateCoffeeChat(CoffeeChatCommand.UpdateCoffeeChatRequest request, Long coffeeChatId);
 
     Long deleteCoffeeChat(Long coffeeChatId);
 
