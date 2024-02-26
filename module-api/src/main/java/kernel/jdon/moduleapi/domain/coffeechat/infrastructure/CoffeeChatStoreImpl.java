@@ -20,6 +20,11 @@ public class CoffeeChatStoreImpl implements CoffeeChatStore {
     }
 
     @Override
+    public void update(CoffeeChat findCoffeeChat, CoffeeChat updateCoffeeChat) {
+        findCoffeeChat.updateCoffeeChat(updateCoffeeChat);
+    }
+
+    @Override
     public void deleteById(Long coffeeChatid) {
         coffeeChatRepository.deleteById(coffeeChatid);
     }
