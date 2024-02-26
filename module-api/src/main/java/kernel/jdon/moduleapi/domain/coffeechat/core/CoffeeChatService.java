@@ -3,15 +3,14 @@ package kernel.jdon.moduleapi.domain.coffeechat.core;
 import org.springframework.data.domain.Pageable;
 
 import kernel.jdon.moduleapi.global.page.CustomPageResponse;
-
 import kernel.jdon.moduleapi.global.page.PageInfoRequest;
 
 public interface CoffeeChatService {
 
-	CoffeeChatInfo.FindCoffeeChatListResponse getCoffeeChatList(PageInfoRequest pageInfoRequest,
-		CoffeeChatCommand.FindCoffeeChatListRequest command);
+    CoffeeChatInfo.FindCoffeeChatListResponse getCoffeeChatList(PageInfoRequest pageInfoRequest,
+        CoffeeChatCommand.FindCoffeeChatListRequest command);
 
-    CoffeeChatInfo.FindResponse getCoffeeChat(Long coffeeChatId);
+    CoffeeChatInfo.FindCoffeeChatResponse getCoffeeChat(Long coffeeChatId);
 
     Long createCoffeeChat(CoffeeChatCommand.CreateRequest request, Long memberId);
 
