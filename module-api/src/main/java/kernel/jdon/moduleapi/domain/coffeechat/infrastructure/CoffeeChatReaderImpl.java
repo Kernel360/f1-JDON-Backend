@@ -41,17 +41,18 @@ public class CoffeeChatReaderImpl implements CoffeeChatReader {
     public Page<CoffeeChat> findHostCoffeeChatList(Long memberId, Pageable pageable) {
         return coffeeChatRepository.findAllByMemberIdAndIsDeletedFalse(memberId, pageable);
     }
-	@Override
-	public CoffeeChatInfo.FindCoffeeChatListResponse findCoffeeChatList(final PageInfoRequest pageInfoRequest,
-		final CoffeeChatCommand.FindCoffeeChatListRequest command) {
-		Pageable pageable = PageRequest.of(pageInfoRequest.getPage(), pageInfoRequest.getSize());
 
-		final Page<CoffeeChatReaderInfo.FindCoffeeChatListResponse> readerInfo = coffeeChatRepository.findCoffeeChatList(
-			pageable, command);
+    @Override
+    public CoffeeChatInfo.FindCoffeeChatListResponse findCoffeeChatList(final PageInfoRequest pageInfoRequest,
+        final CoffeeChatCommand.FindCoffeeChatListRequest command) {
+        Pageable pageable = PageRequest.of(pageInfoRequest.getPage(), pageInfoRequest.getSize());
 
-		final List<CoffeeChatInfo.FindCoffeeChatInfo> list = readerInfo.stream()
-			.map(coffeeChat -> CoffeeChatInfo.FindCoffeeChatInfo.of(coffeeChat))
-			.toList();
+        final Page<CoffeeChatReaderInfo.FindCoffeeChatListResponse> readerInfo = coffeeChatRepository.findCoffeeChatList(
+            pageable, command);
+
+        final List<CoffeeChatInfo.FindCoffeeChat> list = readerInfo.stream()
+            .map(coffeeChat -> CoffeeChatInfo.FindCoffeeChat.of(coffeeChat))
+            .toList();
 
 		return new CoffeeChatInfo.FindCoffeeChatListResponse(list, new CustomJpaPageInfo(readerInfo));
 	}
