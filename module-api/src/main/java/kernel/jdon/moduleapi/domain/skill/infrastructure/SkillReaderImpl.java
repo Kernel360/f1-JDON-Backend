@@ -36,4 +36,9 @@ public class SkillReaderImpl implements SkillReader {
 		return skillRepository.findById(jobCategoryId)
 			.orElseThrow(SkillErrorCode.NOT_FOUND_SKILL::throwException);
 	}
+
+	@Override
+	public List<Skill> findAllById(List<Long> skillList) {
+		return skillRepository.findAllById(skillList);
+	}
 }

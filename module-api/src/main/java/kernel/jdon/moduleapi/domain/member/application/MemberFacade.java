@@ -2,6 +2,7 @@ package kernel.jdon.moduleapi.domain.member.application;
 
 import org.springframework.stereotype.Service;
 
+import kernel.jdon.moduleapi.domain.member.core.MemberCommand;
 import kernel.jdon.moduleapi.domain.member.core.MemberInfo;
 import kernel.jdon.moduleapi.domain.member.core.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -13,5 +14,9 @@ public class MemberFacade {
 
 	public MemberInfo.FindMemberResponse find(Long memberId) {
 		return memberService.find(memberId);
+	}
+
+	public MemberInfo.UpdateMemberResponse update(Long memberId, MemberCommand.UpdateMemberRequest command) {
+		return memberService.update(memberId, command);
 	}
 }

@@ -19,4 +19,19 @@ public class MemberDto {
 		private List<Long> skillList;
 	}
 
+	@Getter
+	public static class UpdateMemberRequest {
+		private String nickname;
+		private String birth;
+		private String gender;
+		private Long jobCategoryId;
+		private List<Long> skillList;
+	}
+
+	@Getter
+	@Builder
+	public static class UpdateMemberResponse {
+		private Long memberId;
+	}
+
 }

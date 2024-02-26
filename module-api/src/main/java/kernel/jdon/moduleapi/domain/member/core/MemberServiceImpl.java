@@ -15,7 +15,9 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
 	private final MemberReader memberReader;
+	private final MemberStore memberStore;
 	private final MemberInfoMapper memberInfoMapper;
+	private final MemberFactory memberFactory;
 
 	@Override
 	public MemberInfo.FindMemberResponse find(final Long memberId) {
@@ -24,5 +26,15 @@ public class MemberServiceImpl implements MemberService {
 
 		log.info(findMember.getNickname());
 		return memberInfoMapper.of(findMember, skillIdList);
+	}
+
+	@Override
+	@Transactional
+	public MemberInfo.UpdateMemberResponse update(Long memberId, MemberCommand.UpdateMemberRequest command) {
+		Member findMember = memberReader.findById(memberId);
+		Member updateMember = memberFactory.toUpdateMember(findMember, command);
+		final Member updatedMember = memberStore.update(findMember, updateMember);
+
+		return MemberInfo.UpdateMemberResponse.of(updatedMember.getId());
 	}
 }
