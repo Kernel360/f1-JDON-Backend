@@ -30,7 +30,7 @@ public class WantedJdRepositoryImpl implements CustomWantedJdRepository {
 				wantedJd.imageUrl,
 				jobCategory.name))
 			.from(wantedJd)
-			.join(wantedJd)
+			.join(jobCategory)
 			.on(wantedJd.jobCategory.eq(jobCategory))
 			.where(wantedJdTitleContains(keyword))
 			.orderBy(wantedJd.scrapingDate.desc())
