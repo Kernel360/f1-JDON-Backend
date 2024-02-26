@@ -14,18 +14,6 @@ public class FavoriteDto {
 
 	@Getter
 	@AllArgsConstructor
-	public static class FindResponse {
-		private Long lectureId;
-		private String title;
-		private String lectureUrl;
-		private String imageUrl;
-		private String instructor;
-		private Long studentCount;
-		private Integer price;
-	}
-
-	@Getter
-	@AllArgsConstructor
 	public static class FindFavoriteListResponse {
 		private List<FavoriteDto.FindFavoriteDto> content;
 		private CustomPageInfo pageInfo;
