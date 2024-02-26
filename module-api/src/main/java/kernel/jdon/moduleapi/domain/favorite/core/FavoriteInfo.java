@@ -1,7 +1,10 @@
 package kernel.jdon.moduleapi.domain.favorite.core;
 
+import java.util.List;
+
 import jakarta.validation.constraints.NotNull;
-import kernel.jdon.moduleapi.global.page.CustomPageResponse;
+import kernel.jdon.moduleapi.domain.favorite.infrastructure.FavoriteReaderInfo;
+import kernel.jdon.moduleapi.global.page.CustomPageInfo;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,15 +15,15 @@ import lombok.NoArgsConstructor;
 public class FavoriteInfo {
 
 	@Getter
-	@Builder
 	@AllArgsConstructor
-	public static class FindPageResponse {
-		private CustomPageResponse<FindResponse> findPage;
+	public static class FindFavoriteListResponse {
+		private List<FindFavorite> content;
+		private CustomPageInfo pageInfo;
 	}
 
 	@Getter
 	@AllArgsConstructor
-	public static class FindResponse {
+	public static class FindFavorite {
 		private Long lectureId;
 		private String title;
 		private String lectureUrl;
@@ -28,6 +31,18 @@ public class FavoriteInfo {
 		private String instructor;
 		private Long studentCount;
 		private Integer price;
+
+		public static FindFavorite of(FavoriteReaderInfo.FindFavoriteListResponse favorite) {
+			return new FindFavorite(
+				favorite.getLectureId(),
+				favorite.getTitle(),
+				favorite.getLectureUrl(),
+				favorite.getImageUrl(),
+				favorite.getInstructor(),
+				favorite.getStudentCount(),
+				favorite.getPrice()
+			);
+		}
 	}
 
 	@Getter

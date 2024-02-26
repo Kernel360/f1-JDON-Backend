@@ -1,8 +1,9 @@
 package kernel.jdon.moduleapi.domain.favorite.presentation;
 
+import java.util.List;
+
 import jakarta.validation.constraints.NotNull;
-import kernel.jdon.moduleapi.domain.favorite.core.FavoriteInfo;
-import kernel.jdon.moduleapi.global.page.CustomPageResponse;
+import kernel.jdon.moduleapi.global.page.CustomPageInfo;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,13 +14,14 @@ public class FavoriteDto {
 
 	@Getter
 	@AllArgsConstructor
-	public static class FindPageResponse {
-		private CustomPageResponse<FavoriteInfo.FindResponse> findPage;
+	public static class FindFavoriteListResponse {
+		private List<FindFavorite> content;
+		private CustomPageInfo pageInfo;
 	}
 
 	@Getter
 	@AllArgsConstructor
-	public static class FindResponse {
+	public static class FindFavorite {
 		private Long lectureId;
 		private String title;
 		private String lectureUrl;

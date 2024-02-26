@@ -6,6 +6,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import org.mapstruct.ReportingPolicy;
 
+import kernel.jdon.moduleapi.domain.favorite.infrastructure.FavoriteReaderInfo;
 import kernel.jdon.moduledomain.favorite.domain.Favorite;
 
 @Mapper(
@@ -24,5 +25,5 @@ public interface FavoriteInfoMapper {
 		@Mapping(source = "inflearnCourse.studentCount", target = "studentCount"),
 		@Mapping(source = "inflearnCourse.price", target = "price")
 	})
-	FavoriteInfo.FindResponse of(Favorite favorite);
+	FavoriteReaderInfo.FindFavoriteListResponse of(Favorite favorite);
 }
