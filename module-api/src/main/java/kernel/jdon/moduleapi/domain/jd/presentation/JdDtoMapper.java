@@ -11,6 +11,6 @@ import kernel.jdon.moduleapi.domain.jd.core.JdInfo;
 	injectionStrategy = InjectionStrategy.CONSTRUCTOR,
 	unmappedTargetPolicy = ReportingPolicy.ERROR
 )
-public interface JdMapper {
+public interface JdDtoMapper {
 	JdDto.FindWantedJdResponse of(JdInfo.FindWantedJdResponse info);
 }

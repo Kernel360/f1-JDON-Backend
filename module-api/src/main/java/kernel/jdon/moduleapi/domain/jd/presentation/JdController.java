@@ -14,13 +14,13 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class JdController {
 	private final JdFacade jdFacade;
-	private final JdMapper jdMapper;
+	private final JdDtoMapper jdDtoMapper;
 
 	@GetMapping("/api/v1/jds/{id}")
 	public ResponseEntity<CommonResponse<JdDto.FindWantedJdResponse>> getJd(
 		@PathVariable(name = "id") Long jdId) {
 		JdInfo.FindWantedJdResponse info = jdFacade.getJd(jdId);
-		JdDto.FindWantedJdResponse response = jdMapper.of(info);
+		JdDto.FindWantedJdResponse response = jdDtoMapper.of(info);
 
 		return ResponseEntity.ok().body(CommonResponse.of(response));
 	}
