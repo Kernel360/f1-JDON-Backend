@@ -20,7 +20,7 @@ public class CoffeeChatStoreImpl implements CoffeeChatStore {
     }
 
     @Override
-    public void delete(Long coffeeChatid) {
+    public void deleteById(Long coffeeChatid) {
         coffeeChatRepository.deleteById(coffeeChatid);
     }
 }

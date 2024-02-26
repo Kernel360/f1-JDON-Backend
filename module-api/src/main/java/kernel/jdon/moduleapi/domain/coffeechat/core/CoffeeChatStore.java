@@ -6,5 +6,5 @@ public interface CoffeeChatStore {
 
     CoffeeChat save(CoffeeChat coffeeChat);
 
-    void delete(Long id);
+    void deleteById(Long id);
 }
