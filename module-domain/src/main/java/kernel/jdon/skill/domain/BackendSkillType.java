@@ -53,15 +53,19 @@ public enum BackendSkillType implements SkillType {
 	private String keyword;
 	private final String translation;
 	private final List<String> relatedKeywords;
-
-	public static List<String> getAllKeywords() {
-		return Arrays.stream(BackendSkillType.values())
-			.map(BackendSkillType::getKeyword)
-			.toList();
-	}
-
+	
 	@Override
 	public String getKeyword() {
 		return keyword;
+	}
+
+	@Override
+	public String getTranslation() {
+		return translation;
+	}
+
+	@Override
+	public List<String> getRelatedKeywords() {
+		return relatedKeywords;
 	}
 }

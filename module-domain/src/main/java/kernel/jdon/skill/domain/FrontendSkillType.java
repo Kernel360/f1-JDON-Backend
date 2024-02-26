@@ -4,8 +4,10 @@ import java.util.Arrays;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 @AllArgsConstructor
+@Getter
 public enum FrontendSkillType implements SkillType {
 	JAVASCRIPT("JavaScript", "자바스크립트", Arrays.asList("ES6", "Ajax", "jQuery")),
 	REACT("React", "리액트", Arrays.asList("Redux", "React Hooks", "Next.js")),
@@ -29,15 +31,19 @@ public enum FrontendSkillType implements SkillType {
 	private final String keyword;
 	private final String translation;
 	private final List<String> relatedKeywords;
-
-	public static List<String> getAllKeywords() {
-		return Arrays.stream(FrontendSkillType.values())
-			.map(FrontendSkillType::getKeyword)
-			.toList();
-	}
-
+	
 	@Override
 	public String getKeyword() {
 		return keyword;
+	}
+
+	@Override
+	public String getTranslation() {
+		return translation;
+	}
+
+	@Override
+	public List<String> getRelatedKeywords() {
+		return relatedKeywords;
 	}
 }
