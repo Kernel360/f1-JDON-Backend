@@ -24,7 +24,6 @@ public class MemberServiceImpl implements MemberService {
 		final Member findMember = memberReader.findById(memberId);
 		final List<Long> skillIdList = memberReader.findSkillIdListByMember(findMember);
 
-		log.info(findMember.getNickname());
 		return memberInfoMapper.of(findMember, skillIdList);
 	}
 
