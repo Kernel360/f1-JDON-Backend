@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import kernel.jdon.moduleapi.global.page.PageInfoRequest;
 import kernel.jdon.wantedjd.domain.WantedJd;
 import lombok.RequiredArgsConstructor;
 
@@ -20,4 +21,10 @@ public class JdServiceImpl implements JdService {
 
 		return jdInfoMapper.of(findWantedJd, findSkillList);
 	}
+
+	@Override
+	public JdInfo.FindWantedJdListResponse getJdList(final PageInfoRequest pageInfoRequest, final String keyword) {
+		return jdReader.findWantedJdList(pageInfoRequest, keyword);
+	}
+
 }

@@ -2,8 +2,10 @@ package kernel.jdon.moduleapi.domain.jd.core;
 
 import java.util.List;
 
+import kernel.jdon.moduleapi.global.page.CustomPageInfo;
 import kernel.jdon.skill.domain.Skill;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,5 +39,23 @@ public class JdInfo {
 			this.id = skill.getId();
 			this.keyword = skill.getKeyword();
 		}
+	}
+
+	@Getter
+	@Builder
+	@AllArgsConstructor
+	public static class FindWantedJdListResponse {
+		private List<FindWantedJd> content;
+		private CustomPageInfo pageInfo;
+	}
+
+	@Getter
+	@Builder
+	public static class FindWantedJd {
+		private Long id;
+		private String title;
+		private String company;
+		private String imageUrl;
+		private String jobCategoryName;
 	}
 }

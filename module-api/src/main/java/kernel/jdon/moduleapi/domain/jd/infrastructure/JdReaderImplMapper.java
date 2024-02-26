@@ -1,4 +1,4 @@
-package kernel.jdon.moduleapi.domain.jd.presentation;
+package kernel.jdon.moduleapi.domain.jd.infrastructure;
 
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
@@ -11,8 +11,6 @@ import kernel.jdon.moduleapi.domain.jd.core.JdInfo;
 	injectionStrategy = InjectionStrategy.CONSTRUCTOR,
 	unmappedTargetPolicy = ReportingPolicy.ERROR
 )
-public interface JdDtoMapper {
-	JdDto.FindWantedJdResponse of(JdInfo.FindWantedJdResponse info);
-
-	JdDto.FindWantedJdListResponse of(JdInfo.FindWantedJdListResponse info);
+public interface JdReaderImplMapper {
+	JdInfo.FindWantedJd of(JdReaderInfo.FindWantedJd readerInfo);
 }
