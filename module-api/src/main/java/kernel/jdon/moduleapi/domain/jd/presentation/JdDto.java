@@ -2,7 +2,6 @@ package kernel.jdon.moduleapi.domain.jd.presentation;
 
 import java.util.List;
 
-import kernel.jdon.moduleapi.domain.jd.core.JdInfo;
 import kernel.jdon.moduleapi.global.page.CustomPageInfo;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -38,7 +37,7 @@ public class JdDto {
 	@Getter
 	@Builder
 	public static class FindWantedJdListResponse {
-		private List<JdInfo.FindWantedJd> content;
+		private List<FindWantedJd> content;
 		private CustomPageInfo pageInfo;
 	}
 
