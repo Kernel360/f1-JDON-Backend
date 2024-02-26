@@ -1,7 +1,10 @@
 package kernel.jdon.moduleapi.domain.favorite.core;
 
+import java.util.List;
+
 import jakarta.validation.constraints.NotNull;
-import kernel.jdon.moduleapi.global.page.CustomPageResponse;
+import kernel.jdon.moduleapi.domain.favorite.infrastructure.FavoriteReaderInfo;
+import kernel.jdon.moduleapi.global.page.CustomPageInfo;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,13 +14,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class FavoriteInfo {
 
-	@Getter
-	@Builder
-	@AllArgsConstructor
-	public static class FindPageResponse {
-		private CustomPageResponse<FindResponse> findPage;
-	}
-
+	// @Getter
+	// @Builder
+	// @AllArgsConstructor
+	// public static class FindPageResponse {
+	// 	private CustomPageResponse<FindResponse> findPage;
+	// }
+	//
 	@Getter
 	@AllArgsConstructor
 	public static class FindResponse {
@@ -28,6 +31,37 @@ public class FavoriteInfo {
 		private String instructor;
 		private Long studentCount;
 		private Integer price;
+	}
+
+	@Getter
+	@AllArgsConstructor
+	public static class FindFavoriteListResponse {
+		private List<FindFavoriteInfo> content;
+		private CustomPageInfo pageInfo;
+	}
+
+	@Getter
+	@AllArgsConstructor
+	public static class FindFavoriteInfo {
+		private Long lectureId;
+		private String title;
+		private String lectureUrl;
+		private String imageUrl;
+		private String instructor;
+		private Long studentCount;
+		private Integer price;
+
+		public static FindFavoriteInfo of(FavoriteReaderInfo.FindFavoriteListResponse favorite) {
+			return new FindFavoriteInfo(
+				favorite.getLectureId(),
+				favorite.getTitle(),
+				favorite.getLectureUrl(),
+				favorite.getImageUrl(),
+				favorite.getInstructor(),
+				favorite.getStudentCount(),
+				favorite.getPrice()
+			);
+		}
 	}
 
 	@Getter

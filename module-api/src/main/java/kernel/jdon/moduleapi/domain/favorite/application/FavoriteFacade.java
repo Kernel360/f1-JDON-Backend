@@ -1,11 +1,11 @@
 package kernel.jdon.moduleapi.domain.favorite.application;
 
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import kernel.jdon.moduleapi.domain.favorite.core.FavoriteCommand;
 import kernel.jdon.moduleapi.domain.favorite.core.FavoriteInfo;
 import kernel.jdon.moduleapi.domain.favorite.core.FavoriteService;
+import kernel.jdon.moduleapi.global.page.PageInfoRequest;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -20,7 +20,14 @@ public class FavoriteFacade {
 		return favoriteService.delete(memberId, request.getLectureId());
 	}
 
-	public FavoriteInfo.FindPageResponse getList(final Long memberId, Pageable pageable) {
-		return favoriteService.getList(memberId, pageable);
+	// public FavoriteInfo.FindPageResponse getList(final Long memberId, Pageable pageable) {
+	// 	return favoriteService.getList(memberId, pageable);
+	// }
+
+	public FavoriteInfo.FindFavoriteListResponse getList(
+		final Long memberId,
+		final PageInfoRequest pageInfoRequest) {
+		
+		return favoriteService.getList(memberId, pageInfoRequest);
 	}
 }

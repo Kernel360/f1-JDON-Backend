@@ -9,11 +9,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.Pageable;
 
 import kernel.jdon.moduleapi.domain.favorite.core.FavoriteCommand;
 import kernel.jdon.moduleapi.domain.favorite.core.FavoriteInfo;
 import kernel.jdon.moduleapi.domain.favorite.core.FavoriteService;
+import kernel.jdon.moduleapi.global.page.PageInfoRequest;
 
 @DisplayName("Favorite Facade 테스트")
 @ExtendWith(MockitoExtension.class)
@@ -34,12 +34,12 @@ class FavoriteFacadeTest {
 		FavoriteInfo.UpdateResponse expectedResponse = new FavoriteInfo.UpdateResponse(2L);
 
 		// when
-		when(favoriteService.save(memberId, request)).thenReturn(expectedResponse);
+		when(favoriteService.save(memberId, request.getLectureId())).thenReturn(expectedResponse);
 		FavoriteInfo.UpdateResponse actualResponse = favoriteFacade.update(memberId, request);
 
 		// then
 		assertThat(expectedResponse.getLectureId()).isEqualTo(actualResponse.getLectureId());
-		verify(favoriteService, times(1)).save(memberId, request);
+		verify(favoriteService, times(1)).save(memberId, request.getLectureId());
 	}
 
 	@DisplayName("유효한 요청으로 즐겨찾기 삭제하면, 삭제된 favorite id를 응답한다.")
@@ -48,13 +48,15 @@ class FavoriteFacadeTest {
 		// given
 		Long memberId = 1L;
 		Long lectureId = 2L;
+		FavoriteCommand.UpdateRequest request = new FavoriteCommand.UpdateRequest(2L, false);
+		FavoriteInfo.UpdateResponse expectedResponse = new FavoriteInfo.UpdateResponse(lectureId);
 
 		// when
-		FavoriteCommand.UpdateRequest request = new FavoriteCommand.UpdateRequest(2L, false);
-		doNothing().when(favoriteService).delete(memberId, lectureId);
-		favoriteFacade.update(memberId, request);
+		when(favoriteService.delete(memberId, lectureId)).thenReturn(expectedResponse);
+		FavoriteInfo.UpdateResponse actualResponse = favoriteFacade.update(memberId, request);
 
 		// then
+		assertThat(actualResponse).isEqualTo(expectedResponse);
 		verify(favoriteService, times(1)).delete(memberId, lectureId);
 	}
 
@@ -63,16 +65,16 @@ class FavoriteFacadeTest {
 	void whenGetList_thenReturnList() {
 		// given
 		Long memberId = 1L;
-		Pageable pageable = Pageable.unpaged();
-		FavoriteInfo.FindPageResponse expectedResponse = mock(FavoriteInfo.FindPageResponse.class);
+		PageInfoRequest pageInfoRequest = new PageInfoRequest(0, 10);
+		FavoriteInfo.FindFavoriteListResponse expectedResponse = mock(FavoriteInfo.FindFavoriteListResponse.class);
 
 		// when
-		when(favoriteService.getList(memberId, pageable)).thenReturn(expectedResponse);
-		FavoriteInfo.FindPageResponse actualResponse = favoriteFacade.getList(memberId, pageable);
+		when(favoriteService.getList(memberId, pageInfoRequest)).thenReturn(expectedResponse);
+		FavoriteInfo.FindFavoriteListResponse actualResponse = favoriteFacade.getList(memberId, pageInfoRequest);
 
 		// then
 		assertThat(expectedResponse).isEqualTo(actualResponse);
-		verify(favoriteService, times(1)).getList(memberId, pageable);
+		verify(favoriteService, times(1)).getList(memberId, pageInfoRequest);
 	}
 
 }
