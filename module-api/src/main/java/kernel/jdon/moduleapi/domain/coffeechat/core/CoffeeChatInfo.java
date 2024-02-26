@@ -22,7 +22,7 @@ public class CoffeeChatInfo {
         private Long coffeeChatId;
         private Long hostId;
         private String nickname;
-        private String job;
+        private String hostJobCategoryName;
         private String title;
         private String content;
         private Long viewCount;
