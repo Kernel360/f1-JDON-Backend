@@ -4,6 +4,7 @@ import java.util.List;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,47 +12,47 @@ import lombok.NoArgsConstructor;
 public class SkillInfo {
 
 	@Getter
-	@AllArgsConstructor
+	@Builder
 	public static class FindHotSkillListResponse {
-		private List<FindHotSkill> skillList;
+		private final List<FindHotSkill> skillList;
 	}
 
 	@Getter
-	@AllArgsConstructor
+	@Builder
 	public static class FindHotSkill {
-		private Long id;
-		private String keyword;
+		private final Long id;
+		private final String keyword;
 	}
 
 	@Getter
-	@AllArgsConstructor
+	@Builder
 	public static class FindMemberSkillListResponse {
-		private List<FindMemberSkill> skillList;
+		private final List<FindMemberSkill> skillList;
 	}
 
 	@Getter
-	@AllArgsConstructor
+	@Builder
 	public static class FindMemberSkill {
-		private Long id;
-		private String keyword;
+		private final Long id;
+		private final String keyword;
 	}
 
 	@Getter
-	@AllArgsConstructor
+	@Builder
 	public static class FindJobCategorySkillListResponse {
-		private List<FindJobCategorySkill> skillList;
+		private final List<FindJobCategorySkill> skillList;
 	}
 
 	@Getter
-	@AllArgsConstructor
+	@Builder
 	public static class FindJobCategorySkill {
-		private Long skillId;
-		private String keyword;
+		private final Long skillId;
+		private final String keyword;
 	}
 
 	@Getter
+	@Builder
 	@AllArgsConstructor
-	@NoArgsConstructor
 	public static class FindDataListBySkillResponse {
 		private String keyword;
 		private List<FindLecture> lectureList;
@@ -59,27 +60,25 @@ public class SkillInfo {
 	}
 
 	@Getter
-	@AllArgsConstructor
-	@NoArgsConstructor
+	@Builder
 	public static class FindLecture {
-		private Long lectureId;
-		private String title;
-		private String lectureUrl;
-		private String imageUrl;
-		private String instructor;
-		private Long studentCount;
-		private Integer price;
-		private Boolean isFavorite;
+		private final Long lectureId;
+		private final String title;
+		private final String lectureUrl;
+		private final String imageUrl;
+		private final String instructor;
+		private final Long studentCount;
+		private final Integer price;
+		private final Boolean isFavorite;
 	}
 
 	@Getter
-	@AllArgsConstructor
-	@NoArgsConstructor
+	@Builder
 	public static class FindJd {
-		private Long id;
-		private String company;
-		private String title;
-		private String imageUrl;
-		private String jdUrl;
+		private final Long id;
+		private final String company;
+		private final String title;
+		private final String imageUrl;
+		private final String jdUrl;
 	}
 }
