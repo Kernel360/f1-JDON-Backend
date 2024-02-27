@@ -5,7 +5,6 @@ import java.net.URI;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import kernel.jdon.auth.dto.SessionUserInfo;
@@ -28,7 +27,7 @@ public class AuthController {
 	private final MemberService memberService;
 	private final AuthService authService;
 
-	@PostMapping("/api/v1/register")
+	// @PostMapping("/api/v1/register")
 	public ResponseEntity<CommonResponse> register(@RequestBody RegisterRequest registerRequest) {
 
 		log.info("registerRequest: {}", registerRequest);

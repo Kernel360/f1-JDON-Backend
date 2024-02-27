@@ -106,7 +106,7 @@ public class Member {
 		this.withdrawDate = withdrawDate;
 		this.socialProvider = socialProvider;
 		this.jobCategory = jobCategory;
-		this.memberSkillList = memberSkillList;
+		updateMemberSkillList(memberSkillList);
 	}
 
 	public boolean isActiveMember() {
@@ -126,7 +126,9 @@ public class Member {
 	}
 
 	public void updateMemberSkillList(List<MemberSkill> memberSkillList) {
-		this.memberSkillList.clear();
+		if (!this.memberSkillList.isEmpty()) {
+			this.memberSkillList.clear();
+		}
 		this.memberSkillList.addAll(memberSkillList);
 	}
 
