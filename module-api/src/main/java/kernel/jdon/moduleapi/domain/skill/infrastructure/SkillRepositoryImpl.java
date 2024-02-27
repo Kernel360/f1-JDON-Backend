@@ -53,7 +53,7 @@ public class SkillRepositoryImpl implements SkillRepositoryCustom {
 	@Override
 	public List<SkillReaderInfo.FindWantedJd> findWantedJdListBySkill(final String keyword) {
 		final int wantedJdCount = 6;
-		List<String> allKeywordAssociatedTerms = SkillTypeManager.getAllKeywordAssociatedTerms(keyword);
+		List<String> allKeywordAssociatedTermList = SkillTypeManager.getAllKeywordAssociatedTerms(keyword);
 
 		return jpaQueryFactory
 			.select(
@@ -67,7 +67,7 @@ public class SkillRepositoryImpl implements SkillRepositoryCustom {
 					JPAExpressions
 						.select(skill.id)
 						.from(skill)
-						.where(skill.keyword.in(allKeywordAssociatedTerms))))
+						.where(skill.keyword.in(allKeywordAssociatedTermList))))
 			.orderBy(Expressions.numberTemplate(Double.class, "function('rand')").asc())
 			.limit(wantedJdCount)
 			.fetch();
@@ -77,7 +77,7 @@ public class SkillRepositoryImpl implements SkillRepositoryCustom {
 	public List<SkillReaderInfo.FindInflearnLecture> findInflearnLectureListBySkill(String keyword,
 		Long memberId) {
 		final int inflearnLectureCount = 3;
-		final List<String> allKeywordAssociatedTerms = SkillTypeManager.getAllKeywordAssociatedTerms(keyword);
+		final List<String> allKeywordAssociatedTermList = SkillTypeManager.getAllKeywordAssociatedTerms(keyword);
 
 		return jpaQueryFactory
 			.select(new QSkillReaderInfo_FindInflearnLecture(inflearnCourse.id, inflearnCourse.title,
@@ -93,7 +93,7 @@ public class SkillRepositoryImpl implements SkillRepositoryCustom {
 					JPAExpressions
 						.select(skill.id)
 						.from(skill)
-						.where(skill.keyword.in(allKeywordAssociatedTerms))))
+						.where(skill.keyword.in(allKeywordAssociatedTermList))))
 			.limit(inflearnLectureCount)
 			.fetch();
 	}

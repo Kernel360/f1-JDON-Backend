@@ -1,5 +1,6 @@
 package kernel.jdon.skill.domain;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -51,22 +52,27 @@ public enum BackendSkillType implements SkillType {
 	HADOOP("Hadoop", "하둡", Arrays.asList("Big Data", "Apache", "빅데이터", "아파치")),
 	LARAVEL("Laravel", "라라벨", Arrays.asList("PHP"));
 
-	private String keyword;
+	private final String keyword;
 	private final String translation;
 	private final List<String> relatedKeywords;
 
-	@Override
-	public String getKeyword() {
-		return keyword;
+	public static List<String> getAllKeywordAssociatedTerms(String keyword) {
+		return Arrays.stream(BackendSkillType.values())
+			.filter(backendSkillType -> backendSkillType.containsKeyword(keyword))
+			.flatMap(backendSkillType -> backendSkillType.getKeywordAssociatedList().stream())
+			.toList();
 	}
 
-	@Override
-	public String getTranslation() {
-		return translation;
+	private List<String> getKeywordAssociatedList() {
+		List<String> associatedList = new ArrayList<>();
+		associatedList.add(keyword);
+		associatedList.add(translation);
+		associatedList.addAll(relatedKeywords);
+
+		return associatedList;
 	}
 
-	@Override
-	public List<String> getRelatedKeywords() {
-		return relatedKeywords;
+	private boolean containsKeyword(String keyword) {
+		return getKeywordAssociatedList().stream().anyMatch(term -> term.equalsIgnoreCase(keyword));
 	}
 }

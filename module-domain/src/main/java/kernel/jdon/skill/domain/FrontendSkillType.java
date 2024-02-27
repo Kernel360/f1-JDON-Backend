@@ -1,14 +1,14 @@
 package kernel.jdon.skill.domain;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 
 @AllArgsConstructor
-@Getter
 public enum FrontendSkillType implements SkillType {
+
 	JAVASCRIPT("JavaScript", "자바스크립트", Arrays.asList("ES6", "Ajax")),
 	REACT("React", "리액트", Arrays.asList("Redux", "React Hooks", "리덕스")),
 	TYPESCRIPT("TypeScript", "타입스크립트", Arrays.asList("JavaScript", "Static Typing", "자바스크립트")),
@@ -32,18 +32,23 @@ public enum FrontendSkillType implements SkillType {
 	private final String translation;
 	private final List<String> relatedKeywords;
 
-	@Override
-	public String getKeyword() {
-		return keyword;
+	public static List<String> getAllKeywordAssociatedTerms(String keyword) {
+		return Arrays.stream(FrontendSkillType.values())
+			.filter(frontendSkillType -> frontendSkillType.containsKeyword(keyword))
+			.flatMap(frontendSkillType -> frontendSkillType.getKeywordAssociatedList().stream())
+			.toList();
 	}
 
-	@Override
-	public String getTranslation() {
-		return translation;
+	private List<String> getKeywordAssociatedList() {
+		List<String> associatedList = new ArrayList<>();
+		associatedList.add(keyword);
+		associatedList.add(translation);
+		associatedList.addAll(relatedKeywords);
+
+		return associatedList;
 	}
 
-	@Override
-	public List<String> getRelatedKeywords() {
-		return relatedKeywords;
+	private boolean containsKeyword(String keyword) {
+		return getKeywordAssociatedList().stream().anyMatch(term -> term.equalsIgnoreCase(keyword));
 	}
 }
