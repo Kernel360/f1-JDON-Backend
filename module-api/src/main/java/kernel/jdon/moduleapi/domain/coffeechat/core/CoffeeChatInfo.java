@@ -21,6 +21,7 @@ public class CoffeeChatInfo {
     public static class FindCoffeeChatResponse {
         private Long coffeeChatId;
         private Long hostId;
+        private Boolean isParticipant;
         private String nickname;
         private String hostJobCategoryName;
         private String title;
