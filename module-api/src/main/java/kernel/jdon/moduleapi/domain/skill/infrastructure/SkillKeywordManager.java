@@ -13,9 +13,7 @@ import kernel.jdon.skill.domain.SkillType;
 public class SkillKeywordManager {
 
 	public List<String> getAllKeywordAssociatedTerms(String keyword) {
-
 		List<String> combinedTermList = new ArrayList<>();
-
 		combinedTermList.addAll(getAllKeywordAssociatedTerms(BackendSkillType.values(), keyword));
 		combinedTermList.addAll(getAllKeywordAssociatedTerms(FrontendSkillType.values(), keyword));
 
