@@ -19,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class JdReaderImpl implements JdReader {
 	private final WantedJdRepository wantedJdRepository;
-	private final JdReaderImplMapper jdReaderImplMapper;
+	private final JdReaderInfoMapper jdReaderInfoMapper;
 
 	@Override
 	public WantedJd findWantedJd(final Long jdId) {
@@ -43,7 +43,7 @@ public class JdReaderImpl implements JdReader {
 		final Page<JdReaderInfo.FindWantedJd> readerInfo = wantedJdRepository.findWantedJdList(pageable, keyword);
 
 		final List<JdInfo.FindWantedJd> content = readerInfo.stream()
-			.map(jdReaderImplMapper::of)
+			.map(jdReaderInfoMapper::of)
 			.toList();
 
 		return new JdInfo.FindWantedJdListResponse(content, new CustomJpaPageInfo(readerInfo));
