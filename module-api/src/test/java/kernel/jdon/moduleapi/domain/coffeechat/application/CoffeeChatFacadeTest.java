@@ -25,19 +25,20 @@ class CoffeeChatFacadeTest {
     @DisplayName("커피챗 조회 성공 시, 해당 커피챗 조회수를 증가시키고, 올바른 응답을 반환한다")
     void givenValidId_whenGetCoffeeChat_thenIncreaseViewCount_thenReturnCorrectResponse() {
         //given
+        Long memberId = 2L;
         Long coffeeChatId = 1L;
         CoffeeChatInfo.FindCoffeeChatResponse mockFindCoffeeChatResponse = mock(
             CoffeeChatInfo.FindCoffeeChatResponse.class);
-        when(coffeeChatService.getCoffeeChat(coffeeChatId)).thenReturn(mockFindCoffeeChatResponse);
+        when(coffeeChatService.getCoffeeChat(coffeeChatId, memberId)).thenReturn(mockFindCoffeeChatResponse);
 
         //when
-        CoffeeChatInfo.FindCoffeeChatResponse response = coffeeChatFacade.getCoffeeChat(coffeeChatId);
+        CoffeeChatInfo.FindCoffeeChatResponse response = coffeeChatFacade.getCoffeeChat(coffeeChatId, memberId);
 
         //then
         assertThat(response).isEqualTo(mockFindCoffeeChatResponse);
 
         //verify
-        verify(coffeeChatService, times(1)).getCoffeeChat(coffeeChatId);
+        verify(coffeeChatService, times(1)).getCoffeeChat(coffeeChatId, memberId);
         verify(coffeeChatService, times(1)).increaseViewCount(coffeeChatId);
     }
 }
