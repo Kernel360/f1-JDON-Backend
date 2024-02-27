@@ -33,19 +33,19 @@ public class MemberFactoryImpl implements MemberFactory {
 	public void update(final Member member, final MemberCommand.UpdateMemberRequest command) {
 		final JobCategory findJobCategory = jobCategoryReader.findById(command.getJobCategoryId());
 		final List<Skill> findSkillList = skillReader.findAllByIdList(command.getSkillList());
+		final Member updateMember = Member.builder()
+			.nickname(command.getNickname())
+			.birth(command.getBirth())
+			.gender(Gender.ofType(command.getGender()))
+			.jobCategory(findJobCategory)
+			.build();
 		final List<MemberSkill> updateMemberSkill = findSkillList.stream()
 			.map(skill -> MemberSkill.builder()
 				.member(member)
 				.skill(skill)
 				.build())
 			.toList();
-		final Member updateMember = Member.builder()
-			.nickname(command.getNickname())
-			.birth(command.getBirth())
-			.gender(Gender.ofType(command.getGender()))
-			.jobCategory(findJobCategory)
-			.memberSkillList(updateMemberSkill)
-			.build();
+		updateMember.updateMemberSkillList(updateMemberSkill);
 
 		memberStore.update(member, updateMember);
 	}
