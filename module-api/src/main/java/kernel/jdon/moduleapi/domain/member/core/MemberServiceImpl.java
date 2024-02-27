@@ -1,11 +1,13 @@
 package kernel.jdon.moduleapi.domain.member.core;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import kernel.jdon.member.domain.Member;
+import kernel.jdon.moduleapi.domain.auth.util.CryptoManager;
 import kernel.jdon.moduleapi.domain.member.error.MemberErrorCode;
 import kernel.jdon.moduleapi.global.exception.ApiException;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,7 @@ public class MemberServiceImpl implements MemberService {
 	private final MemberReader memberReader;
 	private final MemberInfoMapper memberInfoMapper;
 	private final MemberFactory memberFactory;
+	private final CryptoManager cryptoManager;
 
 	@Override
 	public MemberInfo.FindMemberResponse getMember(final Long memberId) {
@@ -44,5 +47,15 @@ public class MemberServiceImpl implements MemberService {
 		if (isExistNickname) {
 			throw new ApiException(MemberErrorCode.CONFLICT_DUPLICATE_NICKNAME);
 		}
+	}
+
+	@Override
+	@Transactional
+	public MemberInfo.RegisterResponse register(final MemberCommand.RegisterRequest command) {
+		final Map<String, String> userInfo = cryptoManager.getUserInfoFromAuthProvider(command.getHmac(),
+			command.getEncrypted());
+		final Member savedMember = memberFactory.save(command, userInfo);
+
+		return MemberInfo.RegisterResponse.of(savedMember.getId());
 	}
 }

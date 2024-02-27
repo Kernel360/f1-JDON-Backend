@@ -31,4 +31,14 @@ public class MemberInfo {
 			return new UpdateMemberResponse(memberId);
 		}
 	}
+
+	@Getter
+	@Builder
+	public static class RegisterResponse {
+		private final Long memberId;
+
+		public static RegisterResponse of(final Long memberId) {
+			return new RegisterResponse(memberId);
+		}
+	}
 }

@@ -22,4 +22,8 @@ public interface MemberDtoMapper {
 
 	MemberCommand.NicknameDuplicateRequest of(MemberDto.NicknameDuplicateRequest request);
 
+	MemberCommand.RegisterRequest of(MemberDto.RegisterRequest request);
+
+	MemberDto.RegisterResponse of(MemberInfo.RegisterResponse response);
+
 }

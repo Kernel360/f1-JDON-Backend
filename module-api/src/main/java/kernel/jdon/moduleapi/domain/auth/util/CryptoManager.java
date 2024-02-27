@@ -1,4 +1,4 @@
-package kernel.jdon.moduleapi.domain.auth.core;
+package kernel.jdon.moduleapi.domain.auth.util;
 
 import static kernel.jdon.auth.util.HmacUtil.*;
 
@@ -7,32 +7,17 @@ import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.stereotype.Component;
 
 import kernel.jdon.auth.util.AesUtil;
-import kernel.jdon.member.domain.Member;
-import kernel.jdon.moduleapi.domain.member.core.MemberFactory;
 import kernel.jdon.moduleapi.domain.member.error.MemberErrorCode;
 import kernel.jdon.moduleapi.global.exception.ApiException;
 import lombok.RequiredArgsConstructor;
 
-@Service
-@Transactional(readOnly = true)
+@Component
 @RequiredArgsConstructor
-public class AuthServiceImpl implements AuthService {
-	private final MemberFactory memberFactory;
-
-	@Override
-	@Transactional
-	public AuthInfo.RegisterResponse register(final AuthCommand.RegisterRequest command) {
-		final Map<String, String> userInfo = getUserInfoFromAuthProvider(command.getHmac(), command.getEncrypted());
-		final Member savedMember = memberFactory.save(command, userInfo);
-
-		return AuthInfo.RegisterResponse.of(savedMember.getId());
-	}
-
-	private Map<String, String> getUserInfoFromAuthProvider(final String hmac, final String encrypted) {
+public class CryptoManager {
+	public Map<String, String> getUserInfoFromAuthProvider(final String hmac, final String encrypted) {
 		final String emailAndProvider = getEmailAndProviderString(hmac, encrypted);
 
 		return parseQueryString(emailAndProvider);

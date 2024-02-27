@@ -6,4 +6,7 @@ public interface MemberService {
 	MemberInfo.UpdateMemberResponse modifyMember(Long memberId, MemberCommand.UpdateMemberRequest command);
 
 	void checkNicknameDuplicate(MemberCommand.NicknameDuplicateRequest command);
+
+	MemberInfo.RegisterResponse register(MemberCommand.RegisterRequest command);
+
 }

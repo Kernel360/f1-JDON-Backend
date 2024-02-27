@@ -13,7 +13,6 @@ import kernel.jdon.member.domain.MemberAccountStatus;
 import kernel.jdon.member.domain.MemberRole;
 import kernel.jdon.member.domain.SocialProviderType;
 import kernel.jdon.memberskill.domain.MemberSkill;
-import kernel.jdon.moduleapi.domain.auth.core.AuthCommand;
 import kernel.jdon.moduleapi.domain.jobcategory.core.JobCategoryReader;
 import kernel.jdon.moduleapi.domain.member.core.MemberCommand;
 import kernel.jdon.moduleapi.domain.member.core.MemberFactory;
@@ -51,7 +50,7 @@ public class MemberFactoryImpl implements MemberFactory {
 	}
 
 	@Override
-	public Member save(AuthCommand.RegisterRequest command, Map<String, String> userInfo) {
+	public Member save(MemberCommand.RegisterRequest command, Map<String, String> userInfo) {
 		final JobCategory findJobCategory = jobCategoryReader.findById(command.getJobCategoryId());
 		final Member saveMember = Member.builder()
 			.email(userInfo.get("email"))
