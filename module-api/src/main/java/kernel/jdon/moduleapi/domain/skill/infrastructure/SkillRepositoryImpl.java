@@ -22,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 public class SkillRepositoryImpl implements SkillRepositoryCustom {
 
 	private final JPAQueryFactory jpaQueryFactory;
+	private final SkillKeywordManager skillKeywordManager;
 
 	@Override
 	public List<SkillReaderInfo.FindHotSkill> findHotSkillList() {
@@ -53,7 +54,7 @@ public class SkillRepositoryImpl implements SkillRepositoryCustom {
 	@Override
 	public List<SkillReaderInfo.FindWantedJd> findWantedJdListBySkill(final String keyword) {
 		final int wantedJdCount = 6;
-		List<String> allKeywordAssociatedTermList = SkillTypeManager.getAllKeywordAssociatedTerms(keyword);
+		List<String> allKeywordAssociatedTermList = skillKeywordManager.getAllKeywordAssociatedTerms(keyword);
 
 		return jpaQueryFactory
 			.select(
@@ -77,7 +78,7 @@ public class SkillRepositoryImpl implements SkillRepositoryCustom {
 	public List<SkillReaderInfo.FindInflearnLecture> findInflearnLectureListBySkill(String keyword,
 		Long memberId) {
 		final int inflearnLectureCount = 3;
-		final List<String> allKeywordAssociatedTermList = SkillTypeManager.getAllKeywordAssociatedTerms(keyword);
+		final List<String> allKeywordAssociatedTermList = skillKeywordManager.getAllKeywordAssociatedTerms(keyword);
 
 		return jpaQueryFactory
 			.select(new QSkillReaderInfo_FindInflearnLecture(inflearnCourse.id, inflearnCourse.title,

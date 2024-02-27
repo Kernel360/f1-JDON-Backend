@@ -1,11 +1,12 @@
 package kernel.jdon.skill.domain;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
+@Getter
 @AllArgsConstructor
 public enum FrontendSkillType implements SkillType {
 
@@ -31,24 +32,4 @@ public enum FrontendSkillType implements SkillType {
 	private final String keyword;
 	private final String translation;
 	private final List<String> relatedKeywords;
-
-	public static List<String> getAllKeywordAssociatedTerms(String keyword) {
-		return Arrays.stream(FrontendSkillType.values())
-			.filter(frontendSkillType -> frontendSkillType.containsKeyword(keyword))
-			.flatMap(frontendSkillType -> frontendSkillType.getKeywordAssociatedList().stream())
-			.toList();
-	}
-
-	private List<String> getKeywordAssociatedList() {
-		List<String> associatedList = new ArrayList<>();
-		associatedList.add(keyword);
-		associatedList.add(translation);
-		associatedList.addAll(relatedKeywords);
-
-		return associatedList;
-	}
-
-	private boolean containsKeyword(String keyword) {
-		return getKeywordAssociatedList().stream().anyMatch(term -> term.equalsIgnoreCase(keyword));
-	}
 }
