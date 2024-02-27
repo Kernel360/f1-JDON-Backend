@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import kernel.jdon.moduleapi.domain.review.core.ReviewCommand;
 import kernel.jdon.moduleapi.domain.review.core.ReviewInfo;
 import kernel.jdon.moduleapi.domain.review.core.ReviewService;
+import kernel.jdon.moduleapi.global.page.PageInfoRequest;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -14,5 +15,9 @@ public class ReviewFacade {
 
 	public ReviewInfo.CreateReviewResponse createReview(final ReviewCommand.CreateReviewRequest command) {
 		return reviewService.createReview(command);
+	}
+
+	public ReviewInfo.FindReviewListResponse findReviewList(final Long jdId, final PageInfoRequest pageInfoRequest) {
+		return reviewService.getReviewList(jdId, pageInfoRequest);
 	}
 }

@@ -16,4 +16,6 @@ public interface ReviewDtoMapper {
 	ReviewCommand.CreateReviewRequest of(ReviewDto.CreateReviewRequest request, Long memberId);
 
 	ReviewDto.CreateReviewResponse of(ReviewInfo.CreateReviewResponse info);
+
+	ReviewDto.FindReviewListResponse of(ReviewInfo.FindReviewListResponse info);
 }
