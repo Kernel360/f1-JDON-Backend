@@ -6,10 +6,10 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import kernel.jdon.moduleapi.domain.auth.dto.SessionUserInfo;
 import kernel.jdon.member.domain.Member;
 import kernel.jdon.moduleapi.domain.auth.util.CryptoManager;
 import kernel.jdon.moduleapi.domain.member.error.MemberErrorCode;
+import kernel.jdon.moduleapi.global.dto.SessionUserInfo;
 import kernel.jdon.moduleapi.global.exception.ApiException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

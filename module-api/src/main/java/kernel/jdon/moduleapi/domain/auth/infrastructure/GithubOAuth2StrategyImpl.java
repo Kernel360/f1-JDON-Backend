@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 
 import kernel.jdon.member.domain.SocialProviderType;
 import kernel.jdon.moduleapi.domain.auth.core.OAuth2Strategy;
-import kernel.jdon.moduleapi.domain.auth.dto.SessionUserInfo;
+import kernel.jdon.moduleapi.global.dto.SessionUserInfo;
 
 @Component
 public class GithubOAuth2StrategyImpl implements OAuth2Strategy {

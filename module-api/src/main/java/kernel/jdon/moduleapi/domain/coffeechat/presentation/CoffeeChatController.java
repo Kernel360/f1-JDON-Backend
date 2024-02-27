@@ -1,7 +1,6 @@
 package kernel.jdon.moduleapi.domain.coffeechat.presentation;
 
 import java.net.URI;
-import java.util.Optional;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -15,12 +14,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import kernel.jdon.moduleapi.domain.auth.dto.SessionUserInfo;
 import kernel.jdon.moduleapi.domain.coffeechat.application.CoffeeChatFacade;
 import kernel.jdon.moduleapi.domain.coffeechat.core.CoffeeChatCommand;
 import kernel.jdon.moduleapi.domain.coffeechat.core.CoffeeChatInfo;
 import kernel.jdon.moduleapi.domain.coffeechat.core.CoffeeChatSortCondition;
 import kernel.jdon.moduleapi.global.annotation.LoginUser;
+import kernel.jdon.moduleapi.global.dto.SessionUserInfo;
 import kernel.jdon.moduleapi.global.page.CustomPageResponse;
 import kernel.jdon.moduleapi.global.page.PageInfoRequest;
 import kernel.jdon.modulecommon.dto.response.CommonResponse;
@@ -54,20 +53,11 @@ public class CoffeeChatController {
 
     @GetMapping("/api/v1/coffeechats/{id}")
     public ResponseEntity<CommonResponse<CoffeeChatDto.FindCoffeeChatResponse>> getCoffeeChat(
-        @PathVariable(name = "id") Long coffeeChatId,
-        @LoginUser SessionUserInfo member
-    ) {
-        Long memberId = getMemberId(member);
-        CoffeeChatInfo.FindCoffeeChatResponse info = coffeeChatFacade.getCoffeeChat(coffeeChatId, memberId);
+        @PathVariable(name = "id") Long coffeeChatId) {
+        CoffeeChatInfo.FindCoffeeChatResponse info = coffeeChatFacade.getCoffeeChat(coffeeChatId);
         CoffeeChatDto.FindCoffeeChatResponse response = coffeeChatDtoMapper.of(info);
 
         return ResponseEntity.ok(CommonResponse.of(response));
-    }
-
-    private Long getMemberId(SessionUserInfo member) {
-        return Optional.ofNullable(member)
-            .map(SessionUserInfo::getId)
-            .orElse(null);
     }
 
     @PostMapping("/api/v1/coffeechats/{id}")

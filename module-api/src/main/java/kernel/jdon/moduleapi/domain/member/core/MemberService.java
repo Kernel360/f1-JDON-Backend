@@ -1,6 +1,6 @@
 package kernel.jdon.moduleapi.domain.member.core;
 
-import kernel.jdon.moduleapi.domain.auth.dto.SessionUserInfo;
+import kernel.jdon.moduleapi.global.dto.SessionUserInfo;
 
 public interface MemberService {
 	MemberInfo.FindMemberResponse getMember(Long memberId);

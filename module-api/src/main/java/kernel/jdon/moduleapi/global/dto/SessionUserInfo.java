@@ -1,4 +1,4 @@
-package kernel.jdon.moduleapi.domain.auth.dto;
+package kernel.jdon.moduleapi.global.dto;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -18,7 +18,7 @@ public class SessionUserInfo implements Serializable {
 	private SocialProviderType socialProvider;
 	private LocalDateTime lastLoginDate;
 	private MemberRole role;
-	
+
 	@Builder
 	private SessionUserInfo(Long id, String email, String oauthId, SocialProviderType socialProvider,
 		LocalDateTime lastLoginDate, MemberRole role) {

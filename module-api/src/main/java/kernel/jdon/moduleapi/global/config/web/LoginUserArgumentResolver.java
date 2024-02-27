@@ -10,8 +10,8 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 import jakarta.servlet.http.HttpSession;
-import kernel.jdon.moduleapi.domain.auth.dto.SessionUserInfo;
 import kernel.jdon.moduleapi.global.annotation.LoginUser;
+import kernel.jdon.moduleapi.global.dto.SessionUserInfo;
 import lombok.RequiredArgsConstructor;
 
 @Component
