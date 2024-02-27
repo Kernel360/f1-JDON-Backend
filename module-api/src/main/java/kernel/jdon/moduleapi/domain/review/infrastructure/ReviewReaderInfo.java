@@ -17,16 +17,16 @@ public class ReviewReaderInfo {
 		private final String content;
 		private final String nickname;
 		private final LocalDateTime createdDate;
-		private final Long userId;
+		private final Long memberId;
 
 		@QueryProjection
 		public FindReview(Long id, String content, String nickname, LocalDateTime createdDate,
-			Long userId) {
+			Long memberId) {
 			this.id = id;
 			this.content = content;
 			this.nickname = nickname;
 			this.createdDate = createdDate;
-			this.userId = userId;
+			this.memberId = memberId;
 		}
 	}
 

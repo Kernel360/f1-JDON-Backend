@@ -46,7 +46,7 @@ public class ReviewDto {
 		private final String nickname;
 		@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
 		private final LocalDateTime createdDate;
-		private final Long userId;
+		private final Long memberId;
 	}
 
 }

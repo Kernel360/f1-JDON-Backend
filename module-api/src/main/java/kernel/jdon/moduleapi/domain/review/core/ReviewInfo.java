@@ -33,6 +33,6 @@ public class ReviewInfo {
 		private final String content;
 		private final String nickname;
 		private final LocalDateTime createdDate;
-		private final Long userId;
+		private final Long memberId;
 	}
 }
