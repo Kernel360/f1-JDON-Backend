@@ -11,11 +11,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AuthFacade {
 	private final AuthService authService;
-	// private final MemberService memberService;
 
 	public AuthInfo.RegisterResponse register(final AuthCommand.RegisterRequest command) {
 		return authService.register(command);
-		// Map<String, String> userInfo = authService.decrypted(command);
-		// return memberService.createMember(userInfo, command);
 	}
 }
