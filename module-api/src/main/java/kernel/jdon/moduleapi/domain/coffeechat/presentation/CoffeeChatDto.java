@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import kernel.jdon.moduleapi.global.page.CustomPageInfo;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,6 +37,8 @@ public class CoffeeChatDto {
 
     @Getter
     @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class CreateCoffeeChatRequest {
         private String title;
         private String content;
@@ -47,6 +50,8 @@ public class CoffeeChatDto {
 
     @Getter
     @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class UpdateCoffeeChatRequest {
         private String title;
         private String content;
