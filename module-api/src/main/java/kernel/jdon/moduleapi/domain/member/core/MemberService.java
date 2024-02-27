@@ -1,5 +1,7 @@
 package kernel.jdon.moduleapi.domain.member.core;
 
+import kernel.jdon.auth.dto.SessionUserInfo;
+
 public interface MemberService {
 	MemberInfo.FindMemberResponse getMember(Long memberId);
 
@@ -9,4 +11,5 @@ public interface MemberService {
 
 	MemberInfo.RegisterResponse register(MemberCommand.RegisterRequest command);
 
+	MemberInfo.WithdrawResponse removeMember(SessionUserInfo userInfo);
 }

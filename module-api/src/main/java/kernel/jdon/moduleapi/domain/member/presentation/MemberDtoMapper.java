@@ -26,4 +26,6 @@ public interface MemberDtoMapper {
 
 	MemberDto.RegisterResponse of(MemberInfo.RegisterResponse response);
 
+	MemberDto.WithdrawResponse of(MemberInfo.WithdrawResponse response);
+
 }

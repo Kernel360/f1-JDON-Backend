@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import kernel.jdon.auth.dto.SessionUserInfo;
 import kernel.jdon.member.domain.Member;
 import kernel.jdon.moduleapi.domain.auth.util.CryptoManager;
 import kernel.jdon.moduleapi.domain.member.error.MemberErrorCode;
@@ -19,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
 	private final MemberReader memberReader;
+	private final MemberStore memberStore;
 	private final MemberInfoMapper memberInfoMapper;
 	private final MemberFactory memberFactory;
 	private final CryptoManager cryptoManager;
@@ -57,5 +59,13 @@ public class MemberServiceImpl implements MemberService {
 		final Member savedMember = memberFactory.save(command, userInfo);
 
 		return MemberInfo.RegisterResponse.of(savedMember.getId());
+	}
+
+	@Override
+	@Transactional
+	public MemberInfo.WithdrawResponse removeMember(final SessionUserInfo userInfo) {
+		memberStore.deleteById(userInfo.getId());
+
+		return MemberInfo.WithdrawResponse.of(userInfo.getId());
 	}
 }

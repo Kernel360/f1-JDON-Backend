@@ -6,4 +6,6 @@ public interface MemberStore {
 	void update(Member target, Member updateMember);
 
 	Member save(Member saveMember);
+
+	void deleteById(Long memberId);
 }

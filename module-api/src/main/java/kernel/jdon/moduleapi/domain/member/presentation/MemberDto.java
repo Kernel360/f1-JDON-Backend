@@ -84,8 +84,18 @@ public class MemberDto {
 		private boolean isLoginUser;
 		private Long memberId;
 
-		public static MemberDto.AuthenticateResponse of(boolean isLoginUser, Long memberId) {
+		public static MemberDto.AuthenticateResponse of(final boolean isLoginUser, final Long memberId) {
 			return new MemberDto.AuthenticateResponse(isLoginUser, memberId);
+		}
+	}
+
+	@Getter
+	@AllArgsConstructor
+	public static class WithdrawResponse {
+		private Long memberId;
+
+		public static WithdrawResponse of(final Long memberId) {
+			return new WithdrawResponse(memberId);
 		}
 	}
 

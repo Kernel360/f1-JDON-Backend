@@ -41,4 +41,14 @@ public class MemberInfo {
 			return new RegisterResponse(memberId);
 		}
 	}
+
+	@Getter
+	@AllArgsConstructor
+	public static class WithdrawResponse {
+		private final Long memberId;
+
+		public static MemberInfo.WithdrawResponse of(final Long memberId) {
+			return new MemberInfo.WithdrawResponse(memberId);
+		}
+	}
 }

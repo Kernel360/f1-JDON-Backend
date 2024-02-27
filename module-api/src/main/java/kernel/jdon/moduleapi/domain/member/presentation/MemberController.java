@@ -6,6 +6,7 @@ import java.net.URI;
 import java.util.Objects;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -78,5 +79,14 @@ public class MemberController {
 		final MemberDto.AuthenticateResponse response = MemberDto.AuthenticateResponse.of(isLoginUser, memberId);
 
 		return ResponseEntity.ok().body(CommonResponse.of(response));
+	}
+
+	@DeleteMapping("/api/v1/withdraw")
+	public ResponseEntity<CommonResponse<MemberDto.WithdrawResponse>> withdrawMember(
+		@LoginUser final SessionUserInfo sessionUser) {
+		final MemberInfo.WithdrawResponse info = memberFacade.withdrawMember(sessionUser);
+		final MemberDto.WithdrawResponse response = memberDtoMapper.of(info);
+
+		return ResponseEntity.ok(CommonResponse.of(response));
 	}
 }
