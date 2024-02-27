@@ -25,31 +25,31 @@ public class FavoriteServiceImpl implements FavoriteService {
 
 	@Override
 	@Transactional
-	public FavoriteInfo.UpdateResponse create(Long memberId, Long lectureId) {
-		Member findMember = memberReader.findById(memberId);
-		InflearnCourse findInflearnCourse = inflearnReader.findById(lectureId);
-		Favorite findFavorite = favoriteReader.findFavoriteByMemberIdAndInflearnCourseId(findMember.getId(),
+	public FavoriteInfo.UpdateResponse create(final Long memberId, final Long lectureId) {
+		final Member findMember = memberReader.findById(memberId);
+		final InflearnCourse findInflearnCourse = inflearnReader.findById(lectureId);
+		final Favorite findFavorite = favoriteReader.findFavoriteByMemberIdAndInflearnCourseId(findMember.getId(),
 				findInflearnCourse.getId())
 			.orElseGet(() -> createNewFavorite(findMember, findInflearnCourse));
-		Favorite saveFavorite = favoriteStore.save(findFavorite);
+		final Favorite saveFavorite = favoriteStore.save(findFavorite);
 
 		return new FavoriteInfo.UpdateResponse(saveFavorite.getId());
 	}
 
-	private Favorite createNewFavorite(Member member, InflearnCourse inflearnCourse) {
-		Favorite favorite = new Favorite(member, inflearnCourse);
+	private Favorite createNewFavorite(final Member member, final InflearnCourse inflearnCourse) {
+		final Favorite favorite = new Favorite(member, inflearnCourse);
 
 		return favoriteReader.save(favorite);
 	}
 
 	@Override
 	@Transactional
-	public FavoriteInfo.UpdateResponse remove(Long memberId, Long lectureId) {
+	public FavoriteInfo.UpdateResponse remove(final Long memberId, final Long lectureId) {
 		boolean memberExists = memberReader.existsById(memberId);
 		if (!memberExists) {
 			throw new ApiException(MemberErrorCode.NOT_FOUND_MEMBER);
 		}
-		Favorite findFavorite = favoriteReader.findFavoriteByMemberIdAndInflearnCourseId(memberId, lectureId)
+		final Favorite findFavorite = favoriteReader.findFavoriteByMemberIdAndInflearnCourseId(memberId, lectureId)
 			.map(favoriteResponse -> favoriteReader.findById(favoriteResponse.getId())
 				.orElseThrow(FavoriteErrorCode.NOT_FOUND_FAVORITE::throwException))
 			.orElseThrow(FavoriteErrorCode.NOT_FOUND_FAVORITE::throwException);
@@ -60,7 +60,7 @@ public class FavoriteServiceImpl implements FavoriteService {
 
 	@Override
 	public FavoriteInfo.FindFavoriteListResponse getFavoriteList(Long memberId, PageInfoRequest pageInfoRequest) {
-		FavoriteInfo.FindFavoriteListResponse favoriteList = favoriteReader.findList(memberId, pageInfoRequest);
+		final FavoriteInfo.FindFavoriteListResponse favoriteList = favoriteReader.findList(memberId, pageInfoRequest);
 
 		return favoriteList;
 	}
