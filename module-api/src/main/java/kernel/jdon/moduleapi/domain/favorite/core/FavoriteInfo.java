@@ -46,16 +46,16 @@ public class FavoriteInfo {
 	}
 
 	@Getter
-	public class UpdateRequest {
-		private Long lectureId;
-		@NotNull(message = "isFavorite은 null이 될 수 없습니다.")
-		private Boolean isFavorite;
-	}
-
-	@Getter
 	@AllArgsConstructor
 	@Builder
 	public static class UpdateResponse {
 		private Long lectureId;
+	}
+
+	@Getter
+	public class UpdateRequest {
+		private Long lectureId;
+		@NotNull(message = "isFavorite은 null이 될 수 없습니다.")
+		private Boolean isFavorite;
 	}
 }

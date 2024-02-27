@@ -19,7 +19,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class SkillRepositoryImpl implements SkillRepositoryCustom {
+public class SkillRepositoryImpl implements CustomSkillRepository {
 
 	private final JPAQueryFactory jpaQueryFactory;
 

@@ -12,7 +12,7 @@ import kernel.jdon.moduleapi.domain.coffeechat.core.CoffeeChatCommand;
 import kernel.jdon.moduleapi.domain.coffeechat.core.CoffeeChatInfo;
 import kernel.jdon.moduleapi.domain.coffeechat.core.CoffeeChatReader;
 import kernel.jdon.moduleapi.domain.coffeechat.error.CoffeeChatErrorCode;
-import kernel.jdon.moduleapi.global.page.CustomPageInfo;
+import kernel.jdon.moduleapi.global.page.CustomJpaPageInfo;
 import kernel.jdon.moduleapi.global.page.PageInfoRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,11 +36,7 @@ public class CoffeeChatReaderImpl implements CoffeeChatReader {
 			.map(coffeeChat -> CoffeeChatInfo.FindCoffeeChatInfo.of(coffeeChat))
 			.toList();
 
-		final CustomPageInfo customPageInfo = new CustomPageInfo(readerInfo.getPageable().getPageNumber(),
-			readerInfo.getTotalElements(), readerInfo.getPageable().getPageSize(), readerInfo.isFirst(),
-			readerInfo.isLast(), readerInfo.isEmpty());
-
-		return new CoffeeChatInfo.FindCoffeeChatListResponse(list, customPageInfo);
+		return new CoffeeChatInfo.FindCoffeeChatListResponse(list, new CustomJpaPageInfo(readerInfo));
 	}
 
 	@Override

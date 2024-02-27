@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 
 import kernel.jdon.moduleapi.domain.jd.core.JdInfo;
 import kernel.jdon.moduleapi.domain.jd.core.JdService;
+import kernel.jdon.moduleapi.global.page.PageInfoRequest;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -13,5 +14,9 @@ public class JdFacade {
 
 	public JdInfo.FindWantedJdResponse getJd(final Long jdId) {
 		return jdService.getJd(jdId);
+	}
+
+	public JdInfo.FindWantedJdListResponse getJdList(final PageInfoRequest pageInfoRequest, final String keyword) {
+		return jdService.getJdList(pageInfoRequest, keyword);
 	}
 }

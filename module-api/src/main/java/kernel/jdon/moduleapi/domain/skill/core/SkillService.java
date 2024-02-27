@@ -3,9 +3,9 @@ package kernel.jdon.moduleapi.domain.skill.core;
 public interface SkillService {
 	SkillInfo.FindHotSkillListResponse getHotSkillList();
 
-	SkillInfo.FindMemberSkillListResponse getMemberSkillList(final Long memberId);
+	SkillInfo.FindMemberSkillListResponse getMemberSkillList(Long memberId);
 
-	SkillInfo.FindJobCategorySkillListResponse getJobCategorySkillList(final Long jobCategoryId);
+	SkillInfo.FindJobCategorySkillListResponse getJobCategorySkillList(Long jobCategoryId);
 
-	SkillInfo.FindDataListBySkillResponse getDataListBySkill(final String keyword, final Long userId);
+	SkillInfo.FindDataListBySkillResponse getDataListBySkill(String keyword, Long userId);
 }

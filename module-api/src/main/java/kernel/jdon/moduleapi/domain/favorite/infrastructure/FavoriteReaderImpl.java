@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import kernel.jdon.moduleapi.domain.favorite.core.FavoriteInfo;
 import kernel.jdon.moduleapi.domain.favorite.core.FavoriteInfoMapper;
 import kernel.jdon.moduleapi.domain.favorite.core.FavoriteReader;
-import kernel.jdon.moduleapi.global.page.CustomPageInfo;
+import kernel.jdon.moduleapi.global.page.CustomJpaPageInfo;
 import kernel.jdon.moduleapi.global.page.PageInfoRequest;
 import kernel.jdon.moduledomain.favorite.domain.Favorite;
 import lombok.RequiredArgsConstructor;
@@ -33,16 +33,7 @@ public class FavoriteReaderImpl implements FavoriteReader {
 			.map(FavoriteInfo.FindFavorite::of)
 			.toList();
 
-		CustomPageInfo customPageInfo = new CustomPageInfo(
-			favoritesPage.getNumber(),
-			favoritesPage.getTotalElements(),
-			favoritesPage.getSize(),
-			favoritesPage.isFirst(),
-			favoritesPage.isLast(),
-			favoritesPage.isEmpty()
-		);
-
-		return new FavoriteInfo.FindFavoriteListResponse(list, customPageInfo);
+		return new FavoriteInfo.FindFavoriteListResponse(list, new CustomJpaPageInfo(favoritesPage));
 	}
 
 	@Override
