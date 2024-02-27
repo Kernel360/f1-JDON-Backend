@@ -34,7 +34,7 @@ public class MemberReaderImpl implements MemberReader {
 	}
 
 	@Override
-	public boolean existsByNickname(String nickname) {
+	public boolean existsByNickname(final String nickname) {
 		return memberRepository.existsByNickname(nickname);
 	}
 }

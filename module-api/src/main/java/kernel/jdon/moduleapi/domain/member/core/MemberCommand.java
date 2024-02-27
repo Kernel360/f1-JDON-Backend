@@ -23,6 +23,6 @@ public class MemberCommand {
 	@Getter
 	@Builder
 	public static class NicknameDuplicateRequest {
-		private String nickname;
+		private final String nickname;
 	}
 }

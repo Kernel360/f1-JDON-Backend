@@ -45,7 +45,8 @@ public class MemberController {
 	}
 
 	@PostMapping("/api/v1/nickname/duplicate")
-	public ResponseEntity<Void> checkNicknameDuplicate(@RequestBody MemberDto.NicknameDuplicateRequest request) {
+	public ResponseEntity<Void> checkNicknameDuplicate(
+		@RequestBody @Valid final MemberDto.NicknameDuplicateRequest request) {
 		final MemberCommand.NicknameDuplicateRequest command = memberDtoMapper.of(request);
 		memberFacade.checkNicknameDuplicate(command);
 

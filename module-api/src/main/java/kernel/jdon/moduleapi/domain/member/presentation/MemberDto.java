@@ -8,6 +8,7 @@ import kernel.jdon.moduleapi.global.annotation.validate.Gender;
 import kernel.jdon.moduleapi.global.annotation.validate.isPastDate;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 public class MemberDto {
@@ -45,7 +46,9 @@ public class MemberDto {
 	}
 
 	@Getter
+	@Setter
 	public static class NicknameDuplicateRequest {
+		@NotBlank(message = "증복 확인하려는 닉네임을 작성해주세요.")
 		private String nickname;
 	}
 

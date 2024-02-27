@@ -39,7 +39,7 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public void checkNicknameDuplicate(MemberCommand.NicknameDuplicateRequest command) {
+	public void checkNicknameDuplicate(final MemberCommand.NicknameDuplicateRequest command) {
 		final boolean isExistNickname = memberReader.existsByNickname(command.getNickname());
 		if (isExistNickname) {
 			throw new ApiException(MemberErrorCode.CONFLICT_DUPLICATE_NICKNAME);
