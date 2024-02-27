@@ -32,6 +32,7 @@ public class JdReaderImpl implements JdReader {
 		return wantedJd.getSkillList().stream()
 			.map(wantedJdSkill -> new JdInfo.FindSkill(
 				wantedJdSkill.getSkill()))
+			.distinct()
 			.toList();
 	}
 
