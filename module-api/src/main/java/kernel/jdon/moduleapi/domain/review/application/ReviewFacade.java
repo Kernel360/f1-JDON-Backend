@@ -20,4 +20,8 @@ public class ReviewFacade {
 	public ReviewInfo.FindReviewListResponse getReviewList(final Long jdId, final PageInfoRequest pageInfoRequest) {
 		return reviewService.getReviewList(jdId, pageInfoRequest);
 	}
+
+	public void removeReview(final ReviewCommand.DeleteReviewRequest command) {
+		reviewService.removeReview(command);
+	}
 }

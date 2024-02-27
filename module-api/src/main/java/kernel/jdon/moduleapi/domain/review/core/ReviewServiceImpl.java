@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import kernel.jdon.member.domain.Member;
 import kernel.jdon.moduleapi.domain.jd.core.JdReader;
 import kernel.jdon.moduleapi.domain.member.core.MemberReader;
+import kernel.jdon.moduleapi.domain.review.error.ReviewErrorCode;
+import kernel.jdon.moduleapi.global.exception.ApiException;
 import kernel.jdon.moduleapi.global.page.PageInfoRequest;
 import kernel.jdon.moduledomain.review.domain.Review;
 import kernel.jdon.wantedjd.domain.WantedJd;
@@ -30,5 +32,24 @@ public class ReviewServiceImpl implements ReviewService {
 	@Override
 	public ReviewInfo.FindReviewListResponse getReviewList(final Long jdId, final PageInfoRequest pageInfoRequest) {
 		return reviewReader.findReviewList(jdId, pageInfoRequest);
+	}
+
+	@Override
+	public void removeReview(final ReviewCommand.DeleteReviewRequest command) {
+		final Review findReview = reviewReader.findById(command.getReviewId());
+		validateDeleteReview(command, findReview);
+		reviewStore.delete(findReview);
+	}
+
+	private void validateDeleteReview(final ReviewCommand.DeleteReviewRequest command, final Review findReview) {
+		checkIfCreateMember(command, findReview);
+	}
+
+	private void checkIfCreateMember(final ReviewCommand.DeleteReviewRequest command, final Review findReview) {
+		final Long loginMemberId = command.getMemberId();
+		final Long createdMemberId = findReview.getMember().getId();
+		if (!createdMemberId.equals(loginMemberId)) {
+			throw new ApiException(ReviewErrorCode.FORBIDDEN_DELETE_REVIEW);
+		}
 	}
 }

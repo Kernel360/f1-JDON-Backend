@@ -26,4 +26,11 @@ public class ReviewCommand {
 				.build();
 		}
 	}
+
+	@Getter
+	@Builder
+	public static class DeleteReviewRequest {
+		private final Long reviewId;
+		private final Long memberId;
+	}
 }

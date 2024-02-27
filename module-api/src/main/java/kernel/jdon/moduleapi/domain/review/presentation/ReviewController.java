@@ -3,6 +3,7 @@ package kernel.jdon.moduleapi.domain.review.presentation;
 import java.net.URI;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -50,4 +51,13 @@ public class ReviewController {
 		return ResponseEntity.ok().body(CommonResponse.of(response));
 	}
 
+	@DeleteMapping("/api/v1/reviews/{reviewId}")
+	public ResponseEntity<CommonResponse<Void>> removeReview(
+		@PathVariable(name = "reviewId") final Long reviewId,
+		@LoginUser final SessionUserInfo sessionUserInfo) {
+		final ReviewCommand.DeleteReviewRequest command = reviewDtoMapper.of(reviewId, sessionUserInfo.getId());
+		reviewFacade.removeReview(command);
+
+		return ResponseEntity.noContent().build();
+	}
 }
