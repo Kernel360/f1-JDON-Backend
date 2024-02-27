@@ -13,7 +13,6 @@ import kernel.jdon.member.domain.MemberAccountStatus;
 import kernel.jdon.member.domain.MemberRole;
 import kernel.jdon.member.domain.SocialProviderType;
 import kernel.jdon.memberskill.domain.MemberSkill;
-import kernel.jdon.moduleapi.domain.auth.core.AuthCommand;
 import kernel.jdon.moduleapi.domain.jobcategory.core.JobCategoryReader;
 import kernel.jdon.moduleapi.domain.member.core.MemberCommand;
 import kernel.jdon.moduleapi.domain.member.core.MemberFactory;
