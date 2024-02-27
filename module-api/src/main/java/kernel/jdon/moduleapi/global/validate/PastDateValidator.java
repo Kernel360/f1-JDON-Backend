@@ -5,9 +5,9 @@ import java.time.format.DateTimeFormatter;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-import kernel.jdon.moduleapi.global.annotation.validate.isPastDate;
+import kernel.jdon.moduleapi.global.annotation.validate.IsPastDate;
 
-public class PastDateValidator implements ConstraintValidator<isPastDate, String> {
+public class PastDateValidator implements ConstraintValidator<IsPastDate, String> {
 
 	@Override
 	public boolean isValid(String value, ConstraintValidatorContext context) {

@@ -5,7 +5,7 @@ import java.util.List;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import kernel.jdon.moduleapi.global.annotation.validate.Gender;
-import kernel.jdon.moduleapi.global.annotation.validate.isPastDate;
+import kernel.jdon.moduleapi.global.annotation.validate.IsPastDate;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -29,7 +29,7 @@ public class MemberDto {
 	public static class UpdateMemberRequest {
 		@NotBlank(message = "닉네임은 필수 입력값입니다.")
 		private String nickname;
-		@isPastDate()
+		@IsPastDate()
 		private String birth;
 		@NotBlank(message = "성별은 필수 입력값입니다.")
 		@Gender
