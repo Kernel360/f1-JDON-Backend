@@ -10,4 +10,6 @@ public interface MemberReader {
 	boolean existsById(Long memberId);
 
 	List<Long> findSkillIdListByMember(Member findMember);
+
+	boolean existsByNickname(String nickname);
 }

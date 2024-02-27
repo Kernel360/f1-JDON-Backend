@@ -1,7 +1,6 @@
 package kernel.jdon.member.controller;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import kernel.jdon.member.dto.request.NicknameDuplicateRequest;
@@ -16,7 +15,7 @@ public class MemberController {
 
 	private final MemberService memberService;
 
-	@PostMapping("/api/v1/nickname/duplicate")
+	// @PostMapping("/api/v1/nickname/duplicate")
 	public ResponseEntity<Void> checkNicknameDuplicate(@RequestBody NicknameDuplicateRequest nicknameDuplicateRequest) {
 		memberService.checkNicknameDuplicate(nicknameDuplicateRequest.getNickname());
 

@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import kernel.jdon.member.domain.Member;
+import kernel.jdon.moduleapi.domain.member.error.MemberErrorCode;
+import kernel.jdon.moduleapi.global.exception.ApiException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -15,7 +17,6 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
 	private final MemberReader memberReader;
-	private final MemberStore memberStore;
 	private final MemberInfoMapper memberInfoMapper;
 	private final MemberFactory memberFactory;
 
@@ -35,5 +36,13 @@ public class MemberServiceImpl implements MemberService {
 		memberFactory.update(findMember, command);
 
 		return MemberInfo.UpdateMemberResponse.of(findMember.getId());
+	}
+
+	@Override
+	public void checkNicknameDuplicate(final MemberCommand.NicknameDuplicateRequest command) {
+		final boolean isExistNickname = memberReader.existsByNickname(command.getNickname());
+		if (isExistNickname) {
+			throw new ApiException(MemberErrorCode.CONFLICT_DUPLICATE_NICKNAME);
+		}
 	}
 }

@@ -32,4 +32,9 @@ public class MemberReaderImpl implements MemberReader {
 			.map(memberSkill -> memberSkill.getSkill().getId())
 			.toList();
 	}
+
+	@Override
+	public boolean existsByNickname(final String nickname) {
+		return memberRepository.existsByNickname(nickname);
+	}
 }

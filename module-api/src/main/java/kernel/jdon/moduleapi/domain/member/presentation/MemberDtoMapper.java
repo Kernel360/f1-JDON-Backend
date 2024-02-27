@@ -20,4 +20,6 @@ public interface MemberDtoMapper {
 
 	MemberDto.UpdateMemberResponse of(MemberInfo.UpdateMemberResponse response);
 
+	MemberCommand.NicknameDuplicateRequest of(MemberDto.NicknameDuplicateRequest request);
+
 }
