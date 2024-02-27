@@ -4,7 +4,6 @@ import java.net.URI;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import kernel.jdon.auth.dto.SessionUserInfo;
@@ -44,7 +43,7 @@ public class AuthController {
 		return ResponseEntity.ok(CommonResponse.of(WithdrawResponse.of(withdrawMemberId)));
 	}
 
-	@GetMapping("/api/v1/authenticate")
+	// @GetMapping("/api/v1/authenticate")
 	public ResponseEntity<CommonResponse> authenticate(@LoginUser SessionUserInfo sessionUser) {
 		Boolean isLoginUser = false;
 		if (null != sessionUser) {
