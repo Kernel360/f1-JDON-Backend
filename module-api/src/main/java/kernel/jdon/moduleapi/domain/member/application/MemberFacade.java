@@ -12,11 +12,11 @@ import lombok.RequiredArgsConstructor;
 public class MemberFacade {
 	private final MemberService memberService;
 
-	public MemberInfo.FindMemberResponse find(Long memberId) {
-		return memberService.find(memberId);
+	public MemberInfo.FindMemberResponse getMember(Long memberId) {
+		return memberService.getMember(memberId);
 	}
 
-	public MemberInfo.UpdateMemberResponse update(Long memberId, MemberCommand.UpdateMemberRequest command) {
-		return memberService.update(memberId, command);
+	public MemberInfo.UpdateMemberResponse modifyMember(Long memberId, MemberCommand.UpdateMemberRequest command) {
+		return memberService.modifyMember(memberId, command);
 	}
 }

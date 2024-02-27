@@ -20,7 +20,7 @@ public class MemberServiceImpl implements MemberService {
 	private final MemberFactory memberFactory;
 
 	@Override
-	public MemberInfo.FindMemberResponse find(final Long memberId) {
+	public MemberInfo.FindMemberResponse getMember(final Long memberId) {
 		final Member findMember = memberReader.findById(memberId);
 		final List<Long> skillIdList = memberReader.findSkillIdListByMember(findMember);
 
@@ -29,7 +29,7 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	@Transactional
-	public MemberInfo.UpdateMemberResponse update(Long memberId, MemberCommand.UpdateMemberRequest command) {
+	public MemberInfo.UpdateMemberResponse modifyMember(Long memberId, MemberCommand.UpdateMemberRequest command) {
 		Member findMember = memberReader.findById(memberId);
 		Member updateMember = memberFactory.toUpdateMember(findMember, command);
 		final Member updatedMember = memberStore.update(findMember, updateMember);
