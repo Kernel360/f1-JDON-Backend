@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import kernel.jdon.moduleapi.domain.skill.core.SkillInfo;
 import kernel.jdon.moduleapi.domain.skill.core.SkillReader;
 import kernel.jdon.moduleapi.domain.skill.error.SkillErrorCode;
+import kernel.jdon.moduleapi.global.exception.ApiException;
 import kernel.jdon.skill.domain.Skill;
 import lombok.RequiredArgsConstructor;
 
@@ -39,6 +40,10 @@ public class SkillReaderImpl implements SkillReader {
 
 	@Override
 	public List<Skill> findAllByIdList(List<Long> skillIdList) {
-		return skillRepository.findAllById(skillIdList);
+		List<Skill> skillList = skillRepository.findAllById(skillIdList);
+		if (skillList.size() < skillIdList.size()) {
+			throw new ApiException(SkillErrorCode.NOT_FOUND_SKILL);
+		}
+		return skillList;
 	}
 }
