@@ -24,6 +24,7 @@ public class JdDto {
 		private String benefits;
 		private String preferredPoints;
 		private String jobCategoryName;
+		private int reviewCount;
 		private List<FindSkill> skillList;
 	}
 

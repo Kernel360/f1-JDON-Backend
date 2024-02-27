@@ -27,6 +27,7 @@ public class JdInfo {
 		private String benefits;
 		private String preferredPoints;
 		private String jobCategoryName;
+		private int reviewCount;
 		private List<FindSkill> skillList;
 	}
 
