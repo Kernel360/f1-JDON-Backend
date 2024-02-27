@@ -11,6 +11,7 @@ import kernel.jdon.memberskill.domain.MemberSkill;
 import kernel.jdon.moduleapi.domain.jobcategory.core.JobCategoryReader;
 import kernel.jdon.moduleapi.domain.member.core.MemberCommand;
 import kernel.jdon.moduleapi.domain.member.core.MemberFactory;
+import kernel.jdon.moduleapi.domain.member.core.MemberStore;
 import kernel.jdon.moduleapi.domain.skill.core.SkillReader;
 import kernel.jdon.skill.domain.Skill;
 import lombok.RequiredArgsConstructor;
@@ -20,9 +21,10 @@ import lombok.RequiredArgsConstructor;
 public class MemberFactoryImpl implements MemberFactory {
 	private final JobCategoryReader jobCategoryReader;
 	private final SkillReader skillReader;
+	private final MemberStore memberStore;
 
 	@Override
-	public Member toUpdateMember(Member member, final MemberCommand.UpdateMemberRequest command) {
+	public void update(Member member, final MemberCommand.UpdateMemberRequest command) {
 		final JobCategory findJobCategory = jobCategoryReader.findById(command.getJobCategoryId());
 		List<Skill> findSkillList = skillReader.findAllByIdList(command.getSkillList());
 		List<MemberSkill> updateMemberSkill = findSkillList.stream()
@@ -31,13 +33,14 @@ public class MemberFactoryImpl implements MemberFactory {
 				.skill(skill)
 				.build())
 			.toList();
-
-		return Member.builder()
+		Member updateMember = Member.builder()
 			.nickname(command.getNickname())
 			.birth(command.getBirth())
 			.gender(Gender.ofType(command.getGender()))
 			.jobCategory(findJobCategory)
 			.memberSkillList(updateMemberSkill)
 			.build();
+
+		memberStore.update(member, updateMember);
 	}
 }

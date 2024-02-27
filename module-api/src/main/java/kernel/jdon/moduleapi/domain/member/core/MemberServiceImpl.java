@@ -32,8 +32,7 @@ public class MemberServiceImpl implements MemberService {
 	public MemberInfo.UpdateMemberResponse modifyMember(final Long memberId,
 		final MemberCommand.UpdateMemberRequest command) {
 		Member findMember = memberReader.findById(memberId);
-		Member updateMember = memberFactory.toUpdateMember(findMember, command);
-		memberStore.update(findMember, updateMember);
+		memberFactory.update(findMember, command);
 
 		return MemberInfo.UpdateMemberResponse.of(findMember.getId());
 	}
