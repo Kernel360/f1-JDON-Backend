@@ -29,4 +29,9 @@ public class MemberStoreImpl implements MemberStore {
 			.orElseThrow(() -> new ApiException(MemberErrorCode.NOT_FOUND_MEMBER))
 			.withdrawMemberAccount();
 	}
+
+	@Override
+	public void updateLastLoginDate(final Member member) {
+		member.updateLastLoginDate();
+	}
 }

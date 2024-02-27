@@ -8,4 +8,6 @@ public interface MemberStore {
 	Member save(Member saveMember);
 
 	void deleteById(Long memberId);
+
+	void updateLastLoginDate(Member member);
 }

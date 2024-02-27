@@ -12,4 +12,6 @@ public interface MemberReader {
 	List<Long> findSkillIdListByMember(Member findMember);
 
 	boolean existsByNickname(String nickname);
+
+	Member findByEmail(String email);
 }
