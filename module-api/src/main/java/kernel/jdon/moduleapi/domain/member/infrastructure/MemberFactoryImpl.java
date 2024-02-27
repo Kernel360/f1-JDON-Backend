@@ -32,47 +32,57 @@ public class MemberFactoryImpl implements MemberFactory {
 	public void update(final Member member, final MemberCommand.UpdateMemberRequest command) {
 		final JobCategory findJobCategory = jobCategoryReader.findById(command.getJobCategoryId());
 		final List<Skill> findSkillList = skillReader.findAllByIdList(command.getSkillList());
-		final Member updateMember = Member.builder()
-			.nickname(command.getNickname())
-			.birth(command.getBirth())
-			.gender(Gender.ofType(command.getGender()))
-			.jobCategory(findJobCategory)
-			.build();
+		final Member initUpdateMember = initMemberForUpdate(command, findJobCategory);
 		final List<MemberSkill> updateMemberSkill = findSkillList.stream()
 			.map(skill -> MemberSkill.builder()
 				.member(member)
 				.skill(skill)
 				.build())
 			.toList();
-		updateMember.updateMemberSkillList(updateMemberSkill);
+		initUpdateMember.updateMemberSkillList(updateMemberSkill);
 
-		memberStore.update(member, updateMember);
+		memberStore.update(member, initUpdateMember);
+	}
+
+	private Member initMemberForUpdate(final MemberCommand.UpdateMemberRequest command, final JobCategory jobCategory) {
+		return Member.builder()
+			.nickname(command.getNickname())
+			.birth(command.getBirth())
+			.gender(Gender.ofType(command.getGender()))
+			.jobCategory(jobCategory)
+			.build();
 	}
 
 	@Override
-	public Member save(MemberCommand.RegisterRequest command, Map<String, String> userInfo) {
+	public Member save(final MemberCommand.RegisterRequest command, final Map<String, String> userInfo) {
 		final JobCategory findJobCategory = jobCategoryReader.findById(command.getJobCategoryId());
-		final Member saveMember = Member.builder()
+		final Member initMember = initMemberForSave(command, userInfo, findJobCategory);
+		final Member saveMember = memberStore.save(initMember);
+		final List<Skill> findSkillList = skillReader.findAllByIdList(command.getSkillList());
+		final List<MemberSkill> updateMemberSkill = findSkillList.stream()
+			.map(skill -> MemberSkill.builder()
+				.member(saveMember)
+				.skill(skill)
+				.build())
+			.toList();
+		saveMember.updateMemberSkillList(updateMemberSkill);
+
+		return saveMember;
+	}
+
+	private Member initMemberForSave(final MemberCommand.RegisterRequest command, final Map<String, String> userInfo,
+		final JobCategory jobCategory) {
+
+		return Member.builder()
 			.email(userInfo.get("email"))
 			.nickname(command.getNickname())
 			.birth(command.getBirth())
 			.gender(Gender.ofType(command.getGender()))
 			.role(MemberRole.ROLE_USER)
 			.accountStatus(MemberAccountStatus.ACTIVE)
-			.jobCategory(findJobCategory)
+			.jobCategory(jobCategory)
 			.socialProvider(SocialProviderType.ofType(userInfo.get("provider")))
 			.joinDate(LocalDateTime.now())
 			.build();
-		final Member savedMember = memberStore.save(saveMember);
-		final List<Skill> findSkillList = skillReader.findAllByIdList(command.getSkillList());
-		final List<MemberSkill> updateMemberSkill = findSkillList.stream()
-			.map(skill -> MemberSkill.builder()
-				.member(savedMember)
-				.skill(skill)
-				.build())
-			.toList();
-		savedMember.updateMemberSkillList(updateMemberSkill);
-
-		return savedMember;
 	}
 }

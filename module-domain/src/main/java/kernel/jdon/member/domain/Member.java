@@ -125,10 +125,14 @@ public class Member {
 	}
 
 	public void updateMemberSkillList(List<MemberSkill> memberSkillList) {
+		this.clearMemberSkillList();
+		this.memberSkillList.addAll(memberSkillList);
+	}
+
+	private void clearMemberSkillList() {
 		if (!this.memberSkillList.isEmpty()) {
 			this.memberSkillList.clear();
 		}
-		this.memberSkillList.addAll(memberSkillList);
 	}
 
 	public void withdrawMemberAccount() {
