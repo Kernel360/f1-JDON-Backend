@@ -20,4 +20,9 @@ public class MemberCommand {
 		private final List<Long> skillList;
 	}
 
+	@Getter
+	@Builder
+	public static class NicknameDuplicateRequest {
+		private String nickname;
+	}
 }

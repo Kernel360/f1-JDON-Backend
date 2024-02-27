@@ -21,4 +21,8 @@ public class MemberFacade {
 
 		return memberService.modifyMember(memberId, command);
 	}
+
+	public void checkNicknameDuplicate(MemberCommand.NicknameDuplicateRequest command) {
+		memberService.checkNicknameDuplicate(command);
+	}
 }

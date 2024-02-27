@@ -2,6 +2,7 @@ package kernel.jdon.moduleapi.domain.member.presentation;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,5 +42,13 @@ public class MemberController {
 		final MemberDto.UpdateMemberResponse response = memberDtoMapper.of(info);
 
 		return ResponseEntity.ok().body(CommonResponse.of(response));
+	}
+
+	@PostMapping("/api/v1/nickname/duplicate")
+	public ResponseEntity<Void> checkNicknameDuplicate(@RequestBody MemberDto.NicknameDuplicateRequest request) {
+		final MemberCommand.NicknameDuplicateRequest command = memberDtoMapper.of(request);
+		memberFacade.checkNicknameDuplicate(command);
+
+		return ResponseEntity.noContent().build();
 	}
 }

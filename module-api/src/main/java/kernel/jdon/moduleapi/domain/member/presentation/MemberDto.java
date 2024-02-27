@@ -43,4 +43,10 @@ public class MemberDto {
 	public static class UpdateMemberResponse {
 		private Long memberId;
 	}
+
+	@Getter
+	public static class NicknameDuplicateRequest {
+		private String nickname;
+	}
+
 }
