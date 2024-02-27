@@ -28,4 +28,15 @@ public class AuthDto {
 		private Long memberId;
 	}
 
+	@Getter
+	@AllArgsConstructor
+	public static class AuthenticateResponse {
+		private boolean isLoginUser;
+		private Long memberId;
+
+		public static AuthenticateResponse of(boolean isLoginUser, Long memberId) {
+			return new AuthenticateResponse(isLoginUser, memberId);
+		}
+	}
+
 }
