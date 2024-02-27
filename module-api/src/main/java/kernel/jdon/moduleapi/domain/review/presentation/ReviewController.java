@@ -54,8 +54,8 @@ public class ReviewController {
 	@DeleteMapping("/api/v1/reviews/{reviewId}")
 	public ResponseEntity<CommonResponse<Void>> removeReview(
 		@PathVariable(name = "reviewId") final Long reviewId,
-		@LoginUser final SessionUserInfo sessionUserInfo) {
-		final ReviewCommand.DeleteReviewRequest command = reviewDtoMapper.of(reviewId, sessionUserInfo.getId());
+		@LoginUser final SessionUserInfo member) {
+		final ReviewCommand.DeleteReviewRequest command = reviewDtoMapper.of(reviewId, member.getId());
 		reviewFacade.removeReview(command);
 
 		return ResponseEntity.noContent().build();
