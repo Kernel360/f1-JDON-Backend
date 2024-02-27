@@ -13,8 +13,8 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import kernel.jdon.auth.error.AuthErrorCode;
 import kernel.jdon.auth.util.RedirectUrlUtil;
+import kernel.jdon.moduleapi.domain.auth.error.AuthErrorCode;
 import kernel.jdon.moduleapi.global.exception.AuthException;
 
 @Component

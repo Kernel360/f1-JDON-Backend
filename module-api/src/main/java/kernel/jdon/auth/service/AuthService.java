@@ -12,9 +12,9 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import kernel.jdon.auth.dto.SessionUserInfo;
-import kernel.jdon.auth.error.AuthErrorCode;
 import kernel.jdon.member.domain.SocialProviderType;
 import kernel.jdon.member.repository.MemberRepository;
+import kernel.jdon.moduleapi.domain.auth.error.AuthErrorCode;
 import kernel.jdon.moduleapi.domain.member.error.MemberErrorCode;
 import kernel.jdon.moduleapi.global.config.auth.WithdrawProperties;
 import kernel.jdon.moduleapi.global.exception.ApiException;
