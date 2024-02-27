@@ -4,7 +4,6 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import kernel.jdon.member.domain.SocialProviderType;
 import kernel.jdon.moduleapi.domain.auth.dto.SessionUserInfo;
-import kernel.jdon.moduleapi.domain.auth.dto.UserInfoFromOAuth2;
 import kernel.jdon.moduleapi.domain.auth.error.AuthErrorCode;
 import kernel.jdon.moduleapi.global.exception.AuthException;
 
@@ -12,7 +11,7 @@ public interface OAuth2Strategy {
 
 	SocialProviderType getOAuth2ProviderType();
 
-	UserInfoFromOAuth2 getUserInfo(OAuth2User user);
+	SessionUserInfo getUserInfo(OAuth2User user);
 
 	boolean unlinkOAuth2Account(SessionUserInfo userInfo);
 

@@ -17,7 +17,6 @@ import kernel.jdon.member.domain.MemberRole;
 import kernel.jdon.member.domain.SocialProviderType;
 import kernel.jdon.moduleapi.domain.auth.dto.JdonOAuth2User;
 import kernel.jdon.moduleapi.domain.auth.dto.SessionUserInfo;
-import kernel.jdon.moduleapi.domain.auth.dto.UserInfoFromOAuth2;
 import kernel.jdon.moduleapi.domain.auth.error.AuthErrorCode;
 import kernel.jdon.moduleapi.domain.member.core.MemberReader;
 import kernel.jdon.moduleapi.domain.member.core.MemberStore;
@@ -40,11 +39,11 @@ public class CustomOAuth2UserServiceImpl extends DefaultOAuth2UserService {
 	public OAuth2User loadUser(final OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
 		final OAuth2User user = super.loadUser(userRequest);
 
-		return getOAuth2UserFromOAuthServer(userRequest, user);
+		return getOAuth2User(userRequest, user);
 	}
 
-	private DefaultOAuth2User getOAuth2UserFromOAuthServer(final OAuth2UserRequest userRequest, final OAuth2User user) {
-		final UserInfoFromOAuth2 userInfo = oauth2ProviderComposite.getClient(getSocialProvider(userRequest))
+	private DefaultOAuth2User getOAuth2User(final OAuth2UserRequest userRequest, final OAuth2User user) {
+		final SessionUserInfo userInfo = oauth2ProviderComposite.getClient(getSocialProvider(userRequest))
 			.getUserInfo(user);
 		final Member findMember = memberReader.findByEmail(userInfo.getEmail());
 		final List<SimpleGrantedAuthority> authorities = getAuthorities(userInfo, findMember);
@@ -53,10 +52,10 @@ public class CustomOAuth2UserServiceImpl extends DefaultOAuth2UserService {
 			userInfo.getEmail(), userInfo.getSocialProvider());
 	}
 
-	private List<SimpleGrantedAuthority> getAuthorities(final UserInfoFromOAuth2 userInfo, final Member member) {
+	private List<SimpleGrantedAuthority> getAuthorities(final SessionUserInfo userInfo, final Member member) {
 		if (member != null && member.isActiveMember()) {
 			checkRightSocialProvider(member, userInfo.getSocialProvider());
-			httpSession.setAttribute("USER", SessionUserInfo.of(member, userInfo));
+			httpSession.setAttribute("USER", userInfo.getMemberSession(member));
 			memberStore.updateLastLoginDate(member);
 			return List.of(new SimpleGrantedAuthority(MemberRole.ROLE_USER.name()));
 		} else {
