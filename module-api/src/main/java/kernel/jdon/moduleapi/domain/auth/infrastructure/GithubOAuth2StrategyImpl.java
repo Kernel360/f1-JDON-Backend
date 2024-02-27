@@ -25,6 +25,7 @@ public class GithubOAuth2StrategyImpl implements OAuth2Strategy {
 
 	@Override
 	public boolean unlinkOAuth2Account(final SessionUserInfo userInfo) {
-		return false;
+		// todo 구현
+		return true;
 	}
 }
