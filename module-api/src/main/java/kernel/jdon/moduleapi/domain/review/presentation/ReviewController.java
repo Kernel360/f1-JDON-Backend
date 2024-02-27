@@ -43,7 +43,7 @@ public class ReviewController {
 		@PathVariable(name = "jdId") final Long jdId,
 		@RequestParam(value = "page", defaultValue = "0") final int page,
 		@RequestParam(value = "size", defaultValue = "6") final int size) {
-		final ReviewInfo.FindReviewListResponse info = reviewFacade.findReviewList(jdId,
+		final ReviewInfo.FindReviewListResponse info = reviewFacade.getReviewList(jdId,
 			new PageInfoRequest(page, size));
 		final ReviewDto.FindReviewListResponse response = reviewDtoMapper.of(info);
 

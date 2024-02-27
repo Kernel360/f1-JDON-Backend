@@ -17,7 +17,7 @@ public class ReviewFacade {
 		return reviewService.createReview(command);
 	}
 
-	public ReviewInfo.FindReviewListResponse findReviewList(final Long jdId, final PageInfoRequest pageInfoRequest) {
+	public ReviewInfo.FindReviewListResponse getReviewList(final Long jdId, final PageInfoRequest pageInfoRequest) {
 		return reviewService.getReviewList(jdId, pageInfoRequest);
 	}
 }
