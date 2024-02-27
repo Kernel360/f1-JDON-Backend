@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
-import kernel.jdon.auth.dto.SessionUserInfo;
+import kernel.jdon.moduleapi.domain.auth.dto.SessionUserInfo;
 import kernel.jdon.moduleapi.domain.favorite.application.FavoriteFacade;
 import kernel.jdon.moduleapi.domain.favorite.core.FavoriteCommand;
 import kernel.jdon.moduleapi.domain.favorite.core.FavoriteInfo;

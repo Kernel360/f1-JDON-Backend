@@ -2,8 +2,8 @@ package kernel.jdon.moduleapi.domain.member.application;
 
 import org.springframework.stereotype.Service;
 
-import kernel.jdon.auth.dto.SessionUserInfo;
-import kernel.jdon.moduleapi.domain.auth.core.CustomOAuth2UserService;
+import kernel.jdon.moduleapi.domain.auth.core.CustomOAuth2UserServiceImpl;
+import kernel.jdon.moduleapi.domain.auth.dto.SessionUserInfo;
 import kernel.jdon.moduleapi.domain.auth.error.AuthErrorCode;
 import kernel.jdon.moduleapi.domain.member.core.MemberCommand;
 import kernel.jdon.moduleapi.domain.member.core.MemberInfo;
@@ -15,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MemberFacade {
 	private final MemberService memberService;
-	private final CustomOAuth2UserService customOAuth2UserService;
+	private final CustomOAuth2UserServiceImpl customOAuth2UserServiceImpl;
 
 	public MemberInfo.FindMemberResponse getMember(final Long memberId) {
 		return memberService.getMember(memberId);
@@ -36,7 +36,7 @@ public class MemberFacade {
 	}
 
 	public MemberInfo.WithdrawResponse withdrawMember(final SessionUserInfo userInfo) {
-		if (!customOAuth2UserService.sendDeleteRequestToOAuth2(userInfo)) {
+		if (!customOAuth2UserServiceImpl.sendDeleteRequestToOAuth2(userInfo)) {
 			throw new ApiException(AuthErrorCode.ERROR_FAIL_TO_UNLINK_OAUTH2);
 		}
 		return memberService.removeMember(userInfo);

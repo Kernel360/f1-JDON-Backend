@@ -1,9 +1,7 @@
-package kernel.jdon.auth.util;
+package kernel.jdon.moduleapi.global.config.auth;
 
 import org.springframework.stereotype.Component;
 
-import kernel.jdon.moduleapi.global.config.auth.AllowOriginProperties;
-import kernel.jdon.moduleapi.global.config.auth.LoginRedirectUrlProperties;
 import lombok.RequiredArgsConstructor;
 
 @Component

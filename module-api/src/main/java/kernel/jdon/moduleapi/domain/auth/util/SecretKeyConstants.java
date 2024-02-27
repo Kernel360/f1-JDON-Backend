@@ -1,4 +1,4 @@
-package kernel.jdon.auth.util;
+package kernel.jdon.moduleapi.domain.auth.util;
 
 public final class SecretKeyConstants {
 	public static final String AES_PRIVATE_KEY = "JDON_SECRET_KEY_AES_USE_THIS_KEY";

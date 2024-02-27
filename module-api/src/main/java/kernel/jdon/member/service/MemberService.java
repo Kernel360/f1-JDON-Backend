@@ -1,7 +1,5 @@
 package kernel.jdon.member.service;
 
-import static kernel.jdon.auth.util.HmacUtil.*;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.HashMap;
@@ -13,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kernel.jdon.auth.dto.object.RegisterMemberDto;
 import kernel.jdon.auth.dto.request.RegisterRequest;
-import kernel.jdon.auth.util.AesUtil;
 import kernel.jdon.jobcategory.domain.JobCategory;
 import kernel.jdon.member.domain.Member;
 import kernel.jdon.member.domain.MemberRole;
@@ -21,6 +18,7 @@ import kernel.jdon.member.domain.SocialProviderType;
 import kernel.jdon.member.repository.MemberRepository;
 import kernel.jdon.memberskill.domain.MemberSkill;
 import kernel.jdon.memberskill.repository.MemberSkillRepository;
+import kernel.jdon.moduleapi.domain.auth.util.CryptoManager;
 import kernel.jdon.moduleapi.domain.jobcategory.error.JobCategoryErrorCode;
 import kernel.jdon.moduleapi.domain.jobcategory.infrastructure.JobCategoryRepository;
 import kernel.jdon.moduleapi.domain.member.error.MemberErrorCode;
@@ -41,6 +39,7 @@ public class MemberService {
 	private final SkillRepository skillRepository;
 	private final MemberSkillRepository memberSkillRepository;
 	private final JobCategoryRepository jobCategoryRepository;
+	private final CryptoManager cryptoManager;
 
 	private Member findMember(Long id) {
 		return memberRepository.findById(id)
@@ -94,8 +93,8 @@ public class MemberService {
 	private String getEmailAndProviderString(String hmac, String encrypted) {
 		String emailAndProvider = null;
 		try {
-			if (isValidHMAC(hmac, encrypted)) {
-				emailAndProvider = AesUtil.decryptAESCBC(encrypted);
+			if (cryptoManager.isValidHMAC(hmac, encrypted)) {
+				emailAndProvider = cryptoManager.decryptAESCBC(encrypted);
 			} else {
 				throw new ApiException(MemberErrorCode.UNAUTHORIZED_EMAIL_OAUTH2);
 			}

@@ -1,4 +1,4 @@
-package kernel.jdon.auth.dto;
+package kernel.jdon.moduleapi.domain.auth.dto;
 
 import java.util.Collection;
 import java.util.Map;

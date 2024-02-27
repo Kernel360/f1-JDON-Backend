@@ -11,7 +11,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 
-import kernel.jdon.auth.service.JdonOAuth2UserService;
+import kernel.jdon.moduleapi.domain.auth.core.CustomOAuth2UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,7 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 @EnableWebSecurity
 @Configuration
 public class OAuth2SecurityConfig {
-	private final JdonOAuth2UserService jdonOAuth2UserService;
+	private final CustomOAuth2UserServiceImpl customOAuth2UserServiceImpl;
 	private final JdonOAuth2AuthenticationSuccessHandler jdonOAuth2AuthenticationSuccessHandler;
 	private final JdonAuthExceptionHandler jdonAuthExceptionHandler;
 	private final JdonLogoutSuccessHandler jdonLogoutSuccessHandler;
@@ -76,7 +76,7 @@ public class OAuth2SecurityConfig {
 			.successHandler(jdonOAuth2AuthenticationSuccessHandler)
 			.failureHandler(jdonAuthExceptionHandler)
 			.userInfoEndpoint(userInfoEndpointConfigurer -> userInfoEndpointConfigurer
-				.userService(jdonOAuth2UserService)));
+				.userService(customOAuth2UserServiceImpl)));
 		http.logout(logoutConfigurer -> logoutConfigurer
 			.logoutUrl("/api/v1/logout")
 			.logoutSuccessHandler(jdonLogoutSuccessHandler)

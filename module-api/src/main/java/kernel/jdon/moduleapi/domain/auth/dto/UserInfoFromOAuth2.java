@@ -1,4 +1,4 @@
-package kernel.jdon.auth.dto;
+package kernel.jdon.moduleapi.domain.auth.dto;
 
 import kernel.jdon.member.domain.SocialProviderType;
 import lombok.Getter;

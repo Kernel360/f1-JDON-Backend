@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
-import kernel.jdon.auth.dto.SessionUserInfo;
+import kernel.jdon.moduleapi.domain.auth.dto.SessionUserInfo;
 import kernel.jdon.moduleapi.domain.review.application.ReviewFacade;
 import kernel.jdon.moduleapi.domain.review.core.ReviewCommand;
 import kernel.jdon.moduleapi.domain.review.core.ReviewInfo;
