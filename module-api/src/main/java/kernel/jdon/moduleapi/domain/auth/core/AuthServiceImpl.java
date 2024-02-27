@@ -25,20 +25,20 @@ public class AuthServiceImpl implements AuthService {
 
 	@Override
 	@Transactional
-	public AuthInfo.RegisterResponse register(AuthCommand.RegisterRequest command) {
+	public AuthInfo.RegisterResponse register(final AuthCommand.RegisterRequest command) {
 		final Map<String, String> userInfo = getUserInfoFromAuthProvider(command.getHmac(), command.getEncrypted());
 		final Member savedMember = memberFactory.save(command, userInfo);
 
 		return AuthInfo.RegisterResponse.of(savedMember.getId());
 	}
 
-	private Map<String, String> getUserInfoFromAuthProvider(String hmac, String encrypted) {
-		String emailAndProvider = getEmailAndProviderString(hmac, encrypted);
+	private Map<String, String> getUserInfoFromAuthProvider(final String hmac, final String encrypted) {
+		final String emailAndProvider = getEmailAndProviderString(hmac, encrypted);
 
 		return parseQueryString(emailAndProvider);
 	}
 
-	private String getEmailAndProviderString(String hmac, String encrypted) {
+	private String getEmailAndProviderString(final String hmac, final String encrypted) {
 		String emailAndProvider = null;
 		try {
 			if (isValidHMAC(hmac, encrypted)) {
@@ -52,9 +52,9 @@ public class AuthServiceImpl implements AuthService {
 		return emailAndProvider;
 	}
 
-	private Map<String, String> parseQueryString(String queryString) {
-		Map<String, String> params = new HashMap<>();
-		String[] pairs = queryString.split("&");
+	private Map<String, String> parseQueryString(final String queryString) {
+		final Map<String, String> params = new HashMap<>();
+		final String[] pairs = queryString.split("&");
 		try {
 			for (String pair : pairs) {
 				String[] keyValue = pair.split("=");
@@ -67,5 +67,4 @@ public class AuthServiceImpl implements AuthService {
 		}
 		return params;
 	}
-
 }
