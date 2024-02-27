@@ -3,13 +3,6 @@ package kernel.jdon.moduleapi.domain.favorite.core;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import kernel.jdon.inflearncourse.domain.InflearnCourse;
-import kernel.jdon.member.domain.Member;
-import kernel.jdon.moduleapi.domain.favorite.error.FavoriteErrorCode;
-import kernel.jdon.moduleapi.domain.inflearncourse.core.InflearnReader;
-import kernel.jdon.moduleapi.domain.member.core.MemberReader;
-import kernel.jdon.moduleapi.domain.member.error.MemberErrorCode;
-import kernel.jdon.moduleapi.global.exception.ApiException;
 import kernel.jdon.moduleapi.global.page.PageInfoRequest;
 import kernel.jdon.moduledomain.favorite.domain.Favorite;
 import lombok.RequiredArgsConstructor;
@@ -19,43 +12,22 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class FavoriteServiceImpl implements FavoriteService {
 	private final FavoriteReader favoriteReader;
-	private final FavoriteStore favoriteStore;
-	private final MemberReader memberReader;
-	private final InflearnReader inflearnReader;
+	private final FavoriteFactory favoriteFactory;
 
 	@Override
 	@Transactional
 	public FavoriteInfo.UpdateResponse create(final Long memberId, final Long lectureId) {
-		final Member findMember = memberReader.findById(memberId);
-		final InflearnCourse findInflearnCourse = inflearnReader.findById(lectureId);
-		final Favorite findFavorite = favoriteReader.findFavoriteByMemberIdAndInflearnCourseId(findMember.getId(),
-				findInflearnCourse.getId())
-			.orElseGet(() -> createNewFavorite(findMember, findInflearnCourse));
-		final Favorite saveFavorite = favoriteStore.save(findFavorite);
+		final Favorite saveFavorite = favoriteFactory.create(memberId, lectureId);
 
 		return new FavoriteInfo.UpdateResponse(saveFavorite.getId());
-	}
-
-	private Favorite createNewFavorite(final Member member, final InflearnCourse inflearnCourse) {
-		final Favorite favorite = new Favorite(member, inflearnCourse);
-
-		return favoriteReader.save(favorite);
 	}
 
 	@Override
 	@Transactional
 	public FavoriteInfo.UpdateResponse remove(final Long memberId, final Long lectureId) {
-		boolean memberExists = memberReader.existsById(memberId);
-		if (!memberExists) {
-			throw new ApiException(MemberErrorCode.NOT_FOUND_MEMBER);
-		}
-		final Favorite findFavorite = favoriteReader.findFavoriteByMemberIdAndInflearnCourseId(memberId, lectureId)
-			.map(favoriteResponse -> favoriteReader.findById(favoriteResponse.getId())
-				.orElseThrow(FavoriteErrorCode.NOT_FOUND_FAVORITE::throwException))
-			.orElseThrow(FavoriteErrorCode.NOT_FOUND_FAVORITE::throwException);
-		favoriteStore.delete(findFavorite);
+		Favorite deleteFavorite = favoriteFactory.delete(memberId, lectureId);
 
-		return new FavoriteInfo.UpdateResponse(findFavorite.getId());
+		return new FavoriteInfo.UpdateResponse(deleteFavorite.getId());
 	}
 
 	@Override
