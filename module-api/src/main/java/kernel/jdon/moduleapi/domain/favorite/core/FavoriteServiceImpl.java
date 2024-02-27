@@ -25,18 +25,18 @@ public class FavoriteServiceImpl implements FavoriteService {
 
 	@Override
 	@Transactional
-	public FavoriteInfo.UpdateResponse save(Long memberId, Long lectureId) {
+	public FavoriteInfo.UpdateResponse create(Long memberId, Long lectureId) {
 		Member findMember = memberReader.findById(memberId);
 		InflearnCourse findInflearnCourse = inflearnReader.findById(lectureId);
 		Favorite findFavorite = favoriteReader.findFavoriteByMemberIdAndInflearnCourseId(findMember.getId(),
 				findInflearnCourse.getId())
-			.orElseGet(() -> saveNewFavorite(findMember, findInflearnCourse));
+			.orElseGet(() -> createNewFavorite(findMember, findInflearnCourse));
 		Favorite saveFavorite = favoriteStore.save(findFavorite);
 
 		return new FavoriteInfo.UpdateResponse(saveFavorite.getId());
 	}
 
-	private Favorite saveNewFavorite(Member member, InflearnCourse inflearnCourse) {
+	private Favorite createNewFavorite(Member member, InflearnCourse inflearnCourse) {
 		Favorite favorite = new Favorite(member, inflearnCourse);
 
 		return favoriteReader.save(favorite);
@@ -44,7 +44,7 @@ public class FavoriteServiceImpl implements FavoriteService {
 
 	@Override
 	@Transactional
-	public FavoriteInfo.UpdateResponse delete(Long memberId, Long lectureId) {
+	public FavoriteInfo.UpdateResponse remove(Long memberId, Long lectureId) {
 		boolean memberExists = memberReader.existsById(memberId);
 		if (!memberExists) {
 			throw new ApiException(MemberErrorCode.NOT_FOUND_MEMBER);
@@ -59,7 +59,7 @@ public class FavoriteServiceImpl implements FavoriteService {
 	}
 
 	@Override
-	public FavoriteInfo.FindFavoriteListResponse getList(Long memberId, PageInfoRequest pageInfoRequest) {
+	public FavoriteInfo.FindFavoriteListResponse getFavoriteList(Long memberId, PageInfoRequest pageInfoRequest) {
 		FavoriteInfo.FindFavoriteListResponse favoriteList = favoriteReader.findList(memberId, pageInfoRequest);
 
 		return favoriteList;

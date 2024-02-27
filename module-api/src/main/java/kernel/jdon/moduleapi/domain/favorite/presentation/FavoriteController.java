@@ -30,7 +30,7 @@ public class FavoriteController {
 		@LoginUser SessionUserInfo member,
 		@RequestParam(value = "page", defaultValue = "0") int page,
 		@RequestParam(value = "size", defaultValue = "12") int size) {
-		final FavoriteInfo.FindFavoriteListResponse info = favoriteFacade.getList(member.getId(),
+		final FavoriteInfo.FindFavoriteListResponse info = favoriteFacade.getFavoriteList(member.getId(),
 			new PageInfoRequest(page, size));
 		final FavoriteDto.FindFavoriteListResponse response = favoriteDtoMapper.of(info);
 
@@ -38,10 +38,10 @@ public class FavoriteController {
 	}
 
 	@PostMapping("/api/v1/favorites")
-	public ResponseEntity<CommonResponse<FavoriteDto.UpdateResponse>> update(@LoginUser SessionUserInfo member,
+	public ResponseEntity<CommonResponse<FavoriteDto.UpdateResponse>> modify(@LoginUser SessionUserInfo member,
 		@RequestBody @Valid FavoriteDto.UpdateRequest request) {
 		final FavoriteCommand.UpdateRequest command = favoriteDtoMapper.of(request);
-		final FavoriteInfo.UpdateResponse info = favoriteFacade.update(member.getId(), command);
+		final FavoriteInfo.UpdateResponse info = favoriteFacade.modify(member.getId(), command);
 		final FavoriteDto.UpdateResponse response = favoriteDtoMapper.of(info);
 
 		URI uri = URI.create("/api/v1/favorites/" + response.getLectureId());
