@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import kernel.jdon.coffeechat.domain.CoffeeChat;
+import kernel.jdon.coffeechatmember.domain.CoffeeChatMember;
 import kernel.jdon.moduleapi.domain.coffeechat.core.CoffeeChatCommand;
 import kernel.jdon.moduleapi.domain.coffeechat.core.CoffeeChatInfo;
 import kernel.jdon.moduleapi.domain.coffeechat.core.CoffeeChatReader;
@@ -22,26 +23,42 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class CoffeeChatReaderImpl implements CoffeeChatReader {
 
-	private final CoffeeChatRepository coffeeChatRepository;
+    private final CoffeeChatRepository coffeeChatRepository;
+    private final CoffeeChatMemberRepository coffeeChatMemberRepository;
 
-	@Override
-	public CoffeeChatInfo.FindCoffeeChatListResponse findCoffeeChatList(final PageInfoRequest pageInfoRequest,
-		final CoffeeChatCommand.FindCoffeeChatListRequest command) {
-		Pageable pageable = PageRequest.of(pageInfoRequest.getPage(), pageInfoRequest.getSize());
+    @Override
+    public CoffeeChat findExistCoffeeChat(Long coffeeChatId) {
+        return coffeeChatRepository.findByIdAndIsDeletedFalse(coffeeChatId)
+            .orElseThrow(CoffeeChatErrorCode.NOT_FOUND_COFFEECHAT::throwException);
+    }
 
-		final Page<CoffeeChatReaderInfo.FindCoffeeChatListResponse> readerInfo = coffeeChatRepository.findCoffeeChatList(
-			pageable, command);
+    @Override
+    public Page<CoffeeChatMember> findCoffeeChatMemberListByMemberId(Long memberId, Pageable pageable) {
+        return coffeeChatMemberRepository.findAllByMemberId(memberId, pageable);
+    }
 
-		final List<CoffeeChatInfo.FindCoffeeChatInfo> list = readerInfo.stream()
-			.map(coffeeChat -> CoffeeChatInfo.FindCoffeeChatInfo.of(coffeeChat))
-			.toList();
+    @Override
+    public Page<CoffeeChat> findCoffeeChatListByMemberId(Long memberId, Pageable pageable) {
+        return coffeeChatRepository.findAllByMemberIdAndIsDeletedFalse(memberId, pageable);
+    }
 
-		return new CoffeeChatInfo.FindCoffeeChatListResponse(list, new CustomJpaPageInfo(readerInfo));
-	}
+    @Override
+    public CoffeeChatInfo.FindCoffeeChatListResponse findCoffeeChatList(final PageInfoRequest pageInfoRequest,
+        final CoffeeChatCommand.FindCoffeeChatListRequest command) {
+        Pageable pageable = PageRequest.of(pageInfoRequest.getPage(), pageInfoRequest.getSize());
 
-	@Override
-	public CoffeeChat findExistCoffeeChat(Long coffeeChatId) {
-		return coffeeChatRepository.findByIdAndIsDeletedFalse(coffeeChatId)
-			.orElseThrow(CoffeeChatErrorCode.NOT_FOUND_COFFEECHAT::throwException);
-	}
+        final Page<CoffeeChatReaderInfo.FindCoffeeChatListResponse> readerInfo = coffeeChatRepository.findCoffeeChatList(
+            pageable, command);
+
+        final List<CoffeeChatInfo.FindCoffeeChat> list = readerInfo.stream()
+            .map(coffeeChat -> CoffeeChatInfo.FindCoffeeChat.of(coffeeChat))
+            .toList();
+
+        return new CoffeeChatInfo.FindCoffeeChatListResponse(list, new CustomJpaPageInfo(readerInfo));
+    }
+
+    @Override
+    public boolean existsByCoffeeChatIdAndMemberId(Long coffeeChatId, Long memberId) {
+        return coffeeChatMemberRepository.existsByCoffeeChatIdAndMemberId(coffeeChatId, coffeeChatId);
+    }
 }
