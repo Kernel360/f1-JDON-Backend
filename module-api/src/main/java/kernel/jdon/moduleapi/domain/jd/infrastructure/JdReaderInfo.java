@@ -11,11 +11,11 @@ public class JdReaderInfo {
 
 	@Getter
 	public static class FindWantedJd {
-		private Long id;
-		private String title;
-		private String company;
-		private String imageUrl;
-		private String jobCategoryName;
+		private final Long id;
+		private final String title;
+		private final String company;
+		private final String imageUrl;
+		private final String jobCategoryName;
 
 		@QueryProjection
 		public FindWantedJd(Long id, String title, String company, String imageUrl, String jobCategoryName) {
