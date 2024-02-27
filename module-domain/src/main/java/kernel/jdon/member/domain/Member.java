@@ -93,7 +93,7 @@ public class Member {
 	@Builder
 	public Member(Long id, String email, String nickname, String birth, Gender gender, LocalDateTime joinDate,
 		LocalDateTime lastLoginDate, MemberRole role, MemberAccountStatus accountStatus, LocalDateTime withdrawDate,
-		SocialProviderType socialProvider, JobCategory jobCategory) {
+		SocialProviderType socialProvider, JobCategory jobCategory, List<MemberSkill> memberSkillList) {
 		this.id = id;
 		this.email = email;
 		this.nickname = nickname;
@@ -106,6 +106,7 @@ public class Member {
 		this.withdrawDate = withdrawDate;
 		this.socialProvider = socialProvider;
 		this.jobCategory = jobCategory;
+		this.memberSkillList = memberSkillList;
 	}
 
 	public boolean isActiveMember() {
@@ -116,14 +117,12 @@ public class Member {
 		return this.socialProvider == socialProvider;
 	}
 
-	public long update(Member updateMember, List<MemberSkill> memberSkillList) {
+	public void update(Member updateMember) {
 		this.nickname = updateMember.nickname;
 		this.birth = updateMember.birth;
 		this.gender = updateMember.getGender();
 		this.jobCategory = updateMember.jobCategory;
-		updateMemberSkillList(memberSkillList);
-
-		return this.id;
+		updateMemberSkillList(updateMember.getMemberSkillList());
 	}
 
 	public void updateMemberSkillList(List<MemberSkill> memberSkillList) {

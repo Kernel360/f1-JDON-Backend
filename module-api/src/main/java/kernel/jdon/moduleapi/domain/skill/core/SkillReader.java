@@ -7,7 +7,9 @@ import kernel.jdon.skill.domain.Skill;
 public interface SkillReader {
 	List<SkillInfo.FindHotSkill> findHotSkillList();
 
-	List<SkillInfo.FindMemberSkill> findMemberSkillList(Long memberId);
+	List<SkillInfo.FindMemberSkill> findMemberSkillList(final Long memberId);
 
-	Skill findById(Long jobCategoryId);
+	Skill findById(final Long jobCategoryId);
+
+	List<Skill> findAllByIdList(List<Long> skillList);
 }
