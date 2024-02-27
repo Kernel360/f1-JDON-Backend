@@ -28,7 +28,7 @@ public class ReviewDto {
 	@Getter
 	@Builder
 	public static class CreateReviewResponse {
-		private final Long commandId;
+		private final Long reviewId;
 	}
 
 	@Getter

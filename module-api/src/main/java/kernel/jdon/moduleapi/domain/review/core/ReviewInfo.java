@@ -16,7 +16,7 @@ public class ReviewInfo {
 	@Getter
 	@AllArgsConstructor
 	public static class CreateReviewResponse {
-		private final Long commandId;
+		private final Long reviewId;
 	}
 
 	@Getter

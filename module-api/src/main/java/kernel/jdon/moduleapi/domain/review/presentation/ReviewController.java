@@ -33,7 +33,7 @@ public class ReviewController {
 		final ReviewCommand.CreateReviewRequest command = reviewDtoMapper.of(request, sessionUserInfo.getId());
 		final ReviewInfo.CreateReviewResponse info = reviewFacade.createReview(command);
 		final ReviewDto.CreateReviewResponse response = reviewDtoMapper.of(info);
-		final URI uri = URI.create("/api/v1/reviews" + response.getCommandId());
+		final URI uri = URI.create("/api/v1/reviews" + response.getReviewId());
 
 		return ResponseEntity.created(uri).body(CommonResponse.of(response));
 	}
