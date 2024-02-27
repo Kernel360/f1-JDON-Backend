@@ -1,6 +1,7 @@
 package kernel.jdon.moduleapi.domain.review.core;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import kernel.jdon.member.domain.Member;
 import kernel.jdon.moduleapi.domain.jd.core.JdReader;
@@ -13,6 +14,7 @@ import kernel.jdon.wantedjd.domain.WantedJd;
 import lombok.RequiredArgsConstructor;
 
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class ReviewServiceImpl implements ReviewService {
 	private final ReviewStore reviewStore;
@@ -21,6 +23,7 @@ public class ReviewServiceImpl implements ReviewService {
 	private final MemberReader memberReader;
 
 	@Override
+	@Transactional
 	public ReviewInfo.CreateReviewResponse createReview(final ReviewCommand.CreateReviewRequest command) {
 		final Member findMember = memberReader.findById(command.getMemberId());
 		final WantedJd findWantedJd = jdReader.findWantedJd(command.getJdId());
@@ -35,6 +38,7 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 
 	@Override
+	@Transactional
 	public void removeReview(final ReviewCommand.DeleteReviewRequest command) {
 		final Review findReview = reviewReader.findById(command.getReviewId());
 		validateDeleteReview(command, findReview);
