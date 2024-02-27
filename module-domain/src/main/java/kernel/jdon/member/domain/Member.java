@@ -117,14 +117,12 @@ public class Member {
 		return this.socialProvider == socialProvider;
 	}
 
-	public Member update(Member updateMember) {
+	public void update(Member updateMember) {
 		this.nickname = updateMember.nickname;
 		this.birth = updateMember.birth;
 		this.gender = updateMember.getGender();
 		this.jobCategory = updateMember.jobCategory;
 		updateMemberSkillList(updateMember.getMemberSkillList());
-
-		return this;
 	}
 
 	public void updateMemberSkillList(List<MemberSkill> memberSkillList) {

@@ -38,7 +38,7 @@ public class SkillReaderImpl implements SkillReader {
 	}
 
 	@Override
-	public List<Skill> findAllById(List<Long> skillList) {
-		return skillRepository.findAllById(skillList);
+	public List<Skill> findAllByIdList(List<Long> skillIdList) {
+		return skillRepository.findAllById(skillIdList);
 	}
 }

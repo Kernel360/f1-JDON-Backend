@@ -11,5 +11,5 @@ public interface SkillReader {
 
 	Skill findById(final Long jobCategoryId);
 
-	List<Skill> findAllById(List<Long> skillList);
+	List<Skill> findAllByIdList(List<Long> skillList);
 }

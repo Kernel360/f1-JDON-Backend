@@ -24,7 +24,7 @@ public class MemberFactoryImpl implements MemberFactory {
 	@Override
 	public Member toUpdateMember(Member member, MemberCommand.UpdateMemberRequest command) {
 		JobCategory findJobCategory = jobCategoryReader.findById(command.getJobCategoryId());
-		List<Skill> findSkillList = skillReader.findAllById(command.getSkillList());
+		List<Skill> findSkillList = skillReader.findAllByIdList(command.getSkillList());
 		List<MemberSkill> updateMemberSkill = findSkillList.stream()
 			.map(skill -> MemberSkill.builder()
 				.member(member)
