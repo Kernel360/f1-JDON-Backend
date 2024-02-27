@@ -13,11 +13,11 @@ public class MemberCommand {
 	@Getter
 	@Builder
 	public static class UpdateMemberRequest {
-		private String nickname;
-		private String birth;
-		private String gender;
-		private Long jobCategoryId;
-		private List<Long> skillList;
+		private final String nickname;
+		private final String birth;
+		private final String gender;
+		private final Long jobCategoryId;
+		private final List<Long> skillList;
 	}
 
 }

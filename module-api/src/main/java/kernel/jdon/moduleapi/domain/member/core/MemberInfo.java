@@ -14,20 +14,20 @@ public class MemberInfo {
 	@Getter
 	@Builder
 	public static class FindMemberResponse {
-		private String email;
-		private String nickname;
-		private String birth;
-		private String gender;
-		private Long jobCategoryId;
-		private List<Long> skillList;
+		private final String email;
+		private final String nickname;
+		private final String birth;
+		private final String gender;
+		private final Long jobCategoryId;
+		private final List<Long> skillList;
 	}
 
 	@Getter
 	@AllArgsConstructor
 	public static class UpdateMemberResponse {
-		private Long memberId;
+		private final Long memberId;
 
-		public static UpdateMemberResponse of(Long memberId) {
+		public static UpdateMemberResponse of(final Long memberId) {
 			return new UpdateMemberResponse(memberId);
 		}
 	}

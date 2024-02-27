@@ -29,7 +29,8 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	@Transactional
-	public MemberInfo.UpdateMemberResponse modifyMember(Long memberId, MemberCommand.UpdateMemberRequest command) {
+	public MemberInfo.UpdateMemberResponse modifyMember(final Long memberId,
+		final MemberCommand.UpdateMemberRequest command) {
 		Member findMember = memberReader.findById(memberId);
 		Member updateMember = memberFactory.toUpdateMember(findMember, command);
 		memberStore.update(findMember, updateMember);

@@ -22,7 +22,8 @@ public class MemberController {
 	private final MemberDtoMapper memberDtoMapper;
 
 	@GetMapping("/api/v1/member")
-	public ResponseEntity<CommonResponse<MemberDto.FindMemberResponse>> getMember(@LoginUser SessionUserInfo member) {
+	public ResponseEntity<CommonResponse<MemberDto.FindMemberResponse>> getMember(
+		@LoginUser final SessionUserInfo member) {
 		final Long memberId = member.getId();
 		final MemberInfo.FindMemberResponse info = memberFacade.getMember(memberId);
 		final MemberDto.FindMemberResponse response = memberDtoMapper.of(info);
@@ -32,8 +33,8 @@ public class MemberController {
 
 	@PutMapping("/api/v1/member")
 	public ResponseEntity<CommonResponse<MemberDto.UpdateMemberResponse>> modifyMember(
-		@LoginUser SessionUserInfo member,
-		@RequestBody @Valid MemberDto.UpdateMemberRequest request) {
+		@LoginUser final SessionUserInfo member,
+		@RequestBody @Valid final MemberDto.UpdateMemberRequest request) {
 		final Long memberId = member.getId();
 		final MemberCommand.UpdateMemberRequest command = memberDtoMapper.of(request);
 		final MemberInfo.UpdateMemberResponse info = memberFacade.modifyMember(memberId, command);

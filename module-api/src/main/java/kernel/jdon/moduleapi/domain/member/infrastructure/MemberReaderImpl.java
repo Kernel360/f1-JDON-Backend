@@ -27,7 +27,7 @@ public class MemberReaderImpl implements MemberReader {
 	}
 
 	@Override
-	public List<Long> findSkillIdListByMember(Member member) {
+	public List<Long> findSkillIdListByMember(final Member member) {
 		return member.getMemberSkillList().stream()
 			.map(memberSkill -> memberSkill.getSkill().getId())
 			.toList();
