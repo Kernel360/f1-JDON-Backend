@@ -24,16 +24,16 @@ public class MemberFactoryImpl implements MemberFactory {
 	private final MemberStore memberStore;
 
 	@Override
-	public void update(Member member, final MemberCommand.UpdateMemberRequest command) {
+	public void update(final Member member, final MemberCommand.UpdateMemberRequest command) {
 		final JobCategory findJobCategory = jobCategoryReader.findById(command.getJobCategoryId());
-		List<Skill> findSkillList = skillReader.findAllByIdList(command.getSkillList());
-		List<MemberSkill> updateMemberSkill = findSkillList.stream()
+		final List<Skill> findSkillList = skillReader.findAllByIdList(command.getSkillList());
+		final List<MemberSkill> updateMemberSkill = findSkillList.stream()
 			.map(skill -> MemberSkill.builder()
 				.member(member)
 				.skill(skill)
 				.build())
 			.toList();
-		Member updateMember = Member.builder()
+		final Member updateMember = Member.builder()
 			.nickname(command.getNickname())
 			.birth(command.getBirth())
 			.gender(Gender.ofType(command.getGender()))

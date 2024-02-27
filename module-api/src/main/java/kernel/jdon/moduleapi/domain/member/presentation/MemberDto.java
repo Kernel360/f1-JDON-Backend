@@ -15,33 +15,33 @@ public class MemberDto {
 	@Getter
 	@Builder
 	public static class FindMemberResponse {
-		private final String email;
-		private final String nickname;
-		private final String birth;
-		private final String gender;
-		private final Long jobCategoryId;
-		private final List<Long> skillList;
+		private String email;
+		private String nickname;
+		private String birth;
+		private String gender;
+		private Long jobCategoryId;
+		private List<Long> skillList;
 	}
 
 	@Getter
 	@Builder
 	public static class UpdateMemberRequest {
 		@NotBlank(message = "닉네임은 필수 입력값입니다.")
-		private final String nickname;
+		private String nickname;
 		@isPastDate()
-		private final String birth;
+		private String birth;
 		@NotBlank(message = "성별은 필수 입력값입니다.")
 		@Gender
-		private final String gender;
+		private String gender;
 		@Min(1)
-		private final Long jobCategoryId;
-		private final List<Long> skillList;
+		private Long jobCategoryId;
+		private List<Long> skillList;
 	}
 
 	@Getter
 	@Builder
 	public static class UpdateMemberResponse {
-		private final Long memberId;
+		private Long memberId;
 	}
 
 }

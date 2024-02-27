@@ -12,7 +12,7 @@ public class MemberStoreImpl implements MemberStore {
 	private final MemberRepository memberRepository;
 
 	@Override
-	public void update(Member target, final Member updateMember) {
+	public void update(final Member target, final Member updateMember) {
 		target.update(updateMember);
 	}
 }
