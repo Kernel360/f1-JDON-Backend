@@ -29,21 +29,22 @@ class CoffeeChatServiceImplTest {
     @DisplayName("유효한 ID로 커피챗 조회 성공 시, 올바른 응답을 반환한다")
     void givenValidCoffeeChatId_whenGetCoffeeChat_thenReturnCorrectCoffeeChat() {
         //given
+        Long memberId = 2L;
         Long coffeeChatId = 1L;
         CoffeeChat mockCoffeeChat = mockCoffeeChat();
         CoffeeChatInfo.FindCoffeeChatResponse mockFindCoffeeChatResponse = mockFindResponse();
 
         //when
         when(coffeeChatReader.findExistCoffeeChat(coffeeChatId)).thenReturn(mockCoffeeChat);
-        when(coffeeChatInfoMapper.of(mockCoffeeChat)).thenReturn(mockFindCoffeeChatResponse);
+        when(coffeeChatInfoMapper.of(eq(mockCoffeeChat), anyBoolean())).thenReturn(mockFindCoffeeChatResponse);
 
         //then
-        CoffeeChatInfo.FindCoffeeChatResponse response = coffeeChatService.getCoffeeChat(coffeeChatId);
+        CoffeeChatInfo.FindCoffeeChatResponse response = coffeeChatService.getCoffeeChat(coffeeChatId, memberId);
         Assertions.assertThat(response).isEqualTo(mockFindCoffeeChatResponse);
 
         //verify
         verify(coffeeChatReader, times(1)).findExistCoffeeChat(coffeeChatId);
-        verify(coffeeChatInfoMapper, times(1)).of(mockCoffeeChat);
+        verify(coffeeChatInfoMapper, times(1)).of(eq(mockCoffeeChat), anyBoolean());
     }
 
     private CoffeeChat mockCoffeeChat() {

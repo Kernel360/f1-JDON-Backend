@@ -34,9 +34,9 @@ import lombok.NoArgsConstructor;
 @Table(name = "coffee_chat")
 public class CoffeeChat extends AbstractEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(name = "title", columnDefinition = "VARCHAR(255)", nullable = false)
     private String title;
@@ -85,13 +85,9 @@ public class CoffeeChat extends AbstractEntity {
         this.member = member;
     }
 
-	public boolean isAuthor(Long memberId) {
-		return member.getId().equals(memberId);
-	}
-
-	public void increaseViewCount() {
-		this.viewCount += 1;
-	}
+    public void increaseViewCount() {
+        this.viewCount += 1;
+    }
 
     public void addCoffeeChatMember(Member member) {
         CoffeeChatMember coffeeChatMember = CoffeeChatMember.builder()

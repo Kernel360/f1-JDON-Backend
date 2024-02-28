@@ -59,6 +59,6 @@ public class CoffeeChatReaderImpl implements CoffeeChatReader {
 
     @Override
     public boolean existsByCoffeeChatIdAndMemberId(Long coffeeChatId, Long memberId) {
-        return coffeeChatMemberRepository.existsByCoffeeChatIdAndMemberId(coffeeChatId, coffeeChatId);
+        return coffeeChatMemberRepository.existsByCoffeeChatIdAndMemberId(coffeeChatId, memberId);
     }
 }

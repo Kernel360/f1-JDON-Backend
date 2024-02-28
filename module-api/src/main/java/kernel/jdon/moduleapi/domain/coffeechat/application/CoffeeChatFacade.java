@@ -33,8 +33,9 @@ public class CoffeeChatFacade {
         return coffeeChatService.getCoffeeChatList(pageInfoRequest, command);
     }
 
-    public CoffeeChatInfo.FindCoffeeChatResponse getCoffeeChat(Long coffeeChatId) {
-        CoffeeChatInfo.FindCoffeeChatResponse findCoffeeChatResponse = coffeeChatService.getCoffeeChat(coffeeChatId);
+    public CoffeeChatInfo.FindCoffeeChatResponse getCoffeeChat(Long coffeeChatId, Long memberId) {
+        CoffeeChatInfo.FindCoffeeChatResponse findCoffeeChatResponse = coffeeChatService.getCoffeeChat(coffeeChatId,
+            memberId);
         coffeeChatService.increaseViewCount(coffeeChatId);
 
         return findCoffeeChatResponse;

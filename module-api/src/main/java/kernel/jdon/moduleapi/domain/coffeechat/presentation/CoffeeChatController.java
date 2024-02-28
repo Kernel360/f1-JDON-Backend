@@ -1,6 +1,7 @@
 package kernel.jdon.moduleapi.domain.coffeechat.presentation;
 
 import java.net.URI;
+import java.util.Optional;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -53,11 +54,20 @@ public class CoffeeChatController {
 
     @GetMapping("/api/v1/coffeechats/{id}")
     public ResponseEntity<CommonResponse<CoffeeChatDto.FindCoffeeChatResponse>> getCoffeeChat(
-        @PathVariable(name = "id") Long coffeeChatId) {
-        CoffeeChatInfo.FindCoffeeChatResponse info = coffeeChatFacade.getCoffeeChat(coffeeChatId);
+        @PathVariable(name = "id") Long coffeeChatId,
+        @LoginUser SessionUserInfo member
+    ) {
+        Long memberId = getMemberId(member);
+        CoffeeChatInfo.FindCoffeeChatResponse info = coffeeChatFacade.getCoffeeChat(coffeeChatId, memberId);
         CoffeeChatDto.FindCoffeeChatResponse response = coffeeChatDtoMapper.of(info);
 
         return ResponseEntity.ok(CommonResponse.of(response));
+    }
+
+    private Long getMemberId(SessionUserInfo member) {
+        return Optional.ofNullable(member)
+            .map(SessionUserInfo::getId)
+            .orElse(null);
     }
 
     @PostMapping("/api/v1/coffeechats/{id}")

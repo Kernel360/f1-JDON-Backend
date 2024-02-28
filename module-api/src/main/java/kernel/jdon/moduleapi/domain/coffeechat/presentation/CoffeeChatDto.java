@@ -20,6 +20,7 @@ public class CoffeeChatDto {
     public static class FindCoffeeChatResponse {
         private Long coffeeChatId;
         private Long hostId;
+        private boolean isParticipant;
         private String nickname;
         private String hostJobCategoryName;
         private String title;

@@ -10,7 +10,7 @@ public interface CoffeeChatService {
     CoffeeChatInfo.FindCoffeeChatListResponse getCoffeeChatList(PageInfoRequest pageInfoRequest,
         CoffeeChatCommand.FindCoffeeChatListRequest command);
 
-    CoffeeChatInfo.FindCoffeeChatResponse getCoffeeChat(Long coffeeChatId);
+    CoffeeChatInfo.FindCoffeeChatResponse getCoffeeChat(Long coffeeChatId, Long memberId);
 
     Long createCoffeeChat(CoffeeChatCommand.CreateCoffeeChatRequest request, Long memberId);
 

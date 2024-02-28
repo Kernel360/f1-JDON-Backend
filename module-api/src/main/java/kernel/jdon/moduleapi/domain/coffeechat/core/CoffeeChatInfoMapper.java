@@ -19,7 +19,7 @@ public interface CoffeeChatInfoMapper {
     @Mapping(expression = "java(coffeeChat.getMember().getNickname())", target = "nickname")
     @Mapping(expression = "java(coffeeChat.getMember().getJobCategory().getName())", target = "hostJobCategoryName")
     @Mapping(expression = "java(coffeeChat.getCoffeeChatStatus().getActiveStatus())", target = "status")
-    CoffeeChatInfo.FindCoffeeChatResponse of(CoffeeChat coffeeChat);
+    CoffeeChatInfo.FindCoffeeChatResponse of(CoffeeChat coffeeChat, boolean isParticipant);
 
     @Mapping(source = "coffeeChat.id", target = "coffeeChatId")
     @Mapping(source = "coffeeChat.title", target = "title")
