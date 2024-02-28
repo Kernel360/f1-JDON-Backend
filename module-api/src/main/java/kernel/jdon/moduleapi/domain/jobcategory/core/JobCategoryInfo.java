@@ -14,9 +14,9 @@ import lombok.NoArgsConstructor;
 public class JobCategoryInfo {
 
 	@Getter
-	@NoArgsConstructor
+	@AllArgsConstructor
 	public static class FindJobGroupListResponse {
-		private List<FindJobGroup> jobGroupList;
+		private final List<FindJobGroup> jobGroupList;
 
 		public FindJobGroupListResponse(final List<JobCategory> jobGroupList,
 			final Map<Long, List<JobCategory>> jobCategoryMap) {
@@ -28,12 +28,10 @@ public class JobCategoryInfo {
 
 	@Getter
 	@Builder
-	@NoArgsConstructor
-	@AllArgsConstructor
 	public static class FindJobGroup {
-		private Long id;
-		private String name;
-		private List<FindJobCategory> jobCategoryList;
+		private final Long id;
+		private final String name;
+		private final List<FindJobCategory> jobCategoryList;
 
 		public static JobCategoryInfo.FindJobGroup of(final JobCategory jobCategory,
 			final List<JobCategory> jobCategoryList) {
@@ -51,11 +49,9 @@ public class JobCategoryInfo {
 
 	@Getter
 	@Builder
-	@NoArgsConstructor
-	@AllArgsConstructor
 	public static class FindJobCategory {
-		private Long id;
-		private String name;
+		private final Long id;
+		private final String name;
 
 		public static JobCategoryInfo.FindJobCategory of(final JobCategory jobCategory) {
 			return JobCategoryInfo.FindJobCategory.builder()

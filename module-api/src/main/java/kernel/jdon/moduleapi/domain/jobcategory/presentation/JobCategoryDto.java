@@ -14,22 +14,22 @@ public class JobCategoryDto {
 	@Getter
 	@Builder
 	public static class FindJobGroupListResponse {
-		private List<JobCategoryInfo.FindJobGroup> jobGroupList;
+		private final List<JobCategoryInfo.FindJobGroup> jobGroupList;
 	}
 
 	@Getter
 	@Builder
 	public static class FindJobGroup {
-		private Long id;
-		private String name;
-		private List<JobCategoryInfo.FindJobCategory> jobCategoryList;
+		private final Long id;
+		private final String name;
+		private final List<JobCategoryInfo.FindJobCategory> jobCategoryList;
 	}
 
 	@Getter
 	@Builder
 	public static class FindJobCategory {
-		private Long id;
-		private String name;
+		private final Long id;
+		private final String name;
 	}
 
 }
