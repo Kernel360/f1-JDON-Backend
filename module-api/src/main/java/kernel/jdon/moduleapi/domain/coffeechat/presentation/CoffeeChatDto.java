@@ -34,6 +34,10 @@ public class CoffeeChatDto {
         private String openChatUrl;
         private Long totalRecruitCount;
         private Long currentRecruitCount;
+
+        public boolean getIsParticipant() {
+            return isParticipant;
+        }
     }
 
     @Getter

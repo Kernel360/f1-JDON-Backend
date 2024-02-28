@@ -21,7 +21,7 @@ public class CoffeeChatInfo {
     public static class FindCoffeeChatResponse {
         private Long coffeeChatId;
         private Long hostId;
-        private Boolean isParticipant;
+        private boolean isParticipant;
         private String nickname;
         private String hostJobCategoryName;
         private String title;
@@ -35,6 +35,10 @@ public class CoffeeChatInfo {
         private String openChatUrl;
         private Long totalRecruitCount;
         private Long currentRecruitCount;
+
+        public boolean getIsParticipant() {
+            return isParticipant;
+        }
     }
 
     @Getter
