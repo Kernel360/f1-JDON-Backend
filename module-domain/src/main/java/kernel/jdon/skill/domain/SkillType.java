@@ -14,7 +14,7 @@ public interface SkillType {
 
 	List<String> getRelatedKeywords();
 
-	public default List<String> getKeywordAssociatedList(SkillType skillType) {
+	default List<String> getKeywordAssociatedList(SkillType skillType) {
 		List<String> associatedList = new ArrayList<>();
 		associatedList.add(skillType.getKeyword());
 		associatedList.add(skillType.getTranslation());
@@ -23,7 +23,7 @@ public interface SkillType {
 		return associatedList;
 	}
 
-	public default boolean containsKeyword(String keyword) {
+	default boolean containsKeyword(String keyword) {
 		return getKeywordAssociatedList(this).stream().anyMatch(term -> term.equalsIgnoreCase(keyword));
 	}
 }
