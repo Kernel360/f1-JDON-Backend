@@ -9,4 +9,5 @@ public interface MemberService {
 
 	MemberInfo.RegisterResponse register(MemberCommand.RegisterRequest command);
 
+	MemberInfo.WithdrawResponse removeMember(MemberCommand.WithdrawRequest command);
 }

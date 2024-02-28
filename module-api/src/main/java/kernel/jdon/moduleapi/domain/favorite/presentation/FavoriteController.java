@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
-import kernel.jdon.auth.dto.SessionUserInfo;
 import kernel.jdon.moduleapi.domain.favorite.application.FavoriteFacade;
 import kernel.jdon.moduleapi.domain.favorite.core.FavoriteCommand;
 import kernel.jdon.moduleapi.domain.favorite.core.FavoriteInfo;
 import kernel.jdon.moduleapi.global.annotation.LoginUser;
+import kernel.jdon.moduleapi.global.dto.SessionUserInfo;
 import kernel.jdon.moduleapi.global.page.PageInfoRequest;
 import kernel.jdon.modulecommon.dto.response.CommonResponse;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +24,7 @@ import lombok.RequiredArgsConstructor;
 public class FavoriteController {
 	private final FavoriteFacade favoriteFacade;
 	private final FavoriteDtoMapper favoriteDtoMapper;
-	
+
 	@GetMapping("/api/v1/favorites")
 	public ResponseEntity<CommonResponse<FavoriteDto.FindFavoriteListResponse>> getList(
 		@LoginUser SessionUserInfo member,

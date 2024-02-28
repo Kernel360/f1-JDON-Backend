@@ -1,4 +1,4 @@
-package kernel.jdon.moduleapi.global.config;
+package kernel.jdon.moduleapi.global.config.web;
 
 import java.util.List;
 
@@ -8,7 +8,6 @@ import org.springframework.format.FormatterRegistry;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import kernel.jdon.auth.service.LoginUserArgumentResolver;
 import kernel.jdon.moduleapi.domain.coffeechat.core.CoffeeChatSortCondition;
 import lombok.RequiredArgsConstructor;
 

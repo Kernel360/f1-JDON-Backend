@@ -1,7 +1,5 @@
 package kernel.jdon.moduleapi.global.config.auth;
 
-import static kernel.jdon.auth.util.AesUtil.*;
-import static kernel.jdon.auth.util.HmacUtil.*;
 import static kernel.jdon.modulecommon.util.StringUtil.*;
 
 import java.io.IOException;
@@ -15,9 +13,9 @@ import org.springframework.stereotype.Component;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import kernel.jdon.auth.dto.JdonOAuth2User;
-import kernel.jdon.auth.util.RedirectUrlUtil;
 import kernel.jdon.member.domain.MemberRole;
+import kernel.jdon.moduleapi.domain.auth.core.JdonOAuth2User;
+import kernel.jdon.moduleapi.domain.auth.util.CryptoManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -26,6 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class JdonOAuth2AuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 	private final RedirectUrlUtil redirectUrlUtil;
+	private final CryptoManager cryptoManager;
 
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -52,9 +51,10 @@ public class JdonOAuth2AuthenticationSuccessHandler implements AuthenticationSuc
 	private String createEncryptQueryString(String info) {
 		String encoded = null;
 		try {
-			encoded = encryptAESCBC(info);
+			encoded = cryptoManager.encryptAESCBC(info);
 			encoded = joinToString(createQueryString("value", URLEncoder.encode(encoded, StandardCharsets.UTF_8)),
-				createQueryString("hmac", URLEncoder.encode(generateHMAC(encoded), StandardCharsets.UTF_8)));
+				createQueryString("hmac",
+					URLEncoder.encode(cryptoManager.generateHMAC(encoded), StandardCharsets.UTF_8)));
 		} catch (Exception e) {
 			log.warn(e.getMessage(), e);
 		}

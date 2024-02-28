@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import kernel.jdon.auth.dto.SessionUserInfo;
 import kernel.jdon.moduleapi.domain.skill.application.SkillFacade;
 import kernel.jdon.moduleapi.domain.skill.core.SkillInfo;
 import kernel.jdon.moduleapi.global.annotation.LoginUser;
+import kernel.jdon.moduleapi.global.dto.SessionUserInfo;
 import kernel.jdon.modulecommon.dto.response.CommonResponse;
 import lombok.RequiredArgsConstructor;
 

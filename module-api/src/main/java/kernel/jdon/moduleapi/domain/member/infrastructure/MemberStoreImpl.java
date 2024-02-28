@@ -4,6 +4,8 @@ import org.springframework.stereotype.Component;
 
 import kernel.jdon.member.domain.Member;
 import kernel.jdon.moduleapi.domain.member.core.MemberStore;
+import kernel.jdon.moduleapi.domain.member.error.MemberErrorCode;
+import kernel.jdon.moduleapi.global.exception.ApiException;
 import lombok.RequiredArgsConstructor;
 
 @Component
@@ -19,5 +21,17 @@ public class MemberStoreImpl implements MemberStore {
 	@Override
 	public Member save(Member saveMember) {
 		return memberRepository.save(saveMember);
+	}
+
+	@Override
+	public void updateAccountStatusWithdrawById(final Long memberId) {
+		memberRepository.findById(memberId)
+			.orElseThrow(() -> new ApiException(MemberErrorCode.NOT_FOUND_MEMBER))
+			.withdrawMemberAccount();
+	}
+
+	@Override
+	public void updateLastLoginDate(final Member member) {
+		member.updateLastLoginDate();
 	}
 }

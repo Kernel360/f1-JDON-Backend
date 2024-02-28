@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
-import kernel.jdon.auth.dto.SessionUserInfo;
 import kernel.jdon.moduleapi.domain.review.application.ReviewFacade;
 import kernel.jdon.moduleapi.domain.review.core.ReviewCommand;
 import kernel.jdon.moduleapi.domain.review.core.ReviewInfo;
 import kernel.jdon.moduleapi.global.annotation.LoginUser;
+import kernel.jdon.moduleapi.global.dto.SessionUserInfo;
 import kernel.jdon.moduleapi.global.page.PageInfoRequest;
 import kernel.jdon.modulecommon.dto.response.CommonResponse;
 import lombok.RequiredArgsConstructor;

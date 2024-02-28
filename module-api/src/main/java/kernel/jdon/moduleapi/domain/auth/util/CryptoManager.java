@@ -1,15 +1,19 @@
 package kernel.jdon.moduleapi.domain.auth.util;
 
-import static kernel.jdon.auth.util.HmacUtil.*;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.crypto.Cipher;
+import javax.crypto.Mac;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
+
 import org.springframework.stereotype.Component;
 
-import kernel.jdon.auth.util.AesUtil;
 import kernel.jdon.moduleapi.domain.member.error.MemberErrorCode;
 import kernel.jdon.moduleapi.global.exception.ApiException;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +21,50 @@ import lombok.RequiredArgsConstructor;
 @Component
 @RequiredArgsConstructor
 public class CryptoManager {
+
+	private final String iv = SecretKeyConstants.AES_PRIVATE_KEY;
+	private final String secretKey = SecretKeyConstants.HMAC_PRIVATE_KEY;
+
+	public String encryptAESCBC(String message) throws Exception {
+		Cipher cipher = getCipher(Cipher.ENCRYPT_MODE);
+		byte[] encrypted = cipher.doFinal(message.getBytes(StandardCharsets.UTF_8));
+
+		return Base64.getEncoder().encodeToString(encrypted);
+	}
+
+	public String decryptAESCBC(String message) throws Exception {
+		Cipher cipher = getCipher(Cipher.DECRYPT_MODE);
+		byte[] decrypted = cipher.doFinal(Base64.getDecoder().decode(message));
+
+		return new String(decrypted);
+	}
+
+	private Cipher getCipher(int mode) throws Exception {
+		SecretKeySpec secretKey = new SecretKeySpec(iv.getBytes(StandardCharsets.UTF_8), "AES");
+		IvParameterSpec IV = new IvParameterSpec(iv.substring(0, 16).getBytes());
+
+		Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+		cipher.init(mode, secretKey, IV);
+
+		return cipher;
+	}
+
+	public String generateHMAC(String data) throws Exception {
+		Mac hmac = Mac.getInstance("HmacSHA256");
+		SecretKeySpec secretKeySpec = new SecretKeySpec(secretKey.getBytes(StandardCharsets.UTF_8),
+			"HmacSHA256");
+		hmac.init(secretKeySpec);
+		byte[] hmacBytes = hmac.doFinal(data.getBytes(StandardCharsets.UTF_8));
+
+		return Base64.getEncoder().encodeToString(hmacBytes);
+	}
+
+	public boolean isValidHMAC(String receivedHMAC, String data) throws Exception {
+		String calculatedHMAC = generateHMAC(data);
+
+		return receivedHMAC.equals(calculatedHMAC);
+	}
+
 	public Map<String, String> getUserInfoFromAuthProvider(final String hmac, final String encrypted) {
 		final String emailAndProvider = getEmailAndProviderString(hmac, encrypted);
 
@@ -27,7 +75,7 @@ public class CryptoManager {
 		String emailAndProvider = null;
 		try {
 			if (isValidHMAC(hmac, encrypted)) {
-				emailAndProvider = AesUtil.decryptAESCBC(encrypted);
+				emailAndProvider = decryptAESCBC(encrypted);
 			} else {
 				throw new ApiException(MemberErrorCode.UNAUTHORIZED_EMAIL_OAUTH2);
 			}

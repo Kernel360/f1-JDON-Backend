@@ -1,69 +1,66 @@
-package kernel.jdon.auth.service;
+package kernel.jdon.moduleapi.domain.auth.infrastructure;
+
+import java.util.Map;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import kernel.jdon.auth.dto.SessionUserInfo;
 import kernel.jdon.member.domain.SocialProviderType;
-import kernel.jdon.member.repository.MemberRepository;
-import kernel.jdon.moduleapi.domain.auth.error.AuthErrorCode;
-import kernel.jdon.moduleapi.domain.member.error.MemberErrorCode;
+import kernel.jdon.moduleapi.domain.auth.core.OAuth2Strategy;
+import kernel.jdon.moduleapi.domain.member.core.MemberCommand;
 import kernel.jdon.moduleapi.global.config.auth.WithdrawProperties;
-import kernel.jdon.moduleapi.global.exception.ApiException;
+import kernel.jdon.moduleapi.global.dto.SessionUserInfo;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-// @Service
-@Transactional(readOnly = true)
+@Component
 @RequiredArgsConstructor
-@Slf4j
-public class AuthService {
-	private final MemberRepository memberRepository;
+public class KakaoOAuth2StrategyImpl implements OAuth2Strategy {
 	private final WithdrawProperties withdrawProperties;
 
-	@Transactional
-	public Long withdraw(SessionUserInfo userInfo) {
-		sendDeleteRequestToOAuth2(userInfo);
-		memberRepository.findById(userInfo.getId())
-			.orElseThrow(() -> new ApiException(MemberErrorCode.NOT_FOUND_MEMBER))
-			.withdrawMemberAccount();
-
-		return userInfo.getId();
+	@Override
+	public SocialProviderType getOAuth2ProviderType() {
+		return SocialProviderType.KAKAO;
 	}
 
-	private void sendDeleteRequestToOAuth2(SessionUserInfo userInfo) {
-		if (SocialProviderType.KAKAO == userInfo.getSocialProvider()) {
-			deleteKakaoAccount(userInfo);
-		} else if (SocialProviderType.GITHUB == userInfo.getSocialProvider()) {
-			return;
-		} else {
-			throw new ApiException(AuthErrorCode.UNAUTHORIZED_NOT_MATCH_PROVIDER_TYPE);
-		}
+	@Override
+	public SessionUserInfo getUserInfo(final OAuth2User user) {
+		final Map<String, Object> attributes = user.getAttributes();
+		final String email = ((Map<String, String>)attributes.get("kakao_account")).get("email");
+		isEmailExist(email);
+		final String oAuthId = String.valueOf(attributes.get("id"));
+
+		return SessionUserInfo.of(email, oAuthId, SocialProviderType.KAKAO);
 	}
 
-	private void deleteKakaoAccount(SessionUserInfo userInfo) {
+	@Override
+	public boolean unlinkOAuth2Account(final MemberCommand.WithdrawRequest command) {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 		headers.set("Authorization", "KakaoAK " + withdrawProperties.getAppAdminKey());
-
 		MultiValueMap<String, String> requestBody = new LinkedMultiValueMap<>();
 		requestBody.add("target_id_type", "user_id");
-		requestBody.add("target_id", userInfo.getOAuthId());
-
+		requestBody.add("target_id", command.getOauthId());
 		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(withdrawProperties.getDeleteUserUrl());
-
 		HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity(requestBody, headers);
 
 		RestTemplate restTemplate = new RestTemplate();
 		ResponseEntity<String> responseEntity = restTemplate
 			.exchange(builder.toUriString(), HttpMethod.POST, requestEntity, String.class);
+
+		boolean success = false;
+		if (responseEntity.getStatusCode() == HttpStatus.OK) {
+			success = true;
+		}
+		return success;
 	}
 }

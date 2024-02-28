@@ -19,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
 	private final MemberReader memberReader;
+	private final MemberStore memberStore;
 	private final MemberInfoMapper memberInfoMapper;
 	private final MemberFactory memberFactory;
 	private final CryptoManager cryptoManager;
@@ -57,5 +58,13 @@ public class MemberServiceImpl implements MemberService {
 		final Member savedMember = memberFactory.save(command, userInfo);
 
 		return MemberInfo.RegisterResponse.of(savedMember.getId());
+	}
+
+	@Override
+	@Transactional
+	public MemberInfo.WithdrawResponse removeMember(final MemberCommand.WithdrawRequest command) {
+		memberStore.updateAccountStatusWithdrawById(command.getId());
+
+		return MemberInfo.WithdrawResponse.of(command.getId());
 	}
 }

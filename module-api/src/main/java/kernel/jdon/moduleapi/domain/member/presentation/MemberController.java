@@ -6,6 +6,7 @@ import java.net.URI;
 import java.util.Objects;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -13,11 +14,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
-import kernel.jdon.auth.dto.SessionUserInfo;
 import kernel.jdon.moduleapi.domain.member.application.MemberFacade;
 import kernel.jdon.moduleapi.domain.member.core.MemberCommand;
 import kernel.jdon.moduleapi.domain.member.core.MemberInfo;
 import kernel.jdon.moduleapi.global.annotation.LoginUser;
+import kernel.jdon.moduleapi.global.dto.SessionUserInfo;
 import kernel.jdon.modulecommon.dto.response.CommonResponse;
 import lombok.RequiredArgsConstructor;
 
@@ -78,5 +79,15 @@ public class MemberController {
 		final MemberDto.AuthenticateResponse response = MemberDto.AuthenticateResponse.of(isLoginUser, memberId);
 
 		return ResponseEntity.ok().body(CommonResponse.of(response));
+	}
+
+	@DeleteMapping("/api/v1/withdraw")
+	public ResponseEntity<CommonResponse<MemberDto.WithdrawResponse>> withdrawMember(
+		@LoginUser final SessionUserInfo member) {
+		final MemberCommand.WithdrawRequest command = memberDtoMapper.of(member);
+		final MemberInfo.WithdrawResponse info = memberFacade.withdrawMember(command);
+		final MemberDto.WithdrawResponse response = memberDtoMapper.of(info);
+
+		return ResponseEntity.ok(CommonResponse.of(response));
 	}
 }
