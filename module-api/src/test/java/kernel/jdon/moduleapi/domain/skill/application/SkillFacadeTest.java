@@ -16,7 +16,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import kernel.jdon.moduleapi.domain.skill.core.SkillInfo;
 import kernel.jdon.moduleapi.domain.skill.core.SkillService;
-import kernel.jdon.util.JsonFileReader;
 
 @DisplayName("Skill Facade 테스트")
 @ExtendWith(MockitoExtension.class)
@@ -112,12 +111,9 @@ class SkillFacadeTest {
 		//given
 		final Long memberId = 1L;
 		final String keyword = "AWS";
-		final int jdCount = 6;
-		final int lectureCount = 3;
-
-		String filePath = "giventest/skill/facade/4_dataListBySkill_1.json";
-		var dataListBySkillResponse = JsonFileReader.readJsonFileToObject(filePath,
-			SkillInfo.FindDataListBySkillResponse.class);
+		final int jdCount = 1;
+		final int lectureCount = 1;
+		var dataListBySkillResponse = getMockDataListBySkillResponse(keyword);
 
 		//when
 		when(skillService.getDataListBySkill(keyword, memberId)).thenReturn(dataListBySkillResponse);
@@ -128,5 +124,16 @@ class SkillFacadeTest {
 		assertThat(response.getLectureList()).hasSize(lectureCount);
 		assertThat(response.getKeyword()).isEqualTo(keyword);
 		verify(skillService, times(1)).getDataListBySkill(keyword, memberId);
+	}
+
+	private SkillInfo.FindDataListBySkillResponse getMockDataListBySkillResponse(String keyword) {
+		var findJdList = Collections.singletonList(mock(SkillInfo.FindJd.class));
+		var findLectureList = Collections.singletonList(mock(SkillInfo.FindLecture.class));
+		var dataListBySkillResponse = SkillInfo.FindDataListBySkillResponse.builder()
+			.keyword(keyword)
+			.jdList(findJdList)
+			.lectureList(findLectureList)
+			.build();
+		return dataListBySkillResponse;
 	}
 }

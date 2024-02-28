@@ -3,7 +3,6 @@ package kernel.jdon.moduleapi.domain.skill.core;
 import java.util.List;
 
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -52,11 +51,10 @@ public class SkillInfo {
 
 	@Getter
 	@Builder
-	@AllArgsConstructor
 	public static class FindDataListBySkillResponse {
-		private String keyword;
-		private List<FindLecture> lectureList;
-		private List<FindJd> jdList;
+		private final String keyword;
+		private final List<FindLecture> lectureList;
+		private final List<FindJd> jdList;
 	}
 
 	@Getter

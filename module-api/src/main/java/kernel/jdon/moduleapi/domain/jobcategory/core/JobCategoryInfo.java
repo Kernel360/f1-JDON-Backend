@@ -5,6 +5,7 @@ import java.util.Map;
 
 import kernel.jdon.jobcategory.domain.JobCategory;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +14,7 @@ import lombok.NoArgsConstructor;
 public class JobCategoryInfo {
 
 	@Getter
+	@AllArgsConstructor
 	public static class FindJobGroupListResponse {
 		private final List<FindJobGroup> jobGroupList;
 
