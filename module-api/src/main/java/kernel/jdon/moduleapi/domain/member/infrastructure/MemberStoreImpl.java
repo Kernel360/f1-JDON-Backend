@@ -24,7 +24,7 @@ public class MemberStoreImpl implements MemberStore {
 	}
 
 	@Override
-	public void deleteById(final Long memberId) {
+	public void updateAccountStatusWithdrawById(final Long memberId) {
 		memberRepository.findById(memberId)
 			.orElseThrow(() -> new ApiException(MemberErrorCode.NOT_FOUND_MEMBER))
 			.withdrawMemberAccount();

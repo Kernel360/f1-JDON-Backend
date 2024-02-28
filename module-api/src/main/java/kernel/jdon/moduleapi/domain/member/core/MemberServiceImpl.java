@@ -63,7 +63,7 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	@Transactional
 	public MemberInfo.WithdrawResponse removeMember(final MemberCommand.WithdrawRequest command) {
-		memberStore.deleteById(command.getId());
+		memberStore.updateAccountStatusWithdrawById(command.getId());
 
 		return MemberInfo.WithdrawResponse.of(command.getId());
 	}
