@@ -28,7 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional(readOnly = true)
 @Slf4j
 @RequiredArgsConstructor
-public class CustomOAuth2UserServiceImpl extends DefaultOAuth2UserService {
+public class CustomOAuth2UserServiceImpl extends DefaultOAuth2UserService implements CustomOAuth2UserService {
 	private final HttpSession httpSession;
 	private final MemberReader memberReader;
 	private final MemberStore memberStore;
@@ -79,6 +79,7 @@ public class CustomOAuth2UserServiceImpl extends DefaultOAuth2UserService {
 			.getUserNameAttributeName();
 	}
 
+	@Override
 	public boolean sendDeleteRequestToOAuth2(final MemberCommand.WithdrawRequest command) {
 		return oauth2ProviderComposite.getOAuth2Strategy(command.getSocialProvider()).unlinkOAuth2Account(command);
 	}
