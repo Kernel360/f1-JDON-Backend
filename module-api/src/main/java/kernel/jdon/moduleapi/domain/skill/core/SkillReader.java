@@ -2,7 +2,7 @@ package kernel.jdon.moduleapi.domain.skill.core;
 
 import java.util.List;
 
-import kernel.jdon.skill.domain.Skill;
+import kernel.jdon.moduledomain.skill.domain.Skill;
 
 public interface SkillReader {
 	List<SkillInfo.FindHotSkill> findHotSkillList();

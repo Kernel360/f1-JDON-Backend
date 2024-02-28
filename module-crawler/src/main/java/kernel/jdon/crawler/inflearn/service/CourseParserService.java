@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import kernel.jdon.crawler.config.ScrapingInflearnProperties;
 import kernel.jdon.crawler.inflearn.converter.EntityConverter;
 import kernel.jdon.crawler.inflearn.util.SkillStandardizer;
-import kernel.jdon.inflearncourse.domain.InflearnCourse;
+import kernel.jdon.moduledomain.inflearncourse.domain.InflearnCourse;
 import lombok.RequiredArgsConstructor;
 
 @Service

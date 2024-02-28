@@ -12,7 +12,7 @@ import kernel.jdon.moduleapi.domain.jd.core.JdReader;
 import kernel.jdon.moduleapi.domain.jd.error.JdErrorCode;
 import kernel.jdon.moduleapi.global.page.CustomJpaPageInfo;
 import kernel.jdon.moduleapi.global.page.PageInfoRequest;
-import kernel.jdon.wantedjd.domain.WantedJd;
+import kernel.jdon.moduledomain.wantedjd.domain.WantedJd;
 import lombok.RequiredArgsConstructor;
 
 @Component

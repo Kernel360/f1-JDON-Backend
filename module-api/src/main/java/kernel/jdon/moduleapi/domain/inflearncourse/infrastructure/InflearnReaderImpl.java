@@ -2,7 +2,7 @@ package kernel.jdon.moduleapi.domain.inflearncourse.infrastructure;
 
 import org.springframework.stereotype.Component;
 
-import kernel.jdon.inflearncourse.domain.InflearnCourse;
+import kernel.jdon.moduledomain.inflearncourse.domain.InflearnCourse;
 import kernel.jdon.moduleapi.domain.inflearncourse.core.InflearnReader;
 import kernel.jdon.moduleapi.domain.member.error.MemberErrorCode;
 import lombok.RequiredArgsConstructor;

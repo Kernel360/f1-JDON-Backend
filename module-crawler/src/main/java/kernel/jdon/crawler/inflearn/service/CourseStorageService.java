@@ -11,10 +11,10 @@ import kernel.jdon.crawler.inflearn.converter.EntityConverter;
 import kernel.jdon.crawler.wanted.repository.InflearnCourseRepository;
 import kernel.jdon.crawler.wanted.repository.InflearnJdSkillRepository;
 import kernel.jdon.crawler.wanted.repository.SkillRepository;
-import kernel.jdon.inflearncourse.domain.InflearnCourse;
-import kernel.jdon.inflearnjdskill.domain.InflearnJdSkill;
-import kernel.jdon.jobcategory.domain.JobCategory;
-import kernel.jdon.skill.domain.Skill;
+import kernel.jdon.moduledomain.inflearncourse.domain.InflearnCourse;
+import kernel.jdon.moduledomain.inflearnjdskill.domain.InflearnJdSkill;
+import kernel.jdon.moduledomain.jobcategory.domain.JobCategory;
+import kernel.jdon.moduledomain.skill.domain.Skill;
 import lombok.RequiredArgsConstructor;
 
 @Service

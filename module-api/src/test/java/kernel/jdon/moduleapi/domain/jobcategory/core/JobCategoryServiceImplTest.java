@@ -14,7 +14,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import kernel.jdon.jobcategory.domain.JobCategory;
+import kernel.jdon.moduledomain.jobcategory.domain.JobCategory;
 import kernel.jdon.util.JsonFileReader;
 
 @ExtendWith(MockitoExtension.class)

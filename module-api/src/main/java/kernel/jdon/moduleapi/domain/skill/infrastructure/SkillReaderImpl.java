@@ -8,7 +8,7 @@ import kernel.jdon.moduleapi.domain.skill.core.SkillInfo;
 import kernel.jdon.moduleapi.domain.skill.core.SkillReader;
 import kernel.jdon.moduleapi.domain.skill.error.SkillErrorCode;
 import kernel.jdon.moduleapi.global.exception.ApiException;
-import kernel.jdon.skill.domain.Skill;
+import kernel.jdon.moduledomain.skill.domain.Skill;
 import lombok.RequiredArgsConstructor;
 
 @Component

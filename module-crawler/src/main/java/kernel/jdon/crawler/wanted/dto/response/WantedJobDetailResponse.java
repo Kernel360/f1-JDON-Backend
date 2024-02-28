@@ -4,8 +4,8 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import kernel.jdon.jobcategory.domain.JobCategory;
-import kernel.jdon.wantedjd.domain.WantedJd;
+import kernel.jdon.moduledomain.jobcategory.domain.JobCategory;
+import kernel.jdon.moduledomain.wantedjd.domain.WantedJd;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

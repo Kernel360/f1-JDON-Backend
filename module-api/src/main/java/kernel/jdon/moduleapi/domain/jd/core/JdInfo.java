@@ -3,7 +3,7 @@ package kernel.jdon.moduleapi.domain.jd.core;
 import java.util.List;
 
 import kernel.jdon.moduleapi.global.page.CustomPageInfo;
-import kernel.jdon.skill.domain.Skill;
+import kernel.jdon.moduledomain.skill.domain.Skill;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

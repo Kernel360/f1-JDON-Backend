@@ -1,6 +1,6 @@
 package kernel.jdon.moduleapi.domain.coffeechat.core;
 
-import kernel.jdon.coffeechat.domain.CoffeeChat;
+import kernel.jdon.moduledomain.coffeechat.domain.CoffeeChat;
 
 public interface CoffeeChatStore {
 

@@ -3,7 +3,7 @@ package kernel.jdon.moduleapi.domain.jobcategory.core;
 import java.util.List;
 import java.util.Map;
 
-import kernel.jdon.jobcategory.domain.JobCategory;
+import kernel.jdon.moduledomain.jobcategory.domain.JobCategory;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

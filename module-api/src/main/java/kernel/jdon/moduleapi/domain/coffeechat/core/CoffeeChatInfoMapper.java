@@ -5,7 +5,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
-import kernel.jdon.coffeechat.domain.CoffeeChat;
+import kernel.jdon.moduledomain.coffeechat.domain.CoffeeChat;
 
 @Mapper(
     componentModel = "spring",

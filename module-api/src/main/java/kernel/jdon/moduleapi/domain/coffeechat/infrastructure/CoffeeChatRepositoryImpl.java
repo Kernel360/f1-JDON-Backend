@@ -1,8 +1,8 @@
 package kernel.jdon.moduleapi.domain.coffeechat.infrastructure;
 
-import static kernel.jdon.coffeechat.domain.QCoffeeChat.*;
-import static kernel.jdon.jobcategory.domain.QJobCategory.*;
-import static kernel.jdon.member.domain.QMember.*;
+import static kernel.jdon.moduledomain.coffeechat.domain.QCoffeeChat.*;
+import static kernel.jdon.moduledomain.jobcategory.domain.QJobCategory.*;
+import static kernel.jdon.moduledomain.member.domain.QMember.*;
 import static org.springframework.util.StringUtils.*;
 
 import java.util.ArrayList;

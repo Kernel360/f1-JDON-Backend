@@ -1,8 +1,8 @@
 package kernel.jdon.crawler.inflearn.converter;
 
-import kernel.jdon.inflearncourse.domain.InflearnCourse;
-import kernel.jdon.inflearnjdskill.domain.InflearnJdSkill;
-import kernel.jdon.skill.domain.Skill;
+import kernel.jdon.moduledomain.inflearncourse.domain.InflearnCourse;
+import kernel.jdon.moduledomain.inflearnjdskill.domain.InflearnJdSkill;
+import kernel.jdon.moduledomain.skill.domain.Skill;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 

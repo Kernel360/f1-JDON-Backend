@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.querydsl.core.annotations.QueryProjection;
 
-import kernel.jdon.coffeechat.domain.CoffeeChatActiveStatus;
+import kernel.jdon.moduledomain.coffeechat.domain.CoffeeChatActiveStatus;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

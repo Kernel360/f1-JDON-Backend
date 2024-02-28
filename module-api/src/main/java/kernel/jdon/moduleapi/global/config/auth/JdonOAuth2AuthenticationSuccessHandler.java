@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import kernel.jdon.member.domain.MemberRole;
+import kernel.jdon.moduledomain.member.domain.MemberRole;
 import kernel.jdon.moduleapi.domain.auth.core.JdonOAuth2User;
 import kernel.jdon.moduleapi.domain.auth.util.CryptoManager;
 import lombok.RequiredArgsConstructor;

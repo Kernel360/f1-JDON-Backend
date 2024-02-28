@@ -12,7 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import kernel.jdon.coffeechat.domain.CoffeeChat;
+import kernel.jdon.moduledomain.coffeechat.domain.CoffeeChat;
 
 @ExtendWith(MockitoExtension.class)
 class CoffeeChatServiceImplTest {

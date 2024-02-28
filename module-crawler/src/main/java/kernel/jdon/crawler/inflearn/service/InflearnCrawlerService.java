@@ -17,7 +17,7 @@ import kernel.jdon.crawler.inflearn.service.infrastructure.InflearnCourseCounter
 import kernel.jdon.crawler.inflearn.service.infrastructure.LastPageDiscriminator;
 import kernel.jdon.crawler.wanted.skill.BackendSkillType;
 import kernel.jdon.crawler.wanted.skill.FrontendSkillType;
-import kernel.jdon.inflearncourse.domain.InflearnCourse;
+import kernel.jdon.moduledomain.inflearncourse.domain.InflearnCourse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

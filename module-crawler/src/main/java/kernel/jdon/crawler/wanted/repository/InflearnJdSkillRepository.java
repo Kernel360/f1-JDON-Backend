@@ -2,9 +2,9 @@ package kernel.jdon.crawler.wanted.repository;
 
 import java.util.List;
 
-import kernel.jdon.inflearnjdskill.domain.InflearnJdSkill;
-import kernel.jdon.inflearnjdskill.repository.InflearnJdSkillDomainRepository;
-import kernel.jdon.skill.domain.Skill;
+import kernel.jdon.moduledomain.inflearnjdskill.domain.InflearnJdSkill;
+import kernel.jdon.moduledomain.inflearnjdskill.repository.InflearnJdSkillDomainRepository;
+import kernel.jdon.moduledomain.skill.domain.Skill;
 
 public interface InflearnJdSkillRepository extends InflearnJdSkillDomainRepository {
 	List<InflearnJdSkill> findBySkill(Skill skill);
