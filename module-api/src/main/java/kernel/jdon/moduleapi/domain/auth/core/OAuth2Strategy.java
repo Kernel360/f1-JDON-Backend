@@ -4,6 +4,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import kernel.jdon.member.domain.SocialProviderType;
 import kernel.jdon.moduleapi.domain.auth.error.AuthErrorCode;
+import kernel.jdon.moduleapi.domain.member.core.MemberCommand;
 import kernel.jdon.moduleapi.global.dto.SessionUserInfo;
 import kernel.jdon.moduleapi.global.exception.AuthException;
 
@@ -13,7 +14,7 @@ public interface OAuth2Strategy {
 
 	SessionUserInfo getUserInfo(OAuth2User user);
 
-	boolean unlinkOAuth2Account(SessionUserInfo userInfo);
+	boolean unlinkOAuth2Account(MemberCommand.WithdrawRequest command);
 
 	default void isEmailExist(String email) {
 		if (null == email) {

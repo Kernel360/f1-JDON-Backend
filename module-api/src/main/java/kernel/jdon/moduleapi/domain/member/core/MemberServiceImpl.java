@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import kernel.jdon.member.domain.Member;
 import kernel.jdon.moduleapi.domain.auth.util.CryptoManager;
 import kernel.jdon.moduleapi.domain.member.error.MemberErrorCode;
-import kernel.jdon.moduleapi.global.dto.SessionUserInfo;
 import kernel.jdon.moduleapi.global.exception.ApiException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -63,9 +62,9 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	@Transactional
-	public MemberInfo.WithdrawResponse removeMember(final SessionUserInfo userInfo) {
-		memberStore.deleteById(userInfo.getId());
+	public MemberInfo.WithdrawResponse removeMember(final MemberCommand.WithdrawRequest command) {
+		memberStore.deleteById(command.getId());
 
-		return MemberInfo.WithdrawResponse.of(userInfo.getId());
+		return MemberInfo.WithdrawResponse.of(command.getId());
 	}
 }

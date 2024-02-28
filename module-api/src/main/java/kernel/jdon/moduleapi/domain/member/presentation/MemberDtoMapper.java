@@ -6,6 +6,7 @@ import org.mapstruct.ReportingPolicy;
 
 import kernel.jdon.moduleapi.domain.member.core.MemberCommand;
 import kernel.jdon.moduleapi.domain.member.core.MemberInfo;
+import kernel.jdon.moduleapi.global.dto.SessionUserInfo;
 
 @Mapper(
 	componentModel = "spring",
@@ -27,5 +28,7 @@ public interface MemberDtoMapper {
 	MemberDto.RegisterResponse of(MemberInfo.RegisterResponse response);
 
 	MemberDto.WithdrawResponse of(MemberInfo.WithdrawResponse response);
+
+	MemberCommand.WithdrawRequest of(SessionUserInfo member);
 
 }

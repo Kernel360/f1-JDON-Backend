@@ -7,7 +7,6 @@ import kernel.jdon.moduleapi.domain.auth.error.AuthErrorCode;
 import kernel.jdon.moduleapi.domain.member.core.MemberCommand;
 import kernel.jdon.moduleapi.domain.member.core.MemberInfo;
 import kernel.jdon.moduleapi.domain.member.core.MemberService;
-import kernel.jdon.moduleapi.global.dto.SessionUserInfo;
 import kernel.jdon.moduleapi.global.exception.ApiException;
 import lombok.RequiredArgsConstructor;
 
@@ -35,10 +34,10 @@ public class MemberFacade {
 		return memberService.register(command);
 	}
 
-	public MemberInfo.WithdrawResponse withdrawMember(final SessionUserInfo userInfo) {
-		if (!customOAuth2UserServiceImpl.sendDeleteRequestToOAuth2(userInfo)) {
+	public MemberInfo.WithdrawResponse withdrawMember(final MemberCommand.WithdrawRequest command) {
+		if (!customOAuth2UserServiceImpl.sendDeleteRequestToOAuth2(command)) {
 			throw new ApiException(AuthErrorCode.ERROR_FAIL_TO_UNLINK_OAUTH2);
 		}
-		return memberService.removeMember(userInfo);
+		return memberService.removeMember(command);
 	}
 }

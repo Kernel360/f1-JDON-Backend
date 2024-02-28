@@ -83,8 +83,9 @@ public class MemberController {
 
 	@DeleteMapping("/api/v1/withdraw")
 	public ResponseEntity<CommonResponse<MemberDto.WithdrawResponse>> withdrawMember(
-		@LoginUser final SessionUserInfo sessionUser) {
-		final MemberInfo.WithdrawResponse info = memberFacade.withdrawMember(sessionUser);
+		@LoginUser final SessionUserInfo member) {
+		final MemberCommand.WithdrawRequest command = memberDtoMapper.of(member);
+		final MemberInfo.WithdrawResponse info = memberFacade.withdrawMember(command);
 		final MemberDto.WithdrawResponse response = memberDtoMapper.of(info);
 
 		return ResponseEntity.ok(CommonResponse.of(response));

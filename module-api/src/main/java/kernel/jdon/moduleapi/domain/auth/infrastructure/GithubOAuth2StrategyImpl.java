@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 
 import kernel.jdon.member.domain.SocialProviderType;
 import kernel.jdon.moduleapi.domain.auth.core.OAuth2Strategy;
+import kernel.jdon.moduleapi.domain.member.core.MemberCommand;
 import kernel.jdon.moduleapi.global.dto.SessionUserInfo;
 
 @Component
@@ -24,7 +25,7 @@ public class GithubOAuth2StrategyImpl implements OAuth2Strategy {
 	}
 
 	@Override
-	public boolean unlinkOAuth2Account(final SessionUserInfo userInfo) {
+	public boolean unlinkOAuth2Account(final MemberCommand.WithdrawRequest command) {
 		// todo 구현
 		return true;
 	}

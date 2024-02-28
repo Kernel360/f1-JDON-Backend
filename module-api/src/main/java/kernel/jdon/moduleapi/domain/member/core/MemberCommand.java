@@ -1,7 +1,10 @@
 package kernel.jdon.moduleapi.domain.member.core;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
+import kernel.jdon.member.domain.MemberRole;
+import kernel.jdon.member.domain.SocialProviderType;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -36,5 +39,16 @@ public class MemberCommand {
 		private final String gender;
 		private final Long jobCategoryId;
 		private final List<Long> skillList;
+	}
+
+	@Getter
+	@Builder
+	public static class WithdrawRequest {
+		private final Long id;
+		private final String email;
+		private final String oauthId;
+		private final SocialProviderType socialProvider;
+		private final LocalDateTime lastLoginDate;
+		private final MemberRole role;
 	}
 }

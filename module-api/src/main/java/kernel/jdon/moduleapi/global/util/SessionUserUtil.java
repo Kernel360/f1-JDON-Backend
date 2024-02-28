@@ -2,7 +2,7 @@ package kernel.jdon.moduleapi.global.util;
 
 import java.util.Optional;
 
-import kernel.jdon.auth.dto.SessionUserInfo;
+import kernel.jdon.moduleapi.global.dto.SessionUserInfo;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 

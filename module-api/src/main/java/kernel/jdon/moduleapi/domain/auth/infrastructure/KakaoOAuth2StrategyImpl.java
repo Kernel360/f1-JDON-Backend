@@ -17,6 +17,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import kernel.jdon.member.domain.SocialProviderType;
 import kernel.jdon.moduleapi.domain.auth.core.OAuth2Strategy;
+import kernel.jdon.moduleapi.domain.member.core.MemberCommand;
 import kernel.jdon.moduleapi.global.config.auth.WithdrawProperties;
 import kernel.jdon.moduleapi.global.dto.SessionUserInfo;
 import lombok.RequiredArgsConstructor;
@@ -42,13 +43,13 @@ public class KakaoOAuth2StrategyImpl implements OAuth2Strategy {
 	}
 
 	@Override
-	public boolean unlinkOAuth2Account(SessionUserInfo userInfo) {
+	public boolean unlinkOAuth2Account(final MemberCommand.WithdrawRequest command) {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 		headers.set("Authorization", "KakaoAK " + withdrawProperties.getAppAdminKey());
 		MultiValueMap<String, String> requestBody = new LinkedMultiValueMap<>();
 		requestBody.add("target_id_type", "user_id");
-		requestBody.add("target_id", userInfo.getOauthId());
+		requestBody.add("target_id", command.getOauthId());
 		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(withdrawProperties.getDeleteUserUrl());
 		HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity(requestBody, headers);
 

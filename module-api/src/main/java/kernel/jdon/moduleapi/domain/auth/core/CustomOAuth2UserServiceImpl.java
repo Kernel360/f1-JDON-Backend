@@ -16,6 +16,7 @@ import kernel.jdon.member.domain.Member;
 import kernel.jdon.member.domain.MemberRole;
 import kernel.jdon.member.domain.SocialProviderType;
 import kernel.jdon.moduleapi.domain.auth.error.AuthErrorCode;
+import kernel.jdon.moduleapi.domain.member.core.MemberCommand;
 import kernel.jdon.moduleapi.domain.member.core.MemberReader;
 import kernel.jdon.moduleapi.domain.member.core.MemberStore;
 import kernel.jdon.moduleapi.global.dto.SessionUserInfo;
@@ -78,7 +79,7 @@ public class CustomOAuth2UserServiceImpl extends DefaultOAuth2UserService {
 			.getUserNameAttributeName();
 	}
 
-	public boolean sendDeleteRequestToOAuth2(final SessionUserInfo userInfo) {
-		return oauth2ProviderComposite.getOAuth2Strategy(userInfo.getSocialProvider()).unlinkOAuth2Account(userInfo);
+	public boolean sendDeleteRequestToOAuth2(final MemberCommand.WithdrawRequest command) {
+		return oauth2ProviderComposite.getOAuth2Strategy(command.getSocialProvider()).unlinkOAuth2Account(command);
 	}
 }
