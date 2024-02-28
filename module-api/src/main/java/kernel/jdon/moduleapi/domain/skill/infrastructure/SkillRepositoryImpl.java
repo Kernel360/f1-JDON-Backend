@@ -22,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 public class SkillRepositoryImpl implements CustomSkillRepository {
 
 	private final JPAQueryFactory jpaQueryFactory;
+	private final SkillKeywordManager skillKeywordManager;
 
 	@Override
 	public List<SkillReaderInfo.FindHotSkill> findHotSkillList() {
@@ -53,6 +54,7 @@ public class SkillRepositoryImpl implements CustomSkillRepository {
 	@Override
 	public List<SkillReaderInfo.FindWantedJd> findWantedJdListBySkill(final String keyword) {
 		final int wantedJdCount = 6;
+		List<String> allKeywordAssociatedTermList = skillKeywordManager.getAllKeywordAssociatedTerms(keyword);
 
 		return jpaQueryFactory
 			.select(
@@ -66,7 +68,7 @@ public class SkillRepositoryImpl implements CustomSkillRepository {
 					JPAExpressions
 						.select(skill.id)
 						.from(skill)
-						.where(skill.keyword.eq(keyword))))
+						.where(skill.keyword.in(allKeywordAssociatedTermList))))
 			.orderBy(Expressions.numberTemplate(Double.class, "function('rand')").asc())
 			.limit(wantedJdCount)
 			.fetch();
@@ -76,6 +78,7 @@ public class SkillRepositoryImpl implements CustomSkillRepository {
 	public List<SkillReaderInfo.FindInflearnLecture> findInflearnLectureListBySkill(String keyword,
 		Long memberId) {
 		final int inflearnLectureCount = 3;
+		final List<String> allKeywordAssociatedTermList = skillKeywordManager.getAllKeywordAssociatedTerms(keyword);
 
 		return jpaQueryFactory
 			.select(new QSkillReaderInfo_FindInflearnLecture(inflearnCourse.id, inflearnCourse.title,
@@ -91,7 +94,7 @@ public class SkillRepositoryImpl implements CustomSkillRepository {
 					JPAExpressions
 						.select(skill.id)
 						.from(skill)
-						.where(skill.keyword.eq(keyword))))
+						.where(skill.keyword.in(allKeywordAssociatedTermList))))
 			.limit(inflearnLectureCount)
 			.fetch();
 	}
