@@ -49,14 +49,20 @@ public class CoffeeChatServiceImpl implements CoffeeChatService {
     @Override
     public CoffeeChatInfo.FindCoffeeChatResponse getCoffeeChat(Long coffeeChatId, Long memberId) {
         CoffeeChat findCoffeeChat = coffeeChatReader.findExistCoffeeChat(coffeeChatId);
-        Boolean isParticipant;
+        boolean isParticipant = checkIfMemberParticipated(coffeeChatId, memberId);
+
+        return coffeeChatInfoMapper.of(findCoffeeChat, isParticipant);
+    }
+
+    private boolean checkIfMemberParticipated(Long coffeeChatId, Long memberId) {
+        boolean isParticipant;
         if (memberId != null) {
             isParticipant = coffeeChatReader.existsByCoffeeChatIdAndMemberId(coffeeChatId, memberId);
         } else {
             isParticipant = false;
         }
 
-        return coffeeChatInfoMapper.of(findCoffeeChat, isParticipant);
+        return isParticipant;
     }
 
     @Override
