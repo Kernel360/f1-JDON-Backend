@@ -20,9 +20,9 @@ public class JdController {
 
 	@GetMapping("/api/v1/jds/{id}")
 	public ResponseEntity<CommonResponse<JdDto.FindWantedJdResponse>> getJd(
-		@PathVariable(name = "id") Long jdId) {
-		JdInfo.FindWantedJdResponse info = jdFacade.getJd(jdId);
-		JdDto.FindWantedJdResponse response = jdDtoMapper.of(info);
+		@PathVariable(name = "id") final Long jdId) {
+		final JdInfo.FindWantedJdResponse info = jdFacade.getJd(jdId);
+		final JdDto.FindWantedJdResponse response = jdDtoMapper.of(info);
 
 		return ResponseEntity.ok().body(CommonResponse.of(response));
 	}
