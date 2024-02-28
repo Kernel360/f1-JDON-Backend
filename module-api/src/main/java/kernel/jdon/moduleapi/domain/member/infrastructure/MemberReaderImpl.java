@@ -4,9 +4,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import kernel.jdon.moduledomain.member.domain.Member;
 import kernel.jdon.moduleapi.domain.member.core.MemberReader;
 import kernel.jdon.moduleapi.domain.member.error.MemberErrorCode;
+import kernel.jdon.moduledomain.member.domain.Member;
 import lombok.RequiredArgsConstructor;
 
 @Component
@@ -19,11 +19,6 @@ public class MemberReaderImpl implements MemberReader {
 	public Member findById(Long memberId) {
 		return memberRepository.findById(memberId)
 			.orElseThrow(MemberErrorCode.NOT_FOUND_MEMBER::throwException);
-	}
-
-	@Override
-	public boolean existsById(Long memberId) {
-		return memberRepository.existsById(memberId);
 	}
 
 	@Override

@@ -2,17 +2,15 @@ package kernel.jdon.moduleapi.domain.favorite.infrastructure;
 
 import org.springframework.stereotype.Component;
 
-import kernel.jdon.moduledomain.inflearncourse.domain.InflearnCourse;
-import kernel.jdon.moduledomain.member.domain.Member;
 import kernel.jdon.moduleapi.domain.favorite.core.FavoriteFactory;
 import kernel.jdon.moduleapi.domain.favorite.core.FavoriteReader;
 import kernel.jdon.moduleapi.domain.favorite.core.FavoriteStore;
 import kernel.jdon.moduleapi.domain.favorite.error.FavoriteErrorCode;
 import kernel.jdon.moduleapi.domain.inflearncourse.core.InflearnReader;
 import kernel.jdon.moduleapi.domain.member.core.MemberReader;
-import kernel.jdon.moduleapi.domain.member.error.MemberErrorCode;
-import kernel.jdon.moduleapi.global.exception.ApiException;
 import kernel.jdon.moduledomain.favorite.domain.Favorite;
+import kernel.jdon.moduledomain.inflearncourse.domain.InflearnCourse;
+import kernel.jdon.moduledomain.member.domain.Member;
 import lombok.RequiredArgsConstructor;
 
 @Component
@@ -43,11 +41,10 @@ public class FavoriteFactoryImpl implements FavoriteFactory {
 
 	@Override
 	public Favorite delete(Long memberId, Long lectureId) {
-		boolean memberExists = memberReader.existsById(memberId);
-		if (!memberExists) {
-			throw new ApiException(MemberErrorCode.NOT_FOUND_MEMBER);
-		}
-		final Favorite findFavorite = favoriteReader.findFavoriteByMemberIdAndInflearnCourseId(memberId, lectureId)
+		final Member findMember = memberReader.findById(memberId);
+		final InflearnCourse findInflearnCourse = inflearnReader.findById(lectureId);
+		final Favorite findFavorite = favoriteReader.findFavoriteByMemberIdAndInflearnCourseId(findMember.getId(),
+				findInflearnCourse.getId())
 			.map(favoriteResponse -> favoriteReader.findById(favoriteResponse.getId())
 				.orElseThrow(FavoriteErrorCode.NOT_FOUND_FAVORITE::throwException))
 			.orElseThrow(FavoriteErrorCode.NOT_FOUND_FAVORITE::throwException);
