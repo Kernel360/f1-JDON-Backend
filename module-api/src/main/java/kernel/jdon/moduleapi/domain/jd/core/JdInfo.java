@@ -7,6 +7,7 @@ import kernel.jdon.skill.domain.Skill;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -27,10 +28,12 @@ public class JdInfo {
 		private String benefits;
 		private String preferredPoints;
 		private String jobCategoryName;
+		private int reviewCount;
 		private List<FindSkill> skillList;
 	}
 
 	@Getter
+	@EqualsAndHashCode
 	public static class FindSkill {
 		private Long id;
 		private String keyword;

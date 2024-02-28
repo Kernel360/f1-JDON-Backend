@@ -19,6 +19,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import kernel.jdon.jobcategory.domain.JobCategory;
+import kernel.jdon.moduledomain.review.domain.Review;
 import kernel.jdon.wantedjdskill.domain.WantedJdSkill;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -76,6 +77,9 @@ public class WantedJd {
 
 	@OneToMany(mappedBy = "wantedJd")
 	private List<WantedJdSkill> skillList = new ArrayList<>();
+
+	@OneToMany(mappedBy = "wantedJd")
+	private List<Review> reviewList = new ArrayList<>();
 
 	@Builder
 	public WantedJd(String companyName, String title, Long detailId, String detailUrl, String imageUrl,

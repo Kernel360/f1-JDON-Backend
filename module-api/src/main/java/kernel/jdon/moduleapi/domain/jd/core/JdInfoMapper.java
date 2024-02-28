@@ -25,6 +25,8 @@ public interface JdInfoMapper {
 	@Mapping(source = "wantedJd.intro", target = "intro")
 	@Mapping(source = "wantedJd.benefits", target = "benefits")
 	@Mapping(source = "wantedJd.preferredPoints", target = "preferredPoints")
+	@Mapping(source = "skillList", target = "skillList")
+	@Mapping(expression = "java(wantedJd.getReviewList().size())", target = "reviewCount")
 	@Mapping(expression = "java(wantedJd.getJobCategory().getName())", target = "jobCategoryName")
 	JdInfo.FindWantedJdResponse of(WantedJd wantedJd, List<JdInfo.FindSkill> skillList);
 }
