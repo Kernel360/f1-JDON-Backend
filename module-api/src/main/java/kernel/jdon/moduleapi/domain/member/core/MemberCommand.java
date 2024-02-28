@@ -25,4 +25,16 @@ public class MemberCommand {
 	public static class NicknameDuplicateRequest {
 		private final String nickname;
 	}
+
+	@Getter
+	@Builder
+	public static class RegisterRequest {
+		private final String encrypted;
+		private final String hmac;
+		private final String nickname;
+		private final String birth;
+		private final String gender;
+		private final Long jobCategoryId;
+		private final List<Long> skillList;
+	}
 }

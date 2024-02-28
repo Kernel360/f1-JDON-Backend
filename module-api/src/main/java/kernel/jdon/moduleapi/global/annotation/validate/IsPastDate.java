@@ -14,7 +14,7 @@ import kernel.jdon.moduleapi.global.validate.PastDateValidator;
 @Constraint(validatedBy = PastDateValidator.class)
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface isPastDate {
+public @interface IsPastDate {
 	String message() default "올바르지 않은 날짜입니다.";
 
 	Class<?>[] groups() default {};

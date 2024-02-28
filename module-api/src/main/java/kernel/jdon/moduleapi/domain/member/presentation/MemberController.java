@@ -1,5 +1,10 @@
 package kernel.jdon.moduleapi.domain.member.presentation;
 
+import static kernel.jdon.moduleapi.global.util.SessionUserUtil.*;
+
+import java.net.URI;
+import java.util.Objects;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -51,5 +56,27 @@ public class MemberController {
 		memberFacade.checkNicknameDuplicate(command);
 
 		return ResponseEntity.noContent().build();
+	}
+
+	@PostMapping("/api/v1/register")
+	public ResponseEntity<CommonResponse<MemberDto.RegisterResponse>> register(
+		@RequestBody @Valid final MemberDto.RegisterRequest request) {
+		final MemberCommand.RegisterRequest command = memberDtoMapper.of(request);
+		final MemberInfo.RegisterResponse info = memberFacade.register(command);
+		final MemberDto.RegisterResponse response = memberDtoMapper.of(info);
+		final URI uri = URI.create("/api/v1/member/" + response.getMemberId());
+
+		return ResponseEntity.created(uri).body(CommonResponse.of(response));
+
+	}
+
+	@GetMapping("/api/v1/authenticate")
+	public ResponseEntity<CommonResponse<MemberDto.AuthenticateResponse>> authenticate(
+		@LoginUser final SessionUserInfo member) {
+		final Long memberId = getSessionUserId(member);
+		final boolean isLoginUser = Objects.nonNull(member);
+		final MemberDto.AuthenticateResponse response = MemberDto.AuthenticateResponse.of(isLoginUser, memberId);
+
+		return ResponseEntity.ok().body(CommonResponse.of(response));
 	}
 }

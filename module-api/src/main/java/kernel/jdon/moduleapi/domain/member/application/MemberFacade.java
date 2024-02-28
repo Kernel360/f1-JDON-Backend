@@ -25,4 +25,8 @@ public class MemberFacade {
 	public void checkNicknameDuplicate(final MemberCommand.NicknameDuplicateRequest command) {
 		memberService.checkNicknameDuplicate(command);
 	}
+
+	public MemberInfo.RegisterResponse register(final MemberCommand.RegisterRequest command) {
+		return memberService.register(command);
+	}
 }
