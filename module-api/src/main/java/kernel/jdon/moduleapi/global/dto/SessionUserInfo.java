@@ -3,9 +3,9 @@ package kernel.jdon.moduleapi.global.dto;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-import kernel.jdon.member.domain.Member;
-import kernel.jdon.member.domain.MemberRole;
-import kernel.jdon.member.domain.SocialProviderType;
+import kernel.jdon.moduledomain.member.domain.Member;
+import kernel.jdon.moduledomain.member.domain.MemberRole;
+import kernel.jdon.moduledomain.member.domain.SocialProviderType;
 import lombok.Builder;
 import lombok.Getter;
 

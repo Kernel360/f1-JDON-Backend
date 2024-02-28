@@ -8,7 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import kernel.jdon.base.AbstractEntity;
+import kernel.jdon.moduledomain.base.AbstractEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

@@ -5,9 +5,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import kernel.jdon.skill.domain.BackendSkillType;
-import kernel.jdon.skill.domain.FrontendSkillType;
-import kernel.jdon.skill.domain.SkillType;
+import kernel.jdon.moduledomain.skill.domain.BackendSkillType;
+import kernel.jdon.moduledomain.skill.domain.FrontendSkillType;
+import kernel.jdon.moduledomain.skill.domain.SkillType;
 
 @Component
 public class SkillKeywordManager {

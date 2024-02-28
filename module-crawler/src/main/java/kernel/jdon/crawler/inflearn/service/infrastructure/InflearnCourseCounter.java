@@ -3,7 +3,7 @@ package kernel.jdon.crawler.inflearn.service.infrastructure;
 import java.util.ArrayList;
 import java.util.List;
 
-import kernel.jdon.inflearncourse.domain.InflearnCourse;
+import kernel.jdon.moduledomain.inflearncourse.domain.InflearnCourse;
 import lombok.Getter;
 
 @Getter

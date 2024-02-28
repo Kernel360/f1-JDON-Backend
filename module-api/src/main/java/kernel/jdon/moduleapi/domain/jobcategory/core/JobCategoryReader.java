@@ -2,7 +2,7 @@ package kernel.jdon.moduleapi.domain.jobcategory.core;
 
 import java.util.List;
 
-import kernel.jdon.jobcategory.domain.JobCategory;
+import kernel.jdon.moduledomain.jobcategory.domain.JobCategory;
 
 public interface JobCategoryReader {
 	JobCategory findById(Long jobCategoryId);

@@ -9,7 +9,7 @@ import java.util.Set;
 
 import org.springframework.stereotype.Component;
 
-import kernel.jdon.member.domain.SocialProviderType;
+import kernel.jdon.moduledomain.member.domain.SocialProviderType;
 import kernel.jdon.moduleapi.domain.auth.error.AuthErrorCode;
 
 @Component

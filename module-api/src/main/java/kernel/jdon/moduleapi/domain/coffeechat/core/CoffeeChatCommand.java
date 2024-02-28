@@ -2,8 +2,8 @@ package kernel.jdon.moduleapi.domain.coffeechat.core;
 
 import java.time.LocalDateTime;
 
-import kernel.jdon.coffeechat.domain.CoffeeChat;
-import kernel.jdon.member.domain.Member;
+import kernel.jdon.moduledomain.coffeechat.domain.CoffeeChat;
+import kernel.jdon.moduledomain.member.domain.Member;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

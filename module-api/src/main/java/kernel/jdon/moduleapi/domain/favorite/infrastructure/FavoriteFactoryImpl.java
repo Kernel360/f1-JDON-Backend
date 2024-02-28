@@ -2,8 +2,8 @@ package kernel.jdon.moduleapi.domain.favorite.infrastructure;
 
 import org.springframework.stereotype.Component;
 
-import kernel.jdon.inflearncourse.domain.InflearnCourse;
-import kernel.jdon.member.domain.Member;
+import kernel.jdon.moduledomain.inflearncourse.domain.InflearnCourse;
+import kernel.jdon.moduledomain.member.domain.Member;
 import kernel.jdon.moduleapi.domain.favorite.core.FavoriteFactory;
 import kernel.jdon.moduleapi.domain.favorite.core.FavoriteReader;
 import kernel.jdon.moduleapi.domain.favorite.core.FavoriteStore;

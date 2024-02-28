@@ -7,11 +7,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import kernel.jdon.jobcategory.domain.JobCategory;
+import kernel.jdon.moduledomain.jobcategory.domain.JobCategory;
 import kernel.jdon.moduleapi.domain.jobcategory.core.JobCategoryReader;
 import kernel.jdon.moduleapi.domain.skill.core.inflearnjd.InflearnJdSkillReader;
 import kernel.jdon.moduleapi.domain.skill.core.wantedjd.WantedJdSkillReader;
-import kernel.jdon.skill.domain.SkillType;
+import kernel.jdon.moduledomain.skill.domain.SkillType;
 import lombok.RequiredArgsConstructor;
 
 @Service

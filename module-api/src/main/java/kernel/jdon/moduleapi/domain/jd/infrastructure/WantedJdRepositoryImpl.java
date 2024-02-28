@@ -1,7 +1,7 @@
 package kernel.jdon.moduleapi.domain.jd.infrastructure;
 
-import static kernel.jdon.jobcategory.domain.QJobCategory.*;
-import static kernel.jdon.wantedjd.domain.QWantedJd.*;
+import static kernel.jdon.moduledomain.jobcategory.domain.QJobCategory.*;
+import static kernel.jdon.moduledomain.wantedjd.domain.QWantedJd.*;
 import static org.springframework.util.StringUtils.*;
 
 import java.util.List;

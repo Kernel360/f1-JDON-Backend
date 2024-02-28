@@ -3,14 +3,14 @@ package kernel.jdon.moduleapi.domain.review.core;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import kernel.jdon.member.domain.Member;
+import kernel.jdon.moduledomain.member.domain.Member;
 import kernel.jdon.moduleapi.domain.jd.core.JdReader;
 import kernel.jdon.moduleapi.domain.member.core.MemberReader;
 import kernel.jdon.moduleapi.domain.review.error.ReviewErrorCode;
 import kernel.jdon.moduleapi.global.exception.ApiException;
 import kernel.jdon.moduleapi.global.page.PageInfoRequest;
 import kernel.jdon.moduledomain.review.domain.Review;
-import kernel.jdon.wantedjd.domain.WantedJd;
+import kernel.jdon.moduledomain.wantedjd.domain.WantedJd;
 import lombok.RequiredArgsConstructor;
 
 @Service

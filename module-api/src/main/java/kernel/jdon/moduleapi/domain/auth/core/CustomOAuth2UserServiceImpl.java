@@ -12,9 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.servlet.http.HttpSession;
-import kernel.jdon.member.domain.Member;
-import kernel.jdon.member.domain.MemberRole;
-import kernel.jdon.member.domain.SocialProviderType;
+import kernel.jdon.moduledomain.member.domain.Member;
+import kernel.jdon.moduledomain.member.domain.MemberRole;
+import kernel.jdon.moduledomain.member.domain.SocialProviderType;
 import kernel.jdon.moduleapi.domain.auth.error.AuthErrorCode;
 import kernel.jdon.moduleapi.domain.member.core.MemberCommand;
 import kernel.jdon.moduleapi.domain.member.core.MemberReader;

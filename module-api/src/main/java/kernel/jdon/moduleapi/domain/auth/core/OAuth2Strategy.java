@@ -2,7 +2,7 @@ package kernel.jdon.moduleapi.domain.auth.core;
 
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
-import kernel.jdon.member.domain.SocialProviderType;
+import kernel.jdon.moduledomain.member.domain.SocialProviderType;
 import kernel.jdon.moduleapi.domain.auth.error.AuthErrorCode;
 import kernel.jdon.moduleapi.domain.member.core.MemberCommand;
 import kernel.jdon.moduleapi.global.dto.SessionUserInfo;

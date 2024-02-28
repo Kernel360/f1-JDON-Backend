@@ -2,7 +2,7 @@ package kernel.jdon.moduleapi.domain.coffeechat.infrastructure;
 
 import org.springframework.stereotype.Component;
 
-import kernel.jdon.coffeechat.domain.CoffeeChat;
+import kernel.jdon.moduledomain.coffeechat.domain.CoffeeChat;
 import kernel.jdon.moduleapi.domain.coffeechat.core.CoffeeChatStore;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

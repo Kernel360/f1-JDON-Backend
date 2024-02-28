@@ -1,6 +1,6 @@
 package kernel.jdon.moduleapi.domain.review.infrastructure;
 
-import static kernel.jdon.member.domain.QMember.*;
+import static kernel.jdon.moduledomain.member.domain.QMember.*;
 import static kernel.jdon.moduledomain.review.domain.QReview.*;
 
 import java.util.List;

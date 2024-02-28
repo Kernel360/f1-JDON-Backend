@@ -28,11 +28,11 @@ import kernel.jdon.crawler.wanted.search.JobSearchSort;
 import kernel.jdon.crawler.wanted.service.infrastructure.JobDetailProcessingCounter;
 import kernel.jdon.crawler.wanted.service.infrastructure.JobListProcessingCounter;
 import kernel.jdon.crawler.wanted.skill.SkillType;
-import kernel.jdon.jobcategory.domain.JobCategory;
-import kernel.jdon.skill.domain.Skill;
-import kernel.jdon.skillhistory.domain.SkillHistory;
-import kernel.jdon.wantedjd.domain.WantedJd;
-import kernel.jdon.wantedjdskill.domain.WantedJdSkill;
+import kernel.jdon.moduledomain.jobcategory.domain.JobCategory;
+import kernel.jdon.moduledomain.skill.domain.Skill;
+import kernel.jdon.moduledomain.skillhistory.domain.SkillHistory;
+import kernel.jdon.moduledomain.wantedjd.domain.WantedJd;
+import kernel.jdon.moduledomain.wantedjdskill.domain.WantedJdSkill;
 import lombok.RequiredArgsConstructor;
 
 @Service

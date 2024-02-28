@@ -6,19 +6,19 @@ import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
-import kernel.jdon.jobcategory.domain.JobCategory;
-import kernel.jdon.member.domain.Gender;
-import kernel.jdon.member.domain.Member;
-import kernel.jdon.member.domain.MemberAccountStatus;
-import kernel.jdon.member.domain.MemberRole;
-import kernel.jdon.member.domain.SocialProviderType;
-import kernel.jdon.memberskill.domain.MemberSkill;
+import kernel.jdon.moduledomain.jobcategory.domain.JobCategory;
+import kernel.jdon.moduledomain.member.domain.Gender;
+import kernel.jdon.moduledomain.member.domain.Member;
+import kernel.jdon.moduledomain.member.domain.MemberAccountStatus;
+import kernel.jdon.moduledomain.member.domain.MemberRole;
+import kernel.jdon.moduledomain.member.domain.SocialProviderType;
+import kernel.jdon.moduledomain.memberskill.domain.MemberSkill;
 import kernel.jdon.moduleapi.domain.jobcategory.core.JobCategoryReader;
 import kernel.jdon.moduleapi.domain.member.core.MemberCommand;
 import kernel.jdon.moduleapi.domain.member.core.MemberFactory;
 import kernel.jdon.moduleapi.domain.member.core.MemberStore;
 import kernel.jdon.moduleapi.domain.skill.core.SkillReader;
-import kernel.jdon.skill.domain.Skill;
+import kernel.jdon.moduledomain.skill.domain.Skill;
 import lombok.RequiredArgsConstructor;
 
 @Component

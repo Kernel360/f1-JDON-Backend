@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import kernel.jdon.jobcategory.domain.JobCategory;
+import kernel.jdon.moduledomain.jobcategory.domain.JobCategory;
 import kernel.jdon.moduleapi.domain.jobcategory.core.JobCategoryReader;
 import kernel.jdon.moduleapi.domain.jobcategory.error.JobCategoryErrorCode;
 import lombok.RequiredArgsConstructor;

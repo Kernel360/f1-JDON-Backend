@@ -1,8 +1,8 @@
 package kernel.jdon.moduleapi.domain.review.core;
 
-import kernel.jdon.member.domain.Member;
+import kernel.jdon.moduledomain.member.domain.Member;
 import kernel.jdon.moduledomain.review.domain.Review;
-import kernel.jdon.wantedjd.domain.WantedJd;
+import kernel.jdon.moduledomain.wantedjd.domain.WantedJd;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

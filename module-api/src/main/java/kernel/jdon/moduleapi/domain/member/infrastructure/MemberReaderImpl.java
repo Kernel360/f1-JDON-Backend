@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import kernel.jdon.member.domain.Member;
+import kernel.jdon.moduledomain.member.domain.Member;
 import kernel.jdon.moduleapi.domain.member.core.MemberReader;
 import kernel.jdon.moduleapi.domain.member.error.MemberErrorCode;
 import lombok.RequiredArgsConstructor;

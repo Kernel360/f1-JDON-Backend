@@ -7,7 +7,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
-import kernel.jdon.member.domain.Member;
+import kernel.jdon.moduledomain.member.domain.Member;
 
 @Mapper(
 	componentModel = "spring",

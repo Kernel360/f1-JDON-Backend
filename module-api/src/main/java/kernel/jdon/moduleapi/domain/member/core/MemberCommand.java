@@ -3,8 +3,8 @@ package kernel.jdon.moduleapi.domain.member.core;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import kernel.jdon.member.domain.MemberRole;
-import kernel.jdon.member.domain.SocialProviderType;
+import kernel.jdon.moduledomain.member.domain.MemberRole;
+import kernel.jdon.moduledomain.member.domain.SocialProviderType;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
