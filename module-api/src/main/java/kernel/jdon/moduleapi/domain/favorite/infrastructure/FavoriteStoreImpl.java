@@ -12,12 +12,12 @@ public class FavoriteStoreImpl implements FavoriteStore {
 	private final FavoriteRepository favoriteRepository;
 
 	@Override
-	public Favorite save(Favorite favorite) {
+	public Favorite save(final Favorite favorite) {
 		return favoriteRepository.save(favorite);
 	}
 
 	@Override
-	public void delete(Favorite favorite) {
+	public void delete(final Favorite favorite) {
 		favoriteRepository.delete(favorite);
 	}
 

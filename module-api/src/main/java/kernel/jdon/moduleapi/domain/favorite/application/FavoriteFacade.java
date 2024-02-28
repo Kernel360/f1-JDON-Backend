@@ -13,17 +13,16 @@ import lombok.RequiredArgsConstructor;
 public class FavoriteFacade {
 	private final FavoriteService favoriteService;
 
-	public FavoriteInfo.UpdateResponse update(final Long memberId, FavoriteCommand.UpdateRequest request) {
+	public FavoriteInfo.UpdateResponse modify(final Long memberId, final FavoriteCommand.UpdateRequest request) {
 		if (request.getIsFavorite()) {
-			return favoriteService.save(memberId, request.getLectureId());
+			return favoriteService.create(memberId, request.getLectureId());
 		}
-		return favoriteService.delete(memberId, request.getLectureId());
+		return favoriteService.remove(memberId, request.getLectureId());
 	}
 
-	public FavoriteInfo.FindFavoriteListResponse getList(
-		final Long memberId,
+	public FavoriteInfo.FindFavoriteListResponse getFavoriteList(final Long memberId,
 		final PageInfoRequest pageInfoRequest) {
 
-		return favoriteService.getList(memberId, pageInfoRequest);
+		return favoriteService.getFavoriteList(memberId, pageInfoRequest);
 	}
 }

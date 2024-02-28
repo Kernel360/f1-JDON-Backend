@@ -23,13 +23,14 @@ public class FavoriteReaderImpl implements FavoriteReader {
 	private final FavoriteInfoMapper favoriteInfoMapper;
 
 	@Override
-	public FavoriteInfo.FindFavoriteListResponse findList(Long memberId, PageInfoRequest pageInfoRequest) {
+	public FavoriteInfo.FindFavoriteListResponse findList(final Long memberId, final PageInfoRequest pageInfoRequest) {
 		Pageable pageable = PageRequest.of(pageInfoRequest.getPage(), pageInfoRequest.getSize());
 
-		Page<Favorite> favoritePage = favoriteRepository.findFavoriteByMemberId(memberId, pageable);
-		Page<FavoriteReaderInfo.FindFavoriteListResponse> favoritesPage = favoritePage.map(favoriteInfoMapper::of);
+		final Page<Favorite> favoritePage = favoriteRepository.findFavoriteByMemberId(memberId, pageable);
+		final Page<FavoriteReaderInfo.FindFavoriteListResponse> favoritesPage = favoritePage.map(
+			favoriteInfoMapper::of);
 
-		List<FavoriteInfo.FindFavorite> list = favoritesPage.getContent().stream()
+		final List<FavoriteInfo.FindFavorite> list = favoritesPage.getContent().stream()
 			.map(FavoriteInfo.FindFavorite::of)
 			.toList();
 
@@ -37,17 +38,17 @@ public class FavoriteReaderImpl implements FavoriteReader {
 	}
 
 	@Override
-	public Optional<Favorite> findFavoriteByMemberIdAndInflearnCourseId(Long memberId, Long lectureId) {
+	public Optional<Favorite> findFavoriteByMemberIdAndInflearnCourseId(final Long memberId, final Long lectureId) {
 		return favoriteRepository.findFavoriteByMemberIdAndInflearnCourseId(memberId, lectureId);
 	}
 
 	@Override
-	public Optional<Favorite> findById(Long favoriteId) {
+	public Optional<Favorite> findById(final Long favoriteId) {
 		return favoriteRepository.findById(favoriteId);
 	}
 
 	@Override
-	public Favorite save(Favorite favorite) {
+	public Favorite save(final Favorite favorite) {
 		return favoriteRepository.save(favorite);
 	}
 }

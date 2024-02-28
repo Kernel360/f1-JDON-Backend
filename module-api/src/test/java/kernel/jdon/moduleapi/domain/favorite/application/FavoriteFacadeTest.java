@@ -34,12 +34,12 @@ class FavoriteFacadeTest {
 		FavoriteInfo.UpdateResponse expectedResponse = new FavoriteInfo.UpdateResponse(2L);
 
 		// when
-		when(favoriteService.save(memberId, request.getLectureId())).thenReturn(expectedResponse);
-		FavoriteInfo.UpdateResponse actualResponse = favoriteFacade.update(memberId, request);
+		when(favoriteService.create(memberId, request.getLectureId())).thenReturn(expectedResponse);
+		FavoriteInfo.UpdateResponse actualResponse = favoriteFacade.modify(memberId, request);
 
 		// then
 		assertThat(expectedResponse.getLectureId()).isEqualTo(actualResponse.getLectureId());
-		verify(favoriteService, times(1)).save(memberId, request.getLectureId());
+		verify(favoriteService, times(1)).create(memberId, request.getLectureId());
 	}
 
 	@DisplayName("2: 유효한 요청으로 즐겨찾기 삭제하면, 삭제된 favorite id를 응답한다.")
@@ -52,12 +52,12 @@ class FavoriteFacadeTest {
 		FavoriteInfo.UpdateResponse expectedResponse = new FavoriteInfo.UpdateResponse(lectureId);
 
 		// when
-		when(favoriteService.delete(memberId, lectureId)).thenReturn(expectedResponse);
-		FavoriteInfo.UpdateResponse actualResponse = favoriteFacade.update(memberId, request);
+		when(favoriteService.remove(memberId, lectureId)).thenReturn(expectedResponse);
+		FavoriteInfo.UpdateResponse actualResponse = favoriteFacade.modify(memberId, request);
 
 		// then
 		assertThat(actualResponse).isEqualTo(expectedResponse);
-		verify(favoriteService, times(1)).delete(memberId, lectureId);
+		verify(favoriteService, times(1)).remove(memberId, lectureId);
 	}
 
 	@DisplayName("3: 내가 찜한 목록을 요청하면, 찜한 목록을 응답한다.")
@@ -69,12 +69,13 @@ class FavoriteFacadeTest {
 		FavoriteInfo.FindFavoriteListResponse expectedResponse = mock(FavoriteInfo.FindFavoriteListResponse.class);
 
 		// when
-		when(favoriteService.getList(memberId, pageInfoRequest)).thenReturn(expectedResponse);
-		FavoriteInfo.FindFavoriteListResponse actualResponse = favoriteFacade.getList(memberId, pageInfoRequest);
+		when(favoriteService.getFavoriteList(memberId, pageInfoRequest)).thenReturn(expectedResponse);
+		FavoriteInfo.FindFavoriteListResponse actualResponse = favoriteFacade.getFavoriteList(memberId,
+			pageInfoRequest);
 
 		// then
 		assertThat(expectedResponse).isEqualTo(actualResponse);
-		verify(favoriteService, times(1)).getList(memberId, pageInfoRequest);
+		verify(favoriteService, times(1)).getFavoriteList(memberId, pageInfoRequest);
 	}
 
 }
