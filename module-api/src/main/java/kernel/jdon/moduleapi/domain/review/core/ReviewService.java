@@ -6,4 +6,6 @@ public interface ReviewService {
 	ReviewInfo.CreateReviewResponse createReview(ReviewCommand.CreateReviewRequest command);
 
 	ReviewInfo.FindReviewListResponse getReviewList(Long jdId, PageInfoRequest pageInfoRequest);
+
+	void removeReview(ReviewCommand.DeleteReviewRequest command);
 }

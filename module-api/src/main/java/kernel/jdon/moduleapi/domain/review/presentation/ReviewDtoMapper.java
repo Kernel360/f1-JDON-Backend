@@ -18,4 +18,6 @@ public interface ReviewDtoMapper {
 	ReviewDto.CreateReviewResponse of(ReviewInfo.CreateReviewResponse info);
 
 	ReviewDto.FindReviewListResponse of(ReviewInfo.FindReviewListResponse info);
+
+	ReviewCommand.DeleteReviewRequest of(Long reviewId, Long memberId);
 }

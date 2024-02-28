@@ -9,8 +9,10 @@ import org.springframework.stereotype.Component;
 
 import kernel.jdon.moduleapi.domain.review.core.ReviewInfo;
 import kernel.jdon.moduleapi.domain.review.core.ReviewReader;
+import kernel.jdon.moduleapi.domain.review.error.ReviewErrorCode;
 import kernel.jdon.moduleapi.global.page.CustomJpaPageInfo;
 import kernel.jdon.moduleapi.global.page.PageInfoRequest;
+import kernel.jdon.moduledomain.review.domain.Review;
 import lombok.RequiredArgsConstructor;
 
 @Component
@@ -30,5 +32,11 @@ public class ReviewReaderImpl implements ReviewReader {
 			.toList();
 
 		return new ReviewInfo.FindReviewListResponse(content, new CustomJpaPageInfo(findReviewList));
+	}
+
+	@Override
+	public Review findById(final Long id) {
+		return reviewRepository.findById(id)
+			.orElseThrow(ReviewErrorCode.NOT_FOUND_REVIEW::throwException);
 	}
 }
