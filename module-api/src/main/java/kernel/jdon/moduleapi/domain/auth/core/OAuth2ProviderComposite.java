@@ -21,7 +21,7 @@ public class OAuth2ProviderComposite {
 			.collect(toMap(OAuth2Strategy::getOAuth2ProviderType, identity()));
 	}
 
-	public OAuth2Strategy getClient(SocialProviderType provider) {
+	public OAuth2Strategy getOAuth2Strategy(SocialProviderType provider) {
 		return Optional.ofNullable(oauth2ProviderMap.get(provider))
 			.orElseThrow(AuthErrorCode.NOT_FOUND_PROVIDER::throwException);
 	}

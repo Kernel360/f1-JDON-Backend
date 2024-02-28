@@ -42,7 +42,7 @@ public class CustomOAuth2UserServiceImpl extends DefaultOAuth2UserService {
 	}
 
 	private DefaultOAuth2User getOAuth2User(final OAuth2UserRequest userRequest, final OAuth2User user) {
-		final SessionUserInfo userInfo = oauth2ProviderComposite.getClient(getSocialProvider(userRequest))
+		final SessionUserInfo userInfo = oauth2ProviderComposite.getOAuth2Strategy(getSocialProvider(userRequest))
 			.getUserInfo(user);
 		final Member findMember = memberReader.findByEmail(userInfo.getEmail());
 		final List<SimpleGrantedAuthority> authorities = getAuthorities(userInfo, findMember);
@@ -79,6 +79,6 @@ public class CustomOAuth2UserServiceImpl extends DefaultOAuth2UserService {
 	}
 
 	public boolean sendDeleteRequestToOAuth2(final SessionUserInfo userInfo) {
-		return oauth2ProviderComposite.getClient(userInfo.getSocialProvider()).unlinkOAuth2Account(userInfo);
+		return oauth2ProviderComposite.getOAuth2Strategy(userInfo.getSocialProvider()).unlinkOAuth2Account(userInfo);
 	}
 }
