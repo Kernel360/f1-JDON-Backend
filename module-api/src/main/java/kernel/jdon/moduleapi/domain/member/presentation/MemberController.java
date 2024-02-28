@@ -1,6 +1,9 @@
 package kernel.jdon.moduleapi.domain.member.presentation;
 
+import static kernel.jdon.moduleapi.global.util.SessionUserUtil.*;
+
 import java.net.URI;
+import java.util.Objects;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -69,13 +72,9 @@ public class MemberController {
 
 	@GetMapping("/api/v1/authenticate")
 	public ResponseEntity<CommonResponse<MemberDto.AuthenticateResponse>> authenticate(
-		@LoginUser final SessionUserInfo sessionUser) {
-		boolean isLoginUser = false;
-		Long memberId = null;
-		if (null != sessionUser) {
-			isLoginUser = true;
-			memberId = sessionUser.getId();
-		}
+		@LoginUser final SessionUserInfo member) {
+		final Long memberId = getSessionUserId(member);
+		final boolean isLoginUser = Objects.nonNull(member);
 		final MemberDto.AuthenticateResponse response = MemberDto.AuthenticateResponse.of(isLoginUser, memberId);
 
 		return ResponseEntity.ok().body(CommonResponse.of(response));
