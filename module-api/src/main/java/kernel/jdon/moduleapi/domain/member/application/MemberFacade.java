@@ -35,7 +35,8 @@ public class MemberFacade {
 	}
 
 	public MemberInfo.WithdrawResponse withdrawMember(final MemberCommand.WithdrawRequest command) {
-		if (!customOAuth2UserServiceImpl.sendDeleteRequestToOAuth2(command)) {
+		boolean success = customOAuth2UserServiceImpl.sendDeleteRequestToOAuth2(command);
+		if (!success) {
 			throw new ApiException(AuthErrorCode.ERROR_FAIL_TO_UNLINK_OAUTH2);
 		}
 		return memberService.removeMember(command);
