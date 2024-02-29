@@ -2,8 +2,6 @@ package kernel.jdon.moduleapi.domain.coffeechat.infrastructure;
 
 import java.time.LocalDateTime;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.querydsl.core.annotations.QueryProjection;
 
 import kernel.jdon.moduledomain.coffeechat.domain.CoffeeChatActiveStatus;
@@ -16,19 +14,15 @@ public class CoffeeChatReaderInfo {
 
 	@Getter
 	public static class FindCoffeeChatListResponse {
-		private Long coffeeChatId;
-		private String nickname;
-		private String hostJobCategoryName;
-		private String title;
-		private String activeStatus;
-		@JsonInclude(JsonInclude.Include.NON_NULL)
-		private Boolean isDeleted;
-		@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
-		private LocalDateTime meetDate;
-		@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
-		private LocalDateTime createdDate;
-		private Long totalRecruitCount;
-		private Long currentRecruitCount;
+		private final Long coffeeChatId;
+		private final String nickname;
+		private final String hostJobCategoryName;
+		private final String title;
+		private final String activeStatus;
+		private final LocalDateTime meetDate;
+		private final LocalDateTime createdDate;
+		private final Long totalRecruitCount;
+		private final Long currentRecruitCount;
 
 		@QueryProjection
 		public FindCoffeeChatListResponse(Long coffeeChatId, String nickname, String job, String title,
