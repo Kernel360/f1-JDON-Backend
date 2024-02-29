@@ -71,7 +71,7 @@ public class CoffeeChatController {
     }
 
     @PostMapping("/api/v1/coffeechats/{id}")
-    public ResponseEntity<CommonResponse<Long>> applyCoffeeChat(
+    public ResponseEntity<CommonResponse<CoffeeChatDto.AppliedCoffeeChatResponse>> applyCoffeeChat(
         @PathVariable(name = "id") Long coffeeChatId,
         @LoginUser SessionUserInfo member
     ) {
