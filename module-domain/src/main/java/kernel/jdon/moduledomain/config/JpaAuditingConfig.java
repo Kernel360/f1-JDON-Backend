@@ -1,4 +1,4 @@
-package kernel.jdon.config;
+package kernel.jdon.moduledomain.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
