@@ -75,14 +75,15 @@ public class CoffeeChatServiceImpl implements CoffeeChatService {
 
     @Override
     @Transactional
-    public Long modifyCoffeeChat(CoffeeChatCommand.UpdateCoffeeChatRequest request, Long coffeeChatId) {
+    public CoffeeChatInfo.UpdatedCoffeeChatResponse modifyCoffeeChat(CoffeeChatCommand.UpdateCoffeeChatRequest request,
+        Long coffeeChatId) {
         CoffeeChat findCoffeeChat = coffeeChatReader.findExistCoffeeChat(coffeeChatId);
         CoffeeChat updateCoffeeChat = request.toEntity();
 
         validateUpdateRequest(findCoffeeChat, updateCoffeeChat);
         coffeeChatStore.update(findCoffeeChat, updateCoffeeChat);
 
-        return findCoffeeChat.getId();
+        return new CoffeeChatInfo.UpdatedCoffeeChatResponse(findCoffeeChat.getId());
     }
 
     private void validateUpdateRequest(CoffeeChat findCoffeeChat, CoffeeChat updateCoffeeChat) {

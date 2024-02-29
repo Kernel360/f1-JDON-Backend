@@ -46,7 +46,8 @@ public class CoffeeChatFacade {
         return coffeeChatService.createCoffeeChat(request, memberId);
     }
 
-    public Long modifyCoffeeChat(CoffeeChatCommand.UpdateCoffeeChatRequest request, Long coffeeChatId) {
+    public CoffeeChatInfo.UpdatedCoffeeChatResponse modifyCoffeeChat(CoffeeChatCommand.UpdateCoffeeChatRequest request,
+        Long coffeeChatId) {
         return coffeeChatService.modifyCoffeeChat(request, coffeeChatId);
     }
 

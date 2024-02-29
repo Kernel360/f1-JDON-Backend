@@ -101,9 +101,11 @@ public class CoffeeChatController {
         @RequestBody CoffeeChatDto.UpdateCoffeeChatRequest request
     ) {
         CoffeeChatCommand.UpdateCoffeeChatRequest updateCommand = coffeeChatDtoMapper.of(request);
-        Long updatedCoffeeChatId = coffeeChatFacade.modifyCoffeeChat(updateCommand, coffeeChatId);
+        CoffeeChatInfo.UpdatedCoffeeChatResponse info = coffeeChatFacade.modifyCoffeeChat(
+            updateCommand, coffeeChatId);
+        CoffeeChatDto.UpdatedCoffeeChatResponse response = coffeeChatDtoMapper.of(info);
 
-        return ResponseEntity.ok().body(CommonResponse.of(updatedCoffeeChatId));
+        return ResponseEntity.ok().body(CommonResponse.of(response));
     }
 
     @DeleteMapping("/api/v1/coffeechats/{id}")
