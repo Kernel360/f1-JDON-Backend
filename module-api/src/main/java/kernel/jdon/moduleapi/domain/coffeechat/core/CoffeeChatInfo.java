@@ -63,6 +63,7 @@ public class CoffeeChatInfo {
 		private final LocalDateTime createdDate;
 		private final Long totalRecruitCount;
 		private final Long currentRecruitCount;
+		private final Long viewCount;
 
 		public static FindCoffeeChat of(CoffeeChatReaderInfo.FindCoffeeChatListResponse readerInfo) {
 			return FindCoffeeChat.builder()
@@ -75,6 +76,7 @@ public class CoffeeChatInfo {
 				.createdDate(readerInfo.getCreatedDate())
 				.totalRecruitCount(readerInfo.getTotalRecruitCount())
 				.currentRecruitCount(readerInfo.getCurrentRecruitCount())
+				.viewCount(readerInfo.getViewCount())
 				.build();
 		}
 	}

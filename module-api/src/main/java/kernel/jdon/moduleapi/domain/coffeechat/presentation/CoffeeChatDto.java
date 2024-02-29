@@ -89,5 +89,6 @@ public class CoffeeChatDto {
 		private final LocalDateTime createdDate;
 		private final Long totalRecruitCount;
 		private final Long currentRecruitCount;
+		private final Long viewCount;
 	}
 }

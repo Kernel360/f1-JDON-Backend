@@ -23,11 +23,12 @@ public class CoffeeChatReaderInfo {
 		private final LocalDateTime createdDate;
 		private final Long totalRecruitCount;
 		private final Long currentRecruitCount;
+		private final Long viewCount;
 
 		@QueryProjection
 		public FindCoffeeChatListResponse(Long coffeeChatId, String nickname, String job, String title,
-			CoffeeChatActiveStatus activeStatus,
-			LocalDateTime meetDate, LocalDateTime createdDate, Long totalRecruitCount, Long currentRecruitCount) {
+			CoffeeChatActiveStatus activeStatus, LocalDateTime meetDate, LocalDateTime createdDate,
+			Long totalRecruitCount, Long currentRecruitCount, Long viewCount) {
 			this.coffeeChatId = coffeeChatId;
 			this.nickname = nickname;
 			this.hostJobCategoryName = job;
@@ -37,6 +38,7 @@ public class CoffeeChatReaderInfo {
 			this.createdDate = createdDate;
 			this.totalRecruitCount = totalRecruitCount;
 			this.currentRecruitCount = currentRecruitCount;
+			this.viewCount = viewCount;
 		}
 	}
 }
