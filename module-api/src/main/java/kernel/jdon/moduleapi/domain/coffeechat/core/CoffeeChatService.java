@@ -20,7 +20,7 @@ public interface CoffeeChatService {
     CoffeeChatInfo.UpdatedCoffeeChatResponse modifyCoffeeChat(CoffeeChatCommand.UpdateCoffeeChatRequest request,
         Long coffeeChatId);
 
-    Long deleteCoffeeChat(Long coffeeChatId);
+    CoffeeChatInfo.DeletedCoffeeChatResponse deleteCoffeeChat(Long coffeeChatId);
 
     CustomPageResponse getGuestCoffeeChatList(Long memberId, Pageable pageable);
 

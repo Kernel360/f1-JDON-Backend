@@ -20,6 +20,8 @@ public interface CoffeeChatDtoMapper {
 
     CoffeeChatDto.AppliedCoffeeChatResponse of(CoffeeChatInfo.AppliedCoffeeChatResponse info);
 
+    CoffeeChatDto.DeletedCoffeeChatResponse of(CoffeeChatInfo.DeletedCoffeeChatResponse info);
+
     CoffeeChatDto.FindCoffeeChatResponse of(CoffeeChatInfo.FindCoffeeChatResponse info);
 
     CoffeeChatCommand.CreateCoffeeChatRequest of(CoffeeChatDto.CreateCoffeeChatRequest request);

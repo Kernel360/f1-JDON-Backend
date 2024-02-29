@@ -51,7 +51,7 @@ public class CoffeeChatFacade {
         return coffeeChatService.modifyCoffeeChat(request, coffeeChatId);
     }
 
-    public Long deleteCoffeeChat(Long coffeeChatId) {
+    public CoffeeChatInfo.DeletedCoffeeChatResponse deleteCoffeeChat(Long coffeeChatId) {
         return coffeeChatService.deleteCoffeeChat(coffeeChatId);
     }
 

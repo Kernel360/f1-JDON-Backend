@@ -107,11 +107,11 @@ public class CoffeeChatServiceImpl implements CoffeeChatService {
 
     @Override
     @Transactional
-    public Long deleteCoffeeChat(Long coffeeChatId) {
+    public CoffeeChatInfo.DeletedCoffeeChatResponse deleteCoffeeChat(Long coffeeChatId) {
         CoffeeChat findCoffeeChat = coffeeChatReader.findExistCoffeeChat(coffeeChatId);
         coffeeChatStore.deleteById(findCoffeeChat.getId());
 
-        return findCoffeeChat.getId();
+        return new CoffeeChatInfo.DeletedCoffeeChatResponse(findCoffeeChat.getId());
     }
 
     @Override

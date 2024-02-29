@@ -36,6 +36,12 @@ public class CoffeeChatInfo {
     }
 
     @Getter
+    @AllArgsConstructor
+    public static class DeletedCoffeeChatResponse {
+        private Long coffeeChatId;
+    }
+
+    @Getter
     @Builder
     public static class FindCoffeeChatResponse {
         private Long coffeeChatId;
