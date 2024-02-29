@@ -38,7 +38,7 @@ class FavoriteFacadeTest {
 		FavoriteInfo.UpdateResponse actualResponse = favoriteFacade.modify(memberId, request);
 
 		// then
-		assertThat(expectedResponse.getLectureId()).isEqualTo(actualResponse.getLectureId());
+		assertThat(actualResponse.getLectureId()).isEqualTo(expectedResponse.getLectureId());
 		verify(favoriteService, times(1)).create(memberId, request.getLectureId());
 	}
 
@@ -74,7 +74,7 @@ class FavoriteFacadeTest {
 			pageInfoRequest);
 
 		// then
-		assertThat(expectedResponse).isEqualTo(actualResponse);
+		assertThat(actualResponse).isEqualTo(expectedResponse);
 		verify(favoriteService, times(1)).getFavoriteList(memberId, pageInfoRequest);
 	}
 
