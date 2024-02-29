@@ -79,7 +79,7 @@ class FavoriteServiceImplTest {
 		verify(favoriteFactory, times(1)).create(memberId, lectureId);
 	}
 
-	@DisplayName("이미 찜한 강의에 대해 찜하기를 하면, 기존에 찜되어 있는 lectureId를 반환한다.")
+	@DisplayName("2: 이미 찜한 강의에 대해 찜하기를 하면, 기존에 찜되어 있는 lectureId를 반환한다.")
 	@Test
 	void givenExistingFavorite_whenCreateFavorite_thenReturnExistingLectureId() {
 		// given
@@ -100,7 +100,7 @@ class FavoriteServiceImplTest {
 		assertThat(actualResponse.getLectureId()).isEqualTo(expectedResponse.getLectureId());
 	}
 
-	@DisplayName("2: 존재하는 찜 정보에 대해 찜 삭제를 하면, 찜 취소한 강의id를 반환한다.")
+	@DisplayName("3: 존재하는 찜 정보에 대해 찜 삭제를 하면, 찜 취소한 강의id를 반환한다.")
 	@Test
 	void givenValidLectureId_whenDeleteFavorite_thenReturnDeletedLectureId() {
 		// given
@@ -122,7 +122,7 @@ class FavoriteServiceImplTest {
 		verify(favoriteFactory, times(1)).delete(memberId, lectureId);
 	}
 
-	@DisplayName("3: 존재하지 않는 강의에 대해 찜 삭제를 하면, NOT_FOUND_INFLEARN_COURSE 에러를 반환한다.")
+	@DisplayName("4: 존재하지 않는 강의에 대해 찜 삭제를 하면, NOT_FOUND_INFLEARN_COURSE 에러를 반환한다.")
 	@Test
 	void givenInvalidLecture_whenDeleteFavorite_thenReturnNotFoundLectureError() {
 		// given
@@ -140,7 +140,7 @@ class FavoriteServiceImplTest {
 		verify(favoriteFactory, times(1)).delete(memberId, invalidLectureId);
 	}
 
-	@DisplayName("4: 존재하지 않는 회원에 대해 찜 삭제를 하면, NOT_FOUND_MEMBER 에러를 반환한다.")
+	@DisplayName("5: 존재하지 않는 회원에 대해 찜 삭제를 하면, NOT_FOUND_MEMBER 에러를 반환한다.")
 	@Test
 	void givenInvalidMember_whenDeleteFavorite_thenReturnNotFoundLectureError() {
 		// given
@@ -158,7 +158,7 @@ class FavoriteServiceImplTest {
 		verify(favoriteFactory, times(1)).delete(invalidMemberId, lectureId);
 	}
 
-	@DisplayName("5: 존재하지 않는 찜 정보에 대해 찜 삭제를 하면, NOT_FOUND_FAVORITE 에러를 반환한다.")
+	@DisplayName("6: 존재하지 않는 찜 정보에 대해 찜 삭제를 하면, NOT_FOUND_FAVORITE 에러를 반환한다.")
 	@Test
 	void givenInvalidFavorite_whenDeleteFavorite_thenReturnNotFoundFavoriteError() {
 		// given
@@ -176,7 +176,7 @@ class FavoriteServiceImplTest {
 		verify(favoriteFactory, times(1)).delete(memberId, lectureId);
 	}
 
-	@DisplayName("6: 유효한 회원과 페이지 정보로 찜 목록을 조회하면, 해당하는 찜 목록과 페이지 정보를 반환한다.")
+	@DisplayName("7: 유효한 회원과 페이지 정보로 찜 목록을 조회하면, 해당하는 찜 목록과 페이지 정보를 반환한다.")
 	@Test
 	void givenValidMemberAndPageInfo_whenGetFavoriteList_thenReturnFavoriteList() {
 		// given
