@@ -29,11 +29,12 @@ public class CoffeeChatServiceImpl implements CoffeeChatService {
 
     @Override
     @Transactional
-    public Long createCoffeeChat(CoffeeChatCommand.CreateCoffeeChatRequest request, Long memberId) {
+    public CoffeeChatInfo.CreatedCoffeeChatResponse createCoffeeChat(CoffeeChatCommand.CreateCoffeeChatRequest request,
+        Long memberId) {
         Member findMember = memberReader.findById(memberId);
         CoffeeChat savedCoffeeChat = coffeeChatStore.save(request.toEntity(findMember));
 
-        return savedCoffeeChat.getId();
+        return new CoffeeChatInfo.CreatedCoffeeChatResponse(savedCoffeeChat.getId());
     }
 
     @Override

@@ -19,6 +19,12 @@ public class CoffeeChatInfo {
 
     @Getter
     @AllArgsConstructor
+    public static class CreatedCoffeeChatResponse {
+        private Long coffeeChatId;
+    }
+
+    @Getter
+    @AllArgsConstructor
     public static class AppliedCoffeeChatResponse {
         private Long coffeeChatId;
     }

@@ -83,15 +83,16 @@ public class CoffeeChatController {
     }
 
     @PostMapping("/api/v1/coffeechats")
-    public ResponseEntity<CommonResponse<Long>> saveCoffeeChat(
+    public ResponseEntity<CommonResponse<CoffeeChatDto.CreatedCoffeeChatResponse>> saveCoffeeChat(
         @RequestBody CoffeeChatDto.CreateCoffeeChatRequest request,
         @LoginUser SessionUserInfo member
     ) {
         CoffeeChatCommand.CreateCoffeeChatRequest createCommand = coffeeChatDtoMapper.of(request);
-        Long savedCoffeeChatId = coffeeChatFacade.saveCoffeeChat(createCommand, member.getId());
-        URI uri = URI.create("/v1/coffeechats/" + savedCoffeeChatId);
+        CoffeeChatInfo.CreatedCoffeeChatResponse info = coffeeChatFacade.saveCoffeeChat(createCommand, member.getId());
+        CoffeeChatDto.CreatedCoffeeChatResponse response = coffeeChatDtoMapper.of(info);
+        URI uri = URI.create("/v1/coffeechats/" + info.getCoffeeChatId());
 
-        return ResponseEntity.created(uri).body(CommonResponse.of(savedCoffeeChatId));
+        return ResponseEntity.created(uri).body(CommonResponse.of(response));
     }
 
     @PutMapping("/api/v1/coffeechats/{id}")

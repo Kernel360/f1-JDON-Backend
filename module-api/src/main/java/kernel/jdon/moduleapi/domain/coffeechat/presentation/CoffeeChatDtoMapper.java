@@ -13,6 +13,9 @@ import kernel.jdon.moduleapi.domain.coffeechat.core.CoffeeChatInfo;
     unmappedTargetPolicy = ReportingPolicy.ERROR
 )
 public interface CoffeeChatDtoMapper {
+
+    CoffeeChatDto.CreatedCoffeeChatResponse of(CoffeeChatInfo.CreatedCoffeeChatResponse info);
+
     CoffeeChatDto.AppliedCoffeeChatResponse of(CoffeeChatInfo.AppliedCoffeeChatResponse info);
 
     CoffeeChatDto.FindCoffeeChatResponse of(CoffeeChatInfo.FindCoffeeChatResponse info);

@@ -12,7 +12,8 @@ public interface CoffeeChatService {
 
     CoffeeChatInfo.FindCoffeeChatResponse getCoffeeChat(Long coffeeChatId, Long memberId);
 
-    Long createCoffeeChat(CoffeeChatCommand.CreateCoffeeChatRequest request, Long memberId);
+    CoffeeChatInfo.CreatedCoffeeChatResponse createCoffeeChat(CoffeeChatCommand.CreateCoffeeChatRequest request,
+        Long memberId);
 
     void increaseViewCount(Long coffeeChatId);
 

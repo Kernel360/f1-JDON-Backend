@@ -18,6 +18,12 @@ public class CoffeeChatDto {
 
     @Getter
     @Builder
+    public static class CreatedCoffeeChatResponse {
+        private Long coffeeChatId;
+    }
+
+    @Getter
+    @Builder
     public static class AppliedCoffeeChatResponse {
         private Long coffeeChatId;
     }
