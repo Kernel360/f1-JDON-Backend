@@ -9,12 +9,19 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import kernel.jdon.moduleapi.domain.coffeechat.infrastructure.CoffeeChatReaderInfo;
 import kernel.jdon.moduleapi.global.page.CustomPageInfo;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class CoffeeChatInfo {
+
+    @Getter
+    @AllArgsConstructor
+    public static class AppliedCoffeeChatResponse {
+        private Long coffeeChatId;
+    }
 
     @Getter
     @Builder

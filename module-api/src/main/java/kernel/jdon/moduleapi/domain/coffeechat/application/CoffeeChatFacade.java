@@ -62,7 +62,7 @@ public class CoffeeChatFacade {
         return coffeeChatService.getHostCoffeeChatList(memberId, pageable);
     }
 
-    public Long applyCoffeeChat(Long coffeeChatId, Long memberId) {
+    public CoffeeChatInfo.AppliedCoffeeChatResponse applyCoffeeChat(Long coffeeChatId, Long memberId) {
         RLock lock = redissonClient.getLock(String.format("apply:coffeeChat:%d", coffeeChatId));
         try {
             boolean available = lock.tryLock(lockConfig.getWaitTime(), lockConfig.getLeaseTime(),

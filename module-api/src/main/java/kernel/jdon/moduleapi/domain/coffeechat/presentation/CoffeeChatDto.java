@@ -15,6 +15,13 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class CoffeeChatDto {
+
+    @Getter
+    @Builder
+    public static class AppliedCoffeeChatResponse {
+        private Long coffeeChatId;
+    }
+
     @Getter
     @Builder
     public static class FindCoffeeChatResponse {
