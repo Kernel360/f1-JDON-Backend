@@ -109,7 +109,8 @@ public class CoffeeChatController {
     }
 
     @DeleteMapping("/api/v1/coffeechats/{id}")
-    public ResponseEntity<CommonResponse<Long>> removeCoffeeChat(@PathVariable(name = "id") Long coffeeChatId) {
+    public ResponseEntity<CommonResponse<CoffeeChatDto.DeletedCoffeeChatResponse>> removeCoffeeChat(
+        @PathVariable(name = "id") Long coffeeChatId) {
         CoffeeChatInfo.DeletedCoffeeChatResponse info = coffeeChatFacade.deleteCoffeeChat(
             coffeeChatId);
         CoffeeChatDto.DeletedCoffeeChatResponse response = coffeeChatDtoMapper.of(info);
