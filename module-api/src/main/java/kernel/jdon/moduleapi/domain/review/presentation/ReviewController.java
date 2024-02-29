@@ -30,8 +30,8 @@ public class ReviewController {
 	@PostMapping("/api/v1/reviews")
 	public ResponseEntity<CommonResponse<ReviewDto.CreateReviewResponse>> createReview(
 		@RequestBody @Valid final ReviewDto.CreateReviewRequest request,
-		@LoginUser final SessionUserInfo sessionUserInfo) {
-		final ReviewCommand.CreateReviewRequest command = reviewDtoMapper.of(request, sessionUserInfo.getId());
+		@LoginUser final SessionUserInfo member) {
+		final ReviewCommand.CreateReviewRequest command = reviewDtoMapper.of(request, member.getId());
 		final ReviewInfo.CreateReviewResponse info = reviewFacade.createReview(command);
 		final ReviewDto.CreateReviewResponse response = reviewDtoMapper.of(info);
 		final URI uri = URI.create("/api/v1/reviews" + response.getReviewId());

@@ -38,7 +38,8 @@ public class CoffeeChatRepositoryImpl implements CustomCoffeeChatRepository {
 				coffeeChat.meetDate,
 				coffeeChat.createdDate,
 				coffeeChat.totalRecruitCount,
-				coffeeChat.currentRecruitCount))
+				coffeeChat.currentRecruitCount,
+				coffeeChat.viewCount))
 			.from(coffeeChat)
 			.join(member)
 			.on(coffeeChat.member.eq(member))
