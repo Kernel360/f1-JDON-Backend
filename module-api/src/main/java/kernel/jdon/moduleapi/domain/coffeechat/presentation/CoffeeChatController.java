@@ -83,12 +83,13 @@ public class CoffeeChatController {
     }
 
     @PostMapping("/api/v1/coffeechats")
-    public ResponseEntity<CommonResponse<CoffeeChatDto.CreatedCoffeeChatResponse>> saveCoffeeChat(
+    public ResponseEntity<CommonResponse<CoffeeChatDto.CreatedCoffeeChatResponse>> createCoffeeChat(
         @RequestBody CoffeeChatDto.CreateCoffeeChatRequest request,
         @LoginUser SessionUserInfo member
     ) {
         CoffeeChatCommand.CreateCoffeeChatRequest createCommand = coffeeChatDtoMapper.of(request);
-        CoffeeChatInfo.CreatedCoffeeChatResponse info = coffeeChatFacade.saveCoffeeChat(createCommand, member.getId());
+        CoffeeChatInfo.CreatedCoffeeChatResponse info = coffeeChatFacade.createCoffeeChat(createCommand,
+            member.getId());
         CoffeeChatDto.CreatedCoffeeChatResponse response = coffeeChatDtoMapper.of(info);
         URI uri = URI.create("/v1/coffeechats/" + info.getCoffeeChatId());
 

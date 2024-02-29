@@ -41,7 +41,7 @@ public class CoffeeChatFacade {
         return findCoffeeChatResponse;
     }
 
-    public CoffeeChatInfo.CreatedCoffeeChatResponse saveCoffeeChat(CoffeeChatCommand.CreateCoffeeChatRequest request,
+    public CoffeeChatInfo.CreatedCoffeeChatResponse createCoffeeChat(CoffeeChatCommand.CreateCoffeeChatRequest request,
         Long memberId) {
         return coffeeChatService.createCoffeeChat(request, memberId);
     }
