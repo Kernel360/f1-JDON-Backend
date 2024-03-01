@@ -43,22 +43,22 @@ public class CoffeeChatDto {
     @Getter
     @Builder
     public static class FindCoffeeChatResponse {
-        private Long coffeeChatId;
-        private Long hostId;
-        private boolean isParticipant;
-        private String nickname;
-        private String hostJobCategoryName;
-        private String title;
-        private String content;
-        private Long viewCount;
-        private String status;
+        private final Long coffeeChatId;
+		private final Long hostId;
+		private final boolean isParticipant;
+		private final String nickname;
+        private final String hostJobCategoryName;
+        private final String title;
+        private final String content;
+        private final Long viewCount;
+        private final String status;
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
-        private LocalDateTime meetDate;
+        private final LocalDateTime meetDate;
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
-        private LocalDateTime createdDate;
-        private String openChatUrl;
-        private Long totalRecruitCount;
-        private Long currentRecruitCount;
+        private final LocalDateTime createdDate;
+        private final String openChatUrl;
+        private final Long totalRecruitCount;
+        private final Long currentRecruitCount;
 
 		public boolean getIsParticipant() {
 			return isParticipant;
