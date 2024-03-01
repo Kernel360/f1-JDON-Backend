@@ -33,6 +33,7 @@ public class ReviewRepositoryImpl implements CustomReviewRepository {
 			.where(review.wantedJd.id.eq(jdId))
 			.offset(pageable.getOffset())
 			.limit(pageable.getPageSize())
+			.orderBy(review.createdDate.desc())
 			.fetch();
 
 		final Long totalCount = jpaQueryFactory
