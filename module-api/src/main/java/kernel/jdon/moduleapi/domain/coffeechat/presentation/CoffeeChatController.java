@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
 import kernel.jdon.moduleapi.domain.coffeechat.application.CoffeeChatFacade;
 import kernel.jdon.moduleapi.domain.coffeechat.core.CoffeeChatCommand;
 import kernel.jdon.moduleapi.domain.coffeechat.core.CoffeeChatInfo;
@@ -84,7 +85,7 @@ public class CoffeeChatController {
 
     @PostMapping("/api/v1/coffeechats")
     public ResponseEntity<CommonResponse<CoffeeChatDto.CreatedCoffeeChatResponse>> createCoffeeChat(
-        @RequestBody CoffeeChatDto.CreateCoffeeChatRequest request,
+        @RequestBody @Valid CoffeeChatDto.CreateCoffeeChatRequest request,
         @LoginUser SessionUserInfo member
     ) {
         CoffeeChatCommand.CreateCoffeeChatRequest createCommand = coffeeChatDtoMapper.of(request);
