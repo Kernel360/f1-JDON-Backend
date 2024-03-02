@@ -23,7 +23,7 @@ public class ReviewDto {
         @NotNull(message = "jd 식별자가 없습니다.")
         private final Long jdId;
         @NotBlank(message = "내용은 필수 입력 항목 입니다.")
-        @Size(min = 10, max = 50, message = "내용은 10자 이상 50자 이하로 작성해주세요.")
+        @Size(min = 10, max = 500, message = "내용은 10자 이상 500자 이하로 작성해주세요.")
         private final String content;
     }
 
