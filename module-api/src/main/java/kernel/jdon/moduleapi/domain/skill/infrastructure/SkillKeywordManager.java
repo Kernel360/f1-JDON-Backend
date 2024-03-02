@@ -17,8 +17,8 @@ public class SkillKeywordManager {
 	 */
 	public List<String> getAllKeywordAssociatedTermsByKeyword(String keyword) {
 		List<String> combinedTermList = new ArrayList<>();
-		combinedTermList.addAll(getAllKeywordAssociatedTermsByKeyword(BackendSkillType.values(), keyword));
-		combinedTermList.addAll(getAllKeywordAssociatedTermsByKeyword(FrontendSkillType.values(), keyword));
+		combinedTermList.addAll(getAllKeywordAssociatedTermsBySkillType(BackendSkillType.values(), keyword));
+		combinedTermList.addAll(getAllKeywordAssociatedTermsBySkillType(FrontendSkillType.values(), keyword));
 
 		return combinedTermList.stream()
 			.distinct()
@@ -29,7 +29,7 @@ public class SkillKeywordManager {
 	 * 입력 받은 SkillType의 상수 배열에 입력받은 keyword가 포함되어 있는
 	 * SkillType 상수의 모든 내부값 문자열을 리스트로 담아 반환하는 메서드
 	 */
-	private List<String> getAllKeywordAssociatedTermsByKeyword(SkillType[] skillTypeList, String keyword) {
+	private List<String> getAllKeywordAssociatedTermsBySkillType(SkillType[] skillTypeList, String keyword) {
 		List<String> termList = new ArrayList<>();
 		for (SkillType skillType : skillTypeList) {
 			if (skillType.containsKeyword(keyword)) {
