@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import kernel.jdon.moduleapi.domain.coffeechat.infrastructure.CoffeeChatReaderInfo;
 import kernel.jdon.moduleapi.global.page.CustomPageInfo;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,25 +16,25 @@ import lombok.NoArgsConstructor;
 public class CoffeeChatInfo {
 
     @Getter
-    @AllArgsConstructor
+    @Builder
     public static class UpdatedCoffeeChatResponse {
         private final Long coffeeChatId;
     }
 
     @Getter
-    @AllArgsConstructor
+    @Builder
     public static class CreatedCoffeeChatResponse {
         private final Long coffeeChatId;
     }
 
     @Getter
-    @AllArgsConstructor
+    @Builder
     public static class AppliedCoffeeChatResponse {
         private final Long coffeeChatId;
     }
 
     @Getter
-    @AllArgsConstructor
+    @Builder
     public static class DeletedCoffeeChatResponse {
         private final Long coffeeChatId;
     }
