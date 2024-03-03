@@ -3,9 +3,16 @@ package kernel.jdon.moduleapi.domain.coffeechat.presentation;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.hibernate.validator.constraints.Range;
+import org.hibernate.validator.constraints.URL;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import kernel.jdon.moduleapi.global.page.CustomPageInfo;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -70,11 +77,19 @@ public class CoffeeChatDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class CreateCoffeeChatRequest {
+        @NotBlank(message = "제목은 필수 입력 항목 입니다.")
+        @Size(min = 10, max = 50, message = "제목은 10자 이상 50자 이하로 작성해주세요.")
         private String title;
+        @NotBlank(message = "내용은 필수 입력 항목 입니다.")
+        @Size(min = 50, max = 500, message = "내용은 50자 이상 500자 이하로 작성해주세요.")
         private String content;
+        @NotNull(message = "모집인원은 필수 입력 항목 입니다.")
+        @Range(min = 1, max = 100, message = "모집인원은 1명 이상 100명 이하로 설정해주세요.")
         private Long totalRecruitCount;
+        @Future(message = "일시는 과거 시점으로 설정할 수 없습니다.")
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
         private LocalDateTime meetDate;
+        @URL(message = "URL형식이 올바르지 않습니다.")
         private String openChatUrl;
     }
 
@@ -83,11 +98,19 @@ public class CoffeeChatDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class UpdateCoffeeChatRequest {
+        @NotBlank(message = "제목은 필수 입력 항목 입니다.")
+        @Size(min = 10, max = 50, message = "제목은 10자 이상 50자 이하로 작성해주세요.")
         private String title;
+        @NotBlank(message = "내용은 필수 입력 항목 입니다.")
+        @Size(min = 50, max = 500, message = "내용은 50자 이상 500자 이하로 작성해주세요.")
         private String content;
+        @NotNull(message = "모집인원은 필수 입력 항목 입니다.")
+        @Range(min = 1, max = 100, message = "모집인원은 1명 이상 100명 이하로 설정해주세요.")
         private Long totalRecruitCount;
+        @Future(message = "일시는 과거 시점으로 설정할 수 없습니다.")
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
         private LocalDateTime meetDate;
+        @URL(message = "URL형식이 올바르지 않습니다.")
         private String openChatUrl;
     }
 
