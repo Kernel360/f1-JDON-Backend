@@ -20,12 +20,12 @@ import kernel.jdon.moduleapi.global.exception.AuthException;
 public class JdonAuthExceptionHandler
 	implements AuthenticationEntryPoint, AccessDeniedHandler, AuthenticationFailureHandler {
 	private final HandlerExceptionResolver resolver;
-	private final RedirectUrlUtil redirectUrlUtil;
+	private final LoginRedirectUrlProperties loginRedirectUrlProperties;
 
 	public JdonAuthExceptionHandler(@Qualifier("handlerExceptionResolver") HandlerExceptionResolver resolver,
-		RedirectUrlUtil redirectUrlUtil) {
+		LoginRedirectUrlProperties loginRedirectUrlProperties) {
 		this.resolver = resolver;
-		this.redirectUrlUtil = redirectUrlUtil;
+		this.loginRedirectUrlProperties = loginRedirectUrlProperties;
 	}
 
 	@Override
@@ -44,10 +44,10 @@ public class JdonAuthExceptionHandler
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
 		AuthenticationException exception) throws IOException {
 		if (AuthErrorCode.UNAUTHORIZED_OAUTH_RETURN_NULL_EMAIL == ((AuthException)exception).getErrorCode()) {
-			response.sendRedirect(redirectUrlUtil.getLoginFailureNotFoundEmail(request.getHeader("Referer")));
+			response.sendRedirect(loginRedirectUrlProperties.getFailureNotFoundEmail());
 		}
 		if (AuthErrorCode.UNAUTHORIZED_NOT_MATCH_PROVIDER_TYPE == ((AuthException)exception).getErrorCode()) {
-			response.sendRedirect(redirectUrlUtil.getLoginFailureNotMatchProvider(request.getHeader("Referer")));
+			response.sendRedirect(loginRedirectUrlProperties.getFailureNotMatchProvider());
 		}
 	}
 }

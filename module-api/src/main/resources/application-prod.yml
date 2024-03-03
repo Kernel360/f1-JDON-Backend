@@ -76,11 +76,11 @@ allowed-origins:
 redirect-url:
   login:
     success:
-      member: oauth/login/success
-      guest: oauth/info?
+      member: https://jdon.kr/oauth/login/success
+      guest: https://jdon.kr/oauth/info?
     failure:
-      not-found-email: oauth/login/fail/not-found-email
-      not-match-provider: oauth/login/fail/not-match-provider
+      not-found-email: https://jdon.kr/oauth/login/fail/not-found-email
+      not-match-provider: https://jdon.kr/oauth/login/fail/not-match-provider
 
 
 redis:

@@ -1,7 +1,5 @@
 package kernel.jdon.moduleapi.global.config.auth;
 
-import static kernel.jdon.modulecommon.util.StringUtil.*;
-
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import lombok.Getter;
@@ -14,21 +12,20 @@ public class LoginRedirectUrlProperties {
 	private final Success success;
 	private final Failure failure;
 
-	public String getSuccessMember(String referer) {
-		System.out.println(joinToString(referer, this.success.getMember()));
-		return joinToString(referer, this.success.getMember());
+	public String getSuccessMember() {
+		return this.success.getMember();
 	}
 
-	public String getSuccessGuest(String referer) {
-		return joinToString(referer, this.success.getGuest());
+	public String getSuccessGuest() {
+		return this.success.getGuest();
 	}
 
-	public String getFailureNotFoundEmail(String referer) {
-		return joinToString(referer, this.failure.getNotFoundEmail());
+	public String getFailureNotFoundEmail() {
+		return this.failure.getNotFoundEmail();
 	}
 
-	public String getFailureNotMatchProvider(String referer) {
-		return joinToString(referer, this.failure.getNotMatchProvider());
+	public String getFailureNotMatchProvider() {
+		return this.failure.getNotMatchProvider();
 	}
 
 	@Getter
