@@ -25,7 +25,7 @@ spring:
             client-name: kakao
             client-id: ${KAKAO_CLIENT_ID}
             client-secret: ${KAKAO_CLIENT_SECRET}
-            redirect-uri: https://api.jdon.kr/login/oauth2/code/kakao
+            redirect-uri: https://dev.jdon.kr/login/oauth2/code/kakao
             authorization-grant-type: authorization_code
             client-authentication-method: client_secret_post
             scope: account_email
@@ -33,7 +33,7 @@ spring:
             client-name: github
             client-id: ${GITHUB_CLIENT_ID}
             client-secret: ${GITHUB_CLIENT_SECRET}
-            redirect-uri: https://api.jdon.kr/login/oauth2/code/github
+            redirect-uri: https://dev.jdon.kr/login/oauth2/code/github
             scope: user:email
         provider:
           kakao:
@@ -66,7 +66,7 @@ custom-oauth2:
     delete-user-url: https://kapi.kakao.com/v1/user/unlink
 
 allowed-origins:
-  origin: https://jdon-test.netlify.app/
+  origin: https://localhost:3000/
   url:
     - "http://localhost:3000"
     - "https://localhost:3000"
@@ -74,16 +74,14 @@ allowed-origins:
     - "https://jdon.netlify.app"
     - "https://jdon-test.netlify.app/"
 
-#  https://jdon-test.netlify.app/
-#  https://localhost:3000/
 redirect-url:
   login:
     success:
-      member: oauth/login/success
-      guest: oauth/info?
+      member: https://localhost:3000/oauth/login/success
+      guest: https://localhost:3000/oauth/info?
     failure:
-      not-found-email: oauth/login/fail/not-found-email
-      not-match-provider: oauth/login/fail/not-match-provider
+      not-found-email: https://localhost:3000/oauth/login/fail/not-found-email
+      not-match-provider: https://localhost:3000/oauth/login/fail/not-match-provider
 
 redis:
   lock:

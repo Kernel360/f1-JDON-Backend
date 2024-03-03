@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import kernel.jdon.moduleapi.global.annotation.validate.Gender;
 import kernel.jdon.moduleapi.global.annotation.validate.IsPastDate;
+import kernel.jdon.moduleapi.global.annotation.validate.IsValidNickname;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -29,6 +30,7 @@ public class MemberDto {
 	@Builder
 	public static class UpdateMemberRequest {
 		@NotBlank(message = "닉네임은 필수 입력값입니다.")
+		@IsValidNickname
 		private String nickname;
 		@IsPastDate()
 		private String birth;
@@ -50,6 +52,7 @@ public class MemberDto {
 	@Setter
 	public static class NicknameDuplicateRequest {
 		@NotBlank(message = "증복 확인하려는 닉네임을 작성해주세요.")
+		@IsValidNickname
 		private String nickname;
 	}
 
@@ -61,6 +64,7 @@ public class MemberDto {
 		@NotBlank(message = "hmac 값이 필요합니다.")
 		private String hmac;
 		@NotBlank(message = "닉네임은 필수 입력값입니다.")
+		@IsValidNickname
 		private String nickname;
 		@IsPastDate
 		private String birth;
