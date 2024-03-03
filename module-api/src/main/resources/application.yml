@@ -5,6 +5,7 @@ server:
       cookie:
         same-site: none
         secure: true
+      timeout: 21600
 
 spring:
   profiles:
