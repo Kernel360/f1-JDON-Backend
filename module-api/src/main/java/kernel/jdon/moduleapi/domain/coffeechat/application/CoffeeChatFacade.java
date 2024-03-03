@@ -41,15 +41,17 @@ public class CoffeeChatFacade {
         return findCoffeeChatResponse;
     }
 
-    public Long saveCoffeeChat(CoffeeChatCommand.CreateCoffeeChatRequest request, Long memberId) {
+    public CoffeeChatInfo.CreatedCoffeeChatResponse createCoffeeChat(CoffeeChatCommand.CreateCoffeeChatRequest request,
+        Long memberId) {
         return coffeeChatService.createCoffeeChat(request, memberId);
     }
 
-    public Long modifyCoffeeChat(CoffeeChatCommand.UpdateCoffeeChatRequest request, Long coffeeChatId) {
+    public CoffeeChatInfo.UpdatedCoffeeChatResponse modifyCoffeeChat(CoffeeChatCommand.UpdateCoffeeChatRequest request,
+        Long coffeeChatId) {
         return coffeeChatService.modifyCoffeeChat(request, coffeeChatId);
     }
 
-    public Long deleteCoffeeChat(Long coffeeChatId) {
+    public CoffeeChatInfo.DeletedCoffeeChatResponse deleteCoffeeChat(Long coffeeChatId) {
         return coffeeChatService.deleteCoffeeChat(coffeeChatId);
     }
 
@@ -62,7 +64,7 @@ public class CoffeeChatFacade {
         return coffeeChatService.getHostCoffeeChatList(memberId, pageable);
     }
 
-    public Long applyCoffeeChat(Long coffeeChatId, Long memberId) {
+    public CoffeeChatInfo.AppliedCoffeeChatResponse applyCoffeeChat(Long coffeeChatId, Long memberId) {
         RLock lock = redissonClient.getLock(String.format("apply:coffeeChat:%d", coffeeChatId));
         try {
             boolean available = lock.tryLock(lockConfig.getWaitTime(), lockConfig.getLeaseTime(),

@@ -32,103 +32,112 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class CoffeeChatController {
 
-	private final CoffeeChatFacade coffeeChatFacade;
-	private final CoffeeChatDtoMapper coffeeChatDtoMapper;
+    private final CoffeeChatFacade coffeeChatFacade;
+    private final CoffeeChatDtoMapper coffeeChatDtoMapper;
 
-	@GetMapping("/api/v1/coffeechats")
-	public ResponseEntity<CommonResponse<CoffeeChatInfo.FindCoffeeChatListResponse>> getCoffeeChatList(
-		@RequestParam(value = "page", defaultValue = "0") int page,
-		@RequestParam(value = "size", defaultValue = "12") int size,
-		@RequestParam(value = "sort", defaultValue = "") CoffeeChatSortCondition sort,
-		@RequestParam(value = "keyword", defaultValue = "") String keyword,
-		@RequestParam(value = "jobCategory", defaultValue = "") Long jobCategory) {
+    @GetMapping("/api/v1/coffeechats")
+    public ResponseEntity<CommonResponse<CoffeeChatInfo.FindCoffeeChatListResponse>> getCoffeeChatList(
+        @RequestParam(value = "page", defaultValue = "0") int page,
+        @RequestParam(value = "size", defaultValue = "12") int size,
+        @RequestParam(value = "sort", defaultValue = "") CoffeeChatSortCondition sort,
+        @RequestParam(value = "keyword", defaultValue = "") String keyword,
+        @RequestParam(value = "jobCategory", defaultValue = "") Long jobCategory) {
 
-		CoffeeChatCommand.FindCoffeeChatListRequest request = coffeeChatDtoMapper.of(
-			new CoffeeChatCondition(sort, keyword, jobCategory));
-		CoffeeChatInfo.FindCoffeeChatListResponse info = coffeeChatFacade.getCoffeeChatList(
-			new PageInfoRequest(page, size), request);
-		CoffeeChatDto.FindCoffeeChatListResponse response = coffeeChatDtoMapper.of(info);
+        CoffeeChatCommand.FindCoffeeChatListRequest request = coffeeChatDtoMapper.of(
+            new CoffeeChatCondition(sort, keyword, jobCategory));
+        CoffeeChatInfo.FindCoffeeChatListResponse info = coffeeChatFacade.getCoffeeChatList(
+            new PageInfoRequest(page, size), request);
+        CoffeeChatDto.FindCoffeeChatListResponse response = coffeeChatDtoMapper.of(info);
 
-		return ResponseEntity.ok(CommonResponse.of(response));
-	}
+        return ResponseEntity.ok(CommonResponse.of(response));
+    }
 
-	@GetMapping("/api/v1/coffeechats/{id}")
-	public ResponseEntity<CommonResponse<CoffeeChatDto.FindCoffeeChatResponse>> getCoffeeChat(
-		@PathVariable(name = "id") Long coffeeChatId,
-		@LoginUser SessionUserInfo member
-	) {
-		Long memberId = getMemberId(member);
-		CoffeeChatInfo.FindCoffeeChatResponse info = coffeeChatFacade.getCoffeeChat(coffeeChatId, memberId);
-		CoffeeChatDto.FindCoffeeChatResponse response = coffeeChatDtoMapper.of(info);
+    @GetMapping("/api/v1/coffeechats/{id}")
+    public ResponseEntity<CommonResponse<CoffeeChatDto.FindCoffeeChatResponse>> getCoffeeChat(
+        @PathVariable(name = "id") Long coffeeChatId,
+        @LoginUser SessionUserInfo member
+    ) {
+        Long memberId = getMemberId(member);
+        CoffeeChatInfo.FindCoffeeChatResponse info = coffeeChatFacade.getCoffeeChat(coffeeChatId, memberId);
+        CoffeeChatDto.FindCoffeeChatResponse response = coffeeChatDtoMapper.of(info);
 
-		return ResponseEntity.ok(CommonResponse.of(response));
-	}
+        return ResponseEntity.ok(CommonResponse.of(response));
+    }
 
-	private Long getMemberId(SessionUserInfo member) {
-		return Optional.ofNullable(member)
-			.map(SessionUserInfo::getId)
-			.orElse(null);
-	}
+    private Long getMemberId(SessionUserInfo member) {
+        return Optional.ofNullable(member)
+            .map(SessionUserInfo::getId)
+            .orElse(null);
+    }
 
-	@PostMapping("/api/v1/coffeechats/{id}")
-	public ResponseEntity<CommonResponse<Long>> applyCoffeeChat(
-		@PathVariable(name = "id") Long coffeeChatId,
-		@LoginUser SessionUserInfo member
-	) {
-		Long appliedCoffeeChatId = coffeeChatFacade.applyCoffeeChat(coffeeChatId, member.getId());
+    @PostMapping("/api/v1/coffeechats/{id}")
+    public ResponseEntity<CommonResponse<CoffeeChatDto.AppliedCoffeeChatResponse>> applyCoffeeChat(
+        @PathVariable(name = "id") Long coffeeChatId,
+        @LoginUser SessionUserInfo member
+    ) {
+        CoffeeChatInfo.AppliedCoffeeChatResponse info = coffeeChatFacade.applyCoffeeChat(
+            coffeeChatId, member.getId());
+        CoffeeChatDto.AppliedCoffeeChatResponse response = coffeeChatDtoMapper.of(info);
 
-		return ResponseEntity.ok().body(CommonResponse.of(appliedCoffeeChatId));
-	}
+        return ResponseEntity.ok().body(CommonResponse.of(response));
+    }
 
-	@PostMapping("/api/v1/coffeechats")
-	public ResponseEntity<CommonResponse<Long>> saveCoffeeChat(
-		@RequestBody CoffeeChatDto.CreateCoffeeChatRequest request,
-		@LoginUser SessionUserInfo member
-	) {
-		CoffeeChatCommand.CreateCoffeeChatRequest createCommand = coffeeChatDtoMapper.of(request);
-		Long savedCoffeeChatId = coffeeChatFacade.saveCoffeeChat(createCommand, member.getId());
-		URI uri = URI.create("/v1/coffeechats/" + savedCoffeeChatId);
+    @PostMapping("/api/v1/coffeechats")
+    public ResponseEntity<CommonResponse<CoffeeChatDto.CreatedCoffeeChatResponse>> createCoffeeChat(
+        @RequestBody CoffeeChatDto.CreateCoffeeChatRequest request,
+        @LoginUser SessionUserInfo member
+    ) {
+        CoffeeChatCommand.CreateCoffeeChatRequest createCommand = coffeeChatDtoMapper.of(request);
+        CoffeeChatInfo.CreatedCoffeeChatResponse info = coffeeChatFacade.createCoffeeChat(createCommand,
+            member.getId());
+        CoffeeChatDto.CreatedCoffeeChatResponse response = coffeeChatDtoMapper.of(info);
+        URI uri = URI.create("/v1/coffeechats/" + info.getCoffeeChatId());
 
-		return ResponseEntity.created(uri).body(CommonResponse.of(savedCoffeeChatId));
-	}
+        return ResponseEntity.created(uri).body(CommonResponse.of(response));
+    }
 
-	@PutMapping("/api/v1/coffeechats/{id}")
-	public ResponseEntity<CommonResponse<Long>> modifyCoffeeChat(
-		@PathVariable(name = "id") Long coffeeChatId,
-		@RequestBody CoffeeChatDto.UpdateCoffeeChatRequest request
-	) {
-		CoffeeChatCommand.UpdateCoffeeChatRequest updateCommand = coffeeChatDtoMapper.of(request);
-		Long updatedCoffeeChatId = coffeeChatFacade.modifyCoffeeChat(updateCommand, coffeeChatId);
+    @PutMapping("/api/v1/coffeechats/{id}")
+    public ResponseEntity<CommonResponse<CoffeeChatDto.UpdatedCoffeeChatResponse>> modifyCoffeeChat(
+        @PathVariable(name = "id") Long coffeeChatId,
+        @RequestBody CoffeeChatDto.UpdateCoffeeChatRequest request
+    ) {
+        CoffeeChatCommand.UpdateCoffeeChatRequest updateCommand = coffeeChatDtoMapper.of(request);
+        CoffeeChatInfo.UpdatedCoffeeChatResponse info = coffeeChatFacade.modifyCoffeeChat(
+            updateCommand, coffeeChatId);
+        CoffeeChatDto.UpdatedCoffeeChatResponse response = coffeeChatDtoMapper.of(info);
 
-		return ResponseEntity.ok().body(CommonResponse.of(updatedCoffeeChatId));
-	}
+        return ResponseEntity.ok().body(CommonResponse.of(response));
+    }
 
-	@DeleteMapping("/api/v1/coffeechats/{id}")
-	public ResponseEntity<CommonResponse<Long>> removeCoffeeChat(@PathVariable(name = "id") Long coffeeChatId) {
-		Long deletedCoffeeChatId = coffeeChatFacade.deleteCoffeeChat(coffeeChatId);
+    @DeleteMapping("/api/v1/coffeechats/{id}")
+    public ResponseEntity<CommonResponse<CoffeeChatDto.DeletedCoffeeChatResponse>> removeCoffeeChat(
+        @PathVariable(name = "id") Long coffeeChatId) {
+        CoffeeChatInfo.DeletedCoffeeChatResponse info = coffeeChatFacade.deleteCoffeeChat(
+            coffeeChatId);
+        CoffeeChatDto.DeletedCoffeeChatResponse response = coffeeChatDtoMapper.of(info);
 
-		return ResponseEntity.ok().body(CommonResponse.of(deletedCoffeeChatId));
-	}
+        return ResponseEntity.ok().body(CommonResponse.of(response));
+    }
 
-	@GetMapping("/api/v1/coffeechats/guest")
-	public ResponseEntity<CommonResponse<CustomPageResponse<CoffeeChatInfo.FindCoffeeChat>>> getGuestCoffeeChatList(
-		@LoginUser SessionUserInfo member,
-		@PageableDefault(size = 12) Pageable pageable
-	) {
-		CustomPageResponse<CoffeeChatInfo.FindCoffeeChat> response = coffeeChatFacade.getGuestCoffeeChatList(
-			member.getId(), pageable);
+    @GetMapping("/api/v1/coffeechats/guest")
+    public ResponseEntity<CommonResponse<CustomPageResponse<CoffeeChatInfo.FindCoffeeChat>>> getGuestCoffeeChatList(
+        @LoginUser SessionUserInfo member,
+        @PageableDefault(size = 12) Pageable pageable
+    ) {
+        CustomPageResponse<CoffeeChatInfo.FindCoffeeChat> response = coffeeChatFacade.getGuestCoffeeChatList(
+            member.getId(), pageable);
 
-		return ResponseEntity.ok().body(CommonResponse.of(response));
-	}
+        return ResponseEntity.ok().body(CommonResponse.of(response));
+    }
 
-	@GetMapping("/api/v1/coffeechats/host")
-	public ResponseEntity<CommonResponse<CustomPageResponse<CoffeeChatInfo.FindCoffeeChat>>> getHostCoffeeChatList(
-		@LoginUser SessionUserInfo member,
-		@PageableDefault(size = 12) Pageable pageable
-	) {
-		CustomPageResponse<CoffeeChatInfo.FindCoffeeChat> response = coffeeChatFacade.getHostCoffeeChatList(
-			member.getId(), pageable);
+    @GetMapping("/api/v1/coffeechats/host")
+    public ResponseEntity<CommonResponse<CustomPageResponse<CoffeeChatInfo.FindCoffeeChat>>> getHostCoffeeChatList(
+        @LoginUser SessionUserInfo member,
+        @PageableDefault(size = 12) Pageable pageable
+    ) {
+        CustomPageResponse<CoffeeChatInfo.FindCoffeeChat> response = coffeeChatFacade.getHostCoffeeChatList(
+            member.getId(), pageable);
 
-		return ResponseEntity.ok().body(CommonResponse.of(response));
-	}
+        return ResponseEntity.ok().body(CommonResponse.of(response));
+    }
 }

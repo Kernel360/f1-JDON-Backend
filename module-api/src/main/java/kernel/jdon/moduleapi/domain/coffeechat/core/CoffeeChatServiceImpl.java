@@ -5,14 +5,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import kernel.jdon.moduledomain.coffeechat.domain.CoffeeChat;
-import kernel.jdon.moduledomain.coffeechatmember.domain.CoffeeChatMember;
-import kernel.jdon.moduledomain.member.domain.Member;
 import kernel.jdon.moduleapi.domain.coffeechat.error.CoffeeChatErrorCode;
 import kernel.jdon.moduleapi.domain.member.core.MemberReader;
 import kernel.jdon.moduleapi.global.exception.ApiException;
 import kernel.jdon.moduleapi.global.page.CustomPageResponse;
 import kernel.jdon.moduleapi.global.page.PageInfoRequest;
+import kernel.jdon.moduledomain.coffeechat.domain.CoffeeChat;
+import kernel.jdon.moduledomain.coffeechatmember.domain.CoffeeChatMember;
+import kernel.jdon.moduledomain.member.domain.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -29,11 +29,12 @@ public class CoffeeChatServiceImpl implements CoffeeChatService {
 
     @Override
     @Transactional
-    public Long createCoffeeChat(CoffeeChatCommand.CreateCoffeeChatRequest request, Long memberId) {
+    public CoffeeChatInfo.CreatedCoffeeChatResponse createCoffeeChat(CoffeeChatCommand.CreateCoffeeChatRequest request,
+        Long memberId) {
         Member findMember = memberReader.findById(memberId);
         CoffeeChat savedCoffeeChat = coffeeChatStore.save(request.toEntity(findMember));
 
-        return savedCoffeeChat.getId();
+        return new CoffeeChatInfo.CreatedCoffeeChatResponse(savedCoffeeChat.getId());
     }
 
     @Override
@@ -74,14 +75,15 @@ public class CoffeeChatServiceImpl implements CoffeeChatService {
 
     @Override
     @Transactional
-    public Long modifyCoffeeChat(CoffeeChatCommand.UpdateCoffeeChatRequest request, Long coffeeChatId) {
+    public CoffeeChatInfo.UpdatedCoffeeChatResponse modifyCoffeeChat(CoffeeChatCommand.UpdateCoffeeChatRequest request,
+        Long coffeeChatId) {
         CoffeeChat findCoffeeChat = coffeeChatReader.findExistCoffeeChat(coffeeChatId);
         CoffeeChat updateCoffeeChat = request.toEntity();
 
         validateUpdateRequest(findCoffeeChat, updateCoffeeChat);
         coffeeChatStore.update(findCoffeeChat, updateCoffeeChat);
 
-        return findCoffeeChat.getId();
+        return new CoffeeChatInfo.UpdatedCoffeeChatResponse(findCoffeeChat.getId());
     }
 
     private void validateUpdateRequest(CoffeeChat findCoffeeChat, CoffeeChat updateCoffeeChat) {
@@ -105,11 +107,11 @@ public class CoffeeChatServiceImpl implements CoffeeChatService {
 
     @Override
     @Transactional
-    public Long deleteCoffeeChat(Long coffeeChatId) {
+    public CoffeeChatInfo.DeletedCoffeeChatResponse deleteCoffeeChat(Long coffeeChatId) {
         CoffeeChat findCoffeeChat = coffeeChatReader.findExistCoffeeChat(coffeeChatId);
         coffeeChatStore.deleteById(findCoffeeChat.getId());
 
-        return findCoffeeChat.getId();
+        return new CoffeeChatInfo.DeletedCoffeeChatResponse(findCoffeeChat.getId());
     }
 
     @Override
@@ -136,14 +138,14 @@ public class CoffeeChatServiceImpl implements CoffeeChatService {
 
     @Override
     @Transactional
-    public Long applyCoffeeChat(Long coffeeChatId, Long memberId) {
+    public CoffeeChatInfo.AppliedCoffeeChatResponse applyCoffeeChat(Long coffeeChatId, Long memberId) {
         CoffeeChat findCoffeeChat = findExistAndOpenCoffeeChat(coffeeChatId);
         Member findMember = memberReader.findById(memberId);
 
         validateApplyRequest(findMember, findCoffeeChat);
         findCoffeeChat.addCoffeeChatMember(findMember);
 
-        return findCoffeeChat.getId();
+        return new CoffeeChatInfo.AppliedCoffeeChatResponse(findCoffeeChat.getId());
     }
 
     private void validateApplyRequest(Member findMember, CoffeeChat findCoffeeChat) {

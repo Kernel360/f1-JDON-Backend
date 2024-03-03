@@ -13,6 +13,15 @@ import kernel.jdon.moduleapi.domain.coffeechat.core.CoffeeChatInfo;
     unmappedTargetPolicy = ReportingPolicy.ERROR
 )
 public interface CoffeeChatDtoMapper {
+
+    CoffeeChatDto.UpdatedCoffeeChatResponse of(CoffeeChatInfo.UpdatedCoffeeChatResponse info);
+
+    CoffeeChatDto.CreatedCoffeeChatResponse of(CoffeeChatInfo.CreatedCoffeeChatResponse info);
+
+    CoffeeChatDto.AppliedCoffeeChatResponse of(CoffeeChatInfo.AppliedCoffeeChatResponse info);
+
+    CoffeeChatDto.DeletedCoffeeChatResponse of(CoffeeChatInfo.DeletedCoffeeChatResponse info);
+
     CoffeeChatDto.FindCoffeeChatResponse of(CoffeeChatInfo.FindCoffeeChatResponse info);
 
     CoffeeChatCommand.CreateCoffeeChatRequest of(CoffeeChatDto.CreateCoffeeChatRequest request);
