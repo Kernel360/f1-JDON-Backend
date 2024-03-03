@@ -49,7 +49,7 @@ public class FaqController {
 		@PathVariable(name = "id") final Long faqId,
 		@RequestBody @Valid final FaqDto.UpdateFaqRequest request) {
 		final FaqCommand.UpdateFaqRequest command = faqDtoMapper.of(request, faqId);
-		final FaqInfo.UpdateFaqResponse info = faqFacade.update(command);
+		final FaqInfo.UpdateFaqResponse info = faqFacade.modify(command);
 		final FaqDto.UpdateFaqResponse response = faqDtoMapper.of(info);
 
 		return ResponseEntity.ok().body(CommonResponse.of(response));

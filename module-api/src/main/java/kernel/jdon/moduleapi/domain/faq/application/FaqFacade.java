@@ -16,7 +16,7 @@ public class FaqFacade {
 		return faqService.create(command);
 	}
 
-	public FaqInfo.UpdateFaqResponse update(final FaqCommand.UpdateFaqRequest command) {
+	public FaqInfo.UpdateFaqResponse modify(final FaqCommand.UpdateFaqRequest command) {
 		return faqService.modify(command);
 	}
 
