@@ -6,8 +6,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import kernel.jdon.moduledomain.faq.domain.Faq;
-import kernel.jdon.moduleapi.domain.faq.application.FaqReader;
-import kernel.jdon.moduleapi.domain.faq.application.FaqStore;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -17,40 +15,40 @@ public class FaqServiceImpl implements FaqService {
 	private final FaqStore faqStore;
 	private final FaqReader faqReader;
 
-	private Faq findById(final Long faqId) {
-		return faqReader.findById(faqId);
-	}
-
 	@Override
 	@Transactional
-	public FaqInfo.CreateResponse create(final FaqCommand.CreateRequest command) {
+	public FaqInfo.CreateFaqResponse create(final FaqCommand.CreateFaqRequest command) {
 		final Faq savedFaq = faqStore.save(command.toEntity());
 
-		return new FaqInfo.CreateResponse(savedFaq);
+		return new FaqInfo.CreateFaqResponse(savedFaq.getId());
 	}
 
 	@Override
 	@Transactional
-	public FaqInfo.UpdateResponse update(final FaqCommand.UpdateRequest command) {
+	public FaqInfo.UpdateFaqResponse modify(final FaqCommand.UpdateFaqRequest command) {
 		final Faq findFaq = findById(command.getFaqId());
 		findFaq.update(command.getTitle(), command.getContent());
 
-		return new FaqInfo.UpdateResponse(findFaq);
+		return new FaqInfo.UpdateFaqResponse(findFaq.getId());
 	}
 
 	@Override
 	@Transactional
-	public FaqInfo.DeleteResponse delete(final Long faqId) {
+	public FaqInfo.DeleteFaqResponse remove(final Long faqId) {
 		final Faq findFaq = findById(faqId);
 		faqStore.delete(findFaq);
 
-		return new FaqInfo.DeleteResponse(findFaq);
+		return new FaqInfo.DeleteFaqResponse(findFaq.getId());
 	}
 
 	@Override
-	public FaqInfo.FindListResponse findList() {
-		final List<Faq> findFaqList = faqReader.findAll();
+	public FaqInfo.FindFaqListResponse getFaqList() {
+		final List<Faq> findFaqList = faqReader.findAllFaqList();
 
-		return new FaqInfo.FindListResponse(findFaqList);
+		return new FaqInfo.FindFaqListResponse(findFaqList);
+	}
+
+	private Faq findById(final Long faqId) {
+		return faqReader.findById(faqId);
 	}
 }

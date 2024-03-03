@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
-import kernel.jdon.modulecommon.dto.response.CommonResponse;
 import kernel.jdon.moduleapi.domain.faq.application.FaqFacade;
 import kernel.jdon.moduleapi.domain.faq.core.FaqCommand;
 import kernel.jdon.moduleapi.domain.faq.core.FaqInfo;
+import kernel.jdon.modulecommon.dto.response.CommonResponse;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -25,38 +25,39 @@ public class FaqController {
 	private final FaqDtoMapper faqDtoMapper;
 
 	@PostMapping("/api/v1/faqs")
-	public ResponseEntity<CommonResponse<FaqDto.CreateResponse>> save(
-		@RequestBody @Valid FaqDto.CreateRequest request) {
-		FaqCommand.CreateRequest command = faqDtoMapper.of(request);
-		FaqInfo.CreateResponse info = faqFacade.create(command);
-		FaqDto.CreateResponse response = faqDtoMapper.of(info);
-		URI uri = URI.create("/api/v1/faqs/" + response.getFaqId());
+	public ResponseEntity<CommonResponse<FaqDto.CreateFaqResponse>> create(
+		@RequestBody @Valid final FaqDto.CreateFaqRequest request) {
+		final FaqCommand.CreateFaqRequest command = faqDtoMapper.of(request);
+		final FaqInfo.CreateFaqResponse info = faqFacade.create(command);
+		final FaqDto.CreateFaqResponse response = faqDtoMapper.of(info);
+		final URI uri = URI.create("/api/v1/faqs/" + response.getFaqId());
 
 		return ResponseEntity.created(uri).body(CommonResponse.of(response));
 	}
 
 	@DeleteMapping("/api/v1/faqs/{faqId}")
-	public ResponseEntity<CommonResponse<FaqDto.DeleteResponse>> remove(@PathVariable(name = "faqId") Long faqId) {
-		FaqInfo.DeleteResponse info = faqFacade.delete(faqId);
-		FaqDto.DeleteResponse response = faqDtoMapper.of(info);
+	public ResponseEntity<CommonResponse<FaqDto.DeleteFaqResponse>> remove(
+		@PathVariable(name = "faqId") final Long faqId) {
+		FaqInfo.DeleteFaqResponse info = faqFacade.delete(faqId);
+		FaqDto.DeleteFaqResponse response = faqDtoMapper.of(info);
 
 		return ResponseEntity.ok(CommonResponse.of(response));
 	}
 
 	@PutMapping("/api/v1/faqs")
-	public ResponseEntity<CommonResponse<FaqDto.UpdateResponse>> modify(
-		@RequestBody @Valid FaqDto.UpdateRequest request) {
-		FaqCommand.UpdateRequest command = faqDtoMapper.of(request);
-		FaqInfo.UpdateResponse info = faqFacade.update(command);
-		FaqDto.UpdateResponse response = faqDtoMapper.of(info);
+	public ResponseEntity<CommonResponse<FaqDto.UpdateFaqResponse>> modify(
+		@RequestBody @Valid final FaqDto.UpdateFaqRequest request) {
+		final FaqCommand.UpdateFaqRequest command = faqDtoMapper.of(request);
+		final FaqInfo.UpdateFaqResponse info = faqFacade.update(command);
+		final FaqDto.UpdateFaqResponse response = faqDtoMapper.of(info);
 
 		return ResponseEntity.ok().body(CommonResponse.of(response));
 	}
 
 	@GetMapping("/api/v1/faqs")
-	public ResponseEntity<CommonResponse<FaqDto.FindListResponse>> getList() {
-		FaqInfo.FindListResponse info = faqFacade.findList();
-		FaqDto.FindListResponse response = faqDtoMapper.of(info);
+	public ResponseEntity<CommonResponse<FaqDto.FindFaqListResponse>> getFaqList() {
+		final FaqInfo.FindFaqListResponse info = faqFacade.getFaqList();
+		final FaqDto.FindFaqListResponse response = faqDtoMapper.of(info);
 
 		return ResponseEntity.ok().body(CommonResponse.of(response));
 	}

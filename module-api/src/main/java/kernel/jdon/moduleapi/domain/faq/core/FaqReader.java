@@ -7,5 +7,5 @@ import kernel.jdon.moduledomain.faq.domain.Faq;
 public interface FaqReader {
 	Faq findById(Long faqId);
 
-	List<Faq> findAll();
+	List<Faq> findAllFaqList();
 }

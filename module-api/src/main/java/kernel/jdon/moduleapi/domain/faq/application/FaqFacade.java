@@ -12,20 +12,20 @@ import lombok.RequiredArgsConstructor;
 public class FaqFacade {
 	private final FaqService faqService;
 
-	public FaqInfo.CreateResponse create(final FaqCommand.CreateRequest command) {
+	public FaqInfo.CreateFaqResponse create(final FaqCommand.CreateFaqRequest command) {
 		return faqService.create(command);
 	}
 
-	public FaqInfo.UpdateResponse update(final FaqCommand.UpdateRequest command) {
-		return faqService.update(command);
+	public FaqInfo.UpdateFaqResponse update(final FaqCommand.UpdateFaqRequest command) {
+		return faqService.modify(command);
 	}
 
-	public FaqInfo.DeleteResponse delete(final Long faqId) {
-		return faqService.delete(faqId);
+	public FaqInfo.DeleteFaqResponse delete(final Long faqId) {
+		return faqService.remove(faqId);
 	}
 
-	public FaqInfo.FindListResponse findList() {
-		return faqService.findList();
+	public FaqInfo.FindFaqListResponse getFaqList() {
+		return faqService.getFaqList();
 	}
 
 }

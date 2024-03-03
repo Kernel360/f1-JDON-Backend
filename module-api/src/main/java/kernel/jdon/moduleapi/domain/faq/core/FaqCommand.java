@@ -8,11 +8,12 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class FaqCommand {
+
 	@Getter
 	@Builder
-	public static class CreateRequest {
-		private String title;
-		private String content;
+	public static class CreateFaqRequest {
+		private final String title;
+		private final String content;
 
 		public Faq toEntity() {
 			return Faq.builder()
@@ -24,9 +25,9 @@ public class FaqCommand {
 
 	@Getter
 	@Builder
-	public static class UpdateRequest {
-		private Long faqId;
-		private String title;
-		private String content;
+	public static class UpdateFaqRequest {
+		private final Long faqId;
+		private final String title;
+		private final String content;
 	}
 }

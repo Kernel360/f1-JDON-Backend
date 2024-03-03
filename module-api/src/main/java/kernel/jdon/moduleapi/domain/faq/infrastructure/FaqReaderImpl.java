@@ -4,9 +4,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import kernel.jdon.moduledomain.faq.domain.Faq;
-import kernel.jdon.moduleapi.domain.faq.application.FaqReader;
+import kernel.jdon.moduleapi.domain.faq.core.FaqReader;
 import kernel.jdon.moduleapi.domain.faq.error.FaqErrorCode;
+import kernel.jdon.moduledomain.faq.domain.Faq;
 import lombok.RequiredArgsConstructor;
 
 @Component
@@ -15,13 +15,13 @@ public class FaqReaderImpl implements FaqReader {
 	private final FaqRepository faqRepository;
 
 	@Override
-	public Faq findById(Long faqId) {
+	public Faq findById(final Long faqId) {
 		return faqRepository.findById(faqId)
 			.orElseThrow(FaqErrorCode.NOT_FOUND_FAQ::throwException);
 	}
 
 	@Override
-	public List<Faq> findAll() {
+	public List<Faq> findAllFaqList() {
 		return faqRepository.findAll();
 	}
 }
