@@ -17,7 +17,7 @@ public interface FaqDtoMapper {
 
 	FaqDto.CreateFaqResponse of(FaqInfo.CreateFaqResponse info);
 
-	FaqCommand.UpdateFaqRequest of(FaqDto.UpdateFaqRequest request);
+	FaqCommand.UpdateFaqRequest of(FaqDto.UpdateFaqRequest request, Long faqId);
 
 	FaqDto.UpdateFaqResponse of(FaqInfo.UpdateFaqResponse info);
 

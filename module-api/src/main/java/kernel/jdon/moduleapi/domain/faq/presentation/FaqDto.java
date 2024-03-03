@@ -3,7 +3,6 @@ package kernel.jdon.moduleapi.domain.faq.presentation;
 import java.util.List;
 
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,8 +26,6 @@ public class FaqDto {
 
 	@Getter
 	public static class UpdateFaqRequest {
-		@NotNull(message = "식별자는 필수 입력 항목 입니다.")
-		private Long faqId;
 		private String title;
 		private String content;
 	}

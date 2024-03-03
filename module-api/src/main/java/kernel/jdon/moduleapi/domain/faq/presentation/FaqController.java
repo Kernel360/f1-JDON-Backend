@@ -44,10 +44,11 @@ public class FaqController {
 		return ResponseEntity.ok(CommonResponse.of(response));
 	}
 
-	@PutMapping("/api/v1/faqs")
+	@PutMapping("/api/v1/faqs/{id}")
 	public ResponseEntity<CommonResponse<FaqDto.UpdateFaqResponse>> modify(
+		@PathVariable(name = "id") final Long faqId,
 		@RequestBody @Valid final FaqDto.UpdateFaqRequest request) {
-		final FaqCommand.UpdateFaqRequest command = faqDtoMapper.of(request);
+		final FaqCommand.UpdateFaqRequest command = faqDtoMapper.of(request, faqId);
 		final FaqInfo.UpdateFaqResponse info = faqFacade.update(command);
 		final FaqDto.UpdateFaqResponse response = faqDtoMapper.of(info);
 
