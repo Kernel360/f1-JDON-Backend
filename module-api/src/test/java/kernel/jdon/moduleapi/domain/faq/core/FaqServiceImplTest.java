@@ -27,7 +27,7 @@ class FaqServiceImplTest {
 	private FaqServiceImpl faqServiceImpl;
 
 	@Test
-	@DisplayName("getFaqList 메서드가 존재하는 faq 개수 만큼 데이터를 응답한다.")
+	@DisplayName("1: getFaqList 메서드가 존재하는 faq 개수 만큼 데이터를 응답한다.")
 	void givenValidFaqList_whenFindList_thenReturn_whenCorrectFaqList() {
 		// given
 		final List<Faq> faqList = Collections.singletonList(new Faq(1L, "title", "content"));
@@ -42,7 +42,7 @@ class FaqServiceImplTest {
 	}
 
 	@Test
-	@DisplayName("유효한 FAQ 정보가 주어졌을 때 create 메서드가 등록한 FAQ의 ID를 반환한다.")
+	@DisplayName("2: 유효한 FAQ 정보가 주어졌을 때 create 메서드가 등록한 FAQ의 ID를 반환한다.")
 	void givenValidCreateRequest_whenCreate_thenReturnCreatedFaqId() throws Exception {
 		// given
 		final var request = new FaqCommand.CreateFaqRequest("FAQ 제목", "FAQ 내용");
@@ -61,7 +61,7 @@ class FaqServiceImplTest {
 	}
 
 	@Test
-	@DisplayName("유효한 FAQ ID가 주어졌을 때 remove 메서드에서 삭제한 FAQ의 ID를 반환한다.")
+	@DisplayName("3: 유효한 FAQ ID가 주어졌을 때 remove 메서드에서 삭제한 FAQ의 ID를 반환한다.")
 	void givenValidFaqId_whenRemove_thenReturnRemovedFaqId() throws Exception {
 		//given
 		final Long faqId = 1L;
@@ -79,7 +79,7 @@ class FaqServiceImplTest {
 	}
 
 	@Test
-	@DisplayName("유효한 FAQ ID가 주어졌을 때 modify 메서드에서 수정한 FAQ의 ID를 반환한다.")
+	@DisplayName("4: 유효한 FAQ ID가 주어졌을 때 modify 메서드에서 수정한 FAQ의 ID를 반환한다.")
 	void givenValidFaqId_whenModify_thenModifiedFaqId() throws Exception {
 		//given
 		final Long faqId = 1L;
