@@ -15,7 +15,7 @@ import kernel.jdon.moduleapi.global.validate.NicknameValidator;
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface IsValidNickname {
-	String message() default "admin, 관리자 와 같은 키워드는 닉네임으로 사용할 수 없습니다.";
+	String message() default "사용할 수 없는 닉네임입니다.";
 
 	Class<?>[] groups() default {};
 
