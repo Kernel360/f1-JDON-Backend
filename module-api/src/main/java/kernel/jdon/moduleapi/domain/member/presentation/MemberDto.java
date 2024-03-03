@@ -52,6 +52,7 @@ public class MemberDto {
 	@Setter
 	public static class NicknameDuplicateRequest {
 		@NotBlank(message = "증복 확인하려는 닉네임을 작성해주세요.")
+		@IsValidNickname
 		private String nickname;
 	}
 
