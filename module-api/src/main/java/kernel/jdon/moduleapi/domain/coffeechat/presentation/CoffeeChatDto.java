@@ -83,7 +83,7 @@ public class CoffeeChatDto {
         @NotBlank(message = "내용은 필수 입력 항목 입니다.")
         @Size(min = 50, max = 500, message = "내용은 50자 이상 500자 이하로 작성해주세요.")
         private String content;
-        @NotNull
+        @NotNull(message = "모집인원은 필수 입력 항목 입니다.")
         @Range(min = 1, max = 100, message = "모집인원은 1명 이상 100명 이하로 설정해주세요.")
         private Long totalRecruitCount;
         @Future(message = "일시는 과거 시점으로 설정할 수 없습니다.")
@@ -104,7 +104,7 @@ public class CoffeeChatDto {
         @NotBlank(message = "내용은 필수 입력 항목 입니다.")
         @Size(min = 50, max = 500, message = "내용은 50자 이상 500자 이하로 작성해주세요.")
         private String content;
-        @NotNull
+        @NotNull(message = "모집인원은 필수 입력 항목 입니다.")
         @Range(min = 1, max = 100, message = "모집인원은 1명 이상 100명 이하로 설정해주세요.")
         private Long totalRecruitCount;
         @Future(message = "일시는 과거 시점으로 설정할 수 없습니다.")
