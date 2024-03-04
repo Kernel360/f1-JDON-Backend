@@ -20,7 +20,7 @@ public class FaqFacade {
 		return faqService.modify(command);
 	}
 
-	public FaqInfo.DeleteFaqResponse delete(final Long faqId) {
+	public FaqInfo.DeleteFaqResponse remove(final Long faqId) {
 		return faqService.remove(faqId);
 	}
 

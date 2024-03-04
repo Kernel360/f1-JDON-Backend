@@ -38,7 +38,7 @@ public class FaqController {
 	@DeleteMapping("/api/v1/faqs/{faqId}")
 	public ResponseEntity<CommonResponse<FaqDto.DeleteFaqResponse>> remove(
 		@PathVariable(name = "faqId") final Long faqId) {
-		FaqInfo.DeleteFaqResponse info = faqFacade.delete(faqId);
+		FaqInfo.DeleteFaqResponse info = faqFacade.remove(faqId);
 		FaqDto.DeleteFaqResponse response = faqDtoMapper.of(info);
 
 		return ResponseEntity.ok(CommonResponse.of(response));

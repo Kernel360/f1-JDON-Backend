@@ -66,7 +66,7 @@ class FaqFacadeTest {
 
 		// when
 		when(faqService.remove(removeFaqId)).thenReturn(deleteFaqResponse);
-		final var response = faqFacade.delete(removeFaqId);
+		final var response = faqFacade.remove(removeFaqId);
 
 		// then
 		assertThat(response.getFaqId()).isEqualTo(removeFaqId);
