@@ -91,6 +91,10 @@ public class MemberDto {
 		public static MemberDto.AuthenticateResponse of(final boolean isLoginUser, final Long memberId) {
 			return new MemberDto.AuthenticateResponse(isLoginUser, memberId);
 		}
+
+		public boolean getIsLoginUser() {
+			return isLoginUser;
+		}
 	}
 
 	@Getter
