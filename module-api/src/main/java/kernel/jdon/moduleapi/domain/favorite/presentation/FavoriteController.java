@@ -4,9 +4,9 @@ import java.net.URI;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
@@ -28,10 +28,9 @@ public class FavoriteController {
 	@GetMapping("/api/v1/favorites")
 	public ResponseEntity<CommonResponse<FavoriteDto.FindFavoriteListResponse>> getList(
 		@LoginUser final SessionUserInfo member,
-		@RequestParam(value = "page", defaultValue = "0") final int page,
-		@RequestParam(value = "size", defaultValue = "12") final int size) {
+		@ModelAttribute final PageInfoRequest pageInfoRequest) {
 		final FavoriteInfo.FindFavoriteListResponse info = favoriteFacade.getFavoriteList(member.getId(),
-			new PageInfoRequest(page, size));
+			pageInfoRequest);
 		final FavoriteDto.FindFavoriteListResponse response = favoriteDtoMapper.of(info);
 
 		return ResponseEntity.ok(CommonResponse.of(response));
