@@ -45,8 +45,6 @@ public class FavoriteFactoryImpl implements FavoriteFactory {
 		final InflearnCourse findInflearnCourse = inflearnReader.findById(lectureId);
 		final Favorite findFavorite = favoriteReader.findFavoriteByMemberIdAndInflearnCourseId(findMember.getId(),
 				findInflearnCourse.getId())
-			.map(favoriteResponse -> favoriteReader.findById(favoriteResponse.getId())
-				.orElseThrow(FavoriteErrorCode.NOT_FOUND_FAVORITE::throwException))
 			.orElseThrow(FavoriteErrorCode.NOT_FOUND_FAVORITE::throwException);
 		favoriteStore.delete(findFavorite);
 

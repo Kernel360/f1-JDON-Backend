@@ -43,11 +43,6 @@ public class FavoriteReaderImpl implements FavoriteReader {
 	}
 
 	@Override
-	public Optional<Favorite> findById(final Long favoriteId) {
-		return favoriteRepository.findById(favoriteId);
-	}
-
-	@Override
 	public Favorite save(final Favorite favorite) {
 		return favoriteRepository.save(favorite);
 	}
