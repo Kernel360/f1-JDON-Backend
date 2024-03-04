@@ -4,6 +4,7 @@ import java.util.List;
 
 import kernel.jdon.moduledomain.faq.domain.Faq;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,51 +12,42 @@ import lombok.NoArgsConstructor;
 public class FaqInfo {
 
 	@Getter
-	public static class CreateResponse {
-		private Long faqId;
-
-		public CreateResponse(Faq faq) {
-			this.faqId = faq.getId();
-		}
+	@Builder
+	public static class CreateFaqResponse {
+		private final Long faqId;
 	}
 
 	@Getter
-	public static class UpdateResponse {
-		private Long faqId;
-
-		public UpdateResponse(Faq faq) {
-			this.faqId = faq.getId();
-		}
-	}
-	@Getter
-	public static class DeleteResponse {
-		private Long faqId;
-
-		public DeleteResponse(Faq faq) {
-			this.faqId = faq.getId();
-		}
+	@Builder
+	public static class UpdateFaqResponse {
+		private final Long faqId;
 	}
 
 	@Getter
-	public static class FindListResponse {
-		private List<FindResponse> faqList;
+	@Builder
+	public static class DeleteFaqResponse {
+		private final Long faqId;
+	}
 
-		public FindListResponse(List<Faq> faqList) {
+	@Getter
+	public static class FindFaqListResponse {
+		private final List<FindFaq> faqList;
+
+		public FindFaqListResponse(List<Faq> faqList) {
 			this.faqList = faqList.stream()
-				.map(FindResponse::new)
+				.map(FindFaq::new)
 				.toList();
-
 		}
 	}
 
 	@Getter
-	public static class FindResponse {
-		private Long faqId;
-		private String title;
-		private String content;
+	public static class FindFaq {
+		private final Long faqId;
+		private final String title;
+		private final String content;
 
-		public FindResponse(Faq faq) {
-			this.faqId = getFaqId();
+		public FindFaq(Faq faq) {
+			this.faqId = faq.getId();
 			this.title = faq.getTitle();
 			this.content = faq.getContent();
 		}

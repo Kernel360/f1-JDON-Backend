@@ -13,10 +13,15 @@ import kernel.jdon.moduleapi.domain.faq.core.FaqInfo;
 	unmappedTargetPolicy = ReportingPolicy.ERROR
 )
 public interface FaqDtoMapper {
-	FaqCommand.CreateRequest of(FaqDto.CreateRequest request);
-	FaqDto.CreateResponse of(FaqInfo.CreateResponse info);
-	FaqCommand.UpdateRequest of (FaqDto.UpdateRequest request);
-	FaqDto.UpdateResponse of (FaqInfo.UpdateResponse info);
-	FaqDto.DeleteResponse of (FaqInfo.DeleteResponse info);
-	FaqDto.FindListResponse of(FaqInfo.FindListResponse info);
+	FaqCommand.CreateFaqRequest of(FaqDto.CreateFaqRequest request);
+
+	FaqDto.CreateFaqResponse of(FaqInfo.CreateFaqResponse info);
+
+	FaqCommand.UpdateFaqRequest of(FaqDto.UpdateFaqRequest request, Long faqId);
+
+	FaqDto.UpdateFaqResponse of(FaqInfo.UpdateFaqResponse info);
+
+	FaqDto.DeleteFaqResponse of(FaqInfo.DeleteFaqResponse info);
+
+	FaqDto.FindFaqListResponse of(FaqInfo.FindFaqListResponse info);
 }
