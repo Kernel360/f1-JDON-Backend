@@ -2,6 +2,7 @@ package kernel.jdon.moduleapi.domain.jd.presentation;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,10 +30,9 @@ public class JdController {
 
 	@GetMapping("/api/v1/jds")
 	public ResponseEntity<CommonResponse<JdDto.FindWantedJdListResponse>> getJdList(
-		@RequestParam(value = "page", defaultValue = "0") final int page,
-		@RequestParam(value = "size", defaultValue = "12") final int size,
+		@ModelAttribute final PageInfoRequest pageInfoRequest,
 		@RequestParam(value = "keyword", defaultValue = "") final String keyword) {
-		final JdInfo.FindWantedJdListResponse info = jdFacade.getJdList(new PageInfoRequest(page, size), keyword);
+		final JdInfo.FindWantedJdListResponse info = jdFacade.getJdList(pageInfoRequest, keyword);
 		final JdDto.FindWantedJdListResponse response = jdDtoMapper.of(info);
 
 		return ResponseEntity.ok().body(CommonResponse.of(response));
