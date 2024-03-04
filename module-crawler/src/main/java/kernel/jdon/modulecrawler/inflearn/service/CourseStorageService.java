@@ -60,7 +60,7 @@ public class CourseStorageService {
 	}
 
 	private InflearnCourse createOrUpdateCourse(InflearnCourse course) {
-		return inflearnCourseRepository.findByTitle(course.getTitle())
+		return inflearnCourseRepository.findByCourseId(course.getCourseId())
 			.orElseGet(() -> inflearnCourseRepository.save(course));
 	}
 
