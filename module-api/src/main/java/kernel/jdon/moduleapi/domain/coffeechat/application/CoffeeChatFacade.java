@@ -83,4 +83,8 @@ public class CoffeeChatFacade {
             lock.unlock();
         }
     }
+
+    public CoffeeChatInfo.CanceledCoffeeChatResponse cancelCoffeeChatApplication(Long coffeeChatId, Long memberId) {
+        return coffeeChatService.cancelCoffeeChat(coffeeChatId, memberId);
+    }
 }

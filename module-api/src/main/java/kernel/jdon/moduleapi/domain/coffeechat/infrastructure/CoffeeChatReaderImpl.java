@@ -7,14 +7,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
-import kernel.jdon.moduledomain.coffeechat.domain.CoffeeChat;
-import kernel.jdon.moduledomain.coffeechatmember.domain.CoffeeChatMember;
 import kernel.jdon.moduleapi.domain.coffeechat.core.CoffeeChatCommand;
 import kernel.jdon.moduleapi.domain.coffeechat.core.CoffeeChatInfo;
 import kernel.jdon.moduleapi.domain.coffeechat.core.CoffeeChatReader;
 import kernel.jdon.moduleapi.domain.coffeechat.error.CoffeeChatErrorCode;
 import kernel.jdon.moduleapi.global.page.CustomJpaPageInfo;
 import kernel.jdon.moduleapi.global.page.PageInfoRequest;
+import kernel.jdon.moduledomain.coffeechat.domain.CoffeeChat;
+import kernel.jdon.moduledomain.coffeechatmember.domain.CoffeeChatMember;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -60,5 +60,11 @@ public class CoffeeChatReaderImpl implements CoffeeChatReader {
     @Override
     public boolean existsByCoffeeChatIdAndMemberId(Long coffeeChatId, Long memberId) {
         return coffeeChatMemberRepository.existsByCoffeeChatIdAndMemberId(coffeeChatId, memberId);
+    }
+
+    @Override
+    public CoffeeChatMember findCoffeeChatMember(Long coffeeChatId, Long memberId) {
+        return coffeeChatMemberRepository.findByCoffeeChatIdAndMemberId(coffeeChatId, memberId)
+            .orElseThrow(CoffeeChatErrorCode.NOT_FOUND_APPLICATION::throwException);
     }
 }

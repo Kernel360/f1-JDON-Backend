@@ -173,6 +173,16 @@ public class CoffeeChatServiceImpl implements CoffeeChatService {
 
         return findCoffeeChat;
     }
+
+    @Override
+    @Transactional
+    public CoffeeChatInfo.CanceledCoffeeChatResponse cancelCoffeeChat(Long coffeeChatId, Long memberId) {
+        CoffeeChatMember findCoffeeChatMember = coffeeChatReader.findCoffeeChatMember(coffeeChatId, memberId);
+        coffeeChatStore.delete(findCoffeeChatMember);
+
+        return new CoffeeChatInfo.CanceledCoffeeChatResponse(findCoffeeChatMember.getCoffeeChat().getId());
+    }
+
 }
 
 

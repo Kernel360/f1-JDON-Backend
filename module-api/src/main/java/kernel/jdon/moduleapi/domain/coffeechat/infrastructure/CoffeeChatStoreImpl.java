@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 
 import kernel.jdon.moduleapi.domain.coffeechat.core.CoffeeChatStore;
 import kernel.jdon.moduledomain.coffeechat.domain.CoffeeChat;
+import kernel.jdon.moduledomain.coffeechatmember.domain.CoffeeChatMember;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -13,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 public class CoffeeChatStoreImpl implements CoffeeChatStore {
 
     private final CoffeeChatRepository coffeeChatRepository;
+    private final CoffeeChatMemberRepository coffeeChatMemberRepository;
 
     @Override
     public CoffeeChat save(CoffeeChat coffeeChat) {
@@ -27,5 +29,10 @@ public class CoffeeChatStoreImpl implements CoffeeChatStore {
     @Override
     public void deleteById(Long coffeeChatId) {
         coffeeChatRepository.deleteById(coffeeChatId);
+    }
+
+    @Override
+    public void delete(CoffeeChatMember coffeeChatMember) {
+        coffeeChatMemberRepository.delete(coffeeChatMember);
     }
 }

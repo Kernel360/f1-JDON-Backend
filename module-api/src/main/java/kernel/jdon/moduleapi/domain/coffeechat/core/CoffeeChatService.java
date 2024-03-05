@@ -27,4 +27,6 @@ public interface CoffeeChatService {
     CustomPageResponse getHostCoffeeChatList(Long memberId, Pageable pageable);
 
     CoffeeChatInfo.AppliedCoffeeChatResponse applyCoffeeChat(Long coffeeChatId, Long memberId);
+
+    CoffeeChatInfo.CanceledCoffeeChatResponse cancelCoffeeChat(Long coffeeChatId, Long memberId);
 }
