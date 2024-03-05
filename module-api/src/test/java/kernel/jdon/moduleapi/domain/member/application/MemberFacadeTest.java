@@ -33,7 +33,7 @@ class MemberFacadeTest {
 
 	@Test
 	@DisplayName("1: 사용자 정보 요청 시, get 메서드가 memberId에 해당되는 멤버의 정보를 응답으로 반환한다.")
-	void whenGetMemberInfo_thenReturnMemberInfo() {
+	void whenGetMemberId_thenReturnMemberInfo() {
 		//given
 		final var memberId = 1L;
 		final var mockFindMemberResponse = mock(MemberInfo.FindMemberResponse.class);
@@ -51,7 +51,7 @@ class MemberFacadeTest {
 
 	@Test
 	@DisplayName("2: 사용자 아이디와 정보 수정 정보가 주어졌을 때, modify 메서드가 수정을 마친 memberId를 응답으로 반환한다.")
-	void givenMemberIdAndMemberModifyInfo_whenModifyMember_thenReturnModifiedMemberId() {
+	void givenMemberIdAndMemberModifyCommand_whenModifyMember_thenReturnModifiedMemberId() {
 		//given
 		final var modifyMemberId = 1L;
 		final var mockModifyMemberCommand = mock(MemberCommand.UpdateMemberRequest.class);
@@ -84,7 +84,7 @@ class MemberFacadeTest {
 
 	@Test
 	@DisplayName("4: 사용자 등록 정보가 주어졌을 때, register 메서드가 등록을 마친 memberId를 응답으로 반환한다.")
-	void givenRegisterInfo_whenRegister_thenReturnMemberId() {
+	void givenRegisterCommand_whenRegister_thenReturnMemberId() {
 		//given
 		final var mockCommand = mock(MemberCommand.RegisterRequest.class);
 		final var mockResponse = MemberInfo.RegisterResponse.of(1L);
@@ -103,7 +103,7 @@ class MemberFacadeTest {
 
 	@Test
 	@DisplayName("5: 사용자 탈퇴 정보가 주어졌을 때, withdraw 메서드가 탈퇴 성공하면 탈퇴한 memberId를 응답으로 반환한다.")
-	void givenWithdrawInfo_whenWithdraw_thenReturnWithdrawMemberId() {
+	void givenWithdrawCommand_whenWithdraw_thenReturnWithdrawMemberId() {
 		//given
 		final var mockWithdrawCommand = mockWithdrawCommand();
 		final var mockWithdrawResponse = MemberInfo.WithdrawResponse.of(mockWithdrawCommand.getId());
@@ -124,7 +124,7 @@ class MemberFacadeTest {
 
 	@Test
 	@DisplayName("6: 사용자 탈퇴 정보가 주어졌을 때, withdraw 메서드가 탈퇴 실패하면 500 에러를 던진다.")
-	void givenWithdrawInfo_whenWithdraw_thenThrowException() {
+	void givenWithdrawCommand_whenWithdraw_thenThrowServerErrorException() {
 		//given
 		final var mockWithdrawCommand = mockWithdrawCommand();
 

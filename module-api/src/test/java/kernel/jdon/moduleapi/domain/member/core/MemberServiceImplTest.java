@@ -71,7 +71,7 @@ class MemberServiceImplTest {
 
 	@Test
 	@DisplayName("2: 사용자 정보 수정 요청 시, modify 메서드가 동작 결과로 memberId를 응답으로 반환한다.")
-	void givenMemberUpdateInfo_whenModifyMember_thenReturnMemberId() {
+	void givenMemberUpdateCommand_whenModifyMember_thenReturnMemberId() {
 		//given
 		final var mockFindMember = mockMember();
 		final var memberId = mockFindMember.getId();
@@ -125,7 +125,7 @@ class MemberServiceImplTest {
 
 	@Test
 	@DisplayName("5: 사용자 등록 요청 시, register 메서드가 동작 결과로 등록한 memberId를 응답으로 반환한다.")
-	void givenRegisterInfo_whenRegisterMember_thenReturnMemberId() {
+	void givenRegisterCommand_whenRegisterMember_thenReturnMemberId() {
 		//given
 		final var mockRegisterCommand = mockRegisterCommand();
 		final var mockUserInfo = Map.of("nickname", "nickname", "email", "email");
