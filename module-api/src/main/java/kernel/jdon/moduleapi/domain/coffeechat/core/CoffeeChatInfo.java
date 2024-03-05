@@ -104,4 +104,10 @@ public class CoffeeChatInfo {
                 .build();
         }
     }
+
+    @Getter
+    @Builder
+    public static class CanceledCoffeeChatResponse {
+        private final Long coffeeChatId;
+    }
 }

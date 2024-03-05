@@ -25,6 +25,12 @@ public class CoffeeChatDto {
 
     @Getter
     @Builder
+    public static class CanceledCoffeeChatResponse {
+        private final Long coffeeChatId;
+    }
+
+    @Getter
+    @Builder
     public static class UpdatedCoffeeChatResponse {
         private final Long coffeeChatId;
     }

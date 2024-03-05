@@ -14,6 +14,8 @@ import kernel.jdon.moduleapi.domain.coffeechat.core.CoffeeChatInfo;
 )
 public interface CoffeeChatDtoMapper {
 
+    CoffeeChatDto.CanceledCoffeeChatResponse of(CoffeeChatInfo.CanceledCoffeeChatResponse info);
+
     CoffeeChatDto.UpdatedCoffeeChatResponse of(CoffeeChatInfo.UpdatedCoffeeChatResponse info);
 
     CoffeeChatDto.CreatedCoffeeChatResponse of(CoffeeChatInfo.CreatedCoffeeChatResponse info);
