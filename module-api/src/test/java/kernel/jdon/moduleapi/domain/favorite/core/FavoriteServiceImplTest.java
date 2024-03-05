@@ -181,7 +181,7 @@ class FavoriteServiceImplTest {
 	void givenValidMemberAndPageInfo_whenGetFavoriteList_thenReturnFavoriteList() {
 		// given
 		Long memberId = 1L;
-		PageInfoRequest pageInfoRequest = new PageInfoRequest(0, 12);
+		PageInfoRequest pageInfoRequest = new PageInfoRequest("0", "12");
 		List<FavoriteInfo.FindFavorite> expectedFavorites = mockFavoriteList();
 		CustomPageInfo customPageInfo = new CustomJpaPageInfo(
 			new PageImpl<>(expectedFavorites, PageRequest.of(0, 12), expectedFavorites.size()));
