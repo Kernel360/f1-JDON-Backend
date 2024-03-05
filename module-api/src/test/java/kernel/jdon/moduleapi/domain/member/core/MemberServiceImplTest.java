@@ -90,26 +90,26 @@ class MemberServiceImplTest {
 	@DisplayName("3: 닉네임 중복 확인 요청 시, checkNicknameDuplicate 메서드가 중복 닉네임이 아니면 아무것도 반환하지 않는다.")
 	void givenNickname_whenNicknameIsNotDuplicate() {
 		//given
-		final var mockCommand = mockNicknameDuplicateCommand();
+		final var mockNicknameDuplicateCommand = mockNicknameDuplicateCommand();
 
 		//when
-		when(memberReader.existsByNickname(mockCommand.getNickname())).thenReturn(false);
-		memberService.checkNicknameDuplicate(mockCommand);
+		when(memberReader.existsByNickname(mockNicknameDuplicateCommand.getNickname())).thenReturn(false);
+		memberService.checkNicknameDuplicate(mockNicknameDuplicateCommand);
 
 		//verify
-		verify(memberReader, times(1)).existsByNickname(mockCommand.getNickname());
+		verify(memberReader, times(1)).existsByNickname(mockNicknameDuplicateCommand.getNickname());
 	}
 
 	@Test
 	@DisplayName("4: 닉네임 중복 확인 요청 시, checkNicknameDuplicate 메서드가 중복 닉네임이면 409 에러를 던진다.")
 	void givenNickname_whenNicknameIsDuplicate_thenThrowConflictError() {
 		//given
-		final var mockCommand = mock(MemberCommand.NicknameDuplicateRequest.class);
+		final var mockNicknameDuplicateCommand = mock(MemberCommand.NicknameDuplicateRequest.class);
 
 		//when
-		when(memberReader.existsByNickname(mockCommand.getNickname())).thenReturn(true);
+		when(memberReader.existsByNickname(mockNicknameDuplicateCommand.getNickname())).thenReturn(true);
 		ApiException thrownException = assertThrows(ApiException.class,
-			() -> memberService.checkNicknameDuplicate(mockCommand));
+			() -> memberService.checkNicknameDuplicate(mockNicknameDuplicateCommand));
 
 		// then
 		assertThat(thrownException.getErrorCode().getHttpStatus().value()).isEqualTo(HttpStatus.CONFLICT.value());
@@ -117,29 +117,29 @@ class MemberServiceImplTest {
 			MemberErrorCode.CONFLICT_DUPLICATE_NICKNAME.getMessage());
 
 		//verify
-		verify(memberReader, times(1)).existsByNickname(mockCommand.getNickname());
+		verify(memberReader, times(1)).existsByNickname(mockNicknameDuplicateCommand.getNickname());
 	}
 
 	@Test
 	@DisplayName("5: 사용자 등록 요청 시, register 메서드가 동작 결과로 등록한 memberId를 응답으로 반환한다.")
 	void givenRegisterInfo_whenRegisterMember_thenReturnMemberId() {
 		//given
-		final var mockCommand = mockRegisterCommand();
+		final var mockRegisterCommand = mockRegisterCommand();
 		final var mockUserInfo = Map.of("nickname", "nickname", "email", "email");
 		final var mockSavedMember = mockMember();
 
 		//when
-		when(cryptoManager.getUserInfoFromAuthProvider(mockCommand.getHmac(), mockCommand.getEncrypted()))
-			.thenReturn(mockUserInfo);
-		when(memberFactory.save(mockCommand, mockUserInfo)).thenReturn(mockSavedMember);
-		final var response = memberService.register(mockCommand);
+		when(cryptoManager.getUserInfoFromAuthProvider(mockRegisterCommand.getHmac(),
+			mockRegisterCommand.getEncrypted())).thenReturn(mockUserInfo);
+		when(memberFactory.save(mockRegisterCommand, mockUserInfo)).thenReturn(mockSavedMember);
+		final var response = memberService.register(mockRegisterCommand);
 
 		//then
 		assertThat(response.getMemberId()).isEqualTo(mockSavedMember.getId());
 
 		//verify
 		verify(cryptoManager, times(1)).getUserInfoFromAuthProvider("hmac", "encrypted");
-		verify(memberFactory, times(1)).save(mockCommand, mockUserInfo);
+		verify(memberFactory, times(1)).save(mockRegisterCommand, mockUserInfo);
 	}
 
 	private Member mockMember() {
