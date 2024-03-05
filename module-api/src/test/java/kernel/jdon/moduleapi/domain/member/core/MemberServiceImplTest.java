@@ -38,6 +38,9 @@ class MemberServiceImplTest {
 	@Mock
 	private CryptoManager cryptoManager;
 
+	@Mock
+	private MemberStore memberStore;
+
 	@InjectMocks
 	private MemberServiceImpl memberService;
 
@@ -140,6 +143,24 @@ class MemberServiceImplTest {
 		//verify
 		verify(cryptoManager, times(1)).getUserInfoFromAuthProvider("hmac", "encrypted");
 		verify(memberFactory, times(1)).save(mockRegisterCommand, mockUserInfo);
+	}
+
+	@Test
+	@DisplayName("6: 사용자 탈퇴 요청 시, remove 메서드가 동작 결과로 탈퇴한 memberId를 응답으로 반환한다.")
+	void givenWithdrawCommand_whenRemoveMember_thenReturnMemberId() {
+		//given
+		final var mockWithdrawCommand = MemberCommand.WithdrawRequest.builder().id(1L).build();
+		final var mockWithdrawResponse = MemberInfo.WithdrawResponse.of(mockWithdrawCommand.getId());
+
+		//when
+		doNothing().when(memberStore).updateAccountStatusWithdrawById(mockWithdrawCommand.getId());
+		final var response = memberService.removeMember(mockWithdrawCommand);
+
+		//then
+		assertThat(response.getMemberId()).isEqualTo(mockWithdrawResponse.getMemberId());
+
+		//verify
+		verify(memberStore, times(1)).updateAccountStatusWithdrawById(mockWithdrawCommand.getId());
 	}
 
 	private Member mockMember() {
