@@ -26,12 +26,12 @@ class MemberFacadeTest {
 	@DisplayName("1: 사용자 정보 요청 시, get 메서드가 memberId에 해당되는 멤버의 정보를 응답으로 반환한다.")
 	void whenGetMemberInfo_thenReturnMemberInfo() {
 		//given
-		var memberId = 1L;
-		var mockFindMemberResponse = mock(MemberInfo.FindMemberResponse.class);
+		final var memberId = 1L;
+		final var mockFindMemberResponse = mock(MemberInfo.FindMemberResponse.class);
 
 		//when
 		when(memberService.getMember(memberId)).thenReturn(mockFindMemberResponse);
-		var response = memberFacade.getMember(memberId);
+		final var response = memberFacade.getMember(memberId);
 
 		//then
 		assertThat(response).isEqualTo(mockFindMemberResponse);
