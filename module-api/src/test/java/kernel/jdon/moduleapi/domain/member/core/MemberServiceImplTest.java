@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
 import java.util.List;
+import java.util.Map;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 
+import kernel.jdon.moduleapi.domain.auth.util.CryptoManager;
 import kernel.jdon.moduleapi.domain.member.error.MemberErrorCode;
 import kernel.jdon.moduleapi.domain.member.infrastructure.MemberFactoryImpl;
 import kernel.jdon.moduleapi.global.exception.ApiException;
@@ -32,6 +34,9 @@ class MemberServiceImplTest {
 
 	@Mock
 	private MemberFactoryImpl memberFactory;
+
+	@Mock
+	private CryptoManager cryptoManager;
 
 	@InjectMocks
 	private MemberServiceImpl memberService;
@@ -96,28 +101,45 @@ class MemberServiceImplTest {
 	}
 
 	@Test
-	@DisplayName("3: 닉네임 중복 확인 요청 시, checkNicknameDuplicate 메서드가 중복 닉네임이면 409 에러를 던진다.")
+	@DisplayName("4: 닉네임 중복 확인 요청 시, checkNicknameDuplicate 메서드가 중복 닉네임이면 409 에러를 던진다.")
 	void givenNickname_whenNicknameIsDuplicate_thenThrowConflictError() {
 		//given
 		final var mockCommand = mock(MemberCommand.NicknameDuplicateRequest.class);
 
-		//when & then
+		//when
 		when(memberReader.existsByNickname(mockCommand.getNickname())).thenReturn(true);
 		ApiException thrownException = assertThrows(ApiException.class,
 			() -> memberService.checkNicknameDuplicate(mockCommand));
 
 		// then
-		assertEquals(HttpStatus.CONFLICT.value(), thrownException.getErrorCode().getHttpStatus().value());
-		assertEquals(MemberErrorCode.CONFLICT_DUPLICATE_NICKNAME.getMessage(),
-			thrownException.getErrorCode().getMessage());
+		assertThat(thrownException.getErrorCode().getHttpStatus().value()).isEqualTo(HttpStatus.CONFLICT.value());
+		assertThat(thrownException.getErrorCode().getMessage()).isEqualTo(
+			MemberErrorCode.CONFLICT_DUPLICATE_NICKNAME.getMessage());
 
 		//verify
 		verify(memberReader, times(1)).existsByNickname(mockCommand.getNickname());
 	}
 
 	@Test
-	@DisplayName("3: 사용자 등록 요청 시, register 메서드가 동작 결과로 등록한 memberId를 응답으로 반환한다.")
+	@DisplayName("5: 사용자 등록 요청 시, register 메서드가 동작 결과로 등록한 memberId를 응답으로 반환한다.")
 	void givenRegisterInfo_whenRegisterMember_thenReturnMemberId() {
+		//given
+		final var mockCommand = mockRegisterCommand();
+		final var mockUserInfo = Map.of("nickname", "nickname", "email", "email");
+		final var mockSavedMember = mockMember();
+
+		//when
+		when(cryptoManager.getUserInfoFromAuthProvider(mockCommand.getHmac(), mockCommand.getEncrypted()))
+			.thenReturn(mockUserInfo);
+		when(memberFactory.save(mockCommand, mockUserInfo)).thenReturn(mockSavedMember);
+		final var response = memberService.register(mockCommand);
+
+		//then
+		assertThat(response.getMemberId()).isEqualTo(mockSavedMember.getId());
+
+		//verify
+		verify(cryptoManager, times(1)).getUserInfoFromAuthProvider("hmac", "encrypted");
+		verify(memberFactory, times(1)).save(mockCommand, mockUserInfo);
 	}
 
 	private Member mockMember() {
@@ -137,5 +159,9 @@ class MemberServiceImplTest {
 
 	private MemberCommand.NicknameDuplicateRequest mockNicknameDuplicateCommand() {
 		return MemberCommand.NicknameDuplicateRequest.builder().nickname("nickname").build();
+	}
+
+	private MemberCommand.RegisterRequest mockRegisterCommand() {
+		return MemberCommand.RegisterRequest.builder().hmac("hmac").encrypted("encrypted").build();
 	}
 }
