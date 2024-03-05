@@ -76,15 +76,7 @@ class MemberServiceImplTest {
 		verify(memberReader, times(1)).findById(memberId);
 		verify(memberFactory, times(1)).update(mockFindMember, mockUpdateCommand);
 	}
-
-	public MemberInfo.UpdateMemberResponse modifyMember(final Long memberId,
-		final MemberCommand.UpdateMemberRequest command) {
-		final Member findMember = memberReader.findById(memberId);
-		memberFactory.update(findMember, command);
-
-		return MemberInfo.UpdateMemberResponse.of(findMember.getId());
-	}
-
+	
 	private Member mockMember() {
 		return Member.builder()
 			.id(1L)
