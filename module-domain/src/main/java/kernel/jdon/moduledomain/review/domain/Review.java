@@ -38,8 +38,7 @@ public class Review extends AbstractEntity {
 	private WantedJd wantedJd;
 
 	@Builder
-	public Review(Long id, String content, Member member, WantedJd wantedJd) {
-		this.id = id;
+	public Review(String content, Member member, WantedJd wantedJd) {
 		this.content = content;
 		this.member = member;
 		this.wantedJd = wantedJd;
