@@ -58,4 +58,37 @@ class MemberFacadeTest {
 		//verify
 		verify(memberService, times(1)).modifyMember(modifyMemberId, mockModifyMemberCommand);
 	}
+
+	@Test
+	@DisplayName("3: 닉네임이 주어졌을 때, checkNicknameDuplicate 메서드가 service의 checkNicknameDuplicate를 실행한다.")
+	void givenNickname_whenCheckNicknameDuplicate() {
+		//given
+		final var mockCommand = mock(MemberCommand.NicknameDuplicateRequest.class);
+
+		//when
+		doNothing().when(memberService).checkNicknameDuplicate(any(MemberCommand.NicknameDuplicateRequest.class));
+		memberFacade.checkNicknameDuplicate(mockCommand);
+
+		//verify
+		verify(memberService, times(1)).checkNicknameDuplicate(any(MemberCommand.NicknameDuplicateRequest.class));
+	}
+
+	@Test
+	@DisplayName("4: 사용자 등록 정보가 주어졌을 때, register 메서드가 등록을 마친 memberId를 응답으로 반환한다.")
+	void givenRegisterInfo_whenRegister_thenReturnMemberId() {
+		//given
+		final var mockCommand = mock(MemberCommand.RegisterRequest.class);
+		final var mockResponse = MemberInfo.RegisterResponse.of(1L);
+
+		//when
+		when(memberService.register(mockCommand)).thenReturn(mockResponse);
+		final var response = memberFacade.register(mockCommand);
+
+		//then
+		assertThat(response).isEqualTo(mockResponse);
+		assertThat(response.getMemberId()).isEqualTo(mockResponse.getMemberId());
+
+		//verify
+		verify(memberService, times(1)).register(mockCommand);
+	}
 }

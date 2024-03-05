@@ -1,8 +1,11 @@
 package kernel.jdon.moduleapi.domain.member.infrastructure;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,6 +21,9 @@ import kernel.jdon.moduleapi.domain.skill.core.SkillReader;
 import kernel.jdon.moduledomain.jobcategory.domain.JobCategory;
 import kernel.jdon.moduledomain.member.domain.Gender;
 import kernel.jdon.moduledomain.member.domain.Member;
+import kernel.jdon.moduledomain.member.domain.MemberAccountStatus;
+import kernel.jdon.moduledomain.member.domain.MemberRole;
+import kernel.jdon.moduledomain.member.domain.SocialProviderType;
 import kernel.jdon.moduledomain.skill.domain.Skill;
 
 @ExtendWith(MockitoExtension.class)
@@ -42,7 +48,7 @@ class MemberFactoryImplTest {
 		final var mockMember = mockMember();
 		final var mockUpdateCommand = mockUpdateCommand();
 		final var mockFindJobCategory = mock(JobCategory.class);
-		final var mockFindSkillList = List.of(mock(Skill.class), mock(Skill.class), mock(Skill.class));
+		final var mockFindSkillList = mockSkillList();
 
 		//when
 		when(jobCategoryReader.findById(mockUpdateCommand.getJobCategoryId())).thenReturn(mockFindJobCategory);
@@ -56,6 +62,32 @@ class MemberFactoryImplTest {
 		verify(jobCategoryReader, times(1)).findById(mockUpdateCommand.getJobCategoryId());
 		verify(skillReader, times(1)).findAllByIdList(mockUpdateCommand.getSkillList());
 		verify(memberStore, times(1)).update(any(Member.class), any(Member.class));
+	}
+
+	@Test
+	@DisplayName("2: 회원가입 정보가 주어지면, save 메서드가 저장한 Member를 반환한다.")
+	void givenRegisterInfo_whenSave_thenReturnSavedMember() {
+		//given
+		final var mockRegisterCommand = mockRegisterCommand();
+		final var mockUserInfo = Map.of("email", "email", "provider", "kakao");
+		final var mockFindJobCategory = mock(JobCategory.class);
+		final var mockSaveMember = mockSavedMember(mockUserInfo, mockFindJobCategory);
+		final var mockSkillList = mockSkillList();
+
+		//when
+		when(jobCategoryReader.findById(mockRegisterCommand.getJobCategoryId())).thenReturn(mockFindJobCategory);
+		when(memberStore.save(any(Member.class))).thenReturn(mockSaveMember);
+		when(skillReader.findAllByIdList(mockRegisterCommand.getSkillList())).thenReturn(mockSkillList);
+		final var savedMember = memberFactory.save(mockRegisterCommand, mockUserInfo);
+
+		//assert
+		assertThat(savedMember).isEqualTo(mockSaveMember);
+		assertThat(savedMember.getId()).isEqualTo(mockSaveMember.getId());
+
+		//verify
+		verify(jobCategoryReader, times(1)).findById(mockRegisterCommand.getJobCategoryId());
+		verify(memberStore, times(1)).save(any(Member.class));
+		verify(skillReader, times(1)).findAllByIdList(mockRegisterCommand.getSkillList());
 	}
 
 	private Member mockMember() {
@@ -76,7 +108,33 @@ class MemberFactoryImplTest {
 			.build();
 	}
 
+	private List<Skill> mockSkillList() {
+		return List.of(mock(Skill.class), mock(Skill.class), mock(Skill.class));
+	}
+
 	private List<Long> mockSkillIdList() {
 		return List.of(1L, 2L, 3L);
+	}
+
+	private MemberCommand.RegisterRequest mockRegisterCommand() {
+		return MemberCommand.RegisterRequest.builder()
+			.jobCategoryId(2L)
+			.skillList(mockSkillIdList())
+			.build();
+	}
+
+	private Member mockSavedMember(final Map<String, String> userInfo, JobCategory jobCategory) {
+		return Member.builder()
+			.id(1L)
+			.email(userInfo.get("email"))
+			.nickname("nickname")
+			.birth("2020-02-02")
+			.gender(Gender.FEMALE)
+			.role(MemberRole.ROLE_USER)
+			.accountStatus(MemberAccountStatus.ACTIVE)
+			.jobCategory(jobCategory)
+			.socialProvider(SocialProviderType.ofType(userInfo.get("provider")))
+			.joinDate(LocalDateTime.now())
+			.build();
 	}
 }
