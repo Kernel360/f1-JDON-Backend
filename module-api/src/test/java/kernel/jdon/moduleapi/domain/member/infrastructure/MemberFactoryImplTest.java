@@ -43,7 +43,7 @@ class MemberFactoryImplTest {
 
 	@Test
 	@DisplayName("1: member와 사용자 수정 정보가 주어지고 정보 수정 요청 시, update 메서드가 member를 업데이트한다.")
-	void givenMemberAndUpdateInfo_whenUpdate() {
+	void givenMemberAndUpdateCommand_whenUpdate() {
 		//given
 		final var mockMember = mockMember();
 		final var mockUpdateCommand = mockUpdateCommand();
@@ -66,7 +66,7 @@ class MemberFactoryImplTest {
 
 	@Test
 	@DisplayName("2: 회원가입 정보가 주어지면, save 메서드가 저장한 Member를 반환한다.")
-	void givenRegisterInfo_whenSave_thenReturnSavedMember() {
+	void givenRegisterCommand_whenSave_thenReturnSavedMember() {
 		//given
 		final var mockRegisterCommand = mockRegisterCommand();
 		final var mockUserInfo = Map.of("email", "email", "provider", "kakao");
