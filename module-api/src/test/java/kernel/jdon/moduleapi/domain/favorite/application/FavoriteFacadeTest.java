@@ -65,7 +65,7 @@ class FavoriteFacadeTest {
 	void whenGetList_thenReturnList() {
 		// given
 		Long memberId = 1L;
-		PageInfoRequest pageInfoRequest = new PageInfoRequest(0, 10);
+		PageInfoRequest pageInfoRequest = new PageInfoRequest("0", "10");
 		FavoriteInfo.FindFavoriteListResponse expectedResponse = mock(FavoriteInfo.FindFavoriteListResponse.class);
 
 		// when
