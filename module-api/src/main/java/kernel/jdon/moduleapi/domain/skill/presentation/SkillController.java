@@ -31,8 +31,8 @@ public class SkillController {
 
 	@GetMapping("/api/v1/skills/member")
 	public ResponseEntity<CommonResponse<SkillDto.FindMemberSkillListResponse>> getMemberSkillList(
-		@LoginUser final SessionUserInfo sessionUser) {
-		final SkillInfo.FindMemberSkillListResponse info = skillFacade.getMemberSkillList(sessionUser.getId());
+		@LoginUser final SessionUserInfo member) {
+		final SkillInfo.FindMemberSkillListResponse info = skillFacade.getMemberSkillList(member.getId());
 		final SkillDto.FindMemberSkillListResponse response = skillDtoMapper.of(info);
 
 		return ResponseEntity.ok().body(CommonResponse.of(response));
@@ -50,17 +50,17 @@ public class SkillController {
 	@GetMapping("/api/v1/skills/search")
 	public ResponseEntity<CommonResponse<SkillDto.FindDataListBySkillResponse>> getLectureListAndJdListBySkill(
 		@RequestParam(name = "keyword", defaultValue = "") final String keyword,
-		@LoginUser final SessionUserInfo sessionUser) {
-		final Long memberId = getSessionUserId(sessionUser);
+		@LoginUser final SessionUserInfo member) {
+		final Long memberId = getSessionUserId(member);
 		final SkillInfo.FindDataListBySkillResponse info = skillFacade.getDataListBySkill(keyword, memberId);
 		final SkillDto.FindDataListBySkillResponse response = skillDtoMapper.of(info);
 
 		return ResponseEntity.ok(CommonResponse.of(response));
 	}
 
-	private Long getSessionUserId(SessionUserInfo sessionUser) {
-		return Optional.ofNullable(sessionUser)
-			.map(session -> sessionUser.getId())
+	private Long getSessionUserId(SessionUserInfo member) {
+		return Optional.ofNullable(member)
+			.map(session -> member.getId())
 			.orElse(null);
 	}
 }

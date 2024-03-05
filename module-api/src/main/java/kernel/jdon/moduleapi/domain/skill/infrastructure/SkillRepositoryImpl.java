@@ -54,7 +54,8 @@ public class SkillRepositoryImpl implements CustomSkillRepository {
 	@Override
 	public List<SkillReaderInfo.FindWantedJd> findWantedJdListBySkill(final String keyword) {
 		final int wantedJdCount = 6;
-		List<String> allKeywordAssociatedTermList = skillKeywordManager.getAllKeywordAssociatedTerms(keyword);
+		List<String> allKeywordAssociatedTermList = skillKeywordManager.getAllKeywordAssociatedTermsByKeyword(
+			keyword);
 
 		return jpaQueryFactory
 			.select(
@@ -78,7 +79,8 @@ public class SkillRepositoryImpl implements CustomSkillRepository {
 	public List<SkillReaderInfo.FindInflearnLecture> findInflearnLectureListBySkill(String keyword,
 		Long memberId) {
 		final int inflearnLectureCount = 3;
-		final List<String> allKeywordAssociatedTermList = skillKeywordManager.getAllKeywordAssociatedTerms(keyword);
+		final List<String> allKeywordAssociatedTermList = skillKeywordManager.getAllKeywordAssociatedTermsByKeyword(
+			keyword);
 
 		return jpaQueryFactory
 			.select(new QSkillReaderInfo_FindInflearnLecture(inflearnCourse.id, inflearnCourse.title,

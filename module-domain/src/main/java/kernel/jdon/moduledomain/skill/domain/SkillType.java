@@ -14,6 +14,9 @@ public interface SkillType {
 
 	List<String> getRelatedKeywords();
 
+	/**
+	 * 입력받은 구현체의 내부 상수의 값들을 문자열 리스트에 담아 반환하는 메서드
+	 */
 	default List<String> getKeywordAssociatedList(SkillType skillType) {
 		List<String> associatedList = new ArrayList<>();
 		associatedList.add(skillType.getKeyword());
@@ -23,7 +26,11 @@ public interface SkillType {
 		return associatedList;
 	}
 
+	/**
+	 * 입력받은 문자열이 구현체의 상수에 포함되어 있는지 확인하는 메서드
+	 */
 	default boolean containsKeyword(String keyword) {
-		return getKeywordAssociatedList(this).stream().anyMatch(term -> term.equalsIgnoreCase(keyword));
+		return getKeywordAssociatedList(this).stream()
+			.anyMatch(term -> term.equalsIgnoreCase(keyword));
 	}
 }
