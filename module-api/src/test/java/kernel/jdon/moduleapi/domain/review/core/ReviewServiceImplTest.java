@@ -35,7 +35,7 @@ class ReviewServiceImplTest {
 	private ReviewFactory reviewFactory;
 
 	@Test
-	@DisplayName("1: 리뷰 생성 정보가 주어졌을 때 createReview 메서드가 생성된 Review의 id를 반환한다.")
+	@DisplayName("1: 리뷰 생성 정보가 주어졌을 때, createReview 메서드가 생성된 Review의 id를 반환한다.")
 	void givenCreateReviewCommand_whenCreateReview_thenCreateReviewInfo() throws Exception {
 		//given
 		final var mockCreateCommand = mockCreateCommand();
@@ -81,7 +81,7 @@ class ReviewServiceImplTest {
 	}
 
 	@Test
-	@DisplayName("3: 리뷰 작성자가 리뷰 삭제를 요청할 때 removeReview 메서드가 reviewStore의 delete를 실행한다.")
+	@DisplayName("3: 리뷰 작성자가 리뷰 삭제를 요청할 때, removeReview 메서드가 reviewStore의 delete를 실행한다.")
 	void givenValidWriter_whenRemoveReview_thenExecuteDeleteReview() throws Exception {
 		//given
 		final var memberId = 1L;
@@ -111,7 +111,7 @@ class ReviewServiceImplTest {
 	}
 
 	@Test
-	@DisplayName("4: 리뷰 작성자 아닌 사용자가 리뷰 삭제를 요청할 때 removeReview 메서드가 FORBIDDEN_DELETE_REVIEW 예외를 발생시킨다.")
+	@DisplayName("4: 리뷰 작성자 아닌 사용자가 리뷰 삭제를 요청할 때, removeReview 메서드가 FORBIDDEN_DELETE_REVIEW 예외를 발생시킨다.")
 	void givenInValidWriter_whenRemoveReview_thenThrowException() throws Exception {
 		//given
 		final var notWriterMemberId = 2L;
@@ -126,5 +126,6 @@ class ReviewServiceImplTest {
 			() -> reviewServiceImpl.removeReview(mockDeleteCommand));
 		assertThat(exception.getErrorCode()).isEqualTo(ReviewErrorCode.FORBIDDEN_DELETE_REVIEW);
 		verify(reviewReader, times(1)).findById(mockDeleteCommand.getReviewId());
+		verify(reviewStore, times(0)).delete(mockFindReview);
 	}
 }
