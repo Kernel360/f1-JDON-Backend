@@ -58,5 +58,4 @@ class MemberFacadeTest {
 		//verify
 		verify(memberService, times(1)).modifyMember(modifyMemberId, mockModifyMemberCommand);
 	}
-
 }
