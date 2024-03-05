@@ -60,7 +60,7 @@ class MemberFacadeTest {
 	}
 
 	@Test
-	@DisplayName("3: 사용자 아이디와 정보 수정 정보가 주어졌을 때, modify 메서드가 수정을 마친 memberId를 응답으로 반환한다.")
+	@DisplayName("3: 닉네임이 주어졌을 때, checkNicknameDuplicate 메서드가 service의 checkNicknameDuplicate를 실행한다.")
 	void givenNickname_whenCheckNicknameDuplicate() {
 		//given
 		final var mockCommand = mock(MemberCommand.NicknameDuplicateRequest.class);
