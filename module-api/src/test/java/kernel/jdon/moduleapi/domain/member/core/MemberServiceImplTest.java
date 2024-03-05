@@ -12,6 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import kernel.jdon.moduleapi.domain.member.infrastructure.MemberFactoryImpl;
 import kernel.jdon.moduledomain.jobcategory.domain.JobCategory;
 import kernel.jdon.moduledomain.member.domain.Gender;
 import kernel.jdon.moduledomain.member.domain.Member;
@@ -24,6 +25,9 @@ class MemberServiceImplTest {
 	private MemberReader memberReader;
 	@Mock
 	private MemberInfoMapper memberInfoMapper;
+
+	@Mock
+	private MemberFactoryImpl memberFactory;
 
 	@InjectMocks
 	private MemberServiceImpl memberService;
@@ -54,7 +58,31 @@ class MemberServiceImplTest {
 	}
 
 	@Test
-	void modifyMember() {
+	@DisplayName("2: 사용자 정보 수정 요청 시, modify 메서드가 동작 결과로 memberId를 응답으로 반환한다.")
+	void givenMemberUpdateInfo_whenModifyMember_thenReturnMemberId() {
+		//given
+		final var mockFindMember = mockMember();
+		final var memberId = mockFindMember.getId();
+		final var mockUpdateCommand = mock(MemberCommand.UpdateMemberRequest.class);
+
+		//when
+		when(memberReader.findById(memberId)).thenReturn(mockFindMember);
+		final var response = memberService.modifyMember(memberId, mockUpdateCommand);
+
+		//then
+		assertThat(response.getMemberId()).isEqualTo(memberId);
+
+		//verify
+		verify(memberReader, times(1)).findById(memberId);
+		verify(memberFactory, times(1)).update(mockFindMember, mockUpdateCommand);
+	}
+
+	public MemberInfo.UpdateMemberResponse modifyMember(final Long memberId,
+		final MemberCommand.UpdateMemberRequest command) {
+		final Member findMember = memberReader.findById(memberId);
+		memberFactory.update(findMember, command);
+
+		return MemberInfo.UpdateMemberResponse.of(findMember.getId());
 	}
 
 	private Member mockMember() {
