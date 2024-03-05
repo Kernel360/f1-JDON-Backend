@@ -10,7 +10,5 @@ public interface FavoriteReader {
 
 	Optional<Favorite> findFavoriteByMemberIdAndInflearnCourseId(Long memberId, Long lectureId);
 
-	Optional<Favorite> findById(Long favoriteId);
-
 	Favorite save(Favorite favorite);
 }
