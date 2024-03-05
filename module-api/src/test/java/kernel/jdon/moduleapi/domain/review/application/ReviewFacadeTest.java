@@ -1,16 +1,15 @@
 package kernel.jdon.moduleapi.domain.review.application;
 
-import static org.mockito.Mockito.*;
+import static org.assertj.core.api.Assertions.*;
+import static org.mockito.BDDMockito.*;
 
 import java.util.List;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import kernel.jdon.moduleapi.domain.review.core.ReviewCommand;
@@ -33,14 +32,14 @@ class ReviewFacadeTest {
 		//given
 		final var mockRequestCommand = mockRequestCommand();
 		final var mockRequestInfo = mock(ReviewInfo.CreateReviewResponse.class);
+		given(reviewService.createReview(mockRequestCommand)).willReturn(mockRequestInfo);
 
 		//when
-		Mockito.when(reviewService.createReview(mockRequestCommand)).thenReturn(mockRequestInfo);
 		final var response = reviewFacade.createReview(mockRequestCommand);
 
 		//then
-		Assertions.assertThat(response).isEqualTo(mockRequestInfo);
-		verify(reviewService, times(1)).createReview(mockRequestCommand);
+		assertThat(response).isEqualTo(mockRequestInfo);
+		then(reviewService).should(times(1)).createReview(mockRequestCommand);
 	}
 
 	private ReviewCommand.CreateReviewRequest mockRequestCommand() {
@@ -58,14 +57,14 @@ class ReviewFacadeTest {
 				mock(ReviewInfo.FindReview.class),
 				mock(ReviewInfo.FindReview.class)),
 			mock(CustomPageInfo.class));
+		given(reviewService.getReviewList(jdId, mockPageInfoRequest)).willReturn(mockFindReviewListInfo);
 
 		//when
-		when(reviewService.getReviewList(jdId, mockPageInfoRequest)).thenReturn(mockFindReviewListInfo);
 		var response = reviewFacade.getReviewList(jdId, mockPageInfoRequest);
 
 		//then
-		Assertions.assertThat(response.getContent()).hasSize(2);
-		verify(reviewService, times(1)).getReviewList(jdId, mockPageInfoRequest);
+		assertThat(response.getContent()).hasSize(2);
+		then(reviewService).should(times(1)).getReviewList(jdId, mockPageInfoRequest);
 	}
 
 	@Test
@@ -73,13 +72,13 @@ class ReviewFacadeTest {
 	void givenValidWriter_whenRemoveReview_thenExecuteDeleteReview() throws Exception {
 		//given
 		final var mockDeleteCommand = mockDeleteCommand();
+		willDoNothing().given(reviewService).removeReview(mockDeleteCommand);
 
 		//when
-		doNothing().when(reviewService).removeReview(mockDeleteCommand);
 		reviewFacade.removeReview(mockDeleteCommand);
 
 		//then
-		verify(reviewService, times(1)).removeReview(mockDeleteCommand);
+		then(reviewService).should(times(1)).removeReview(mockDeleteCommand);
 	}
 
 	private ReviewCommand.DeleteReviewRequest mockDeleteCommand() {

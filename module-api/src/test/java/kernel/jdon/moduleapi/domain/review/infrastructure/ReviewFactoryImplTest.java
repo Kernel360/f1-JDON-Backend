@@ -2,7 +2,7 @@ package kernel.jdon.moduleapi.domain.review.infrastructure;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.BDDMockito.*;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -39,11 +39,11 @@ class ReviewFactoryImplTest {
 		final var mockMember = mock(Member.class);
 		final var mockWantedJd = mock(WantedJd.class);
 		final var mockSavedReview = mockSaveReview(request, mockMember, mockWantedJd);
+		given(memberReader.findById(request.getMemberId())).willReturn(mockMember);
+		given(jdReader.findWantedJd(request.getJdId())).willReturn(mockWantedJd);
+		given(reviewStore.save(any(Review.class))).willReturn(mockSavedReview);
 
 		//when
-		when(memberReader.findById(request.getMemberId())).thenReturn(mockMember);
-		when(jdReader.findWantedJd(request.getJdId())).thenReturn(mockWantedJd);
-		when(reviewStore.save(any(Review.class))).thenReturn(mockSavedReview);
 		final var response = reviewFactoryImpl.saveReview(request);
 
 		//then
@@ -51,9 +51,9 @@ class ReviewFactoryImplTest {
 			() -> assertThat(response).isEqualTo(mockSavedReview),
 			() -> assertThat(response.getContent()).isEqualTo(request.getContent())
 		);
-		verify(memberReader, times(1)).findById(request.getMemberId());
-		verify(jdReader, times(1)).findWantedJd(request.getJdId());
-		verify(reviewStore, times(1)).save(any(Review.class));
+		then(memberReader).should(times(1)).findById(request.getMemberId());
+		then(jdReader).should(times(1)).findWantedJd(request.getJdId());
+		then(reviewStore).should(times(1)).save(any(Review.class));
 	}
 
 	private ReviewCommand.CreateReviewRequest mockCreateCommand() {

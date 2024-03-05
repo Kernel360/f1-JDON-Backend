@@ -2,7 +2,7 @@ package kernel.jdon.moduleapi.domain.review.core;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.BDDMockito.*;
 
 import java.io.IOException;
 import java.util.List;
@@ -40,14 +40,14 @@ class ReviewServiceImplTest {
 		//given
 		final var mockCreateCommand = mockCreateCommand();
 		final var mockSavedReview = mockSavedReview();
+		given(reviewFactory.saveReview(mockCreateCommand)).willReturn(mockSavedReview);
 
 		//when
-		when(reviewFactory.saveReview(mockCreateCommand)).thenReturn(mockSavedReview);
 		final var response = reviewServiceImpl.createReview(mockCreateCommand);
 
 		//then
 		assertThat(response.getReviewId()).isEqualTo(mockSavedReview().getId());
-		verify(reviewFactory, times(1)).saveReview(mockCreateCommand);
+		then(reviewFactory).should(times(1)).saveReview(mockCreateCommand);
 	}
 
 	private ReviewCommand.CreateReviewRequest mockCreateCommand() {
@@ -70,14 +70,14 @@ class ReviewServiceImplTest {
 				mock(ReviewInfo.FindReview.class),
 				mock(ReviewInfo.FindReview.class)),
 			mock(CustomPageInfo.class));
+		given(reviewReader.findReviewList(jdId, mockPageInfoRequest)).willReturn(mockFindReviewListInfo);
 
 		//when
-		when(reviewReader.findReviewList(jdId, mockPageInfoRequest)).thenReturn(mockFindReviewListInfo);
 		var response = reviewServiceImpl.getReviewList(jdId, mockPageInfoRequest);
 
 		//then
 		Assertions.assertThat(response.getContent()).hasSize(2);
-		verify(reviewReader, times(1)).findReviewList(jdId, mockPageInfoRequest);
+		then(reviewReader).should(times(1)).findReviewList(jdId, mockPageInfoRequest);
 	}
 
 	@Test
@@ -87,15 +87,15 @@ class ReviewServiceImplTest {
 		final var memberId = 1L;
 		final var mockDeleteCommand = mockDeleteCommand(memberId);
 		final var mockFindReview = mockFindReview();
+		given(reviewReader.findById(mockDeleteCommand.getReviewId())).willReturn(mockFindReview);
+		willDoNothing().given(reviewStore).delete(mockFindReview);
 
 		//when
-		when(reviewReader.findById(mockDeleteCommand.getReviewId())).thenReturn(mockFindReview);
-		doNothing().when(reviewStore).delete(mockFindReview);
 		reviewServiceImpl.removeReview(mockDeleteCommand);
 
 		//then
-		verify(reviewReader, times(1)).findById(mockDeleteCommand.getReviewId());
-		verify(reviewStore, times(1)).delete(mockFindReview);
+		then(reviewReader).should(times(1)).findById(mockDeleteCommand.getReviewId());
+		then(reviewStore).should(times(1)).delete(mockFindReview);
 	}
 
 	private ReviewCommand.DeleteReviewRequest mockDeleteCommand(final Long memberId) {
@@ -106,7 +106,7 @@ class ReviewServiceImplTest {
 	}
 
 	private Review mockFindReview() throws IOException {
-		String filePath = "giventest/review/serviceimpl/1_review.json";
+		final String filePath = "giventest/review/serviceimpl/1_review.json";
 		return JsonFileReader.readJsonFileToObject(filePath, Review.class);
 	}
 
@@ -117,15 +117,13 @@ class ReviewServiceImplTest {
 		final var notWriterMemberId = 2L;
 		final var mockDeleteCommand = mockDeleteCommand(notWriterMemberId);
 		final var mockFindReview = mockFindReview();
+		given(reviewReader.findById(mockDeleteCommand.getReviewId())).willReturn(mockFindReview);
 
-		//when
-		when(reviewReader.findById(mockDeleteCommand.getReviewId())).thenReturn(mockFindReview);
-
-		//then
-		ApiException exception = assertThrows(ApiException.class,
+		//when & then
+		final ApiException exception = assertThrows(ApiException.class,
 			() -> reviewServiceImpl.removeReview(mockDeleteCommand));
 		assertThat(exception.getErrorCode()).isEqualTo(ReviewErrorCode.FORBIDDEN_DELETE_REVIEW);
-		verify(reviewReader, times(1)).findById(mockDeleteCommand.getReviewId());
-		verify(reviewStore, times(0)).delete(mockFindReview);
+		then(reviewReader).should(times(1)).findById(mockDeleteCommand.getReviewId());
+		then(reviewStore).should(times(0)).delete(mockFindReview);
 	}
 }
