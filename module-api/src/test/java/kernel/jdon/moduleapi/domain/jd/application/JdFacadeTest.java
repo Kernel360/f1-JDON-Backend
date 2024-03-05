@@ -1,7 +1,7 @@
 package kernel.jdon.moduleapi.domain.jd.application;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.BDDMockito.*;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -28,14 +28,14 @@ class JdFacadeTest {
 		//given
 		final var jdId = 1L;
 		final var mockFindWantedJdInfo = mock(JdInfo.FindWantedJdResponse.class);
+		given(jdService.getJd(jdId)).willReturn(mockFindWantedJdInfo);
 
 		//when
-		when(jdService.getJd(jdId)).thenReturn(mockFindWantedJdInfo);
 		final var response = jdFacade.getJd(jdId);
 
 		//then
 		assertThat(response).isEqualTo(mockFindWantedJdInfo);
-		verify(jdService, times(1)).getJd(jdId);
+		then(jdService).should(times(1)).getJd(jdId);
 	}
 
 	@Test
@@ -45,13 +45,13 @@ class JdFacadeTest {
 		final var keyword = "keyword";
 		final var mockPageInfoRequest = mock(PageInfoRequest.class);
 		final var mockFindWantedJdListInfo = mock(JdInfo.FindWantedJdListResponse.class);
+		given(jdService.getJdList(mockPageInfoRequest, keyword)).willReturn(mockFindWantedJdListInfo);
 
 		//when
-		when(jdService.getJdList(mockPageInfoRequest, keyword)).thenReturn(mockFindWantedJdListInfo);
 		final var response = jdFacade.getJdList(mockPageInfoRequest, keyword);
 
 		//then
 		assertThat(response).isEqualTo(mockFindWantedJdListInfo);
-		verify(jdService, times(1)).getJdList(mockPageInfoRequest, keyword);
+		then(jdService).should(times(1)).getJdList(mockPageInfoRequest, keyword);
 	}
 }

@@ -1,7 +1,7 @@
 package kernel.jdon.moduleapi.domain.jd.core;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.BDDMockito.*;
 
 import java.util.List;
 
@@ -35,17 +35,22 @@ class JdServiceImplTest {
 			mock(JdInfo.FindSkill.class),
 			mock(JdInfo.FindSkill.class));
 		final var mockFindWantedInfo = mockFindWantedInfo(jdId, mockSkillList);
+		given(jdReader.findWantedJd(jdId))
+			.willReturn(mockWantedJd);
+		given(jdReader.findSkillListByWantedJd(mockWantedJd))
+			.willReturn(mockSkillList);
+		given(jdInfoMapper.of(mockWantedJd, mockSkillList))
+			.willReturn(mockFindWantedInfo);
 
 		//when
-		when(jdReader.findWantedJd(jdId)).thenReturn(mockWantedJd);
-		when(jdReader.findSkillListByWantedJd(mockWantedJd)).thenReturn(mockSkillList);
-		when(jdInfoMapper.of(mockWantedJd, mockSkillList)).thenReturn(mockFindWantedInfo);
 		final var response = jdServiceImpl.getJd(jdId);
 
 		//then
 		assertThat(response.getSkillList()).isEqualTo(mockSkillList);
-		verify(jdReader, times(1)).findWantedJd(jdId);
-		verify(jdReader, times(1)).findSkillListByWantedJd(mockWantedJd);
+		then(jdReader).should(times(1))
+			.findWantedJd(jdId);
+		then(jdReader).should(times(1))
+			.findSkillListByWantedJd(mockWantedJd);
 	}
 
 	private JdInfo.FindWantedJdResponse mockFindWantedInfo(final Long jdId, final List<JdInfo.FindSkill> skillList) {
@@ -62,13 +67,15 @@ class JdServiceImplTest {
 		final var keyword = "keyword";
 		final var mockPageInfoRequest = mock(PageInfoRequest.class);
 		final var mockFindWantedJdListInfo = mock(JdInfo.FindWantedJdListResponse.class);
+		given(jdReader.findWantedJdList(mockPageInfoRequest, keyword))
+			.willReturn(mockFindWantedJdListInfo);
 
 		//when
-		when(jdReader.findWantedJdList(mockPageInfoRequest, keyword)).thenReturn(mockFindWantedJdListInfo);
 		final var response = jdServiceImpl.getJdList(mockPageInfoRequest, keyword);
 
 		//then
 		assertThat(response).isEqualTo(mockFindWantedJdListInfo);
-		verify(jdReader, times(1)).findWantedJdList(mockPageInfoRequest, keyword);
+		then(jdReader).should(times(1))
+			.findWantedJdList(mockPageInfoRequest, keyword);
 	}
 }
