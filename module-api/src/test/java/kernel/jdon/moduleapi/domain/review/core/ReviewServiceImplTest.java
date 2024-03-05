@@ -65,14 +65,14 @@ class ReviewServiceImplTest {
 		//given
 		final var jdId = 1L;
 		final var mockPageInfoRequest = mock(PageInfoRequest.class);
-		final var mockFindReviewList = new ReviewInfo.FindReviewListResponse(
+		final var mockFindReviewListInfo = new ReviewInfo.FindReviewListResponse(
 			List.of(
 				mock(ReviewInfo.FindReview.class),
 				mock(ReviewInfo.FindReview.class)),
 			mock(CustomPageInfo.class));
 
 		//when
-		when(reviewReader.findReviewList(jdId, mockPageInfoRequest)).thenReturn(mockFindReviewList);
+		when(reviewReader.findReviewList(jdId, mockPageInfoRequest)).thenReturn(mockFindReviewListInfo);
 		var response = reviewServiceImpl.getReviewList(jdId, mockPageInfoRequest);
 
 		//then
