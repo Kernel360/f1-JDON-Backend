@@ -181,7 +181,7 @@ public class CoffeeChatServiceImpl implements CoffeeChatService {
         CoffeeChat findCoffeeChat = coffeeChatReader.findExistCoffeeChat(coffeeChatId);
 
         CoffeeChatMember findCoffeeChatMember = coffeeChatReader.findCoffeeChatMember(coffeeChatId, memberId);
-        findCoffeeChat.removeCoffeeChatMember(findCoffeeChatMember);
+        coffeeChatStore.cancel(findCoffeeChat, findCoffeeChatMember);
 
         return new CoffeeChatInfo.CanceledCoffeeChatResponse(findCoffeeChat.getId());
     }
