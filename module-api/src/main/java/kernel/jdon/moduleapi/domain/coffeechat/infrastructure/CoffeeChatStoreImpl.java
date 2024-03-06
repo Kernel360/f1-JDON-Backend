@@ -13,7 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 public class CoffeeChatStoreImpl implements CoffeeChatStore {
 
     private final CoffeeChatRepository coffeeChatRepository;
-    private final CoffeeChatMemberRepository coffeeChatMemberRepository;
 
     @Override
     public CoffeeChat save(CoffeeChat coffeeChat) {
