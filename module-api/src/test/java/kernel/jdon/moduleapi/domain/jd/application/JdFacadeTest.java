@@ -1,8 +1,8 @@
 package kernel.jdon.moduleapi.domain.jd.application;
 
-import static org.mockito.Mockito.*;
+import static org.assertj.core.api.Assertions.*;
+import static org.mockito.BDDMockito.*;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,19 +23,19 @@ class JdFacadeTest {
 	private JdService jdService;
 
 	@Test
-	@DisplayName("1: 올바른 jdId가 주어졌을 때 getJd 메서드가 jd 상세정보와 스킬목록을 반환한다.")
+	@DisplayName("1: jdId가 주어졌을 때 getJd 메서드가 jd 상세정보를 반환한다.")
 	void givenValidJdId_whenGetJd_thenReturnCorrectJd() throws Exception {
 		//given
 		final var jdId = 1L;
-		final var mockFindWantedJdResponse = mock(JdInfo.FindWantedJdResponse.class);
+		final var mockFindWantedJdInfo = mock(JdInfo.FindWantedJdResponse.class);
+		given(jdService.getJd(jdId)).willReturn(mockFindWantedJdInfo);
 
 		//when
-		when(jdService.getJd(jdId)).thenReturn(mockFindWantedJdResponse);
 		final var response = jdFacade.getJd(jdId);
 
 		//then
-		Assertions.assertThat(response).isNotNull();
-		verify(jdService, times(1)).getJd(jdId);
+		assertThat(response).isEqualTo(mockFindWantedJdInfo);
+		then(jdService).should(times(1)).getJd(jdId);
 	}
 
 	@Test
@@ -44,14 +44,14 @@ class JdFacadeTest {
 		//given
 		final var keyword = "keyword";
 		final var mockPageInfoRequest = mock(PageInfoRequest.class);
-		final var mockFindWantedJdListResponse = mock(JdInfo.FindWantedJdListResponse.class);
+		final var mockFindWantedJdListInfo = mock(JdInfo.FindWantedJdListResponse.class);
+		given(jdService.getJdList(mockPageInfoRequest, keyword)).willReturn(mockFindWantedJdListInfo);
 
 		//when
-		when(jdService.getJdList(mockPageInfoRequest, keyword)).thenReturn(mockFindWantedJdListResponse);
 		final var response = jdFacade.getJdList(mockPageInfoRequest, keyword);
 
 		//then
-		Assertions.assertThat(response).isNotNull();
-		verify(jdService, times(1)).getJdList(mockPageInfoRequest, keyword);
+		assertThat(response).isEqualTo(mockFindWantedJdListInfo);
+		then(jdService).should(times(1)).getJdList(mockPageInfoRequest, keyword);
 	}
 }
