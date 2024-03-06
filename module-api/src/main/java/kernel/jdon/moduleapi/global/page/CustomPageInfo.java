@@ -1,15 +1,15 @@
 package kernel.jdon.moduleapi.global.page;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
-@AllArgsConstructor
-public abstract class CustomPageInfo {
-	private long pageNumber;
-	private long pageSize;
-	private long totalPages;
+public class CustomPageInfo extends CustomPagingInfo {
 	private boolean first;
-	private boolean last;
-	private boolean empty;
+	private long totalPages;
+
+	public CustomPageInfo(long pageNumber, long pageSize, long totalPages, boolean first, boolean last, boolean empty) {
+		super(pageNumber, pageSize, last, empty);
+		this.first = first;
+		this.totalPages = totalPages;
+	}
 }

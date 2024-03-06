@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
@@ -42,9 +43,10 @@ public class ReviewController {
 	@GetMapping("/api/v1/reviews/{jdId}")
 	public ResponseEntity<CommonResponse<ReviewDto.CreateReviewResponse>> findReviewList(
 		@PathVariable(name = "jdId") final Long jdId,
+		@RequestParam(name = "reviewId", defaultValue = "") final Long reviewId,
 		@ModelAttribute final PageInfoRequest pageInfoRequest) {
 		final ReviewInfo.FindReviewListResponse info = reviewFacade.getReviewList(jdId,
-			pageInfoRequest);
+			pageInfoRequest, reviewId);
 		final ReviewDto.FindReviewListResponse response = reviewDtoMapper.of(info);
 
 		return ResponseEntity.ok().body(CommonResponse.of(response));

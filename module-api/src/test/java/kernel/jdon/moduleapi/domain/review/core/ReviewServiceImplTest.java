@@ -17,7 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import kernel.jdon.moduleapi.domain.review.error.ReviewErrorCode;
 import kernel.jdon.moduleapi.global.exception.ApiException;
-import kernel.jdon.moduleapi.global.page.CustomPageInfo;
+import kernel.jdon.moduleapi.global.page.CustomSliceInfo;
 import kernel.jdon.moduleapi.global.page.PageInfoRequest;
 import kernel.jdon.moduledomain.review.domain.Review;
 import kernel.jdon.util.JsonFileReader;
@@ -64,20 +64,21 @@ class ReviewServiceImplTest {
 	void givenJdIdAndPageInfoRequest_whenGetReviewList_thenCollectFindReviewListInfo() throws Exception {
 		//given
 		final var jdId = 1L;
+		final var reviewId = 30L;
 		final var mockPageInfoRequest = mock(PageInfoRequest.class);
 		final var mockFindReviewListInfo = new ReviewInfo.FindReviewListResponse(
 			List.of(
 				mock(ReviewInfo.FindReview.class),
 				mock(ReviewInfo.FindReview.class)),
-			mock(CustomPageInfo.class));
-		given(reviewReader.findReviewList(jdId, mockPageInfoRequest)).willReturn(mockFindReviewListInfo);
+			mock(CustomSliceInfo.class));
+		given(reviewReader.findReviewList(jdId, mockPageInfoRequest, reviewId)).willReturn(mockFindReviewListInfo);
 
 		//when
-		var response = reviewServiceImpl.getReviewList(jdId, mockPageInfoRequest);
+		var response = reviewServiceImpl.getReviewList(jdId, mockPageInfoRequest, reviewId);
 
 		//then
 		Assertions.assertThat(response.getContent()).hasSize(2);
-		then(reviewReader).should(times(1)).findReviewList(jdId, mockPageInfoRequest);
+		then(reviewReader).should(times(1)).findReviewList(jdId, mockPageInfoRequest, reviewId);
 	}
 
 	@Test
