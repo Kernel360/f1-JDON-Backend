@@ -45,13 +45,13 @@ class JdFacadeTest {
 		final var keyword = "keyword";
 		final var mockPageInfoRequest = mock(PageInfoRequest.class);
 		final var mockFindWantedJdListInfo = mock(JdInfo.FindWantedJdListResponse.class);
-		given(jdService.getJdList(mockPageInfoRequest, keyword)).willReturn(mockFindWantedJdListInfo);
+		given(jdService.getJdList(mockPageInfoRequest, skill, keyword)).willReturn(mockFindWantedJdListInfo);
 
 		//when
-		final var response = jdFacade.getJdList(mockPageInfoRequest, keyword);
+		final var response = jdFacade.getJdList(mockPageInfoRequest, skill, keyword);
 
 		//then
 		assertThat(response).isEqualTo(mockFindWantedJdListInfo);
-		then(jdService).should(times(1)).getJdList(mockPageInfoRequest, keyword);
+		then(jdService).should(times(1)).getJdList(mockPageInfoRequest, skill, keyword);
 	}
 }

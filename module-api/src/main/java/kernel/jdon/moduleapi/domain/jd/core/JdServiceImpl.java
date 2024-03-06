@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import kernel.jdon.moduleapi.domain.jd.presentation.JdCondition;
 import kernel.jdon.moduleapi.global.page.PageInfoRequest;
 import kernel.jdon.moduledomain.wantedjd.domain.WantedJd;
 import lombok.RequiredArgsConstructor;
@@ -23,8 +24,9 @@ public class JdServiceImpl implements JdService {
 	}
 
 	@Override
-	public JdInfo.FindWantedJdListResponse getJdList(final PageInfoRequest pageInfoRequest, final String keyword) {
-		return jdReader.findWantedJdList(pageInfoRequest, keyword);
+	public JdInfo.FindWantedJdListResponse getJdList(final PageInfoRequest pageInfoRequest,
+		final JdCondition jdCondition) {
+		return jdReader.findWantedJdList(pageInfoRequest, jdCondition);
 	}
 
 }

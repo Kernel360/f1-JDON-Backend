@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import kernel.jdon.moduleapi.domain.jd.core.JdInfo;
 import kernel.jdon.moduleapi.domain.jd.core.JdReader;
 import kernel.jdon.moduleapi.domain.jd.error.JdErrorCode;
+import kernel.jdon.moduleapi.domain.jd.presentation.JdCondition;
 import kernel.jdon.moduleapi.global.page.CustomJpaPageInfo;
 import kernel.jdon.moduleapi.global.page.PageInfoRequest;
 import kernel.jdon.moduledomain.wantedjd.domain.WantedJd;
@@ -38,10 +39,10 @@ public class JdReaderImpl implements JdReader {
 
 	@Override
 	public JdInfo.FindWantedJdListResponse findWantedJdList(final PageInfoRequest pageInfoRequest,
-		final String keyword) {
+		final JdCondition jdCondition) {
 		final Pageable pageable = PageRequest.of(pageInfoRequest.getPage(), pageInfoRequest.getSize());
 
-		final Page<JdReaderInfo.FindWantedJd> readerInfo = wantedJdRepository.findWantedJdList(pageable, keyword);
+		final Page<JdReaderInfo.FindWantedJd> readerInfo = wantedJdRepository.findWantedJdList(pageable, jdCondition);
 
 		final List<JdInfo.FindWantedJd> content = readerInfo.stream()
 			.map(jdReaderInfoMapper::of)

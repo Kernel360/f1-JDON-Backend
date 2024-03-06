@@ -67,15 +67,15 @@ class JdServiceImplTest {
 		final var keyword = "keyword";
 		final var mockPageInfoRequest = mock(PageInfoRequest.class);
 		final var mockFindWantedJdListInfo = mock(JdInfo.FindWantedJdListResponse.class);
-		given(jdReader.findWantedJdList(mockPageInfoRequest, keyword))
+		given(jdReader.findWantedJdList(mockPageInfoRequest, skill, keyword))
 			.willReturn(mockFindWantedJdListInfo);
 
 		//when
-		final var response = jdServiceImpl.getJdList(mockPageInfoRequest, keyword);
+		final var response = jdServiceImpl.getJdList(mockPageInfoRequest, skill, keyword);
 
 		//then
 		assertThat(response).isEqualTo(mockFindWantedJdListInfo);
 		then(jdReader).should(times(1))
-			.findWantedJdList(mockPageInfoRequest, keyword);
+			.findWantedJdList(mockPageInfoRequest, skill, keyword);
 	}
 }
