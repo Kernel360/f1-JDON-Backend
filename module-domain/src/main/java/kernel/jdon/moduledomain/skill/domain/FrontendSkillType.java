@@ -10,9 +10,9 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum FrontendSkillType implements SkillType {
 
-	JAVASCRIPT("JavaScript", "자바스크립트", Arrays.asList("ES6", "Ajax")),
+	JAVASCRIPT("JavaScript", "자바스크립트", Arrays.asList("자스")),
 	REACT("React", "리액트", Arrays.asList("Redux", "React Hooks", "리덕스")),
-	TYPESCRIPT("TypeScript", "타입스크립트", Arrays.asList("JavaScript", "Static Typing", "자바스크립트")),
+	TYPESCRIPT("TypeScript", "타입스크립트", Arrays.asList("타스", "Static Typing", "타입")),
 	HTML("HTML", "HTML", Arrays.asList("Semantic HTML", "HTML5")),
 	CSS("CSS", "CSS", Arrays.asList("Flexbox", "Grid", "CSS Variables", "그리드")),
 	DOCKER("Docker", "도커", Arrays.asList("Container", "Docker Compose", "Docker Swarm", "컨테이너", "컴포즈", "스웜")),
@@ -22,9 +22,9 @@ public enum FrontendSkillType implements SkillType {
 	VUE_JS("Vue.JS", "뷰.JS", Arrays.asList("Vuex", "Vue Router", "Vue", "뷰")),
 	VUEJS("VueJS", "뷰JS", Arrays.asList("Vuex", "Vue Router", "Vue", "뷰")),
 	FIGMA("Figma", "피그마", Arrays.asList("Design", "Prototyping", "Collaboration", "디자인", "프로토타입", "협업", "툴")),
-	ANGULAR("Angular", "앵귤러", Arrays.asList("Angular Material", "타입스크립트")),
+	ANGULAR("Angular", "앵귤러", Arrays.asList("Angular Material")),
 	UX("UX", "사용자 경험", Arrays.asList("User Research", "Usability Testing", "Interaction Design")),
-	WEBGL("WebGL", "웹GL", Arrays.asList("3D Graphics", "Canvas API", "Shaders")),
+	WEBGL("WebGL", "웹GL", Arrays.asList("3D Graphics", "Canvas API", "canvas", "Shaders")),
 	WEBRTC("WebRTC", "웹RTC", Arrays.asList("Real-time Communication", "Peer-to-Peer", "Video Chat", "비디오")),
 	SVELTE("Svelte", "스벨트", Arrays.asList("Reactive", "Compiler", "리액티브")),
 	LARAVEL("Laravel", "라라벨", Arrays.asList("PHP"));
