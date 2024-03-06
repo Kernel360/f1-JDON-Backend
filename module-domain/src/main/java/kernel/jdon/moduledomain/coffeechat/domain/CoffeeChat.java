@@ -130,10 +130,6 @@ public class CoffeeChat extends AbstractEntity {
         return this.meetDate.isBefore(LocalDateTime.now());
     }
 
-    public boolean isPastDate() {
-        return this.meetDate.isBefore(LocalDateTime.now());
-    }
-
     public boolean isCurrentCountGreaterThan(Long newTotalCount) {
         return this.currentRecruitCount > newTotalCount;
     }

@@ -94,7 +94,8 @@ public class CoffeeChatServiceImpl implements CoffeeChatService {
     private void checkMeetDate(CoffeeChat findCoffeeChat, CoffeeChat updateCoffeeChat) {
         if (findCoffeeChat.isExpired()) {
             throw CoffeeChatErrorCode.EXPIRED_COFFEECHAT.throwException();
-        } else if (updateCoffeeChat.isPastDate()) {
+        }
+        if (updateCoffeeChat.isExpired()) {
             throw CoffeeChatErrorCode.MEET_DATE_ISBEFORE_NOW.throwException();
         }
     }
