@@ -33,13 +33,15 @@ public class CoffeeChatReaderImpl implements CoffeeChatReader {
     }
 
     @Override
-    public Page<CoffeeChatMember> findCoffeeChatMemberListByMemberId(Long memberId, Pageable pageable) {
-        return coffeeChatMemberRepository.findAllByMemberId(memberId, pageable);
+    public Page<CoffeeChatMember> findCoffeeChatMemberListByMemberId(Long memberId, PageInfoRequest pageInfoRequest) {
+        return coffeeChatMemberRepository.findAllByMemberId(memberId, PageRequest.of(pageInfoRequest.getPage(),
+            pageInfoRequest.getSize()));
     }
 
     @Override
-    public Page<CoffeeChat> findCoffeeChatListByMemberId(Long memberId, Pageable pageable) {
-        return coffeeChatRepository.findAllByMemberIdAndIsDeletedFalse(memberId, pageable);
+    public Page<CoffeeChat> findCoffeeChatListByMemberId(Long memberId, PageInfoRequest pageInfoRequest) {
+        return coffeeChatRepository.findAllByMemberIdAndIsDeletedFalse(memberId, PageRequest.of(
+            pageInfoRequest.getPage(), pageInfoRequest.getSize()));
     }
 
     @Override

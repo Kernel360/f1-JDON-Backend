@@ -3,8 +3,6 @@ package kernel.jdon.moduleapi.domain.coffeechat.presentation;
 import java.net.URI;
 import java.util.Optional;
 
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -134,22 +132,23 @@ public class CoffeeChatController {
 
     @GetMapping("/api/v1/coffeechats/guest")
     public ResponseEntity<CommonResponse<CustomPageResponse<CoffeeChatInfo.FindCoffeeChat>>> getGuestCoffeeChatList(
-        @LoginUser SessionUserInfo member,
-        @PageableDefault(size = 12) Pageable pageable
+        @ModelAttribute PageInfoRequest pageInfoRequest,
+        @LoginUser SessionUserInfo member
     ) {
         CustomPageResponse<CoffeeChatInfo.FindCoffeeChat> response = coffeeChatFacade.getGuestCoffeeChatList(
-            member.getId(), pageable);
+            member.getId(), pageInfoRequest);
 
         return ResponseEntity.ok().body(CommonResponse.of(response));
     }
 
     @GetMapping("/api/v1/coffeechats/host")
     public ResponseEntity<CommonResponse<CustomPageResponse<CoffeeChatInfo.FindCoffeeChat>>> getHostCoffeeChatList(
-        @LoginUser SessionUserInfo member,
-        @PageableDefault(size = 12) Pageable pageable
+        @ModelAttribute PageInfoRequest pageInfoRequest,
+        @LoginUser SessionUserInfo member
+
     ) {
         CustomPageResponse<CoffeeChatInfo.FindCoffeeChat> response = coffeeChatFacade.getHostCoffeeChatList(
-            member.getId(), pageable);
+            member.getId(), pageInfoRequest);
 
         return ResponseEntity.ok().body(CommonResponse.of(response));
     }

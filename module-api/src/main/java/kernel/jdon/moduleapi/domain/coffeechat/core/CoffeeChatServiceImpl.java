@@ -3,7 +3,6 @@ package kernel.jdon.moduleapi.domain.coffeechat.core;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -114,10 +113,10 @@ public class CoffeeChatServiceImpl implements CoffeeChatService {
 
     @Override
     public CustomPageResponse<CoffeeChatInfo.FindCoffeeChat> getGuestCoffeeChatList(Long memberId,
-        Pageable pageable) {
+        PageInfoRequest pageInfoRequest) {
         Page<CoffeeChatInfo.FindCoffeeChat> guestCoffeeChatPage = coffeeChatReader.findCoffeeChatMemberListByMemberId(
                 memberId,
-                pageable)
+                pageInfoRequest)
             .map(CoffeeChatMember::getCoffeeChat)
             .map(coffeeChatInfoMapper::listOf);
 
@@ -126,9 +125,9 @@ public class CoffeeChatServiceImpl implements CoffeeChatService {
 
     @Override
     public CustomPageResponse<CoffeeChatInfo.FindCoffeeChat> getHostCoffeeChatList(Long memberId,
-        Pageable pageable) {
+        PageInfoRequest pageInfoRequest) {
         Page<CoffeeChatInfo.FindCoffeeChat> hostCoffeeChatPage = coffeeChatReader.findCoffeeChatListByMemberId(memberId,
-                pageable)
+                pageInfoRequest)
             .map(coffeeChatInfoMapper::listOf);
 
         return CustomPageResponse.of(hostCoffeeChatPage);
