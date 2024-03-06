@@ -62,10 +62,10 @@ public class WantedJdRepositoryImpl implements CustomWantedJdRepository {
 	}
 
 	private BooleanExpression wantedJdKeywordContains(final JdSearchTypeCondition keywordType, final String keyword) {
-		return Objects.nonNull(keywordType) ? switch (keywordType) {
+		return switch (keywordType) {
 			case COMPANY -> wantedJdCompanyContains(keyword);
 			default -> wantedJdTitleContains(keyword);
-		} : null;
+		};
 	}
 
 	private BooleanExpression wantedJdCompanyContains(final String keyword) {
@@ -96,9 +96,9 @@ public class WantedJdRepositoryImpl implements CustomWantedJdRepository {
 	}
 
 	private OrderSpecifier createOrderSpecifier(final JdSortTypeCondition sort) {
-		return Objects.nonNull(sort) ? switch (sort) {
+		return switch (sort) {
 			case REVIEW -> new OrderSpecifier<>(Order.DESC, wantedJd.reviewList.size());
 			default -> new OrderSpecifier<>(Order.DESC, wantedJd.scrapingDate);
-		} : null;
+		};
 	}
 }

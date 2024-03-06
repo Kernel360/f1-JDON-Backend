@@ -16,7 +16,7 @@ public enum JdSortTypeCondition {
 
 	public static JdSortTypeCondition of(String sortCondition) {
 		if (!hasText(sortCondition))
-			return null;
+			return LATEST;
 		return Arrays.stream(values())
 			.filter(name -> name.sortCondition.equals(sortCondition))
 			.findFirst()

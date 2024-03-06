@@ -16,7 +16,7 @@ public enum JdSearchTypeCondition {
 
 	public static JdSearchTypeCondition of(String searchCondition) {
 		if (!hasText(searchCondition))
-			return null;
+			return TITLE;
 		return Arrays.stream(values())
 			.filter(name -> name.searchCondition.equals(searchCondition))
 			.findFirst()
