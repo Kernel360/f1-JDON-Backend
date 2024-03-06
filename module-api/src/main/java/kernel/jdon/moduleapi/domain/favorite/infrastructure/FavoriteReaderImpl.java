@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import kernel.jdon.moduleapi.domain.favorite.core.FavoriteInfo;
 import kernel.jdon.moduleapi.domain.favorite.core.FavoriteInfoMapper;
 import kernel.jdon.moduleapi.domain.favorite.core.FavoriteReader;
+import kernel.jdon.moduleapi.domain.favorite.error.FavoriteErrorCode;
 import kernel.jdon.moduleapi.global.page.CustomJpaPageInfo;
 import kernel.jdon.moduleapi.global.page.PageInfoRequest;
 import kernel.jdon.moduledomain.favorite.domain.Favorite;
@@ -38,8 +39,15 @@ public class FavoriteReaderImpl implements FavoriteReader {
 	}
 
 	@Override
-	public Optional<Favorite> findFavoriteByMemberIdAndInflearnCourseId(final Long memberId, final Long lectureId) {
+	public Optional<Favorite> findExistingFavoriteByMemberIdAndInflearnCourseId(final Long memberId,
+		final Long lectureId) {
 		return favoriteRepository.findFavoriteByMemberIdAndInflearnCourseId(memberId, lectureId);
+	}
+
+	@Override
+	public Favorite findFavoriteByMemberIdAndInflearnCourseId(final Long memberId, final Long lectureId) {
+		return favoriteRepository.findFavoriteByMemberIdAndInflearnCourseId(memberId, lectureId)
+			.orElseThrow(FavoriteErrorCode.NOT_FOUND_FAVORITE::throwException);
 	}
 
 	@Override

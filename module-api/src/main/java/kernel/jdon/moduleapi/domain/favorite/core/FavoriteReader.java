@@ -8,7 +8,9 @@ import kernel.jdon.moduledomain.favorite.domain.Favorite;
 public interface FavoriteReader {
 	FavoriteInfo.FindFavoriteListResponse findList(Long memberId, PageInfoRequest pageInfoRequest);
 
-	Optional<Favorite> findFavoriteByMemberIdAndInflearnCourseId(Long memberId, Long lectureId);
+	Optional<Favorite> findExistingFavoriteByMemberIdAndInflearnCourseId(Long memberId, Long lectureId);
+
+	Favorite findFavoriteByMemberIdAndInflearnCourseId(Long memberId, Long lectureId);
 
 	Favorite save(Favorite favorite);
 }

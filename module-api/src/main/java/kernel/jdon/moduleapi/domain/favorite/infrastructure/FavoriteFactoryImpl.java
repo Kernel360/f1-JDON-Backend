@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component;
 import kernel.jdon.moduleapi.domain.favorite.core.FavoriteFactory;
 import kernel.jdon.moduleapi.domain.favorite.core.FavoriteReader;
 import kernel.jdon.moduleapi.domain.favorite.core.FavoriteStore;
-import kernel.jdon.moduleapi.domain.favorite.error.FavoriteErrorCode;
 import kernel.jdon.moduleapi.domain.inflearncourse.core.InflearnReader;
 import kernel.jdon.moduleapi.domain.member.core.MemberReader;
 import kernel.jdon.moduledomain.favorite.domain.Favorite;
@@ -25,7 +24,8 @@ public class FavoriteFactoryImpl implements FavoriteFactory {
 	public Favorite create(Long memberId, Long lectureId) {
 		final Member findMember = memberReader.findById(memberId);
 		final InflearnCourse findInflearnCourse = inflearnReader.findById(lectureId);
-		final Favorite findFavorite = favoriteReader.findFavoriteByMemberIdAndInflearnCourseId(findMember.getId(),
+		final Favorite findFavorite = favoriteReader.findExistingFavoriteByMemberIdAndInflearnCourseId(
+				findMember.getId(),
 				findInflearnCourse.getId())
 			.orElseGet(() -> createNewFavorite(findMember, findInflearnCourse));
 		final Favorite saveFavorite = favoriteStore.save(findFavorite);
@@ -44,8 +44,7 @@ public class FavoriteFactoryImpl implements FavoriteFactory {
 		final Member findMember = memberReader.findById(memberId);
 		final InflearnCourse findInflearnCourse = inflearnReader.findById(lectureId);
 		final Favorite findFavorite = favoriteReader.findFavoriteByMemberIdAndInflearnCourseId(findMember.getId(),
-				findInflearnCourse.getId())
-			.orElseThrow(FavoriteErrorCode.NOT_FOUND_FAVORITE::throwException);
+			findInflearnCourse.getId());
 		favoriteStore.delete(findFavorite);
 
 		return findFavorite;
