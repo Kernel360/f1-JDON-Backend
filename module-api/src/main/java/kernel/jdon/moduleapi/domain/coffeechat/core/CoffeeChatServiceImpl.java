@@ -180,8 +180,8 @@ public class CoffeeChatServiceImpl implements CoffeeChatService {
     public CoffeeChatInfo.CanceledCoffeeChatResponse cancelCoffeeChat(Long coffeeChatId, Long memberId) {
         CoffeeChat findCoffeeChat = coffeeChatReader.findExistCoffeeChat(coffeeChatId);
 
-        CoffeeChatMember coffeeChatMember = coffeeChatReader.findCoffeeChatMember(coffeeChatId, memberId);
-        findCoffeeChat.removeCoffeeChatMember(coffeeChatMember);
+        CoffeeChatMember findCoffeeChatMember = coffeeChatReader.findCoffeeChatMember(coffeeChatId, memberId);
+        findCoffeeChat.removeCoffeeChatMember(findCoffeeChatMember);
 
         return new CoffeeChatInfo.CanceledCoffeeChatResponse(findCoffeeChat.getId());
     }
