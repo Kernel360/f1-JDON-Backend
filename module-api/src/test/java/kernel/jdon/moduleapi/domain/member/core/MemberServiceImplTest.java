@@ -38,6 +38,9 @@ class MemberServiceImplTest {
 	@Mock
 	private CryptoManager cryptoManager;
 
+	@Mock
+	private MemberStore memberStore;
+
 	@InjectMocks
 	private MemberServiceImpl memberService;
 
@@ -68,7 +71,7 @@ class MemberServiceImplTest {
 
 	@Test
 	@DisplayName("2: 사용자 정보 수정 요청 시, modify 메서드가 동작 결과로 memberId를 응답으로 반환한다.")
-	void givenMemberUpdateInfo_whenModifyMember_thenReturnMemberId() {
+	void givenMemberUpdateCommand_whenModifyMember_thenReturnMemberId() {
 		//given
 		final var mockFindMember = mockMember();
 		final var memberId = mockFindMember.getId();
@@ -122,7 +125,7 @@ class MemberServiceImplTest {
 
 	@Test
 	@DisplayName("5: 사용자 등록 요청 시, register 메서드가 동작 결과로 등록한 memberId를 응답으로 반환한다.")
-	void givenRegisterInfo_whenRegisterMember_thenReturnMemberId() {
+	void givenRegisterCommand_whenRegisterMember_thenReturnMemberId() {
 		//given
 		final var mockRegisterCommand = mockRegisterCommand();
 		final var mockUserInfo = Map.of("nickname", "nickname", "email", "email");
@@ -140,6 +143,24 @@ class MemberServiceImplTest {
 		//verify
 		verify(cryptoManager, times(1)).getUserInfoFromAuthProvider("hmac", "encrypted");
 		verify(memberFactory, times(1)).save(mockRegisterCommand, mockUserInfo);
+	}
+
+	@Test
+	@DisplayName("6: 사용자 탈퇴 요청 시, remove 메서드가 동작 결과로 탈퇴한 memberId를 응답으로 반환한다.")
+	void givenWithdrawCommand_whenRemoveMember_thenReturnMemberId() {
+		//given
+		final var mockWithdrawCommand = MemberCommand.WithdrawRequest.builder().id(1L).build();
+		final var mockWithdrawResponse = MemberInfo.WithdrawResponse.of(mockWithdrawCommand.getId());
+
+		//when
+		doNothing().when(memberStore).updateAccountStatusWithdrawById(mockWithdrawCommand.getId());
+		final var response = memberService.removeMember(mockWithdrawCommand);
+
+		//then
+		assertThat(response.getMemberId()).isEqualTo(mockWithdrawResponse.getMemberId());
+
+		//verify
+		verify(memberStore, times(1)).updateAccountStatusWithdrawById(mockWithdrawCommand.getId());
 	}
 
 	private Member mockMember() {
