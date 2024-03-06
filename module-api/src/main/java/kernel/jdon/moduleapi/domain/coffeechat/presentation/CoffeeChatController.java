@@ -21,7 +21,6 @@ import kernel.jdon.moduleapi.domain.coffeechat.core.CoffeeChatInfo;
 import kernel.jdon.moduleapi.domain.coffeechat.core.CoffeeChatSortCondition;
 import kernel.jdon.moduleapi.global.annotation.LoginUser;
 import kernel.jdon.moduleapi.global.dto.SessionUserInfo;
-import kernel.jdon.moduleapi.global.page.CustomPageResponse;
 import kernel.jdon.moduleapi.global.page.PageInfoRequest;
 import kernel.jdon.modulecommon.dto.response.CommonResponse;
 import lombok.RequiredArgsConstructor;
@@ -131,24 +130,25 @@ public class CoffeeChatController {
     }
 
     @GetMapping("/api/v1/coffeechats/guest")
-    public ResponseEntity<CommonResponse<CustomPageResponse<CoffeeChatInfo.FindCoffeeChat>>> getGuestCoffeeChatList(
+    public ResponseEntity<CommonResponse<CoffeeChatInfo.FindCoffeeChatListResponse>> getGuestCoffeeChatList(
         @ModelAttribute PageInfoRequest pageInfoRequest,
         @LoginUser SessionUserInfo member
     ) {
-        CustomPageResponse<CoffeeChatInfo.FindCoffeeChat> response = coffeeChatFacade.getGuestCoffeeChatList(
+        CoffeeChatInfo.FindCoffeeChatListResponse info = coffeeChatFacade.getGuestCoffeeChatList(
             member.getId(), pageInfoRequest);
+        CoffeeChatDto.FindCoffeeChatListResponse response = coffeeChatDtoMapper.of(info);
 
         return ResponseEntity.ok().body(CommonResponse.of(response));
     }
 
     @GetMapping("/api/v1/coffeechats/host")
-    public ResponseEntity<CommonResponse<CustomPageResponse<CoffeeChatInfo.FindCoffeeChat>>> getHostCoffeeChatList(
+    public ResponseEntity<CommonResponse<CoffeeChatInfo.FindCoffeeChatListResponse>> getHostCoffeeChatList(
         @ModelAttribute PageInfoRequest pageInfoRequest,
         @LoginUser SessionUserInfo member
-
     ) {
-        CustomPageResponse<CoffeeChatInfo.FindCoffeeChat> response = coffeeChatFacade.getHostCoffeeChatList(
+        CoffeeChatInfo.FindCoffeeChatListResponse info = coffeeChatFacade.getHostCoffeeChatList(
             member.getId(), pageInfoRequest);
+        CoffeeChatDto.FindCoffeeChatListResponse response = coffeeChatDtoMapper.of(info);
 
         return ResponseEntity.ok().body(CommonResponse.of(response));
     }

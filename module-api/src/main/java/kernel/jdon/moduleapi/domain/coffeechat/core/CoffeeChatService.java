@@ -1,6 +1,5 @@
 package kernel.jdon.moduleapi.domain.coffeechat.core;
 
-import kernel.jdon.moduleapi.global.page.CustomPageResponse;
 import kernel.jdon.moduleapi.global.page.PageInfoRequest;
 
 public interface CoffeeChatService {
@@ -20,9 +19,9 @@ public interface CoffeeChatService {
 
     CoffeeChatInfo.DeleteCoffeeChatResponse deleteCoffeeChat(Long coffeeChatId);
 
-    CustomPageResponse getGuestCoffeeChatList(Long memberId, PageInfoRequest pageInfoRequest);
+    CoffeeChatInfo.FindCoffeeChatListResponse getGuestCoffeeChatList(Long memberId, PageInfoRequest pageInfoRequest);
 
-    CustomPageResponse getHostCoffeeChatList(Long memberId, PageInfoRequest pageInfoRequest);
+    CoffeeChatInfo.FindCoffeeChatListResponse getHostCoffeeChatList(Long memberId, PageInfoRequest pageInfoRequest);
 
     CoffeeChatInfo.ApplyCoffeeChatResponse applyCoffeeChat(Long coffeeChatId, Long memberId);
 

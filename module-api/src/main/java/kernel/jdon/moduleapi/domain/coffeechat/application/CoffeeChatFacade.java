@@ -12,7 +12,6 @@ import kernel.jdon.moduleapi.domain.coffeechat.core.CoffeeChatService;
 import kernel.jdon.moduleapi.domain.coffeechat.error.CoffeeChatErrorCode;
 import kernel.jdon.moduleapi.global.config.redis.CoffeeChatLockConfig;
 import kernel.jdon.moduleapi.global.exception.ApiException;
-import kernel.jdon.moduleapi.global.page.CustomPageResponse;
 import kernel.jdon.moduleapi.global.page.PageInfoRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -54,12 +53,12 @@ public class CoffeeChatFacade {
         return coffeeChatService.deleteCoffeeChat(coffeeChatId);
     }
 
-    public CustomPageResponse<CoffeeChatInfo.FindCoffeeChat> getGuestCoffeeChatList(Long memberId,
+    public CoffeeChatInfo.FindCoffeeChatListResponse getGuestCoffeeChatList(Long memberId,
         PageInfoRequest pageInfoRequest) {
         return coffeeChatService.getGuestCoffeeChatList(memberId, pageInfoRequest);
     }
 
-    public CustomPageResponse<CoffeeChatInfo.FindCoffeeChat> getHostCoffeeChatList(Long memberId,
+    public CoffeeChatInfo.FindCoffeeChatListResponse getHostCoffeeChatList(Long memberId,
         PageInfoRequest pageInfoRequest) {
         return coffeeChatService.getHostCoffeeChatList(memberId, pageInfoRequest);
     }
