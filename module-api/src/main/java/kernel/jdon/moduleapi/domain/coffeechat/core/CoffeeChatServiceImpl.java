@@ -49,12 +49,12 @@ public class CoffeeChatServiceImpl implements CoffeeChatService {
     @Override
     public CoffeeChatInfo.FindCoffeeChatResponse getCoffeeChat(Long coffeeChatId, Long memberId) {
         CoffeeChat findCoffeeChat = coffeeChatReader.findExistCoffeeChat(coffeeChatId);
-        boolean isParticipant = checkIfMemberParticipated(coffeeChatId, memberId);
+        boolean isParticipant = isParticipant(coffeeChatId, memberId);
 
         return coffeeChatInfoMapper.of(findCoffeeChat, isParticipant);
     }
 
-    private boolean checkIfMemberParticipated(Long coffeeChatId, Long memberId) {
+    private boolean isParticipant(Long coffeeChatId, Long memberId) {
         return Optional.ofNullable(memberId)
             .map(id -> coffeeChatReader.existsByCoffeeChatIdAndMemberId(coffeeChatId, id))
             .orElse(false);
@@ -150,12 +150,12 @@ public class CoffeeChatServiceImpl implements CoffeeChatService {
         if (isMemberHost(findMember.getId(), findCoffeeChat)) {
             throw new ApiException(CoffeeChatErrorCode.CANNOT_JOIN_OWN_COFFEECHAT);
         }
-        checkIfAlreadyJoined(findMember, findCoffeeChat);
+        checkDuplicateApply(findMember, findCoffeeChat);
     }
 
-    private void checkIfAlreadyJoined(Member findMember, CoffeeChat findCoffeeChat) {
+    private void checkDuplicateApply(Member findMember, CoffeeChat findCoffeeChat) {
         if (coffeeChatReader.existsByCoffeeChatIdAndMemberId(findCoffeeChat.getId(), findMember.getId())) {
-            throw new ApiException(CoffeeChatErrorCode.ALREADY_JOINED_COFFEECHAT);
+            throw new ApiException(CoffeeChatErrorCode.DUPLICATE_COFFEECHAT_APPLY);
         }
     }
 
