@@ -28,5 +28,5 @@ public interface CoffeeChatService {
 
     CoffeeChatInfo.ApplyCoffeeChatResponse applyCoffeeChat(Long coffeeChatId, Long memberId);
 
-    CoffeeChatInfo.CanceledCoffeeChatResponse cancelCoffeeChat(Long coffeeChatId, Long memberId);
+    CoffeeChatInfo.CancelCoffeeChatResponse cancelCoffeeChat(Long coffeeChatId, Long memberId);
 }

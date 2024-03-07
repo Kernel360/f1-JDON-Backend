@@ -84,7 +84,7 @@ public class CoffeeChatFacade {
         }
     }
 
-    public CoffeeChatInfo.CanceledCoffeeChatResponse cancelCoffeeChatApplication(Long coffeeChatId, Long memberId) {
+    public CoffeeChatInfo.CancelCoffeeChatResponse cancelCoffeeChatApplication(Long coffeeChatId, Long memberId) {
         return coffeeChatService.cancelCoffeeChat(coffeeChatId, memberId);
     }
 }

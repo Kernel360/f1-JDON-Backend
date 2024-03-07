@@ -107,7 +107,7 @@ public class CoffeeChatInfo {
 
     @Getter
     @Builder
-    public static class CanceledCoffeeChatResponse {
+    public static class CancelCoffeeChatResponse {
         private final Long coffeeChatId;
     }
 }

@@ -88,7 +88,7 @@ public class CoffeeChatController {
         @PathVariable(name = "id") Long coffeeChatId,
         @LoginUser SessionUserInfo member
     ) {
-        CoffeeChatInfo.CanceledCoffeeChatResponse info = coffeeChatFacade.cancelCoffeeChatApplication(
+        CoffeeChatInfo.CancelCoffeeChatResponse info = coffeeChatFacade.cancelCoffeeChatApplication(
             coffeeChatId, member.getId());
         CoffeeChatDto.CancelCoffeeChatResponse response = coffeeChatDtoMapper.of(info);
 

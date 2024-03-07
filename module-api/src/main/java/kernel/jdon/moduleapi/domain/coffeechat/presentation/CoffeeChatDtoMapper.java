@@ -14,7 +14,7 @@ import kernel.jdon.moduleapi.domain.coffeechat.core.CoffeeChatInfo;
 )
 public interface CoffeeChatDtoMapper {
 
-    CoffeeChatDto.CancelCoffeeChatResponse of(CoffeeChatInfo.CanceledCoffeeChatResponse info);
+    CoffeeChatDto.CancelCoffeeChatResponse of(CoffeeChatInfo.CancelCoffeeChatResponse info);
 
     CoffeeChatDto.UpdateCoffeeChatResponse of(CoffeeChatInfo.UpdateCoffeeChatResponse info);
 
