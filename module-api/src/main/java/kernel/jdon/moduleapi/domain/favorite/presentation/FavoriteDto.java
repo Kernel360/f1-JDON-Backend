@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import kernel.jdon.moduleapi.global.page.CustomPageInfo;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -32,6 +33,7 @@ public class FavoriteDto {
 	}
 
 	@Getter
+	@Builder
 	public static class UpdateRequest {
 		private Long lectureId;
 		@NotNull(message = "isFavorite은 null이 될 수 없습니다.")

@@ -19,7 +19,7 @@ public class FavoriteServiceImpl implements FavoriteService {
 	public FavoriteInfo.UpdateResponse create(final Long memberId, final Long lectureId) {
 		final Favorite saveFavorite = favoriteFactory.create(memberId, lectureId);
 
-		return new FavoriteInfo.UpdateResponse(saveFavorite.getId());
+		return new FavoriteInfo.UpdateResponse(saveFavorite.getInflearnCourse().getId());
 	}
 
 	@Override
@@ -27,7 +27,7 @@ public class FavoriteServiceImpl implements FavoriteService {
 	public FavoriteInfo.UpdateResponse remove(final Long memberId, final Long lectureId) {
 		Favorite deleteFavorite = favoriteFactory.delete(memberId, lectureId);
 
-		return new FavoriteInfo.UpdateResponse(deleteFavorite.getId());
+		return new FavoriteInfo.UpdateResponse(deleteFavorite.getInflearnCourse().getId());
 	}
 
 	@Override
