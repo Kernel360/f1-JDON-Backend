@@ -20,39 +20,39 @@ import lombok.RequiredArgsConstructor;
 @Component
 @RequiredArgsConstructor
 public class FavoriteReaderImpl implements FavoriteReader {
-	private final FavoriteRepository favoriteRepository;
-	private final FavoriteInfoMapper favoriteInfoMapper;
+    private final FavoriteRepository favoriteRepository;
+    private final FavoriteInfoMapper favoriteInfoMapper;
 
-	@Override
-	public FavoriteInfo.FindFavoriteListResponse findList(final Long memberId, final PageInfoRequest pageInfoRequest) {
-		Pageable pageable = PageRequest.of(pageInfoRequest.getPage(), pageInfoRequest.getSize());
+    @Override
+    public FavoriteInfo.FindFavoriteListResponse findList(final Long memberId, final PageInfoRequest pageInfoRequest) {
+        Pageable pageable = PageRequest.of(pageInfoRequest.getPage(), pageInfoRequest.getSize());
 
-		final Page<Favorite> favoritePage = favoriteRepository.findFavoriteByMemberId(memberId, pageable);
-		final Page<FavoriteReaderInfo.FindFavoriteListResponse> favoritesPage = favoritePage.map(
-			favoriteInfoMapper::of);
+        final Page<Favorite> favoritePage = favoriteRepository.findFavoriteByMemberId(memberId, pageable);
+        final Page<FavoriteReaderInfo.FindFavoriteListResponse> favoritesPage = favoritePage.map(
+            favoriteInfoMapper::of);
 
-		final List<FavoriteInfo.FindFavorite> list = favoritesPage.getContent().stream()
-			.map(FavoriteInfo.FindFavorite::of)
-			.toList();
+        final List<FavoriteInfo.FindFavorite> list = favoritesPage.getContent().stream()
+            .map(FavoriteInfo.FindFavorite::of)
+            .toList();
 
-		return new FavoriteInfo.FindFavoriteListResponse(list, new CustomJpaPageInfo(favoritesPage));
-	}
+        return new FavoriteInfo.FindFavoriteListResponse(list, new CustomJpaPageInfo(favoritesPage));
+    }
 
-	@Override
-	public Optional<Favorite> findExistingFavoriteByMemberIdAndInflearnCourseId(final Long memberId,
-		final Long lectureId) {
-		return favoriteRepository.findFavoriteByMemberIdAndInflearnCourseId(memberId, lectureId);
-	}
+    @Override
+    public Optional<Favorite> findOptionalByMemberIdAndInflearnCourseId(final Long memberId,
+        final Long lectureId) {
+        return favoriteRepository.findFavoriteByMemberIdAndInflearnCourseId(memberId, lectureId);
+    }
 
-	@Override
-	public Favorite findFavoriteByMemberIdAndInflearnCourseId(final Long memberId, final Long lectureId) {
-		return favoriteRepository.findFavoriteByMemberIdAndInflearnCourseId(memberId, lectureId)
-			.orElseThrow(FavoriteErrorCode.NOT_FOUND_FAVORITE::throwException);
-	}
+    @Override
+    public Favorite findFavoriteByMemberIdAndInflearnCourseId(final Long memberId, final Long lectureId) {
+        return favoriteRepository.findFavoriteByMemberIdAndInflearnCourseId(memberId, lectureId)
+            .orElseThrow(FavoriteErrorCode.NOT_FOUND_FAVORITE::throwException);
+    }
 
-	@Override
-	public Favorite save(final Favorite favorite) {
-		return favoriteRepository.save(favorite);
-	}
+    @Override
+    public Favorite save(final Favorite favorite) {
+        return favoriteRepository.save(favorite);
+    }
 }
 
