@@ -17,25 +17,25 @@ public class CoffeeChatInfo {
 
     @Getter
     @Builder
-    public static class UpdatedCoffeeChatResponse {
+    public static class UpdateCoffeeChatResponse {
         private final Long coffeeChatId;
     }
 
     @Getter
     @Builder
-    public static class CreatedCoffeeChatResponse {
+    public static class CreateCoffeeChatResponse {
         private final Long coffeeChatId;
     }
 
     @Getter
     @Builder
-    public static class AppliedCoffeeChatResponse {
+    public static class ApplyCoffeeChatResponse {
         private final Long coffeeChatId;
     }
 
     @Getter
     @Builder
-    public static class DeletedCoffeeChatResponse {
+    public static class DeleteCoffeeChatResponse {
         private final Long coffeeChatId;
     }
 

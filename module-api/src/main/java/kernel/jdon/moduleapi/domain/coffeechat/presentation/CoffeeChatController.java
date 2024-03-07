@@ -72,62 +72,62 @@ public class CoffeeChatController {
     }
 
     @PostMapping("/api/v1/coffeechats/{id}")
-    public ResponseEntity<CommonResponse<CoffeeChatDto.AppliedCoffeeChatResponse>> applyCoffeeChat(
+    public ResponseEntity<CommonResponse<CoffeeChatDto.ApplyCoffeeChatResponse>> applyCoffeeChat(
         @PathVariable(name = "id") Long coffeeChatId,
         @LoginUser SessionUserInfo member
     ) {
-        CoffeeChatInfo.AppliedCoffeeChatResponse info = coffeeChatFacade.applyCoffeeChat(
+        CoffeeChatInfo.ApplyCoffeeChatResponse info = coffeeChatFacade.applyCoffeeChat(
             coffeeChatId, member.getId());
-        CoffeeChatDto.AppliedCoffeeChatResponse response = coffeeChatDtoMapper.of(info);
+        CoffeeChatDto.ApplyCoffeeChatResponse response = coffeeChatDtoMapper.of(info);
 
         return ResponseEntity.ok().body(CommonResponse.of(response));
     }
 
     @PostMapping("/api/v1/coffeechats/{id}/cancel")
-    public ResponseEntity<CommonResponse<CoffeeChatDto.CanceledCoffeeChatResponse>> cancelCoffeeChat(
+    public ResponseEntity<CommonResponse<CoffeeChatDto.CancelCoffeeChatResponse>> cancelCoffeeChat(
         @PathVariable(name = "id") Long coffeeChatId,
         @LoginUser SessionUserInfo member
     ) {
         CoffeeChatInfo.CanceledCoffeeChatResponse info = coffeeChatFacade.cancelCoffeeChatApplication(
             coffeeChatId, member.getId());
-        CoffeeChatDto.CanceledCoffeeChatResponse response = coffeeChatDtoMapper.of(info);
+        CoffeeChatDto.CancelCoffeeChatResponse response = coffeeChatDtoMapper.of(info);
 
         return ResponseEntity.ok(CommonResponse.of(response));
     }
 
     @PostMapping("/api/v1/coffeechats")
-    public ResponseEntity<CommonResponse<CoffeeChatDto.CreatedCoffeeChatResponse>> createCoffeeChat(
+    public ResponseEntity<CommonResponse<CoffeeChatDto.CreateCoffeeChatResponse>> createCoffeeChat(
         @RequestBody @Valid CoffeeChatDto.CreateCoffeeChatRequest request,
         @LoginUser SessionUserInfo member
     ) {
         CoffeeChatCommand.CreateCoffeeChatRequest createCommand = coffeeChatDtoMapper.of(request);
-        CoffeeChatInfo.CreatedCoffeeChatResponse info = coffeeChatFacade.createCoffeeChat(createCommand,
+        CoffeeChatInfo.CreateCoffeeChatResponse info = coffeeChatFacade.createCoffeeChat(createCommand,
             member.getId());
-        CoffeeChatDto.CreatedCoffeeChatResponse response = coffeeChatDtoMapper.of(info);
+        CoffeeChatDto.CreateCoffeeChatResponse response = coffeeChatDtoMapper.of(info);
         URI uri = URI.create("/v1/coffeechats/" + info.getCoffeeChatId());
 
         return ResponseEntity.created(uri).body(CommonResponse.of(response));
     }
 
     @PutMapping("/api/v1/coffeechats/{id}")
-    public ResponseEntity<CommonResponse<CoffeeChatDto.UpdatedCoffeeChatResponse>> modifyCoffeeChat(
+    public ResponseEntity<CommonResponse<CoffeeChatDto.UpdateCoffeeChatResponse>> modifyCoffeeChat(
         @PathVariable(name = "id") Long coffeeChatId,
         @RequestBody @Valid CoffeeChatDto.UpdateCoffeeChatRequest request
     ) {
         CoffeeChatCommand.UpdateCoffeeChatRequest updateCommand = coffeeChatDtoMapper.of(request);
-        CoffeeChatInfo.UpdatedCoffeeChatResponse info = coffeeChatFacade.modifyCoffeeChat(
+        CoffeeChatInfo.UpdateCoffeeChatResponse info = coffeeChatFacade.modifyCoffeeChat(
             updateCommand, coffeeChatId);
-        CoffeeChatDto.UpdatedCoffeeChatResponse response = coffeeChatDtoMapper.of(info);
+        CoffeeChatDto.UpdateCoffeeChatResponse response = coffeeChatDtoMapper.of(info);
 
         return ResponseEntity.ok().body(CommonResponse.of(response));
     }
 
     @DeleteMapping("/api/v1/coffeechats/{id}")
-    public ResponseEntity<CommonResponse<CoffeeChatDto.DeletedCoffeeChatResponse>> removeCoffeeChat(
+    public ResponseEntity<CommonResponse<CoffeeChatDto.DeleteCoffeeChatResponse>> removeCoffeeChat(
         @PathVariable(name = "id") Long coffeeChatId) {
-        CoffeeChatInfo.DeletedCoffeeChatResponse info = coffeeChatFacade.deleteCoffeeChat(
+        CoffeeChatInfo.DeleteCoffeeChatResponse info = coffeeChatFacade.deleteCoffeeChat(
             coffeeChatId);
-        CoffeeChatDto.DeletedCoffeeChatResponse response = coffeeChatDtoMapper.of(info);
+        CoffeeChatDto.DeleteCoffeeChatResponse response = coffeeChatDtoMapper.of(info);
 
         return ResponseEntity.ok().body(CommonResponse.of(response));
     }
