@@ -2,15 +2,12 @@ package kernel.jdon.moduleapi.domain.coffeechat.core;
 
 import java.util.Optional;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import kernel.jdon.moduleapi.domain.coffeechat.error.CoffeeChatErrorCode;
 import kernel.jdon.moduleapi.domain.member.core.MemberReader;
 import kernel.jdon.moduleapi.global.exception.ApiException;
-import kernel.jdon.moduleapi.global.page.CustomPageResponse;
 import kernel.jdon.moduleapi.global.page.PageInfoRequest;
 import kernel.jdon.moduledomain.coffeechat.domain.CoffeeChat;
 import kernel.jdon.moduledomain.coffeechatmember.domain.CoffeeChatMember;
@@ -113,25 +110,15 @@ public class CoffeeChatServiceImpl implements CoffeeChatService {
     }
 
     @Override
-    public CustomPageResponse<CoffeeChatInfo.FindCoffeeChat> getGuestCoffeeChatList(Long memberId,
-        Pageable pageable) {
-        Page<CoffeeChatInfo.FindCoffeeChat> guestCoffeeChatPage = coffeeChatReader.findCoffeeChatMemberListByMemberId(
-                memberId,
-                pageable)
-            .map(CoffeeChatMember::getCoffeeChat)
-            .map(coffeeChatInfoMapper::listOf);
-
-        return CustomPageResponse.of(guestCoffeeChatPage);
+    public CoffeeChatInfo.FindCoffeeChatListResponse getGuestCoffeeChatList(Long memberId,
+        PageInfoRequest pageInfoRequest) {
+        return coffeeChatReader.findGuestCoffeeChatList(memberId, pageInfoRequest);
     }
 
     @Override
-    public CustomPageResponse<CoffeeChatInfo.FindCoffeeChat> getHostCoffeeChatList(Long memberId,
-        Pageable pageable) {
-        Page<CoffeeChatInfo.FindCoffeeChat> hostCoffeeChatPage = coffeeChatReader.findCoffeeChatListByMemberId(memberId,
-                pageable)
-            .map(coffeeChatInfoMapper::listOf);
-
-        return CustomPageResponse.of(hostCoffeeChatPage);
+    public CoffeeChatInfo.FindCoffeeChatListResponse getHostCoffeeChatList(Long memberId,
+        PageInfoRequest pageInfoRequest) {
+        return coffeeChatReader.findHostCoffeeChatList(memberId, pageInfoRequest);
     }
 
     @Override

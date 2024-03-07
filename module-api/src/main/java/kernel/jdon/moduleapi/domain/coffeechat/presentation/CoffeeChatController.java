@@ -3,8 +3,6 @@ package kernel.jdon.moduleapi.domain.coffeechat.presentation;
 import java.net.URI;
 import java.util.Optional;
 
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +21,6 @@ import kernel.jdon.moduleapi.domain.coffeechat.core.CoffeeChatInfo;
 import kernel.jdon.moduleapi.domain.coffeechat.core.CoffeeChatSortCondition;
 import kernel.jdon.moduleapi.global.annotation.LoginUser;
 import kernel.jdon.moduleapi.global.dto.SessionUserInfo;
-import kernel.jdon.moduleapi.global.page.CustomPageResponse;
 import kernel.jdon.moduleapi.global.page.PageInfoRequest;
 import kernel.jdon.modulecommon.dto.response.CommonResponse;
 import lombok.RequiredArgsConstructor;
@@ -133,23 +130,25 @@ public class CoffeeChatController {
     }
 
     @GetMapping("/api/v1/coffeechats/guest")
-    public ResponseEntity<CommonResponse<CustomPageResponse<CoffeeChatInfo.FindCoffeeChat>>> getGuestCoffeeChatList(
-        @LoginUser SessionUserInfo member,
-        @PageableDefault(size = 12) Pageable pageable
+    public ResponseEntity<CommonResponse<CoffeeChatInfo.FindCoffeeChatListResponse>> getGuestCoffeeChatList(
+        @ModelAttribute PageInfoRequest pageInfoRequest,
+        @LoginUser SessionUserInfo member
     ) {
-        CustomPageResponse<CoffeeChatInfo.FindCoffeeChat> response = coffeeChatFacade.getGuestCoffeeChatList(
-            member.getId(), pageable);
+        CoffeeChatInfo.FindCoffeeChatListResponse info = coffeeChatFacade.getGuestCoffeeChatList(
+            member.getId(), pageInfoRequest);
+        CoffeeChatDto.FindCoffeeChatListResponse response = coffeeChatDtoMapper.of(info);
 
         return ResponseEntity.ok().body(CommonResponse.of(response));
     }
 
     @GetMapping("/api/v1/coffeechats/host")
-    public ResponseEntity<CommonResponse<CustomPageResponse<CoffeeChatInfo.FindCoffeeChat>>> getHostCoffeeChatList(
-        @LoginUser SessionUserInfo member,
-        @PageableDefault(size = 12) Pageable pageable
+    public ResponseEntity<CommonResponse<CoffeeChatInfo.FindCoffeeChatListResponse>> getHostCoffeeChatList(
+        @ModelAttribute PageInfoRequest pageInfoRequest,
+        @LoginUser SessionUserInfo member
     ) {
-        CustomPageResponse<CoffeeChatInfo.FindCoffeeChat> response = coffeeChatFacade.getHostCoffeeChatList(
-            member.getId(), pageable);
+        CoffeeChatInfo.FindCoffeeChatListResponse info = coffeeChatFacade.getHostCoffeeChatList(
+            member.getId(), pageInfoRequest);
+        CoffeeChatDto.FindCoffeeChatListResponse response = coffeeChatDtoMapper.of(info);
 
         return ResponseEntity.ok().body(CommonResponse.of(response));
     }
