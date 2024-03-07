@@ -18,7 +18,7 @@ public enum FrontendSkillType implements SkillType {
 	DOCKER("Docker", "도커", Arrays.asList("Container", "Docker Compose", "Docker Swarm", "컨테이너", "컴포즈", "스웜")),
 	NEXT_JS("Next.js", "넥스트.js", Arrays.asList("SSR", "Static Site Generation", "넥스트")),
 	NODE_JS("Node.js", "노드.js", Arrays.asList("Express", "NPM", "Yarn", "노드", "익스프레스")),
-	REACT_JS("React.js", "리액트.js", Arrays.asList("React Native", "JSX", "리액트")),
+	REACT_JS("React.js", "리액트.js", Arrays.asList("React Native", "JSX", "리액트", "React")),
 	VUE_JS("Vue.JS", "뷰.JS", Arrays.asList("Vuex", "Vue Router", "Vue", "뷰")),
 	VUEJS("VueJS", "뷰JS", Arrays.asList("Vuex", "Vue Router", "Vue", "뷰")),
 	FIGMA("Figma", "피그마", Arrays.asList("Design", "Prototyping", "Collaboration", "디자인", "프로토타입", "협업", "툴")),
