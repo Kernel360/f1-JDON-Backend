@@ -28,8 +28,10 @@ public class CoffeeChatServiceImpl implements CoffeeChatService {
 
     @Override
     @Transactional
-    public CoffeeChatInfo.CreateCoffeeChatResponse createCoffeeChat(CoffeeChatCommand.CreateCoffeeChatRequest request,
-        Long memberId) {
+    public CoffeeChatInfo.CreateCoffeeChatResponse createCoffeeChat(
+        CoffeeChatCommand.CreateCoffeeChatRequest request,
+        Long memberId
+    ) {
         Member findMember = memberReader.findById(memberId);
         CoffeeChat savedCoffeeChat = coffeeChatStore.save(request.toEntity(findMember));
 
@@ -39,11 +41,9 @@ public class CoffeeChatServiceImpl implements CoffeeChatService {
     @Override
     public CoffeeChatInfo.FindCoffeeChatListResponse getCoffeeChatList(
         final PageInfoRequest pageInfoRequest,
-        final CoffeeChatCommand.FindCoffeeChatListRequest command) {
-        final CoffeeChatInfo.FindCoffeeChatListResponse coffeeChatList = coffeeChatReader.findCoffeeChatList(
-            pageInfoRequest, command);
-
-        return coffeeChatList;
+        final CoffeeChatCommand.FindCoffeeChatListRequest command
+    ) {
+        return coffeeChatReader.findCoffeeChatList(pageInfoRequest, command);
     }
 
     @Override
@@ -119,14 +119,18 @@ public class CoffeeChatServiceImpl implements CoffeeChatService {
     }
 
     @Override
-    public CoffeeChatInfo.FindCoffeeChatListResponse getGuestCoffeeChatList(Long memberId,
-        PageInfoRequest pageInfoRequest) {
+    public CoffeeChatInfo.FindCoffeeChatListResponse getGuestCoffeeChatList(
+        Long memberId,
+        PageInfoRequest pageInfoRequest
+    ) {
         return coffeeChatReader.findGuestCoffeeChatList(memberId, pageInfoRequest);
     }
 
     @Override
-    public CoffeeChatInfo.FindCoffeeChatListResponse getHostCoffeeChatList(Long memberId,
-        PageInfoRequest pageInfoRequest) {
+    public CoffeeChatInfo.FindCoffeeChatListResponse getHostCoffeeChatList(
+        Long memberId,
+        PageInfoRequest pageInfoRequest
+    ) {
         return coffeeChatReader.findHostCoffeeChatList(memberId, pageInfoRequest);
     }
 
