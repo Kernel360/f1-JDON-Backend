@@ -41,11 +41,11 @@ public class CoffeeChatController {
         @RequestParam(value = "keyword", defaultValue = "") final String keyword,
         @RequestParam(value = "jobCategory", defaultValue = "") final Long jobCategory) {
 
-		final CoffeeChatCommand.FindCoffeeChatListRequest request = coffeeChatDtoMapper.of(
-			new CoffeeChatCondition(sort, keyword, jobCategory));
-		final CoffeeChatInfo.FindCoffeeChatListResponse info = coffeeChatFacade.getCoffeeChatList(
-			pageInfoRequest, request);
-		final CoffeeChatDto.FindCoffeeChatListResponse response = coffeeChatDtoMapper.of(info);
+        final CoffeeChatCommand.FindCoffeeChatListRequest request = coffeeChatDtoMapper.of(
+            new CoffeeChatCondition(sort, keyword, jobCategory));
+        final CoffeeChatInfo.FindCoffeeChatListResponse info = coffeeChatFacade.getCoffeeChatList(
+            pageInfoRequest, request);
+        final CoffeeChatDto.FindCoffeeChatListResponse response = coffeeChatDtoMapper.of(info);
 
         return ResponseEntity.ok(CommonResponse.of(response));
     }
