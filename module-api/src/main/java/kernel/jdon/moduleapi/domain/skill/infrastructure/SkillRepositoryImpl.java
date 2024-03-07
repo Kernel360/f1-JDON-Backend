@@ -16,7 +16,6 @@ import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
-import kernel.jdon.moduleapi.domain.skill.util.SkillKeywordManager;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

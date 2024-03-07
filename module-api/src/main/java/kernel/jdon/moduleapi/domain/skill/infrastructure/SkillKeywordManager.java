@@ -1,4 +1,4 @@
-package kernel.jdon.moduleapi.domain.skill.util;
+package kernel.jdon.moduleapi.domain.skill.infrastructure;
 
 import java.util.ArrayList;
 import java.util.List;
