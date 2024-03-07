@@ -69,20 +69,26 @@ public class CoffeeChatServiceImpl implements CoffeeChatService {
 
     @Override
     @Transactional
-    public CoffeeChatInfo.UpdateCoffeeChatResponse modifyCoffeeChat(CoffeeChatCommand.UpdateCoffeeChatRequest request,
-        Long coffeeChatId) {
-        CoffeeChat findCoffeeChat = coffeeChatReader.findExistCoffeeChat(coffeeChatId);
+    public CoffeeChatInfo.UpdateCoffeeChatResponse modifyCoffeeChat(CoffeeChatCommand.UpdateCoffeeChatRequest request) {
+        CoffeeChat findCoffeeChat = coffeeChatReader.findExistCoffeeChat(request.getCoffeeChatId());
         CoffeeChat updateCoffeeChat = request.toEntity();
 
-        validateUpdateRequest(findCoffeeChat, updateCoffeeChat);
+        validateUpdateRequest(findCoffeeChat, updateCoffeeChat, request.getMemberId());
         coffeeChatStore.update(findCoffeeChat, updateCoffeeChat);
 
         return new CoffeeChatInfo.UpdateCoffeeChatResponse(findCoffeeChat.getId());
     }
 
-    private void validateUpdateRequest(CoffeeChat findCoffeeChat, CoffeeChat updateCoffeeChat) {
+    private void validateUpdateRequest(CoffeeChat findCoffeeChat, CoffeeChat updateCoffeeChat, Long memberId) {
+        checkMemberIsAuthor(findCoffeeChat, memberId);
         checkMeetDate(findCoffeeChat, updateCoffeeChat);
         checkTotalRecruitCount(findCoffeeChat, updateCoffeeChat);
+    }
+
+    private void checkMemberIsAuthor(CoffeeChat findCoffeeChat, Long memberId) {
+        if (!memberId.equals(findCoffeeChat.getMember().getId())) {
+            throw new ApiException(CoffeeChatErrorCode.UNAUTHORIZED_COFFEECHAT_UPDATE);
+        }
     }
 
     private void checkMeetDate(CoffeeChat findCoffeeChat, CoffeeChat updateCoffeeChat) {
