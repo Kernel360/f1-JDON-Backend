@@ -12,19 +12,21 @@ public interface CoffeeChatService {
 
     CoffeeChatInfo.FindCoffeeChatResponse getCoffeeChat(Long coffeeChatId, Long memberId);
 
-    CoffeeChatInfo.CreatedCoffeeChatResponse createCoffeeChat(CoffeeChatCommand.CreateCoffeeChatRequest request,
+    CoffeeChatInfo.CreateCoffeeChatResponse createCoffeeChat(CoffeeChatCommand.CreateCoffeeChatRequest request,
         Long memberId);
 
     void increaseViewCount(Long coffeeChatId);
 
-    CoffeeChatInfo.UpdatedCoffeeChatResponse modifyCoffeeChat(CoffeeChatCommand.UpdateCoffeeChatRequest request,
+    CoffeeChatInfo.UpdateCoffeeChatResponse modifyCoffeeChat(CoffeeChatCommand.UpdateCoffeeChatRequest request,
         Long coffeeChatId);
 
-    CoffeeChatInfo.DeletedCoffeeChatResponse deleteCoffeeChat(Long coffeeChatId);
+    CoffeeChatInfo.DeleteCoffeeChatResponse deleteCoffeeChat(Long coffeeChatId);
 
     CustomPageResponse getGuestCoffeeChatList(Long memberId, Pageable pageable);
 
     CustomPageResponse getHostCoffeeChatList(Long memberId, Pageable pageable);
 
-    CoffeeChatInfo.AppliedCoffeeChatResponse applyCoffeeChat(Long coffeeChatId, Long memberId);
+    CoffeeChatInfo.ApplyCoffeeChatResponse applyCoffeeChat(Long coffeeChatId, Long memberId);
+
+    CoffeeChatInfo.CancelCoffeeChatResponse cancelCoffeeChat(Long coffeeChatId, Long memberId);
 }

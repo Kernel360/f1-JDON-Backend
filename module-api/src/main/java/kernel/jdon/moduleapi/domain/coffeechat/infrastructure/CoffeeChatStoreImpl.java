@@ -2,8 +2,9 @@ package kernel.jdon.moduleapi.domain.coffeechat.infrastructure;
 
 import org.springframework.stereotype.Component;
 
-import kernel.jdon.moduledomain.coffeechat.domain.CoffeeChat;
 import kernel.jdon.moduleapi.domain.coffeechat.core.CoffeeChatStore;
+import kernel.jdon.moduledomain.coffeechat.domain.CoffeeChat;
+import kernel.jdon.moduledomain.coffeechatmember.domain.CoffeeChatMember;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -25,7 +26,12 @@ public class CoffeeChatStoreImpl implements CoffeeChatStore {
     }
 
     @Override
-    public void deleteById(Long coffeeChatid) {
-        coffeeChatRepository.deleteById(coffeeChatid);
+    public void deleteById(Long coffeeChatId) {
+        coffeeChatRepository.deleteById(coffeeChatId);
+    }
+
+    @Override
+    public void cancel(CoffeeChat findCoffeeChat, CoffeeChatMember findCoffeeChatMember) {
+        findCoffeeChat.removeCoffeeChatMember(findCoffeeChatMember);
     }
 }

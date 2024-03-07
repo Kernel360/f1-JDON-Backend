@@ -14,13 +14,15 @@ import kernel.jdon.moduleapi.domain.coffeechat.core.CoffeeChatInfo;
 )
 public interface CoffeeChatDtoMapper {
 
-    CoffeeChatDto.UpdatedCoffeeChatResponse of(CoffeeChatInfo.UpdatedCoffeeChatResponse info);
+    CoffeeChatDto.CancelCoffeeChatResponse of(CoffeeChatInfo.CancelCoffeeChatResponse info);
 
-    CoffeeChatDto.CreatedCoffeeChatResponse of(CoffeeChatInfo.CreatedCoffeeChatResponse info);
+    CoffeeChatDto.UpdateCoffeeChatResponse of(CoffeeChatInfo.UpdateCoffeeChatResponse info);
 
-    CoffeeChatDto.AppliedCoffeeChatResponse of(CoffeeChatInfo.AppliedCoffeeChatResponse info);
+    CoffeeChatDto.CreateCoffeeChatResponse of(CoffeeChatInfo.CreateCoffeeChatResponse info);
 
-    CoffeeChatDto.DeletedCoffeeChatResponse of(CoffeeChatInfo.DeletedCoffeeChatResponse info);
+    CoffeeChatDto.ApplyCoffeeChatResponse of(CoffeeChatInfo.ApplyCoffeeChatResponse info);
+
+    CoffeeChatDto.DeleteCoffeeChatResponse of(CoffeeChatInfo.DeleteCoffeeChatResponse info);
 
     CoffeeChatDto.FindCoffeeChatResponse of(CoffeeChatInfo.FindCoffeeChatResponse info);
 

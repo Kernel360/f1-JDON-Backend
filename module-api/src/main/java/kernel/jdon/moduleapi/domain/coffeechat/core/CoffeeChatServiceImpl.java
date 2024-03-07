@@ -1,5 +1,7 @@
 package kernel.jdon.moduleapi.domain.coffeechat.core;
 
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -29,12 +31,12 @@ public class CoffeeChatServiceImpl implements CoffeeChatService {
 
     @Override
     @Transactional
-    public CoffeeChatInfo.CreatedCoffeeChatResponse createCoffeeChat(CoffeeChatCommand.CreateCoffeeChatRequest request,
+    public CoffeeChatInfo.CreateCoffeeChatResponse createCoffeeChat(CoffeeChatCommand.CreateCoffeeChatRequest request,
         Long memberId) {
         Member findMember = memberReader.findById(memberId);
         CoffeeChat savedCoffeeChat = coffeeChatStore.save(request.toEntity(findMember));
 
-        return new CoffeeChatInfo.CreatedCoffeeChatResponse(savedCoffeeChat.getId());
+        return new CoffeeChatInfo.CreateCoffeeChatResponse(savedCoffeeChat.getId());
     }
 
     @Override
@@ -56,14 +58,9 @@ public class CoffeeChatServiceImpl implements CoffeeChatService {
     }
 
     private boolean checkIfMemberParticipated(Long coffeeChatId, Long memberId) {
-        boolean isParticipant;
-        if (memberId != null) {
-            isParticipant = coffeeChatReader.existsByCoffeeChatIdAndMemberId(coffeeChatId, memberId);
-        } else {
-            isParticipant = false;
-        }
-
-        return isParticipant;
+        return Optional.ofNullable(memberId)
+            .map(id -> coffeeChatReader.existsByCoffeeChatIdAndMemberId(coffeeChatId, id))
+            .orElse(false);
     }
 
     @Override
@@ -75,7 +72,7 @@ public class CoffeeChatServiceImpl implements CoffeeChatService {
 
     @Override
     @Transactional
-    public CoffeeChatInfo.UpdatedCoffeeChatResponse modifyCoffeeChat(CoffeeChatCommand.UpdateCoffeeChatRequest request,
+    public CoffeeChatInfo.UpdateCoffeeChatResponse modifyCoffeeChat(CoffeeChatCommand.UpdateCoffeeChatRequest request,
         Long coffeeChatId) {
         CoffeeChat findCoffeeChat = coffeeChatReader.findExistCoffeeChat(coffeeChatId);
         CoffeeChat updateCoffeeChat = request.toEntity();
@@ -83,7 +80,7 @@ public class CoffeeChatServiceImpl implements CoffeeChatService {
         validateUpdateRequest(findCoffeeChat, updateCoffeeChat);
         coffeeChatStore.update(findCoffeeChat, updateCoffeeChat);
 
-        return new CoffeeChatInfo.UpdatedCoffeeChatResponse(findCoffeeChat.getId());
+        return new CoffeeChatInfo.UpdateCoffeeChatResponse(findCoffeeChat.getId());
     }
 
     private void validateUpdateRequest(CoffeeChat findCoffeeChat, CoffeeChat updateCoffeeChat) {
@@ -94,7 +91,8 @@ public class CoffeeChatServiceImpl implements CoffeeChatService {
     private void checkMeetDate(CoffeeChat findCoffeeChat, CoffeeChat updateCoffeeChat) {
         if (findCoffeeChat.isExpired()) {
             throw CoffeeChatErrorCode.EXPIRED_COFFEECHAT.throwException();
-        } else if (updateCoffeeChat.isPastDate()) {
+        }
+        if (updateCoffeeChat.isExpired()) {
             throw CoffeeChatErrorCode.MEET_DATE_ISBEFORE_NOW.throwException();
         }
     }
@@ -107,11 +105,11 @@ public class CoffeeChatServiceImpl implements CoffeeChatService {
 
     @Override
     @Transactional
-    public CoffeeChatInfo.DeletedCoffeeChatResponse deleteCoffeeChat(Long coffeeChatId) {
+    public CoffeeChatInfo.DeleteCoffeeChatResponse deleteCoffeeChat(Long coffeeChatId) {
         CoffeeChat findCoffeeChat = coffeeChatReader.findExistCoffeeChat(coffeeChatId);
         coffeeChatStore.deleteById(findCoffeeChat.getId());
 
-        return new CoffeeChatInfo.DeletedCoffeeChatResponse(findCoffeeChat.getId());
+        return new CoffeeChatInfo.DeleteCoffeeChatResponse(findCoffeeChat.getId());
     }
 
     @Override
@@ -138,14 +136,14 @@ public class CoffeeChatServiceImpl implements CoffeeChatService {
 
     @Override
     @Transactional
-    public CoffeeChatInfo.AppliedCoffeeChatResponse applyCoffeeChat(Long coffeeChatId, Long memberId) {
+    public CoffeeChatInfo.ApplyCoffeeChatResponse applyCoffeeChat(Long coffeeChatId, Long memberId) {
         CoffeeChat findCoffeeChat = findExistAndOpenCoffeeChat(coffeeChatId);
         Member findMember = memberReader.findById(memberId);
 
         validateApplyRequest(findMember, findCoffeeChat);
         findCoffeeChat.addCoffeeChatMember(findMember);
 
-        return new CoffeeChatInfo.AppliedCoffeeChatResponse(findCoffeeChat.getId());
+        return new CoffeeChatInfo.ApplyCoffeeChatResponse(findCoffeeChat.getId());
     }
 
     private void validateApplyRequest(Member findMember, CoffeeChat findCoffeeChat) {
@@ -173,6 +171,18 @@ public class CoffeeChatServiceImpl implements CoffeeChatService {
 
         return findCoffeeChat;
     }
+
+    @Override
+    @Transactional
+    public CoffeeChatInfo.CancelCoffeeChatResponse cancelCoffeeChat(Long coffeeChatId, Long memberId) {
+        CoffeeChat findCoffeeChat = coffeeChatReader.findExistCoffeeChat(coffeeChatId);
+
+        CoffeeChatMember findCoffeeChatMember = coffeeChatReader.findCoffeeChatMember(coffeeChatId, memberId);
+        coffeeChatStore.cancel(findCoffeeChat, findCoffeeChatMember);
+
+        return new CoffeeChatInfo.CancelCoffeeChatResponse(findCoffeeChat.getId());
+    }
+
 }
 
 

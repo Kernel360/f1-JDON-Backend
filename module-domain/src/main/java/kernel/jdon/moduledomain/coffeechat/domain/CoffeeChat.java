@@ -103,6 +103,16 @@ public class CoffeeChat extends AbstractEntity {
         this.currentRecruitCount += 1;
     }
 
+    public void removeCoffeeChatMember(CoffeeChatMember coffeeChatMember) {
+        this.coffeeChatMemberList.remove(coffeeChatMember);
+        decreaseCurrentRecruitCount();
+        updateStatusByRecruitCount();
+    }
+
+    private void decreaseCurrentRecruitCount() {
+        this.currentRecruitCount -= 1;
+    }
+
     public void updateCoffeeChat(CoffeeChat request) {
         this.title = request.getTitle();
         this.content = request.getContent();
@@ -117,10 +127,6 @@ public class CoffeeChat extends AbstractEntity {
     }
 
     public boolean isExpired() {
-        return this.meetDate.isBefore(LocalDateTime.now());
-    }
-
-    public boolean isPastDate() {
         return this.meetDate.isBefore(LocalDateTime.now());
     }
 

@@ -3,9 +3,9 @@ package kernel.jdon.moduleapi.domain.coffeechat.core;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import kernel.jdon.moduleapi.global.page.PageInfoRequest;
 import kernel.jdon.moduledomain.coffeechat.domain.CoffeeChat;
 import kernel.jdon.moduledomain.coffeechatmember.domain.CoffeeChatMember;
-import kernel.jdon.moduleapi.global.page.PageInfoRequest;
 
 public interface CoffeeChatReader {
     CoffeeChat findExistCoffeeChat(Long coffeeChatId);
@@ -19,4 +19,5 @@ public interface CoffeeChatReader {
 
     boolean existsByCoffeeChatIdAndMemberId(Long coffeeChatId, Long memberId);
 
+    CoffeeChatMember findCoffeeChatMember(Long coffeeChatId, Long memberId);
 }

@@ -1,5 +1,7 @@
 package kernel.jdon.moduleapi.domain.coffeechat.infrastructure;
 
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
@@ -13,4 +15,5 @@ public interface CoffeeChatMemberRepository extends CoffeeChatMemberDomainReposi
 
     boolean existsByCoffeeChatIdAndMemberId(Long coffeeChatId, Long memberId);
 
+    Optional<CoffeeChatMember> findByCoffeeChatIdAndMemberId(Long coffeeChatId, Long memberId);
 }
