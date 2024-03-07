@@ -6,8 +6,8 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public abstract class CustomPagingInfo {
-	private long pageNumber;
-	private long pageSize;
-	private boolean last;
-	private boolean empty;
+    private final long pageNumber;
+    private final long pageSize;
+    private final boolean last;
+    private final boolean empty;
 }
