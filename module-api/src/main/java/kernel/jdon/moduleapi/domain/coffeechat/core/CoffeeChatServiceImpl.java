@@ -1,5 +1,7 @@
 package kernel.jdon.moduleapi.domain.coffeechat.core;
 
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -56,14 +58,9 @@ public class CoffeeChatServiceImpl implements CoffeeChatService {
     }
 
     private boolean checkIfMemberParticipated(Long coffeeChatId, Long memberId) {
-        boolean isParticipant;
-        if (memberId != null) {
-            isParticipant = coffeeChatReader.existsByCoffeeChatIdAndMemberId(coffeeChatId, memberId);
-        } else {
-            isParticipant = false;
-        }
-
-        return isParticipant;
+        return Optional.ofNullable(memberId)
+            .map(id -> coffeeChatReader.existsByCoffeeChatIdAndMemberId(coffeeChatId, id))
+            .orElse(false);
     }
 
     @Override
