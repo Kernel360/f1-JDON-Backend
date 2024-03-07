@@ -6,9 +6,11 @@ import kernel.jdon.moduleapi.global.page.PageInfoRequest;
 import kernel.jdon.moduledomain.favorite.domain.Favorite;
 
 public interface FavoriteReader {
-	FavoriteInfo.FindFavoriteListResponse findList(Long memberId, PageInfoRequest pageInfoRequest);
+    FavoriteInfo.FindFavoriteListResponse findList(Long memberId, PageInfoRequest pageInfoRequest);
 
-	Optional<Favorite> findFavoriteByMemberIdAndInflearnCourseId(Long memberId, Long lectureId);
+    Optional<Favorite> findOptionalByMemberIdAndInflearnCourseId(Long memberId, Long lectureId);
 
-	Favorite save(Favorite favorite);
+    Favorite findFavoriteByMemberIdAndInflearnCourseId(Long memberId, Long lectureId);
+
+    Favorite save(Favorite favorite);
 }
