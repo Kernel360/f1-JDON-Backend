@@ -80,15 +80,11 @@ public class CoffeeChatServiceImpl implements CoffeeChatService {
     }
 
     private void validateUpdateRequest(CoffeeChat findCoffeeChat, CoffeeChat updateCoffeeChat, Long memberId) {
-        checkMemberIsAuthor(findCoffeeChat, memberId);
-        checkMeetDate(findCoffeeChat, updateCoffeeChat);
-        checkTotalRecruitCount(findCoffeeChat, updateCoffeeChat);
-    }
-
-    private void checkMemberIsAuthor(CoffeeChat findCoffeeChat, Long memberId) {
-        if (!memberId.equals(findCoffeeChat.getMember().getId())) {
+        if (!isMemberHost(memberId, findCoffeeChat)) {
             throw new ApiException(CoffeeChatErrorCode.UNAUTHORIZED_COFFEECHAT_UPDATE);
         }
+        checkMeetDate(findCoffeeChat, updateCoffeeChat);
+        checkTotalRecruitCount(findCoffeeChat, updateCoffeeChat);
     }
 
     private void checkMeetDate(CoffeeChat findCoffeeChat, CoffeeChat updateCoffeeChat) {
@@ -108,11 +104,18 @@ public class CoffeeChatServiceImpl implements CoffeeChatService {
 
     @Override
     @Transactional
-    public CoffeeChatInfo.DeleteCoffeeChatResponse deleteCoffeeChat(Long coffeeChatId) {
+    public CoffeeChatInfo.DeleteCoffeeChatResponse deleteCoffeeChat(Long coffeeChatId, Long memberId) {
         CoffeeChat findCoffeeChat = coffeeChatReader.findExistCoffeeChat(coffeeChatId);
+        validateDeleteRequest(memberId, findCoffeeChat);
         coffeeChatStore.deleteById(findCoffeeChat.getId());
 
         return new CoffeeChatInfo.DeleteCoffeeChatResponse(findCoffeeChat.getId());
+    }
+
+    private void validateDeleteRequest(Long memberId, CoffeeChat findCoffeeChat) {
+        if (!isMemberHost(memberId, findCoffeeChat)) {
+            throw new ApiException(CoffeeChatErrorCode.UNAUTHORIZED_COFFEECHAT_DELETE);
+        }
     }
 
     @Override
@@ -140,7 +143,9 @@ public class CoffeeChatServiceImpl implements CoffeeChatService {
     }
 
     private void validateApplyRequest(Member findMember, CoffeeChat findCoffeeChat) {
-        checkIfMemberIsHost(findMember, findCoffeeChat);
+        if (isMemberHost(findMember.getId(), findCoffeeChat)) {
+            throw new ApiException(CoffeeChatErrorCode.CANNOT_JOIN_OWN_COFFEECHAT);
+        }
         checkIfAlreadyJoined(findMember, findCoffeeChat);
     }
 
@@ -150,10 +155,8 @@ public class CoffeeChatServiceImpl implements CoffeeChatService {
         }
     }
 
-    private void checkIfMemberIsHost(Member findMember, CoffeeChat findCoffeeChat) {
-        if (findMember.getId().equals(findCoffeeChat.getMember().getId())) {
-            throw new ApiException(CoffeeChatErrorCode.CANNOT_JOIN_OWN_COFFEECHAT);
-        }
+    private boolean isMemberHost(Long memberId, CoffeeChat findCoffeeChat) {
+        return memberId.equals(findCoffeeChat.getMember().getId());
     }
 
     private CoffeeChat findExistAndOpenCoffeeChat(Long coffeeChatId) {

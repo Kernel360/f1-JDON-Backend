@@ -16,7 +16,7 @@ public interface CoffeeChatService {
 
     CoffeeChatInfo.UpdateCoffeeChatResponse modifyCoffeeChat(CoffeeChatCommand.UpdateCoffeeChatRequest request);
 
-    CoffeeChatInfo.DeleteCoffeeChatResponse deleteCoffeeChat(Long coffeeChatId);
+    CoffeeChatInfo.DeleteCoffeeChatResponse deleteCoffeeChat(Long coffeeChatId, Long memberId);
 
     CoffeeChatInfo.FindCoffeeChatListResponse getGuestCoffeeChatList(Long memberId, PageInfoRequest pageInfoRequest);
 
