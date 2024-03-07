@@ -36,7 +36,7 @@ public class ReviewRepositoryImpl implements CustomReviewRepository {
                 reviewIdLt(reviewId),
                 review.wantedJd.id.eq(jdId)
             )
-            .limit(pageable.getPageSize())
+            .limit(pageable.getPageSize() + 1)
             .orderBy(review.createdDate.desc())
             .fetch();
 
@@ -44,7 +44,11 @@ public class ReviewRepositoryImpl implements CustomReviewRepository {
     }
 
     private boolean hasNextPage(final List<ReviewReaderInfo.FindReview> content, final int pageSize) {
-        return content.size() > pageSize - 1;
+        if (content.size() > pageSize) {
+            content.remove(pageSize);
+            return true;
+        }
+        return false;
     }
 
     private BooleanExpression reviewIdLt(final Long reviewId) {
