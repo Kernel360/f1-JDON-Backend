@@ -6,10 +6,10 @@ import lombok.Getter;
 
 @Getter
 public class CustomJpaSliceInfo extends CustomSliceInfo {
-	public CustomJpaSliceInfo(Slice<?> page) {
-		super(page.getPageable().getPageNumber(),
-			page.getPageable().getPageSize(),
-			page.isLast(),
-			page.isEmpty());
+	public CustomJpaSliceInfo(Slice<?> slice) {
+		super(slice.getPageable().getPageNumber(),
+			slice.getPageable().getPageSize(),
+			slice.isLast(),
+			slice.isEmpty());
 	}
 }
