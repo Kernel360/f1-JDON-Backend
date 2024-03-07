@@ -108,12 +108,13 @@ public class CoffeeChatController {
 
     @PutMapping("/api/v1/coffeechats/{id}")
     public ResponseEntity<CommonResponse<CoffeeChatDto.UpdateCoffeeChatResponse>> modifyCoffeeChat(
+        @RequestBody @Valid CoffeeChatDto.UpdateCoffeeChatRequest request,
         @PathVariable(name = "id") Long coffeeChatId,
-        @RequestBody @Valid CoffeeChatDto.UpdateCoffeeChatRequest request
+        @LoginUser SessionUserInfo member
     ) {
-        CoffeeChatCommand.UpdateCoffeeChatRequest updateCommand = coffeeChatDtoMapper.of(request);
-        CoffeeChatInfo.UpdateCoffeeChatResponse info = coffeeChatFacade.modifyCoffeeChat(
-            updateCommand, coffeeChatId);
+        CoffeeChatCommand.UpdateCoffeeChatRequest updateCommand = coffeeChatDtoMapper.of(request, coffeeChatId,
+            member.getId());
+        CoffeeChatInfo.UpdateCoffeeChatResponse info = coffeeChatFacade.modifyCoffeeChat(updateCommand);
         CoffeeChatDto.UpdateCoffeeChatResponse response = coffeeChatDtoMapper.of(info);
 
         return ResponseEntity.ok().body(CommonResponse.of(response));
