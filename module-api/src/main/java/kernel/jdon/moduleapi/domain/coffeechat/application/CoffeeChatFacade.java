@@ -48,8 +48,8 @@ public class CoffeeChatFacade {
         return coffeeChatService.modifyCoffeeChat(request);
     }
 
-    public CoffeeChatInfo.DeleteCoffeeChatResponse deleteCoffeeChat(Long coffeeChatId) {
-        return coffeeChatService.deleteCoffeeChat(coffeeChatId);
+    public CoffeeChatInfo.DeleteCoffeeChatResponse deleteCoffeeChat(Long coffeeChatId, Long memberId) {
+        return coffeeChatService.deleteCoffeeChat(coffeeChatId, memberId);
     }
 
     public CoffeeChatInfo.FindCoffeeChatListResponse getGuestCoffeeChatList(Long memberId,
