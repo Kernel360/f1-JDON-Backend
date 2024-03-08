@@ -67,7 +67,6 @@ class FavoriteFactoryImplTest {
         given(inflearnReader.findById(mockLectureId)).willReturn(mockInflearnCourse);
         given(favoriteReader.findOptionalByMemberIdAndInflearnCourseId(mockMemberId, mockLectureId)).willReturn(
             Optional.empty());
-        given(favoriteReader.save(any(Favorite.class))).willReturn(mockFavorite);
         given(favoriteStore.save(any(Favorite.class))).willReturn(mockFavorite);
 
         // when
@@ -82,7 +81,6 @@ class FavoriteFactoryImplTest {
         then(memberReader).should(times(1)).findById(mockMemberId);
         then(inflearnReader).should(times(1)).findById(mockLectureId);
         then(favoriteReader).should(times(1)).findOptionalByMemberIdAndInflearnCourseId(mockMemberId, mockLectureId);
-        then(favoriteReader).should(times(1)).save(any(Favorite.class));
         then(favoriteStore).should(times(1)).save(any(Favorite.class));
     }
 
@@ -94,7 +92,6 @@ class FavoriteFactoryImplTest {
         given(inflearnReader.findById(mockLectureId)).willReturn(mockInflearnCourse);
         given(favoriteReader.findOptionalByMemberIdAndInflearnCourseId(mockMemberId, mockLectureId)).willReturn(
             Optional.of(mockFavorite));
-        given(favoriteStore.save(any(Favorite.class))).willReturn(mockFavorite);
 
         // when
         Favorite actualFavorite = favoriteFactoryImpl.create(mockMemberId, mockLectureId);
@@ -108,8 +105,7 @@ class FavoriteFactoryImplTest {
         then(memberReader).should(times(1)).findById(mockMemberId);
         then(inflearnReader).should(times(1)).findById(mockLectureId);
         then(favoriteReader).should(times(1)).findOptionalByMemberIdAndInflearnCourseId(mockMemberId, mockLectureId);
-        then(favoriteReader).should(times(0)).save(any(Favorite.class));
-        then(favoriteStore).should(times(1)).save(any(Favorite.class));
+        then(favoriteStore).should(times(0)).save(any(Favorite.class));
     }
 
     @DisplayName("3: 회원 id와 강의 id가 주어지면, delete 메서드가 삭제된 Favorite 엔티티를 반환한다.")

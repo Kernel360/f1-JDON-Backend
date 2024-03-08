@@ -24,18 +24,18 @@ public class FavoriteFactoryImpl implements FavoriteFactory {
     public Favorite create(Long memberId, Long lectureId) {
         final Member findMember = memberReader.findById(memberId);
         final InflearnCourse findInflearnCourse = inflearnReader.findById(lectureId);
-        final Favorite findFavorite = favoriteReader.findOptionalByMemberIdAndInflearnCourseId(
+        final Favorite saveFavorite = favoriteReader.findOptionalByMemberIdAndInflearnCourseId(
                 findMember.getId(),
                 findInflearnCourse.getId())
             .orElseGet(() -> createNewFavorite(findMember, findInflearnCourse));
-
-        return favoriteStore.save(findFavorite);
+        
+        return saveFavorite;
     }
 
     private Favorite createNewFavorite(final Member member, final InflearnCourse inflearnCourse) {
         final Favorite favorite = new Favorite(member, inflearnCourse);
 
-        return favoriteReader.save(favorite);
+        return favoriteStore.save(favorite);
     }
 
     @Override

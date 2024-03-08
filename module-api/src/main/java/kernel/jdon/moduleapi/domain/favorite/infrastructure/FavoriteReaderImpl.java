@@ -49,10 +49,5 @@ public class FavoriteReaderImpl implements FavoriteReader {
         return favoriteRepository.findFavoriteByMemberIdAndInflearnCourseId(memberId, lectureId)
             .orElseThrow(FavoriteErrorCode.NOT_FOUND_FAVORITE::throwException);
     }
-
-    @Override
-    public Favorite save(final Favorite favorite) {
-        return favoriteRepository.save(favorite);
-    }
 }
 
