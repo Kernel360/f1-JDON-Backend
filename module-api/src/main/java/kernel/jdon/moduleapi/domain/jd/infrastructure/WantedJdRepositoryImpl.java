@@ -19,8 +19,8 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
-import kernel.jdon.moduleapi.domain.jd.core.JdSearchTypeCondition;
-import kernel.jdon.moduleapi.domain.jd.core.JdSortTypeCondition;
+import kernel.jdon.moduleapi.domain.jd.core.JdSearchType;
+import kernel.jdon.moduleapi.domain.jd.core.JdSortType;
 import kernel.jdon.moduleapi.domain.jd.presentation.JdCondition;
 import kernel.jdon.moduleapi.domain.skill.infrastructure.SkillKeywordManager;
 import lombok.RequiredArgsConstructor;
@@ -57,17 +57,14 @@ public class WantedJdRepositoryImpl implements CustomWantedJdRepository {
 
 	private BooleanBuilder searchWantedJdList(JdCondition jdCondition) {
 		BooleanBuilder searchCondition = new BooleanBuilder();
-
-		if (jdCondition != null) {
-			searchCondition.and(wantedJdSkillContains(jdCondition.getSkill()));
-			searchCondition.and(wantedJdJobCategoryContains(jdCondition.getJobCategory()));
-			searchCondition.and(wantedJdKeywordContains(jdCondition.getKeywordType(), jdCondition.getKeyword()));
-		}
+		searchCondition.and(wantedJdSkillContains(jdCondition.getSkill()));
+		searchCondition.and(wantedJdJobCategoryContains(jdCondition.getJobCategory()));
+		searchCondition.and(wantedJdKeywordContains(jdCondition.getKeywordType(), jdCondition.getKeyword()));
 
 		return searchCondition;
 	}
 
-	private BooleanExpression wantedJdKeywordContains(final JdSearchTypeCondition keywordType, final String keyword) {
+	private BooleanExpression wantedJdKeywordContains(final JdSearchType keywordType, final String keyword) {
 		return switch (keywordType) {
 			case COMPANY -> wantedJdCompanyContains(keyword);
 			default -> wantedJdTitleContains(keyword);
@@ -101,7 +98,7 @@ public class WantedJdRepositoryImpl implements CustomWantedJdRepository {
 			: null;
 	}
 
-	private OrderSpecifier createOrderSpecifier(final JdSortTypeCondition sort) {
+	private OrderSpecifier createOrderSpecifier(final JdSortType sort) {
 		return switch (sort) {
 			case REVIEW -> new OrderSpecifier<>(Order.DESC, wantedJd.reviewList.size());
 			default -> new OrderSpecifier<>(Order.DESC, wantedJd.scrapingDate);

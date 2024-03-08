@@ -8,9 +8,9 @@ import org.springframework.format.FormatterRegistry;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import kernel.jdon.moduleapi.domain.coffeechat.core.CoffeeChatSortCondition;
-import kernel.jdon.moduleapi.domain.jd.core.JdSearchTypeCondition;
-import kernel.jdon.moduleapi.domain.jd.core.JdSortTypeCondition;
+import kernel.jdon.moduleapi.domain.coffeechat.core.CoffeeChatSortType;
+import kernel.jdon.moduleapi.domain.jd.core.JdSearchType;
+import kernel.jdon.moduleapi.domain.jd.core.JdSortType;
 import lombok.RequiredArgsConstructor;
 
 @Configuration
@@ -32,24 +32,24 @@ public class WebConfig implements WebMvcConfigurer {
 		registry.addConverter(new JdSortTypeConverter());
 	}
 
-	private static class CoffeeChatSortConverter implements Converter<String, CoffeeChatSortCondition> {
+	private static class CoffeeChatSortConverter implements Converter<String, CoffeeChatSortType> {
 		@Override
-		public CoffeeChatSortCondition convert(String source) {
-			return CoffeeChatSortCondition.of(source);
+		public CoffeeChatSortType convert(String source) {
+			return CoffeeChatSortType.of(source);
 		}
 	}
 
-	private static class JdSearchTypeConverter implements Converter<String, JdSearchTypeCondition> {
+	private static class JdSearchTypeConverter implements Converter<String, JdSearchType> {
 		@Override
-		public JdSearchTypeCondition convert(String source) {
-			return JdSearchTypeCondition.of(source);
+		public JdSearchType convert(String source) {
+			return JdSearchType.of(source);
 		}
 	}
 
-	private static class JdSortTypeConverter implements Converter<String, JdSortTypeCondition> {
+	private static class JdSortTypeConverter implements Converter<String, JdSortType> {
 		@Override
-		public JdSortTypeCondition convert(String source) {
-			return JdSortTypeCondition.of(source);
+		public JdSortType convert(String source) {
+			return JdSortType.of(source);
 		}
 	}
 }

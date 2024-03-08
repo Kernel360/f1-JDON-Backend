@@ -4,22 +4,23 @@ import static org.springframework.util.StringUtils.*;
 
 import java.util.Arrays;
 
-public enum JdSearchTypeCondition {
+public enum JdSearchType {
 	COMPANY("company"),
 	TITLE("title");
 
 	private final String searchCondition;
 
-	JdSearchTypeCondition(String searchCondition) {
+	JdSearchType(String searchCondition) {
 		this.searchCondition = searchCondition;
 	}
 
-	public static JdSearchTypeCondition of(String searchCondition) {
-		if (!hasText(searchCondition))
+	public static JdSearchType of(String searchCondition) {
+		if (!hasText(searchCondition)) {
 			return TITLE;
+		}
 		return Arrays.stream(values())
 			.filter(name -> name.searchCondition.equals(searchCondition))
 			.findFirst()
-			.orElseThrow();
+			.orElse(TITLE);
 	}
 }

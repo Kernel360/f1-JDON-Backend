@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import kernel.jdon.moduleapi.domain.jd.application.JdFacade;
 import kernel.jdon.moduleapi.domain.jd.core.JdInfo;
-import kernel.jdon.moduleapi.domain.jd.core.JdSearchTypeCondition;
-import kernel.jdon.moduleapi.domain.jd.core.JdSortTypeCondition;
+import kernel.jdon.moduleapi.domain.jd.core.JdSearchType;
+import kernel.jdon.moduleapi.domain.jd.core.JdSortType;
 import kernel.jdon.moduleapi.global.page.PageInfoRequest;
 import kernel.jdon.modulecommon.dto.response.CommonResponse;
 import lombok.RequiredArgsConstructor;
@@ -35,9 +35,9 @@ public class JdController {
 		@ModelAttribute final PageInfoRequest pageInfoRequest,
 		@RequestParam(value = "skill", defaultValue = "") final String skill,
 		@RequestParam(value = "jobCategory", required = false) final Long jobCategory,
-		@RequestParam(value = "keywordType", defaultValue = "") final JdSearchTypeCondition keywordType,
+		@RequestParam(value = "keywordType", defaultValue = "") final JdSearchType keywordType,
 		@RequestParam(value = "keyword", defaultValue = "") final String keyword,
-		@RequestParam(value = "sort", defaultValue = "") final JdSortTypeCondition sort) {
+		@RequestParam(value = "sort", defaultValue = "") final JdSortType sort) {
 		final JdInfo.FindWantedJdListResponse info = jdFacade.getJdList(pageInfoRequest,
 			JdCondition.of(skill, jobCategory, keywordType, keyword, sort));
 		final JdDto.FindWantedJdListResponse response = jdDtoMapper.of(info);

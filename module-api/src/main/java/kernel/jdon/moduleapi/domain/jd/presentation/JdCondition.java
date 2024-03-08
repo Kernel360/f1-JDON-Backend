@@ -1,7 +1,7 @@
 package kernel.jdon.moduleapi.domain.jd.presentation;
 
-import kernel.jdon.moduleapi.domain.jd.core.JdSearchTypeCondition;
-import kernel.jdon.moduleapi.domain.jd.core.JdSortTypeCondition;
+import kernel.jdon.moduleapi.domain.jd.core.JdSearchType;
+import kernel.jdon.moduleapi.domain.jd.core.JdSortType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -10,13 +10,13 @@ import lombok.Getter;
 public class JdCondition {
 	private final String skill;
 	private final Long jobCategory;
-	private final JdSearchTypeCondition keywordType;
+	private final JdSearchType keywordType;
 	private final String keyword;
-	private final JdSortTypeCondition sort;
+	private final JdSortType sort;
 
 	public static JdCondition of(final String skill, final Long jobCategory,
-		final JdSearchTypeCondition keywordType, final String keyword,
-		final JdSortTypeCondition sort) {
+		final JdSearchType keywordType, final String keyword,
+		final JdSortType sort) {
 		return new JdCondition(skill, jobCategory, keywordType, keyword, sort);
 	}
 }

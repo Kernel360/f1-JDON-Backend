@@ -4,22 +4,23 @@ import static org.springframework.util.StringUtils.*;
 
 import java.util.Arrays;
 
-public enum JdSortTypeCondition {
+public enum JdSortType {
 	LATEST("latest"),
 	REVIEW("review");
 
 	private final String sortCondition;
 
-	JdSortTypeCondition(String sortCondition) {
+	JdSortType(String sortCondition) {
 		this.sortCondition = sortCondition;
 	}
 
-	public static JdSortTypeCondition of(String sortCondition) {
-		if (!hasText(sortCondition))
+	public static JdSortType of(String sortCondition) {
+		if (!hasText(sortCondition)) {
 			return LATEST;
+		}
 		return Arrays.stream(values())
 			.filter(name -> name.sortCondition.equals(sortCondition))
 			.findFirst()
-			.orElseThrow();
+			.orElse(LATEST);
 	}
 }
