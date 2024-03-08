@@ -80,11 +80,15 @@ public class CoffeeChatServiceImpl implements CoffeeChatService {
     }
 
     private void validateUpdateRequest(CoffeeChat findCoffeeChat, CoffeeChat updateCoffeeChat, Long memberId) {
+        checkMemberIsHost(findCoffeeChat, memberId);
+        checkMeetDate(findCoffeeChat, updateCoffeeChat);
+        checkTotalRecruitCount(findCoffeeChat, updateCoffeeChat);
+    }
+
+    private void checkMemberIsHost(CoffeeChat findCoffeeChat, Long memberId) {
         if (!isMemberHost(memberId, findCoffeeChat)) {
             throw new ApiException(CoffeeChatErrorCode.FORBIDDEN_COFFEECHAT_UPDATE);
         }
-        checkMeetDate(findCoffeeChat, updateCoffeeChat);
-        checkTotalRecruitCount(findCoffeeChat, updateCoffeeChat);
     }
 
     private void checkMeetDate(CoffeeChat findCoffeeChat, CoffeeChat updateCoffeeChat) {
