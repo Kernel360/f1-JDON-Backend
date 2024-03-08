@@ -1,7 +1,7 @@
 package kernel.jdon.moduleapi.domain.skill.core;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.BDDMockito.*;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -16,97 +16,98 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import kernel.jdon.moduledomain.jobcategory.domain.JobCategory;
 import kernel.jdon.moduleapi.domain.jobcategory.core.JobCategoryReader;
 import kernel.jdon.moduleapi.domain.skill.core.inflearnjd.InflearnJdSkillReader;
 import kernel.jdon.moduleapi.domain.skill.core.wantedjd.WantedJdSkillReader;
+import kernel.jdon.moduledomain.jobcategory.domain.JobCategory;
 import kernel.jdon.util.JsonFileReader;
 
 @DisplayName("Skill Service Impl 테스트")
 @ExtendWith(MockitoExtension.class)
 class SkillServiceImplTest {
-	@Mock
-	private SkillReader skillReader;
-	@Mock
-	private JobCategoryReader jobCategoryReader;
-	@Mock
-	private WantedJdSkillReader wantedJdSkillReader;
-	@Mock
-	private InflearnJdSkillReader inflearnJdSkillReader;
-	@InjectMocks
-	private SkillServiceImpl skillServiceImpl;
+    @Mock
+    private SkillReader skillReader;
+    @Mock
+    private JobCategoryReader jobCategoryReader;
+    @Mock
+    private WantedJdSkillReader wantedJdSkillReader;
+    @Mock
+    private InflearnJdSkillReader inflearnJdSkillReader;
+    @InjectMocks
+    private SkillServiceImpl skillServiceImpl;
 
-	@Test
-	@DisplayName("1: getHotSkillList 메서드가 존재하는 HotSkill 개수 만큼 데이터를 응답한다.")
-	void givenValidHotSkillList_whenFindList_thenReturnCorrectHotSkillList() {
-		// given
-		var hotSkillList = Collections.singletonList(new SkillInfo.FindHotSkill(1L, "hotSkill_keyword"));
+    @Test
+    @DisplayName("1: getHotSkillList 메서드가 존재하는 HotSkill 개수 만큼 데이터를 응답한다.")
+    void givenValidHotSkillList_whenFindList_thenReturnCorrectHotSkillList() {
+        // given
+        final var mockHotSkillList = Collections.singletonList(mock(SkillInfo.FindHotSkill.class));
+        given(skillReader.findHotSkillList()).willReturn(mockHotSkillList);
 
-		// when
-		when(skillReader.findHotSkillList()).thenReturn(hotSkillList);
-		var response = skillServiceImpl.getHotSkillList();
+        // when
+        final var response = skillServiceImpl.getHotSkillList();
 
-		// then
-		assertThat(response.getSkillList()).hasSize(1);
-		verify(skillReader, times(1)).findHotSkillList();
-	}
+        // then
+        assertThat(response.getSkillList()).hasSize(1);
+        then(skillReader).should(times(1)).findHotSkillList();
+    }
 
-	@Test
-	@DisplayName("2: getMemberSkillList 메서드가 존재하는 memberSkill 개수 만큼 데이터를 응답한다.")
-	void givenValidMemberSkillList_whenFindList_thenReturnCorrectHotSkillList() {
-		// given
-		var memberSkillList = Arrays.asList(
-			new SkillInfo.FindMemberSkill(1L, "member_skill_keyword_1"),
-			new SkillInfo.FindMemberSkill(2L, "member_skill_keyword_2"),
-			new SkillInfo.FindMemberSkill(3L, "member_skill_keyword_3"));
-		Long memberId = 1L;
+    @Test
+    @DisplayName("2: getMemberSkillList 메서드가 존재하는 memberSkill 개수 만큼 데이터를 응답한다.")
+    void givenValidMemberSkillList_whenFindList_thenReturnCorrectHotSkillList() {
+        // given
+        final var memberSkillList = Arrays.asList(
+            mock(SkillInfo.FindMemberSkill.class),
+            mock(SkillInfo.FindMemberSkill.class),
+            mock(SkillInfo.FindMemberSkill.class)
+        );
+        final var memberId = 1L;
+        given(skillReader.findMemberSkillList(memberId)).willReturn(memberSkillList);
 
-		// when
-		when(skillReader.findMemberSkillList(memberId)).thenReturn(memberSkillList);
-		var response = skillServiceImpl.getMemberSkillList(memberId);
+        // when
+        final var response = skillServiceImpl.getMemberSkillList(memberId);
 
-		// then
-		assertThat(response.getSkillList()).hasSize(3);
-		verify(skillReader, times(1)).findMemberSkillList(memberId);
-	}
+        // then
+        assertThat(response.getSkillList()).hasSize(3);
+        then(skillReader).should(times(1)).findMemberSkillList(memberId);
+    }
 
-	@Test
-	@DisplayName("3: 올바른 직군 ID가 주어졌을 때 getJobCategorySkillList 메서드가 직군별 기술스택에서 '기타' 키워드를 제외한 데이터 개수 만큼 데이터를 응답한다.")
-	void givenValidJobCategoryId_whenFindList_thenReturnCorrectJobCategorySkillList() throws Exception {
-		//given
-		String filePath = "giventest/skill/serviceimpl/3_jobCategorySkillList.json";
-		JobCategory jobCategory = JsonFileReader.readJsonFileToObject(filePath, JobCategory.class);
-		final Long jobCategoryId = 1L;
+    @Test
+    @DisplayName("3: 올바른 직군 ID가 주어졌을 때 getJobCategorySkillList 메서드가 직군별 기술스택에서 '기타' 키워드를 제외한 데이터 개수 만큼 데이터를 응답한다.")
+    void givenValidJobCategoryId_whenFindList_thenReturnCorrectJobCategorySkillList() throws Exception {
+        //given
+        final var filePath = "giventest/skill/serviceimpl/3_jobCategorySkillList.json";
+        final var jobCategory = JsonFileReader.readJsonFileToObject(filePath, JobCategory.class);
+        final var jobCategoryId = 1L;
+        given(jobCategoryReader.findById(jobCategoryId)).willReturn(jobCategory);
 
-		//when
-		when(jobCategoryReader.findById(jobCategoryId)).thenReturn(jobCategory);
-		var response = skillServiceImpl.getJobCategorySkillList(jobCategoryId);
+        //when
+        final var response = skillServiceImpl.getJobCategorySkillList(jobCategoryId);
 
-		//then
-		assertThat(response.getSkillList()).hasSize(2);
-		verify(jobCategoryReader, times(1)).findById(jobCategoryId);
-	}
+        //then
+        assertThat(response.getSkillList()).hasSize(2);
+        then(jobCategoryReader).should(times(1)).findById(jobCategoryId);
+    }
 
-	@ParameterizedTest
-	@NullSource
-	@ValueSource(strings = {""})
-	@DisplayName("4: keyword가 존재하지 않을 때 getDataListBySkill 메서드가 인기있는 keyword 기반으로 데이터를 응답한다.")
-	void givenEmptyKeyword_whenFindList_thenReturnCorrectDataListByHotSkill(final String keyword) throws
-		Exception {
-		//given
-		final String hotSkillKeyword = "hotSkill_keyword";
-		final var hotSkillList = Collections.singletonList(new SkillInfo.FindHotSkill(1L, hotSkillKeyword));
-		final Long memberId = 1L;
+    @ParameterizedTest
+    @NullSource
+    @ValueSource(strings = {""})
+    @DisplayName("4: keyword가 존재하지 않을 때 getDataListBySkill 메서드가 인기있는 keyword 기반으로 데이터를 응답한다.")
+    void givenEmptyKeyword_whenFindList_thenReturnCorrectDataListByHotSkill(final String keyword) throws
+        Exception {
+        //given
+        final var hotSkillKeyword = "hotSkill_keyword";
+        final var hotSkillList = Collections.singletonList(new SkillInfo.FindHotSkill(1L, hotSkillKeyword));
+        final var memberId = 1L;
+        given(skillReader.findHotSkillList()).willReturn(hotSkillList);
+        given(wantedJdSkillReader.findWantedJdListBySkill(hotSkillKeyword)).willReturn(null);
+        given(inflearnJdSkillReader.findInflearnLectureListBySkill(hotSkillKeyword, memberId)).willReturn(null);
 
-		//when
-		when(wantedJdSkillReader.findWantedJdListBySkill(hotSkillKeyword)).thenReturn(null);
-		when(inflearnJdSkillReader.findInflearnLectureListBySkill(hotSkillKeyword, memberId)).thenReturn(null);
-		when(skillReader.findHotSkillList()).thenReturn(hotSkillList);
-		var response = skillServiceImpl.getDataListBySkill(keyword, memberId);
+        //when
+        final var response = skillServiceImpl.getDataListBySkill(keyword, memberId);
 
-		//then
-		assertThat(response.getKeyword()).isEqualTo(hotSkillKeyword);
-		verify(wantedJdSkillReader, times(1)).findWantedJdListBySkill(hotSkillKeyword);
-		verify(inflearnJdSkillReader, times(1)).findInflearnLectureListBySkill(hotSkillKeyword, memberId);
-	}
+        //then
+        assertThat(response.getKeyword()).isEqualTo(hotSkillKeyword);
+        then(wantedJdSkillReader).should(times(1)).findWantedJdListBySkill(hotSkillKeyword);
+        then(inflearnJdSkillReader).should(times(1)).findInflearnLectureListBySkill(hotSkillKeyword, memberId);
+    }
 }
