@@ -80,12 +80,12 @@ public class CoffeeChatServiceImpl implements CoffeeChatService {
     }
 
     private void validateUpdateRequest(CoffeeChat findCoffeeChat, CoffeeChat updateCoffeeChat, Long memberId) {
-        checkMemberIsNotHost(findCoffeeChat, memberId);
+        assertMemberIsHost(findCoffeeChat, memberId);
         checkMeetDate(findCoffeeChat, updateCoffeeChat);
         checkTotalRecruitCount(findCoffeeChat, updateCoffeeChat);
     }
 
-    private void checkMemberIsNotHost(CoffeeChat findCoffeeChat, Long memberId) {
+    private void assertMemberIsHost(CoffeeChat findCoffeeChat, Long memberId) {
         if (!isMemberHost(memberId, findCoffeeChat)) {
             throw new ApiException(CoffeeChatErrorCode.FORBIDDEN_COFFEECHAT_ACCESS);
         }
@@ -117,7 +117,7 @@ public class CoffeeChatServiceImpl implements CoffeeChatService {
     }
 
     private void validateDeleteRequest(Long memberId, CoffeeChat findCoffeeChat) {
-        checkMemberIsNotHost(findCoffeeChat, memberId);
+        assertMemberIsHost(findCoffeeChat, memberId);
     }
 
     @Override
@@ -149,11 +149,14 @@ public class CoffeeChatServiceImpl implements CoffeeChatService {
     }
 
     private void validateApplyRequest(Member findMember, CoffeeChat findCoffeeChat) {
+        assertMemberIsNotHost(findMember, findCoffeeChat);
+        checkDuplicateApply(findMember, findCoffeeChat);
+    }
 
+    private void assertMemberIsNotHost(Member findMember, CoffeeChat findCoffeeChat) {
         if (isMemberHost(findMember.getId(), findCoffeeChat)) {
             throw new ApiException(CoffeeChatErrorCode.CANNOT_JOIN_OWN_COFFEECHAT);
         }
-        checkDuplicateApply(findMember, findCoffeeChat);
     }
 
     private void checkDuplicateApply(Member findMember, CoffeeChat findCoffeeChat) {
