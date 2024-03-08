@@ -4,7 +4,6 @@ import java.util.concurrent.TimeUnit;
 
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import kernel.jdon.moduleapi.domain.coffeechat.core.CoffeeChatCommand;
@@ -13,7 +12,6 @@ import kernel.jdon.moduleapi.domain.coffeechat.core.CoffeeChatService;
 import kernel.jdon.moduleapi.domain.coffeechat.error.CoffeeChatErrorCode;
 import kernel.jdon.moduleapi.global.config.redis.CoffeeChatLockConfig;
 import kernel.jdon.moduleapi.global.exception.ApiException;
-import kernel.jdon.moduleapi.global.page.CustomPageResponse;
 import kernel.jdon.moduleapi.global.page.PageInfoRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -41,28 +39,30 @@ public class CoffeeChatFacade {
         return findCoffeeChatResponse;
     }
 
-    public Long saveCoffeeChat(CoffeeChatCommand.CreateCoffeeChatRequest request, Long memberId) {
+    public CoffeeChatInfo.CreateCoffeeChatResponse createCoffeeChat(CoffeeChatCommand.CreateCoffeeChatRequest request,
+        Long memberId) {
         return coffeeChatService.createCoffeeChat(request, memberId);
     }
 
-    public Long modifyCoffeeChat(CoffeeChatCommand.UpdateCoffeeChatRequest request, Long coffeeChatId) {
-        return coffeeChatService.modifyCoffeeChat(request, coffeeChatId);
+    public CoffeeChatInfo.UpdateCoffeeChatResponse modifyCoffeeChat(CoffeeChatCommand.UpdateCoffeeChatRequest request) {
+        return coffeeChatService.modifyCoffeeChat(request);
     }
 
-    public Long deleteCoffeeChat(Long coffeeChatId) {
-        return coffeeChatService.deleteCoffeeChat(coffeeChatId);
+    public CoffeeChatInfo.DeleteCoffeeChatResponse deleteCoffeeChat(Long coffeeChatId, Long memberId) {
+        return coffeeChatService.deleteCoffeeChat(coffeeChatId, memberId);
     }
 
-    public CustomPageResponse<CoffeeChatInfo.FindCoffeeChat> getGuestCoffeeChatList(Long memberId,
-        Pageable pageable) {
-        return coffeeChatService.getGuestCoffeeChatList(memberId, pageable);
+    public CoffeeChatInfo.FindCoffeeChatListResponse getGuestCoffeeChatList(Long memberId,
+        PageInfoRequest pageInfoRequest) {
+        return coffeeChatService.getGuestCoffeeChatList(memberId, pageInfoRequest);
     }
 
-    public CustomPageResponse<CoffeeChatInfo.FindCoffeeChat> getHostCoffeeChatList(Long memberId, Pageable pageable) {
-        return coffeeChatService.getHostCoffeeChatList(memberId, pageable);
+    public CoffeeChatInfo.FindCoffeeChatListResponse getHostCoffeeChatList(Long memberId,
+        PageInfoRequest pageInfoRequest) {
+        return coffeeChatService.getHostCoffeeChatList(memberId, pageInfoRequest);
     }
 
-    public Long applyCoffeeChat(Long coffeeChatId, Long memberId) {
+    public CoffeeChatInfo.ApplyCoffeeChatResponse applyCoffeeChat(Long coffeeChatId, Long memberId) {
         RLock lock = redissonClient.getLock(String.format("apply:coffeeChat:%d", coffeeChatId));
         try {
             boolean available = lock.tryLock(lockConfig.getWaitTime(), lockConfig.getLeaseTime(),
@@ -80,5 +80,9 @@ public class CoffeeChatFacade {
         } finally {
             lock.unlock();
         }
+    }
+
+    public CoffeeChatInfo.CancelCoffeeChatResponse cancelCoffeeChatApplication(Long coffeeChatId, Long memberId) {
+        return coffeeChatService.cancelCoffeeChat(coffeeChatId, memberId);
     }
 }

@@ -18,7 +18,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import kernel.jdon.moduleapi.domain.coffeechat.core.CoffeeChatCommand;
-import kernel.jdon.moduleapi.domain.coffeechat.core.CoffeeChatSortCondition;
+import kernel.jdon.moduleapi.domain.coffeechat.core.CoffeeChatSortType;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -38,7 +38,8 @@ public class CoffeeChatRepositoryImpl implements CustomCoffeeChatRepository {
 				coffeeChat.meetDate,
 				coffeeChat.createdDate,
 				coffeeChat.totalRecruitCount,
-				coffeeChat.currentRecruitCount))
+				coffeeChat.currentRecruitCount,
+				coffeeChat.viewCount))
 			.from(coffeeChat)
 			.join(member)
 			.on(coffeeChat.member.eq(member))
@@ -71,9 +72,9 @@ public class CoffeeChatRepositoryImpl implements CustomCoffeeChatRepository {
 		return new PageImpl<>(content, pageable, totalCount);
 	}
 
-	private OrderSpecifier[] coffeeChatSort(CoffeeChatSortCondition sort) {
+	private OrderSpecifier[] coffeeChatSort(CoffeeChatSortType sort) {
 		ArrayList<Object> orderSpecifiers = new ArrayList<>();
-		if (CoffeeChatSortCondition.VIEW_COUNT == sort) {
+		if (CoffeeChatSortType.VIEW_COUNT == sort) {
 			orderSpecifiers.add(new OrderSpecifier<>(Order.DESC, coffeeChat.viewCount));
 		} else {
 			orderSpecifiers.add(new OrderSpecifier<>(Order.DESC, coffeeChat.createdDate));

@@ -4,7 +4,7 @@ import kernel.jdon.moduleapi.global.page.PageInfoRequest;
 import kernel.jdon.moduledomain.review.domain.Review;
 
 public interface ReviewReader {
-	ReviewInfo.FindReviewListResponse findReviewList(Long jdId, PageInfoRequest pageInfoRequest);
+	ReviewInfo.FindReviewListResponse findReviewList(Long jdId, PageInfoRequest pageInfoRequest, Long reviewId);
 
 	Review findById(Long id);
 }

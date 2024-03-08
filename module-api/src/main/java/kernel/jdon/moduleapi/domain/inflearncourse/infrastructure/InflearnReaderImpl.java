@@ -2,9 +2,9 @@ package kernel.jdon.moduleapi.domain.inflearncourse.infrastructure;
 
 import org.springframework.stereotype.Component;
 
-import kernel.jdon.moduledomain.inflearncourse.domain.InflearnCourse;
 import kernel.jdon.moduleapi.domain.inflearncourse.core.InflearnReader;
-import kernel.jdon.moduleapi.domain.member.error.MemberErrorCode;
+import kernel.jdon.moduleapi.domain.inflearncourse.error.InflearncourseErrorCode;
+import kernel.jdon.moduledomain.inflearncourse.domain.InflearnCourse;
 import lombok.RequiredArgsConstructor;
 
 @Component
@@ -16,6 +16,6 @@ public class InflearnReaderImpl implements InflearnReader {
 	@Override
 	public InflearnCourse findById(Long lectureId) {
 		return inflearnCourseRepository.findById(lectureId)
-			.orElseThrow(MemberErrorCode.NOT_FOUND_MEMBER::throwException);
+			.orElseThrow(InflearncourseErrorCode.NOT_FOUND_INFLEARN_COURSE::throwException);
 	}
 }

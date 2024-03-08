@@ -57,3 +57,6 @@ redis:
     coffee-chat:
       wait-time: 5
       lease-time: 1
+
+allowed-origins:
+  origin: http://localhost:3000/

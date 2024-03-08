@@ -7,12 +7,12 @@ import org.mapstruct.ReportingPolicy;
 import kernel.jdon.moduleapi.domain.jd.core.JdInfo;
 
 @Mapper(
-	componentModel = "spring",
-	injectionStrategy = InjectionStrategy.CONSTRUCTOR,
-	unmappedTargetPolicy = ReportingPolicy.ERROR
+    componentModel = "spring",
+    injectionStrategy = InjectionStrategy.CONSTRUCTOR,
+    unmappedTargetPolicy = ReportingPolicy.ERROR
 )
 public interface JdDtoMapper {
-	JdDto.FindWantedJdResponse of(JdInfo.FindWantedJdResponse info);
+    JdDto.FindWantedJdResponse of(JdInfo.FindWantedJdResponse info);
 
-	JdDto.FindWantedJdListResponse of(JdInfo.FindWantedJdListResponse info);
+    JdDto.FindWantedJdListResponse of(JdInfo.FindWantedJdListResponse info);
 }

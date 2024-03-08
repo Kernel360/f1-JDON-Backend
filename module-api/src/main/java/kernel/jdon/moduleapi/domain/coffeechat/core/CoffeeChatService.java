@@ -1,8 +1,5 @@
 package kernel.jdon.moduleapi.domain.coffeechat.core;
 
-import org.springframework.data.domain.Pageable;
-
-import kernel.jdon.moduleapi.global.page.CustomPageResponse;
 import kernel.jdon.moduleapi.global.page.PageInfoRequest;
 
 public interface CoffeeChatService {
@@ -12,17 +9,20 @@ public interface CoffeeChatService {
 
     CoffeeChatInfo.FindCoffeeChatResponse getCoffeeChat(Long coffeeChatId, Long memberId);
 
-    Long createCoffeeChat(CoffeeChatCommand.CreateCoffeeChatRequest request, Long memberId);
+    CoffeeChatInfo.CreateCoffeeChatResponse createCoffeeChat(CoffeeChatCommand.CreateCoffeeChatRequest request,
+        Long memberId);
 
     void increaseViewCount(Long coffeeChatId);
 
-    Long modifyCoffeeChat(CoffeeChatCommand.UpdateCoffeeChatRequest request, Long coffeeChatId);
+    CoffeeChatInfo.UpdateCoffeeChatResponse modifyCoffeeChat(CoffeeChatCommand.UpdateCoffeeChatRequest request);
 
-    Long deleteCoffeeChat(Long coffeeChatId);
+    CoffeeChatInfo.DeleteCoffeeChatResponse deleteCoffeeChat(Long coffeeChatId, Long memberId);
 
-    CustomPageResponse getGuestCoffeeChatList(Long memberId, Pageable pageable);
+    CoffeeChatInfo.FindCoffeeChatListResponse getGuestCoffeeChatList(Long memberId, PageInfoRequest pageInfoRequest);
 
-    CustomPageResponse getHostCoffeeChatList(Long memberId, Pageable pageable);
+    CoffeeChatInfo.FindCoffeeChatListResponse getHostCoffeeChatList(Long memberId, PageInfoRequest pageInfoRequest);
 
-    Long applyCoffeeChat(Long coffeeChatId, Long memberId);
+    CoffeeChatInfo.ApplyCoffeeChatResponse applyCoffeeChat(Long coffeeChatId, Long memberId);
+
+    CoffeeChatInfo.CancelCoffeeChatResponse cancelCoffeeChat(Long coffeeChatId, Long memberId);
 }

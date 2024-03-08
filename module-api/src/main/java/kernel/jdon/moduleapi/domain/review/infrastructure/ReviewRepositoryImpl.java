@@ -5,42 +5,56 @@ import static kernel.jdon.moduledomain.review.domain.QReview.*;
 
 import java.util.List;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
 
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class ReviewRepositoryImpl implements CustomReviewRepository {
-	private final JPAQueryFactory jpaQueryFactory;
+    private final JPAQueryFactory jpaQueryFactory;
 
-	@Override
-	public Page<ReviewReaderInfo.FindReview> findReviewList(final Long jdId, final Pageable pageable) {
-		final List<ReviewReaderInfo.FindReview> content = jpaQueryFactory
-			.select(new QReviewReaderInfo_FindReview(
-				review.id,
-				review.content,
-				member.nickname,
-				review.createdDate,
-				member.id
-			))
-			.from(review)
-			.join(member)
-			.on(review.member.eq(member))
-			.where(review.wantedJd.id.eq(jdId))
-			.offset(pageable.getOffset())
-			.limit(pageable.getPageSize())
-			.fetch();
+    @Override
+    public Slice<ReviewReaderInfo.FindReview> findReviewList(final Long jdId, final Pageable pageable,
+        final Long reviewId) {
+        final List<ReviewReaderInfo.FindReview> content = jpaQueryFactory
+            .select(new QReviewReaderInfo_FindReview(
+                review.id,
+                review.content,
+                member.nickname,
+                review.createdDate,
+                member.id
+            ))
+            .from(review)
+            .join(member)
+            .on(review.member.eq(member))
+            .where(
+                reviewIdLt(reviewId),
+                review.wantedJd.id.eq(jdId)
+            )
+            .limit(pageable.getPageSize() + 1)
+            .orderBy(review.createdDate.desc())
+            .fetch();
 
-		final Long totalCount = jpaQueryFactory
-			.select(review.count())
-			.from(review)
-			.where(review.wantedJd.id.eq(jdId))
-			.fetchOne();
+        return new SliceImpl<>(content, pageable, hasNextPage(content, pageable.getPageSize()));
+    }
 
-		return new PageImpl<>(content, pageable, totalCount);
-	}
+    private boolean hasNextPage(final List<ReviewReaderInfo.FindReview> content, final int pageSize) {
+        if (content.size() > pageSize) {
+            content.remove(pageSize);
+            return true;
+        }
+        return false;
+    }
+
+    private BooleanExpression reviewIdLt(final Long reviewId) {
+        if (reviewId == null) {
+            return null;
+        }
+        return review.id.lt(reviewId);
+    }
 }

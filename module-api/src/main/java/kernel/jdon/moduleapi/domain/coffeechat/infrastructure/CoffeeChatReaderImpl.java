@@ -11,10 +11,14 @@ import kernel.jdon.moduledomain.coffeechat.domain.CoffeeChat;
 import kernel.jdon.moduledomain.coffeechatmember.domain.CoffeeChatMember;
 import kernel.jdon.moduleapi.domain.coffeechat.core.CoffeeChatCommand;
 import kernel.jdon.moduleapi.domain.coffeechat.core.CoffeeChatInfo;
+import kernel.jdon.moduleapi.domain.coffeechat.core.CoffeeChatInfoMapper;
 import kernel.jdon.moduleapi.domain.coffeechat.core.CoffeeChatReader;
 import kernel.jdon.moduleapi.domain.coffeechat.error.CoffeeChatErrorCode;
 import kernel.jdon.moduleapi.global.page.CustomJpaPageInfo;
+import kernel.jdon.moduleapi.global.page.CustomPageInfo;
 import kernel.jdon.moduleapi.global.page.PageInfoRequest;
+import kernel.jdon.moduledomain.coffeechat.domain.CoffeeChat;
+import kernel.jdon.moduledomain.coffeechatmember.domain.CoffeeChatMember;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -25,6 +29,7 @@ public class CoffeeChatReaderImpl implements CoffeeChatReader {
 
     private final CoffeeChatRepository coffeeChatRepository;
     private final CoffeeChatMemberRepository coffeeChatMemberRepository;
+    private final CoffeeChatInfoMapper coffeeChatInfoMapper;
 
     @Override
     public CoffeeChat findExistCoffeeChat(Long coffeeChatId) {
@@ -33,13 +38,32 @@ public class CoffeeChatReaderImpl implements CoffeeChatReader {
     }
 
     @Override
-    public Page<CoffeeChatMember> findCoffeeChatMemberListByMemberId(Long memberId, Pageable pageable) {
-        return coffeeChatMemberRepository.findAllByMemberId(memberId, pageable);
+    public CoffeeChatInfo.FindCoffeeChatListResponse findGuestCoffeeChatList(Long memberId,
+        PageInfoRequest pageInfoRequest) {
+        Page<CoffeeChatInfo.FindCoffeeChat> guestCoffeeChatPage = coffeeChatMemberRepository.findAllByMemberId(memberId,
+                PageRequest.of(pageInfoRequest.getPage(), pageInfoRequest.getSize()))
+            .map(CoffeeChatMember::getCoffeeChat)
+            .map(coffeeChatInfoMapper::listOf);
+
+        List<CoffeeChatInfo.FindCoffeeChat> content = guestCoffeeChatPage.getContent();
+        CustomJpaPageInfo pageInfo = new CustomJpaPageInfo(guestCoffeeChatPage);
+
+        return new CoffeeChatInfo.FindCoffeeChatListResponse(content, pageInfo);
     }
 
     @Override
-    public Page<CoffeeChat> findCoffeeChatListByMemberId(Long memberId, Pageable pageable) {
-        return coffeeChatRepository.findAllByMemberIdAndIsDeletedFalse(memberId, pageable);
+    public CoffeeChatInfo.FindCoffeeChatListResponse findHostCoffeeChatList(Long memberId,
+        PageInfoRequest pageInfoRequest) {
+        Page<CoffeeChatInfo.FindCoffeeChat> hostCoffeeChatPage = coffeeChatRepository.findAllByMemberIdAndIsDeletedFalse(
+                memberId,
+                PageRequest.of(
+                    pageInfoRequest.getPage(), pageInfoRequest.getSize()))
+            .map(coffeeChatInfoMapper::listOf);
+
+        List<CoffeeChatInfo.FindCoffeeChat> content = hostCoffeeChatPage.getContent();
+        CustomPageInfo pageInfo = new CustomJpaPageInfo(hostCoffeeChatPage);
+
+        return new CoffeeChatInfo.FindCoffeeChatListResponse(content, pageInfo);
     }
 
     @Override
@@ -51,7 +75,7 @@ public class CoffeeChatReaderImpl implements CoffeeChatReader {
             pageable, command);
 
         final List<CoffeeChatInfo.FindCoffeeChat> list = readerInfo.stream()
-            .map(coffeeChat -> CoffeeChatInfo.FindCoffeeChat.of(coffeeChat))
+            .map(CoffeeChatInfo.FindCoffeeChat::of)
             .toList();
 
         return new CoffeeChatInfo.FindCoffeeChatListResponse(list, new CustomJpaPageInfo(readerInfo));
@@ -60,5 +84,11 @@ public class CoffeeChatReaderImpl implements CoffeeChatReader {
     @Override
     public boolean existsByCoffeeChatIdAndMemberId(Long coffeeChatId, Long memberId) {
         return coffeeChatMemberRepository.existsByCoffeeChatIdAndMemberId(coffeeChatId, memberId);
+    }
+
+    @Override
+    public CoffeeChatMember findCoffeeChatMember(Long coffeeChatId, Long memberId) {
+        return coffeeChatMemberRepository.findByCoffeeChatIdAndMemberId(coffeeChatId, memberId)
+            .orElseThrow(CoffeeChatErrorCode.NOT_FOUND_APPLICATION::throwException);
     }
 }

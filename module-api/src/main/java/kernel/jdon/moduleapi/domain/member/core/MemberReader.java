@@ -7,8 +7,6 @@ import kernel.jdon.moduledomain.member.domain.Member;
 public interface MemberReader {
 	Member findById(Long memberId);
 
-	boolean existsById(Long memberId);
-
 	List<Long> findSkillIdListByMember(Member findMember);
 
 	boolean existsByNickname(String nickname);

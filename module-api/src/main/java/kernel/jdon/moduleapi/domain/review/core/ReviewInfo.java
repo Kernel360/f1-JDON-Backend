@@ -3,7 +3,7 @@ package kernel.jdon.moduleapi.domain.review.core;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import kernel.jdon.moduleapi.global.page.CustomPageInfo;
+import kernel.jdon.moduleapi.global.page.CustomSliceInfo;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,7 +23,7 @@ public class ReviewInfo {
 	@AllArgsConstructor
 	public static class FindReviewListResponse {
 		private final List<FindReview> content;
-		private final CustomPageInfo pageInfo;
+		private final CustomSliceInfo pageInfo;
 	}
 
 	@Getter

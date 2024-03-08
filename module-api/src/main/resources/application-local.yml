@@ -72,11 +72,11 @@ allowed-origins:
 redirect-url:
   login:
     success:
-      member: oauth/login/success
-      guest: oauth/info?
+      member: http://localhost:3000/oauth/login/success
+      guest: http://localhost:3000/oauth/info?
     failure:
-      not-found-email: oauth/login/fail/not-found-email
-      not-match-provider: oauth/login/fail/not-match-provider
+      not-found-email: http://localhost:3000/oauth/login/fail/not-found-email
+      not-match-provider: http://localhost:3000/oauth/login/fail/not-match-provider
 
 redis:
   lock:

@@ -12,23 +12,23 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class CoffeeChatCommand {
 
-    @Getter
-    @Builder
-    public static class FindCoffeeChatListRequest {
-        private CoffeeChatSortCondition sort;
-        private String keyword;
-        private Long jobCategory;
-    }
+	@Getter
+	@Builder
+	public static class FindCoffeeChatListRequest {
+		private final CoffeeChatSortType sort;
+		private final String keyword;
+		private final Long jobCategory;
+	}
 
     @Getter
     @Builder
     public static class CreateCoffeeChatRequest {
 
-        private String title;
-        private String content;
-        private Long totalRecruitCount;
-        private LocalDateTime meetDate;
-        private String openChatUrl;
+        private final String title;
+        private final String content;
+        private final Long totalRecruitCount;
+        private final LocalDateTime meetDate;
+        private final String openChatUrl;
 
         public CoffeeChat toEntity(Member member) {
             return CoffeeChat.builder()
@@ -46,11 +46,13 @@ public class CoffeeChatCommand {
     @Getter
     @Builder
     public static class UpdateCoffeeChatRequest {
-        private String title;
-        private String content;
-        private Long totalRecruitCount;
-        private LocalDateTime meetDate;
-        private String openChatUrl;
+        private final String title;
+        private final String content;
+        private final Long totalRecruitCount;
+        private final LocalDateTime meetDate;
+        private final String openChatUrl;
+        private final Long coffeeChatId;
+        private final Long memberId;
 
         public CoffeeChat toEntity() {
             return CoffeeChat.builder()

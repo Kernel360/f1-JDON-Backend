@@ -23,7 +23,6 @@ public class OAuth2SecurityConfig {
 	private final CustomOAuth2UserServiceImpl customOAuth2UserServiceImpl;
 	private final JdonOAuth2AuthenticationSuccessHandler jdonOAuth2AuthenticationSuccessHandler;
 	private final JdonAuthExceptionHandler jdonAuthExceptionHandler;
-	private final JdonLogoutSuccessHandler jdonLogoutSuccessHandler;
 	private final AllowOriginProperties allowOriginProperties;
 
 	@Bean
@@ -79,8 +78,9 @@ public class OAuth2SecurityConfig {
 				.userService(customOAuth2UserServiceImpl)));
 		http.logout(logoutConfigurer -> logoutConfigurer
 			.logoutUrl("/api/v1/logout")
-			.logoutSuccessHandler(jdonLogoutSuccessHandler)
-		);
+			.invalidateHttpSession(true)
+			.deleteCookies("JSESSIONID")
+			.logoutSuccessUrl(allowOriginProperties.getOrigin()));
 
 		return http.build();
 	}

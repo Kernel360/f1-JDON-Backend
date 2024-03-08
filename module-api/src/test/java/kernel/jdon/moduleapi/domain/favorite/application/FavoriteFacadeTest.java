@@ -38,7 +38,7 @@ class FavoriteFacadeTest {
 		FavoriteInfo.UpdateResponse actualResponse = favoriteFacade.modify(memberId, request);
 
 		// then
-		assertThat(expectedResponse.getLectureId()).isEqualTo(actualResponse.getLectureId());
+		assertThat(actualResponse.getLectureId()).isEqualTo(expectedResponse.getLectureId());
 		verify(favoriteService, times(1)).create(memberId, request.getLectureId());
 	}
 
@@ -65,7 +65,7 @@ class FavoriteFacadeTest {
 	void whenGetList_thenReturnList() {
 		// given
 		Long memberId = 1L;
-		PageInfoRequest pageInfoRequest = new PageInfoRequest(0, 10);
+		PageInfoRequest pageInfoRequest = new PageInfoRequest("0", "10");
 		FavoriteInfo.FindFavoriteListResponse expectedResponse = mock(FavoriteInfo.FindFavoriteListResponse.class);
 
 		// when
@@ -74,7 +74,7 @@ class FavoriteFacadeTest {
 			pageInfoRequest);
 
 		// then
-		assertThat(expectedResponse).isEqualTo(actualResponse);
+		assertThat(actualResponse).isEqualTo(expectedResponse);
 		verify(favoriteService, times(1)).getFavoriteList(memberId, pageInfoRequest);
 	}
 

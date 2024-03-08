@@ -14,7 +14,7 @@ public class PastDateValidator implements ConstraintValidator<IsPastDate, String
 		LocalDate date = null;
 
 		try {
-			date = LocalDate.from(LocalDate.parse(value, DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+			date = LocalDate.parse(value, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 		} catch (Exception e) {
 			return false;
 		}

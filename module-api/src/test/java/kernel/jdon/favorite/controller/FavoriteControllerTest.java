@@ -37,18 +37,15 @@
 // @WebMvcTest(FavoriteController.class)
 // class FavoriteControllerTest {
 //
-// 	@MockBean
-// 	private FavoriteService favoriteService;
-//
-// 	@Autowired
-// 	private MockMvc mockMvc;
-//
-// 	@Autowired
-// 	private ObjectMapper objectMapper;
-//
 // 	private static final String GET_FAVORITE_LIST_URL = "/api/v1/favorites";
 // 	private static final String UPDATE_FAVORITE_COURSE_URL = "/api/v1/favorites";
 // 	private static final String UPDATE_FAVORITE_COURSE_REDIRECT_PREFIX = "/api/v1/favorites/";
+// 	@MockBean
+// 	private FavoriteService favoriteService;
+// 	@Autowired
+// 	private MockMvc mockMvc;
+// 	@Autowired
+// 	private ObjectMapper objectMapper;
 //
 // 	@WithMockUser
 // 	@DisplayName("유효한 요청이 주어졌을 때 찜한 강의 목록을 조회하면 찜한 강의 목록을 반환한다.")
