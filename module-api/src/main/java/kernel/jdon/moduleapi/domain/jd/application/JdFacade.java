@@ -11,14 +11,14 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class JdFacade {
-	private final JdService jdService;
+    private final JdService jdService;
 
-	public JdInfo.FindWantedJdResponse getJd(final Long jdId) {
-		return jdService.getJd(jdId);
-	}
+    public JdInfo.FindWantedJdResponse getJd(final Long jdId) {
+        return jdService.getJd(jdId);
+    }
 
-	public JdInfo.FindWantedJdListResponse getJdList(final PageInfoRequest pageInfoRequest,
-		final JdCondition jdCondition) {
-		return jdService.getJdList(pageInfoRequest, jdCondition);
-	}
+    public JdInfo.FindWantedJdListResponse getJdList(final PageInfoRequest pageInfoRequest,
+        final JdCondition jdCondition) {
+        return jdService.getJdList(pageInfoRequest, jdCondition);
+    }
 }

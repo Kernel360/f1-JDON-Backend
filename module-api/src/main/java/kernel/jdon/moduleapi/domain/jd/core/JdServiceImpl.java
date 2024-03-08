@@ -12,21 +12,21 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class JdServiceImpl implements JdService {
-	private final JdReader jdReader;
-	private final JdInfoMapper jdInfoMapper;
+    private final JdReader jdReader;
+    private final JdInfoMapper jdInfoMapper;
 
-	@Override
-	public JdInfo.FindWantedJdResponse getJd(final Long jdId) {
-		final WantedJd findWantedJd = jdReader.findWantedJd(jdId);
-		final List<JdInfo.FindSkill> findSkillList = jdReader.findSkillListByWantedJd(findWantedJd);
+    @Override
+    public JdInfo.FindWantedJdResponse getJd(final Long jdId) {
+        final WantedJd findWantedJd = jdReader.findWantedJd(jdId);
+        final List<JdInfo.FindSkill> findSkillList = jdReader.findSkillListByWantedJd(findWantedJd);
 
-		return jdInfoMapper.of(findWantedJd, findSkillList);
-	}
+        return jdInfoMapper.of(findWantedJd, findSkillList);
+    }
 
-	@Override
-	public JdInfo.FindWantedJdListResponse getJdList(final PageInfoRequest pageInfoRequest,
-		final JdCondition jdCondition) {
-		return jdReader.findWantedJdList(pageInfoRequest, jdCondition);
-	}
+    @Override
+    public JdInfo.FindWantedJdListResponse getJdList(final PageInfoRequest pageInfoRequest,
+        final JdCondition jdCondition) {
+        return jdReader.findWantedJdList(pageInfoRequest, jdCondition);
+    }
 
 }

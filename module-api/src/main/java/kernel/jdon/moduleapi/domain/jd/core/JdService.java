@@ -4,7 +4,7 @@ import kernel.jdon.moduleapi.domain.jd.presentation.JdCondition;
 import kernel.jdon.moduleapi.global.page.PageInfoRequest;
 
 public interface JdService {
-	JdInfo.FindWantedJdResponse getJd(Long jdId);
+    JdInfo.FindWantedJdResponse getJd(Long jdId);
 
-	JdInfo.FindWantedJdListResponse getJdList(PageInfoRequest pageInfoRequest, JdCondition jdCondition);
+    JdInfo.FindWantedJdListResponse getJdList(PageInfoRequest pageInfoRequest, JdCondition jdCondition);
 }

@@ -7,9 +7,9 @@ import kernel.jdon.moduleapi.global.page.PageInfoRequest;
 import kernel.jdon.moduledomain.wantedjd.domain.WantedJd;
 
 public interface JdReader {
-	WantedJd findWantedJd(Long jdId);
+    WantedJd findWantedJd(Long jdId);
 
-	List<JdInfo.FindSkill> findSkillListByWantedJd(WantedJd wantedJd);
+    List<JdInfo.FindSkill> findSkillListByWantedJd(WantedJd wantedJd);
 
-	JdInfo.FindWantedJdListResponse findWantedJdList(PageInfoRequest pageInfoRequest, JdCondition jdCondition);
+    JdInfo.FindWantedJdListResponse findWantedJdList(PageInfoRequest pageInfoRequest, JdCondition jdCondition);
 }
