@@ -12,54 +12,56 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class CoffeeChatCommand {
 
-	@Getter
-	@Builder
-	public static class FindCoffeeChatListRequest {
-		private final CoffeeChatSortCondition sort;
-		private final String keyword;
-		private final Long jobCategory;
-	}
+    @Getter
+    @Builder
+    public static class FindCoffeeChatListRequest {
+        private final CoffeeChatSortCondition sort;
+        private final String keyword;
+        private final Long jobCategory;
+    }
 
-	@Getter
-	@Builder
-	public static class CreateCoffeeChatRequest {
+    @Getter
+    @Builder
+    public static class CreateCoffeeChatRequest {
 
-		private final String title;
-		private final String content;
-		private final Long totalRecruitCount;
-		private final LocalDateTime meetDate;
-		private final String openChatUrl;
+        private final String title;
+        private final String content;
+        private final Long totalRecruitCount;
+        private final LocalDateTime meetDate;
+        private final String openChatUrl;
 
-		public CoffeeChat toEntity(Member member) {
-			return CoffeeChat.builder()
-				.title(title)
-				.content(content)
-				.totalRecruitCount(totalRecruitCount)
-				.meetDate(meetDate)
-				.openChatUrl(openChatUrl)
-				.member(member)
-				.build();
-		}
+        public CoffeeChat toEntity(Member member) {
+            return CoffeeChat.builder()
+                .title(title)
+                .content(content)
+                .totalRecruitCount(totalRecruitCount)
+                .meetDate(meetDate)
+                .openChatUrl(openChatUrl)
+                .member(member)
+                .build();
+        }
 
-	}
+    }
 
-	@Getter
-	@Builder
-	public static class UpdateCoffeeChatRequest {
-		private final String title;
-		private final String content;
-		private final Long totalRecruitCount;
-		private final LocalDateTime meetDate;
-		private final String openChatUrl;
+    @Getter
+    @Builder
+    public static class UpdateCoffeeChatRequest {
+        private final String title;
+        private final String content;
+        private final Long totalRecruitCount;
+        private final LocalDateTime meetDate;
+        private final String openChatUrl;
+        private final Long coffeeChatId;
+        private final Long memberId;
 
-		public CoffeeChat toEntity() {
-			return CoffeeChat.builder()
-				.title(title)
-				.content(content)
-				.totalRecruitCount(totalRecruitCount)
-				.meetDate(meetDate)
-				.openChatUrl(openChatUrl)
-				.build();
-		}
-	}
+        public CoffeeChat toEntity() {
+            return CoffeeChat.builder()
+                .title(title)
+                .content(content)
+                .totalRecruitCount(totalRecruitCount)
+                .meetDate(meetDate)
+                .openChatUrl(openChatUrl)
+                .build();
+        }
+    }
 }

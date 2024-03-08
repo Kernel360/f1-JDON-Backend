@@ -14,10 +14,9 @@ public interface CoffeeChatService {
 
     void increaseViewCount(Long coffeeChatId);
 
-    CoffeeChatInfo.UpdateCoffeeChatResponse modifyCoffeeChat(CoffeeChatCommand.UpdateCoffeeChatRequest request,
-        Long coffeeChatId);
+    CoffeeChatInfo.UpdateCoffeeChatResponse modifyCoffeeChat(CoffeeChatCommand.UpdateCoffeeChatRequest request);
 
-    CoffeeChatInfo.DeleteCoffeeChatResponse deleteCoffeeChat(Long coffeeChatId);
+    CoffeeChatInfo.DeleteCoffeeChatResponse deleteCoffeeChat(Long coffeeChatId, Long memberId);
 
     CoffeeChatInfo.FindCoffeeChatListResponse getGuestCoffeeChatList(Long memberId, PageInfoRequest pageInfoRequest);
 

@@ -28,7 +28,8 @@ public interface CoffeeChatDtoMapper {
 
     CoffeeChatCommand.CreateCoffeeChatRequest of(CoffeeChatDto.CreateCoffeeChatRequest request);
 
-    CoffeeChatCommand.UpdateCoffeeChatRequest of(CoffeeChatDto.UpdateCoffeeChatRequest request);
+    CoffeeChatCommand.UpdateCoffeeChatRequest of(CoffeeChatDto.UpdateCoffeeChatRequest request, Long coffeeChatId,
+        Long memberId);
 
     CoffeeChatCommand.FindCoffeeChatListRequest of(CoffeeChatCondition request);
 

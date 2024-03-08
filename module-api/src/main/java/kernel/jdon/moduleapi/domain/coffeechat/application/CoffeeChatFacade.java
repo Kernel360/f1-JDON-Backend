@@ -44,13 +44,12 @@ public class CoffeeChatFacade {
         return coffeeChatService.createCoffeeChat(request, memberId);
     }
 
-    public CoffeeChatInfo.UpdateCoffeeChatResponse modifyCoffeeChat(CoffeeChatCommand.UpdateCoffeeChatRequest request,
-        Long coffeeChatId) {
-        return coffeeChatService.modifyCoffeeChat(request, coffeeChatId);
+    public CoffeeChatInfo.UpdateCoffeeChatResponse modifyCoffeeChat(CoffeeChatCommand.UpdateCoffeeChatRequest request) {
+        return coffeeChatService.modifyCoffeeChat(request);
     }
 
-    public CoffeeChatInfo.DeleteCoffeeChatResponse deleteCoffeeChat(Long coffeeChatId) {
-        return coffeeChatService.deleteCoffeeChat(coffeeChatId);
+    public CoffeeChatInfo.DeleteCoffeeChatResponse deleteCoffeeChat(Long coffeeChatId, Long memberId) {
+        return coffeeChatService.deleteCoffeeChat(coffeeChatId, memberId);
     }
 
     public CoffeeChatInfo.FindCoffeeChatListResponse getGuestCoffeeChatList(Long memberId,
