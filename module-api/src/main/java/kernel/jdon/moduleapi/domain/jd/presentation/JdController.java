@@ -34,7 +34,7 @@ public class JdController {
 	public ResponseEntity<CommonResponse<JdDto.FindWantedJdListResponse>> getJdList(
 		@ModelAttribute final PageInfoRequest pageInfoRequest,
 		@RequestParam(value = "skill", defaultValue = "") final String skill,
-		@RequestParam(value = "jobCategory", defaultValue = "") final Long jobCategory,
+		@RequestParam(value = "jobCategory", required = false) final Long jobCategory,
 		@RequestParam(value = "keywordType", defaultValue = "") final JdSearchTypeCondition keywordType,
 		@RequestParam(value = "keyword", defaultValue = "") final String keyword,
 		@RequestParam(value = "sort", defaultValue = "") final JdSortTypeCondition sort) {

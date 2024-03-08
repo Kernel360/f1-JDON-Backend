@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -30,7 +31,6 @@ public class WantedJdRepositoryImpl implements CustomWantedJdRepository {
 	private final SkillKeywordManager skillKeywordManager;
 
 	public Page<JdReaderInfo.FindWantedJd> findWantedJdList(final Pageable pageable, final JdCondition jdCondition) {
-
 		List<JdReaderInfo.FindWantedJd> content = jpaQueryFactory
 			.select(new QJdReaderInfo_FindWantedJd(
 				wantedJd.id,
@@ -40,10 +40,7 @@ public class WantedJdRepositoryImpl implements CustomWantedJdRepository {
 				jobCategory.name))
 			.from(wantedJd)
 			.join(jobCategory).on(wantedJd.jobCategory.eq(jobCategory))
-			.where(wantedJdSkillContains(jdCondition.getSkill()),
-				wantedJdJobCategoryContains(jdCondition.getJobCategory()),
-				wantedJdKeywordContains(jdCondition.getKeywordType(), jdCondition.getKeyword())
-			)
+			.where(searchWantedJdList(jdCondition))
 			.orderBy(createOrderSpecifier(jdCondition.getSort()))
 			.offset(pageable.getOffset())
 			.limit(pageable.getPageSize())
@@ -52,13 +49,22 @@ public class WantedJdRepositoryImpl implements CustomWantedJdRepository {
 		Long totalCount = jpaQueryFactory
 			.select(wantedJd.count())
 			.from(wantedJd)
-			.where(wantedJdSkillContains(jdCondition.getSkill()),
-				wantedJdJobCategoryContains(jdCondition.getJobCategory()),
-				wantedJdKeywordContains(jdCondition.getKeywordType(), jdCondition.getKeyword())
-			)
+			.where(searchWantedJdList(jdCondition))
 			.fetchOne();
 
 		return new PageImpl<>(content, pageable, totalCount);
+	}
+
+	private BooleanBuilder searchWantedJdList(JdCondition jdCondition) {
+		BooleanBuilder searchCondition = new BooleanBuilder();
+
+		if (jdCondition != null) {
+			searchCondition.and(wantedJdSkillContains(jdCondition.getSkill()));
+			searchCondition.and(wantedJdJobCategoryContains(jdCondition.getJobCategory()));
+			searchCondition.and(wantedJdKeywordContains(jdCondition.getKeywordType(), jdCondition.getKeyword()));
+		}
+
+		return searchCondition;
 	}
 
 	private BooleanExpression wantedJdKeywordContains(final JdSearchTypeCondition keywordType, final String keyword) {
