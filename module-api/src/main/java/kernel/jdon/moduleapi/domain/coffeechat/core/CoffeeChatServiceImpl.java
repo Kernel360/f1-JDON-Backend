@@ -81,7 +81,7 @@ public class CoffeeChatServiceImpl implements CoffeeChatService {
 
     private void validateUpdateRequest(CoffeeChat findCoffeeChat, CoffeeChat updateCoffeeChat, Long memberId) {
         if (!isMemberHost(memberId, findCoffeeChat)) {
-            throw new ApiException(CoffeeChatErrorCode.UNAUTHORIZED_COFFEECHAT_UPDATE);
+            throw new ApiException(CoffeeChatErrorCode.FORBIDDEN_COFFEECHAT_UPDATE);
         }
         checkMeetDate(findCoffeeChat, updateCoffeeChat);
         checkTotalRecruitCount(findCoffeeChat, updateCoffeeChat);
@@ -114,7 +114,7 @@ public class CoffeeChatServiceImpl implements CoffeeChatService {
 
     private void validateDeleteRequest(Long memberId, CoffeeChat findCoffeeChat) {
         if (!isMemberHost(memberId, findCoffeeChat)) {
-            throw new ApiException(CoffeeChatErrorCode.UNAUTHORIZED_COFFEECHAT_DELETE);
+            throw new ApiException(CoffeeChatErrorCode.FORBIDDEN_COFFEECHAT_DELETE);
         }
     }
 
