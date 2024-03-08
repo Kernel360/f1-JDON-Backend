@@ -19,8 +19,8 @@ public enum CoffeeChatErrorCode implements ErrorCode, BaseThrowException<CoffeeC
     THREAD_INTERRUPTED(HttpStatus.SERVICE_UNAVAILABLE, "처리 중 문제가 발생했습니다. 잠시 후 다시 시도해주세요."),
     DUPLICATE_COFFEECHAT_APPLY(HttpStatus.CONFLICT, "이미 참여한 커피챗 입니다."),
     NOT_FOUND_APPLICATION(HttpStatus.NOT_FOUND, "해당 커피챗을 신청한 정보가 없습니다."),
-    UNAUTHORIZED_COFFEECHAT_UPDATE(HttpStatus.UNAUTHORIZED, "본인이 작성하지 않은 커피챗을 수정할 수 없습니다."),
-    UNAUTHORIZED_COFFEECHAT_DELETE(HttpStatus.UNAUTHORIZED, "본인이 작성하지 않은 커피챗을 삭제할 수 없습니다.");
+    UNAUTHORIZED_COFFEECHAT_UPDATE(HttpStatus.FORBIDDEN, "본인이 작성하지 않은 커피챗을 수정할 수 없습니다."),
+    UNAUTHORIZED_COFFEECHAT_DELETE(HttpStatus.FORBIDDEN, "본인이 작성하지 않은 커피챗을 삭제할 수 없습니다.");
 
     private final HttpStatus httpStatus;
     private final String message;
