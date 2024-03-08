@@ -80,14 +80,14 @@ public class CoffeeChatServiceImpl implements CoffeeChatService {
     }
 
     private void validateUpdateRequest(CoffeeChat findCoffeeChat, CoffeeChat updateCoffeeChat, Long memberId) {
-        checkMemberIsHost(findCoffeeChat, memberId);
+        checkMemberIsNotHost(findCoffeeChat, memberId);
         checkMeetDate(findCoffeeChat, updateCoffeeChat);
         checkTotalRecruitCount(findCoffeeChat, updateCoffeeChat);
     }
 
-    private void checkMemberIsHost(CoffeeChat findCoffeeChat, Long memberId) {
+    private void checkMemberIsNotHost(CoffeeChat findCoffeeChat, Long memberId) {
         if (!isMemberHost(memberId, findCoffeeChat)) {
-            throw new ApiException(CoffeeChatErrorCode.FORBIDDEN_COFFEECHAT_UPDATE);
+            throw new ApiException(CoffeeChatErrorCode.FORBIDDEN_COFFEECHAT_ACCESS);
         }
     }
 
@@ -117,9 +117,7 @@ public class CoffeeChatServiceImpl implements CoffeeChatService {
     }
 
     private void validateDeleteRequest(Long memberId, CoffeeChat findCoffeeChat) {
-        if (!isMemberHost(memberId, findCoffeeChat)) {
-            throw new ApiException(CoffeeChatErrorCode.FORBIDDEN_COFFEECHAT_DELETE);
-        }
+        checkMemberIsNotHost(findCoffeeChat, memberId);
     }
 
     @Override
@@ -151,6 +149,7 @@ public class CoffeeChatServiceImpl implements CoffeeChatService {
     }
 
     private void validateApplyRequest(Member findMember, CoffeeChat findCoffeeChat) {
+
         if (isMemberHost(findMember.getId(), findCoffeeChat)) {
             throw new ApiException(CoffeeChatErrorCode.CANNOT_JOIN_OWN_COFFEECHAT);
         }
