@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import kernel.jdon.moduleapi.global.page.CustomPageInfo;
+import kernel.jdon.moduleapi.global.page.CustomSliceInfo;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,7 +16,6 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ReviewDto {
-
     @Getter
     @Builder
     public static class CreateReviewRequest {
@@ -37,7 +36,7 @@ public class ReviewDto {
     @Builder
     public static class FindReviewListResponse {
         private final List<FindReview> content;
-        private final CustomPageInfo pageInfo;
+        private final CustomSliceInfo pageInfo;
     }
 
     @Getter

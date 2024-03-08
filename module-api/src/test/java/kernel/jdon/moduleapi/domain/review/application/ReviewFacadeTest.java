@@ -15,7 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import kernel.jdon.moduleapi.domain.review.core.ReviewCommand;
 import kernel.jdon.moduleapi.domain.review.core.ReviewInfo;
 import kernel.jdon.moduleapi.domain.review.core.ReviewService;
-import kernel.jdon.moduleapi.global.page.CustomPageInfo;
+import kernel.jdon.moduleapi.global.page.CustomSliceInfo;
 import kernel.jdon.moduleapi.global.page.PageInfoRequest;
 
 @DisplayName("Review Facade 테스트")
@@ -51,20 +51,21 @@ class ReviewFacadeTest {
 	void givenJdIdAndPageInfoRequest_whenGetReviewList_thenCollectFindReviewListInfo() throws Exception {
 		//given
 		final var jdId = 1L;
+		final var reviewId = 30L;
 		final var mockPageInfoRequest = mock(PageInfoRequest.class);
 		final var mockFindReviewListInfo = new ReviewInfo.FindReviewListResponse(
 			List.of(
 				mock(ReviewInfo.FindReview.class),
 				mock(ReviewInfo.FindReview.class)),
-			mock(CustomPageInfo.class));
-		given(reviewService.getReviewList(jdId, mockPageInfoRequest)).willReturn(mockFindReviewListInfo);
+			mock(CustomSliceInfo.class));
+		given(reviewService.getReviewList(jdId, mockPageInfoRequest, reviewId)).willReturn(mockFindReviewListInfo);
 
 		//when
-		var response = reviewFacade.getReviewList(jdId, mockPageInfoRequest);
+		var response = reviewFacade.getReviewList(jdId, mockPageInfoRequest, reviewId);
 
 		//then
 		assertThat(response.getContent()).hasSize(2);
-		then(reviewService).should(times(1)).getReviewList(jdId, mockPageInfoRequest);
+		then(reviewService).should(times(1)).getReviewList(jdId, mockPageInfoRequest, reviewId);
 	}
 
 	@Test

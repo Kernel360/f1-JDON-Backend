@@ -26,8 +26,9 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 
 	@Override
-	public ReviewInfo.FindReviewListResponse getReviewList(final Long jdId, final PageInfoRequest pageInfoRequest) {
-		return reviewReader.findReviewList(jdId, pageInfoRequest);
+	public ReviewInfo.FindReviewListResponse getReviewList(final Long jdId, final PageInfoRequest pageInfoRequest,
+		final Long reviewId) {
+		return reviewReader.findReviewList(jdId, pageInfoRequest, reviewId);
 	}
 
 	@Override

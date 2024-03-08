@@ -7,6 +7,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
+import kernel.jdon.moduledomain.coffeechat.domain.CoffeeChat;
+import kernel.jdon.moduledomain.coffeechatmember.domain.CoffeeChatMember;
 import kernel.jdon.moduleapi.domain.coffeechat.core.CoffeeChatCommand;
 import kernel.jdon.moduleapi.domain.coffeechat.core.CoffeeChatInfo;
 import kernel.jdon.moduleapi.domain.coffeechat.core.CoffeeChatInfoMapper;

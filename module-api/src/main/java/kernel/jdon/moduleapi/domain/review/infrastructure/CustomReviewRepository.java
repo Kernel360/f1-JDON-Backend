@@ -1,8 +1,8 @@
 package kernel.jdon.moduleapi.domain.review.infrastructure;
 
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 
 public interface CustomReviewRepository {
-	Page<ReviewReaderInfo.FindReview> findReviewList(Long jdId, Pageable pageable);
+	Slice<ReviewReaderInfo.FindReview> findReviewList(Long jdId, Pageable pageable, Long reviewId);
 }
