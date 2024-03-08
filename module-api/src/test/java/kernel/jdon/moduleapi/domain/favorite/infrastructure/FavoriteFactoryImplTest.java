@@ -6,6 +6,7 @@ import static org.mockito.BDDMockito.*;
 
 import java.util.Optional;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -39,17 +40,29 @@ class FavoriteFactoryImplTest {
     @InjectMocks
     private FavoriteFactoryImpl favoriteFactoryImpl;
 
+    private Member mockMember;
+    private InflearnCourse mockInflearnCourse;
+    private Favorite mockFavorite;
+    private Long mockMemberId;
+    private Long mockLectureId;
+
+    @BeforeEach
+    void setUp() {
+        mockMember = mock(Member.class);
+        mockInflearnCourse = mock(InflearnCourse.class);
+        mockFavorite = new Favorite(mockMember, mockInflearnCourse);
+
+        when(mockMember.getId()).thenReturn(1L);
+        when(mockInflearnCourse.getId()).thenReturn(100L);
+
+        mockMemberId = mockMember.getId();
+        mockLectureId = mockInflearnCourse.getId();
+    }
+
     @DisplayName("1: 회원 id와 강의 id가 주어지면, create 메서드가 생성된 Favorite 엔티티를 반환한다.")
     @Test
     void givenMemberIdAndLectureId_whenCreate_thenReturnSavedFavorite() throws Exception {
         // given
-        Member mockMember = mock(Member.class);
-        InflearnCourse mockInflearnCourse = mock(InflearnCourse.class);
-        Favorite mockFavorite = new Favorite(mockMember, mockInflearnCourse);
-
-        Long mockMemberId = mockMember.getId();
-        Long mockLectureId = mockInflearnCourse.getId();
-
         given(memberReader.findById(mockMemberId)).willReturn(mockMember);
         given(inflearnReader.findById(mockLectureId)).willReturn(mockInflearnCourse);
         given(favoriteReader.findOptionalByMemberIdAndInflearnCourseId(mockMemberId, mockLectureId)).willReturn(
@@ -77,13 +90,6 @@ class FavoriteFactoryImplTest {
     @Test
     void givenMemberIdAndLectureId_whenCreate_thenReturnExistingFavorite() throws Exception {
         // given
-        Member mockMember = mock(Member.class);
-        InflearnCourse mockInflearnCourse = mock(InflearnCourse.class);
-        Favorite mockFavorite = new Favorite(mockMember, mockInflearnCourse);
-
-        Long mockMemberId = mockMember.getId();
-        Long mockLectureId = mockInflearnCourse.getId();
-
         given(memberReader.findById(mockMemberId)).willReturn(mockMember);
         given(inflearnReader.findById(mockLectureId)).willReturn(mockInflearnCourse);
         given(favoriteReader.findOptionalByMemberIdAndInflearnCourseId(mockMemberId, mockLectureId)).willReturn(
@@ -110,13 +116,6 @@ class FavoriteFactoryImplTest {
     @Test
     void givenMemberIdAndLectureId_whenDelete_thenReturnDeletedFavorite() throws Exception {
         // given
-        Member mockMember = mock(Member.class);
-        InflearnCourse mockInflearnCourse = mock(InflearnCourse.class);
-        Favorite mockFavorite = new Favorite(mockMember, mockInflearnCourse);
-
-        Long mockMemberId = mockMember.getId();
-        Long mockLectureId = mockInflearnCourse.getId();
-
         given(memberReader.findById(mockMemberId)).willReturn(mockMember);
         given(inflearnReader.findById(mockLectureId)).willReturn(mockInflearnCourse);
         given(favoriteReader.findFavoriteByMemberIdAndInflearnCourseId(mockMemberId, mockLectureId)).willReturn(
@@ -141,12 +140,6 @@ class FavoriteFactoryImplTest {
     @Test
     void givenInvalidInflearnCourse_whenDeleteFavorite_thenReturnNotFoundFavoriteError() throws Exception {
         // given
-        Member mockMember = mock(Member.class);
-        InflearnCourse mockInflearnCourse = mock(InflearnCourse.class);
-
-        Long mockMemberId = mockMember.getId();
-        Long mockLectureId = mockInflearnCourse.getId();
-
         given(memberReader.findById(mockMemberId)).willReturn(mockMember);
         given(inflearnReader.findById(mockLectureId)).willThrow(
             new ApiException(InflearncourseErrorCode.NOT_FOUND_INFLEARN_COURSE));
@@ -167,12 +160,6 @@ class FavoriteFactoryImplTest {
     @Test
     void givenInvalidFavorite_whenDeleteFavorite_thenReturnNotFoundFavoriteError() throws Exception {
         // given
-        Member mockMember = mock(Member.class);
-        InflearnCourse mockInflearnCourse = mock(InflearnCourse.class);
-
-        Long mockMemberId = mockMember.getId();
-        Long mockLectureId = mockInflearnCourse.getId();
-
         given(memberReader.findById(mockMemberId)).willReturn(mockMember);
         given(inflearnReader.findById(mockLectureId)).willReturn(mockInflearnCourse);
         given(favoriteReader.findFavoriteByMemberIdAndInflearnCourseId(mockMemberId, mockLectureId))
