@@ -12,6 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import kernel.jdon.moduleapi.domain.jd.presentation.JdCondition;
 import kernel.jdon.moduleapi.global.page.PageInfoRequest;
 import kernel.jdon.moduledomain.wantedjd.domain.WantedJd;
 
@@ -61,21 +62,21 @@ class JdServiceImplTest {
 	}
 
 	@Test
-	@DisplayName("2: keyword가 주어졌을 때 getJdList가 jd 목록을 반환한다.")
-	void givenValidKeyword_whenGetJdList_thenReturnCorrectJdList() throws Exception {
+	@DisplayName("2: JdCondition이 주어졌을 때 getJdList가 jd 목록을 반환한다.")
+	void givenValidJdCondition_whenGetJdList_thenReturnCorrectJdList() throws Exception {
 		//given
-		final var keyword = "keyword";
 		final var mockPageInfoRequest = mock(PageInfoRequest.class);
+		final var mockJdCondition = mock(JdCondition.class);
 		final var mockFindWantedJdListInfo = mock(JdInfo.FindWantedJdListResponse.class);
-		given(jdReader.findWantedJdList(mockPageInfoRequest, keyword))
+		given(jdReader.findWantedJdList(mockPageInfoRequest, mockJdCondition))
 			.willReturn(mockFindWantedJdListInfo);
 
 		//when
-		final var response = jdServiceImpl.getJdList(mockPageInfoRequest, keyword);
+		final var response = jdServiceImpl.getJdList(mockPageInfoRequest, mockJdCondition);
 
 		//then
 		assertThat(response).isEqualTo(mockFindWantedJdListInfo);
 		then(jdReader).should(times(1))
-			.findWantedJdList(mockPageInfoRequest, keyword);
+			.findWantedJdList(mockPageInfoRequest, mockJdCondition);
 	}
 }

@@ -12,13 +12,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class CoffeeChatCommand {
 
-    @Getter
-    @Builder
-    public static class FindCoffeeChatListRequest {
-        private final CoffeeChatSortCondition sort;
-        private final String keyword;
-        private final Long jobCategory;
-    }
+	@Getter
+	@Builder
+	public static class FindCoffeeChatListRequest {
+		private final CoffeeChatSortType sort;
+		private final String keyword;
+		private final Long jobCategory;
+	}
 
     @Getter
     @Builder
