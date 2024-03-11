@@ -1,5 +1,6 @@
 package kernel.jdon.moduleapi.domain.auth.util;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
@@ -23,42 +24,43 @@ public class CryptoManager {
 
     private final CryptoProperties cryptoProperties;
 
-    public String encryptAESCBC(final String message) throws Exception {
-        final Cipher cipher = getCipher(Cipher.ENCRYPT_MODE);
-        final byte[] encrypted = cipher.doFinal(message.getBytes(StandardCharsets.UTF_8));
+    public String encryptAESCBC(String message) throws Exception {
+        Cipher cipher = getCipher(Cipher.ENCRYPT_MODE);
+        byte[] encrypted = cipher.doFinal(message.getBytes(StandardCharsets.UTF_8));
 
         return Base64.getEncoder().encodeToString(encrypted);
     }
 
-    public String decryptAESCBC(final String message) throws Exception {
-        final Cipher cipher = getCipher(Cipher.DECRYPT_MODE);
-        final byte[] decrypted = cipher.doFinal(Base64.getDecoder().decode(message));
+    public String decryptAESCBC(String message) throws Exception {
+        Cipher cipher = getCipher(Cipher.DECRYPT_MODE);
+        byte[] decrypted = cipher.doFinal(Base64.getDecoder().decode(message));
 
         return new String(decrypted);
     }
 
-    private Cipher getCipher(final int mode) throws Exception {
-        final SecretKeySpec secretKey = new SecretKeySpec(
-            cryptoProperties.getAesPrivateKeyByByte(), cryptoProperties.getCryptoAlgorithm());
-        final IvParameterSpec IV = new IvParameterSpec(cryptoProperties.getAesPrivateKeyByByte());
-        final Cipher cipher = Cipher.getInstance(cryptoProperties.getCryptoTransformation());
+    private Cipher getCipher(int mode) throws Exception {
+        SecretKeySpec secretKey = new SecretKeySpec(
+            cryptoProperties.getAesPrivateKey().getBytes(StandardCharsets.UTF_8), "AES");
+        IvParameterSpec IV = new IvParameterSpec(cryptoProperties.getAesPrivateKey().substring(0, 16).getBytes());
+
+        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
         cipher.init(mode, secretKey, IV);
 
         return cipher;
     }
 
-    public String generateHMAC(final String data) throws Exception {
-        final Mac hmac = Mac.getInstance(cryptoProperties.getMacAlgorithm());
-        final SecretKeySpec secretKeySpec = new SecretKeySpec(
-            cryptoProperties.getHmacPrivateKeyByByte(), cryptoProperties.getMacAlgorithm());
+    public String generateHMAC(String data) throws Exception {
+        Mac hmac = Mac.getInstance("HmacSHA256");
+        SecretKeySpec secretKeySpec = new SecretKeySpec(
+            cryptoProperties.getHmacPrivateKey().getBytes(StandardCharsets.UTF_8), "HmacSHA256");
         hmac.init(secretKeySpec);
-        final byte[] hmacBytes = hmac.doFinal(data.getBytes(StandardCharsets.UTF_8));
+        byte[] hmacBytes = hmac.doFinal(data.getBytes(StandardCharsets.UTF_8));
 
         return Base64.getEncoder().encodeToString(hmacBytes);
     }
 
-    public boolean isValidHMAC(final String receivedHMAC, final String data) throws Exception {
-        final String calculatedHMAC = generateHMAC(data);
+    public boolean isValidHMAC(String receivedHMAC, String data) throws Exception {
+        String calculatedHMAC = generateHMAC(data);
 
         return receivedHMAC.equals(calculatedHMAC);
     }
@@ -86,11 +88,15 @@ public class CryptoManager {
     private Map<String, String> parseQueryString(final String queryString) {
         final Map<String, String> params = new HashMap<>();
         final String[] pairs = queryString.split("&");
-        for (String pair : pairs) {
-            String[] keyValue = pair.split("=");
-            String key = URLDecoder.decode(keyValue[0], StandardCharsets.UTF_8);
-            String value = URLDecoder.decode(keyValue[1], StandardCharsets.UTF_8);
-            params.put(key, value);
+        try {
+            for (String pair : pairs) {
+                String[] keyValue = pair.split("=");
+                String key = URLDecoder.decode(keyValue[0], "UTF-8");
+                String value = URLDecoder.decode(keyValue[1], "UTF-8");
+                params.put(key, value);
+            }
+        } catch (UnsupportedEncodingException e) {
+            throw new ApiException(MemberErrorCode.BAD_REQUEST_FAIL_PARSE_QUERY_STRING);
         }
         return params;
     }
