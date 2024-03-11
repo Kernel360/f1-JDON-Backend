@@ -87,6 +87,10 @@ redis:
       wait-time: 5
       lease-time: 1
 
+crypto:
+  aes-private-key: JDON_SECRET_KEY_AES_USE_THIS_KEY
+  hmac-private-key: JDON_SECRET_KEY_HMAC_USE_THIS_KK
+
 management:
   info:
     java:
