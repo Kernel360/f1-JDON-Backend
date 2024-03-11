@@ -10,8 +10,10 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import kernel.jdon.moduledomain.skill.domain.Skill;
+import lombok.Getter;
 
 @Entity
+@Getter
 @Table(name = "skill_keyword")
 public class SkillKeyword {
 
