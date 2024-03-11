@@ -73,6 +73,9 @@ allowed-origins:
     - "https://jdon.kr"
     - "https://jdon.netlify.app"
     - "https://jdon-test.netlify.app/"
+  monitoring:
+    - "3.34.69.116"
+    - "0:0:0:0:0:0:0:1"
 
 redirect-url:
   login:

@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @ConfigurationProperties(prefix = "allowed-origins")
 public class AllowOriginProperties {
-	private final String origin;
-	private final List<String> url;
+    private final String origin;
+    private final List<String> url;
+    private final List<String> monitoring;
 }
