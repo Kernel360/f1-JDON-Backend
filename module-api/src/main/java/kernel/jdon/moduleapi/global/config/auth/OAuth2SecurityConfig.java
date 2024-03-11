@@ -34,7 +34,6 @@ public class OAuth2SecurityConfig {
         List<IpAddressMatcher> matcherList = ipAddress.stream().map(IpAddressMatcher::new).toList();
         return (authentication, context) -> {
             HttpServletRequest request = context.getRequest();
-            log.info("request.getRemoteAddr() = {}", request.getRemoteAddr());
             boolean isIpMatch = matcherList.stream()
                 .anyMatch(matcher -> matcher.matches(request));
 
@@ -68,7 +67,7 @@ public class OAuth2SecurityConfig {
 
         http.cors(corsCustomizer -> corsCustomizer.configurationSource(request -> {
             CorsConfiguration config = new CorsConfiguration();
-            config.setAllowedOrigins(allowOriginProperties.getUrlList());
+            config.setAllowedOrigins(allowOriginProperties.getUrl());
             config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
             config.setAllowedHeaders(List.of("*"));
             config.setAllowCredentials(true);
@@ -87,7 +86,7 @@ public class OAuth2SecurityConfig {
             .requestMatchers(HttpMethod.GET, permitAllGET).permitAll()
             .requestMatchers(HttpMethod.POST, permitAllPOST).permitAll()
             .requestMatchers(HttpMethod.GET, authenticatedGET).authenticated()
-            .requestMatchers("/actuator/**").access(hasIpAddress(allowOriginProperties.getAllowIpMonitoringList()))
+            .requestMatchers("/actuator/**").access(hasIpAddress(allowOriginProperties.getMonitoring()))
             .anyRequest().authenticated());
         http.oauth2Login(oauth2Configurer -> oauth2Configurer
             .successHandler(jdonOAuth2AuthenticationSuccessHandler)
