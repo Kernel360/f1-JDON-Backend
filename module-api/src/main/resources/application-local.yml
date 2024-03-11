@@ -90,13 +90,10 @@ redis:
       wait-time: 5
       lease-time: 1
 
-<<<<<<< HEAD
 crypto:
   aes-private-key: JDON_SECRET_KEY_AES_USE_THIS_KEY
   hmac-private-key: JDON_SECRET_KEY_HMAC_USE_THIS_KK
 
-=======
->>>>>>> e12b45b (feature: 모니터링 data 수집을 허용할 ip 설정)
 management:
   info:
     java:
