@@ -40,12 +40,12 @@ class SkillFacadeTest {
     @DisplayName("2: getMemberSkillList 메서드가 존재하는 memberSkill 목록 데이터를 응답한다.")
     void givenValidMemberSkillList_whenFindList_thenReturnCorrectHotSkillList() {
         // given
-        var memberId = 1L;
-        var mockMemberSkillListInfo = mock(SkillInfo.FindMemberSkillListResponse.class);
+        final var memberId = 1L;
+        final var mockMemberSkillListInfo = mock(SkillInfo.FindMemberSkillListResponse.class);
         given(skillService.getMemberSkillList(memberId)).willReturn(mockMemberSkillListInfo);
 
         // when
-        var response = skillFacade.getMemberSkillList(memberId);
+        final var response = skillFacade.getMemberSkillList(memberId);
 
         // then
         assertThat(response).isEqualTo(mockMemberSkillListInfo);
@@ -78,7 +78,7 @@ class SkillFacadeTest {
         given(skillService.getDataListBySkill(keyword, memberId)).willReturn(mockDataListBySkillInfo);
 
         //when
-        var response = skillFacade.getDataListBySkill(keyword, memberId);
+        final var response = skillFacade.getDataListBySkill(keyword, memberId);
 
         //then
         assertThat(response).isEqualTo(mockDataListBySkillInfo);
