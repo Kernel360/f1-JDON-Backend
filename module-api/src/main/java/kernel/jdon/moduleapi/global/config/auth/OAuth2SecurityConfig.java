@@ -68,11 +68,7 @@ public class OAuth2SecurityConfig {
 
         http.cors(corsCustomizer -> corsCustomizer.configurationSource(request -> {
             CorsConfiguration config = new CorsConfiguration();
-<<<<<<< HEAD
             config.setAllowedOrigins(allowOriginProperties.getUrlList());
-=======
-            config.setAllowedOrigins(allowOriginProperties.getUrl());
->>>>>>> e12b45b (feature: 모니터링 data 수집을 허용할 ip 설정)
             config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
             config.setAllowedHeaders(List.of("*"));
             config.setAllowCredentials(true);
@@ -91,11 +87,7 @@ public class OAuth2SecurityConfig {
             .requestMatchers(HttpMethod.GET, permitAllGET).permitAll()
             .requestMatchers(HttpMethod.POST, permitAllPOST).permitAll()
             .requestMatchers(HttpMethod.GET, authenticatedGET).authenticated()
-<<<<<<< HEAD
             .requestMatchers("/actuator/**").access(hasIpAddress(allowOriginProperties.getAllowIpMonitoringList()))
-=======
-            .requestMatchers("/actuator/**").access(hasIpAddress(allowOriginProperties.getMonitoring()))
->>>>>>> e12b45b (feature: 모니터링 data 수집을 허용할 ip 설정)
             .anyRequest().authenticated());
         http.oauth2Login(oauth2Configurer -> oauth2Configurer
             .successHandler(jdonOAuth2AuthenticationSuccessHandler)
