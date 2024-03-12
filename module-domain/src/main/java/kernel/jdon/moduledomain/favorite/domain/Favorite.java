@@ -29,25 +29,25 @@ import lombok.NoArgsConstructor;
 @Table(name = "favorite")
 public class Favorite {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@CreatedDate
-	@Column(name = "created_date", columnDefinition = "DATETIME", nullable = false, updatable = false)
-	private LocalDateTime createdDate;
+    @CreatedDate
+    @Column(name = "created_date", columnDefinition = "DATETIME", nullable = false, updatable = false)
+    private LocalDateTime createdDate;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "member_id", columnDefinition = "BIGINT")
-	private Member member;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id", columnDefinition = "BIGINT")
+    private Member member;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "inflearn_id", columnDefinition = "BIGINT")
-	private InflearnCourse inflearnCourse;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "inflearn_id", columnDefinition = "BIGINT")
+    private InflearnCourse inflearnCourse;
 
-	@Builder
-	public Favorite(Member member, InflearnCourse inflearnCourse) {
-		this.member = member;
-		this.inflearnCourse = inflearnCourse;
-	}
+    @Builder
+    public Favorite(Member member, InflearnCourse inflearnCourse) {
+        this.member = member;
+        this.inflearnCourse = inflearnCourse;
+    }
 }

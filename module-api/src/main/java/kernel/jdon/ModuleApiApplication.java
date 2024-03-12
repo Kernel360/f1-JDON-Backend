@@ -8,8 +8,8 @@ import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 @ConfigurationPropertiesScan
 public class ModuleApiApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(ModuleApiApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(ModuleApiApplication.class, args);
+    }
 
 }

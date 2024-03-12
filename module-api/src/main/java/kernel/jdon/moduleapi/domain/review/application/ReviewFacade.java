@@ -11,18 +11,18 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class ReviewFacade {
-	private final ReviewService reviewService;
+    private final ReviewService reviewService;
 
-	public ReviewInfo.CreateReviewResponse createReview(final ReviewCommand.CreateReviewRequest command) {
-		return reviewService.createReview(command);
-	}
+    public ReviewInfo.CreateReviewResponse createReview(final ReviewCommand.CreateReviewRequest command) {
+        return reviewService.createReview(command);
+    }
 
-	public ReviewInfo.FindReviewListResponse getReviewList(final Long jdId, final PageInfoRequest pageInfoRequest,
-		final Long reviewId) {
-		return reviewService.getReviewList(jdId, pageInfoRequest, reviewId);
-	}
+    public ReviewInfo.FindReviewListResponse getReviewList(final Long jdId, final PageInfoRequest pageInfoRequest,
+        final Long reviewId) {
+        return reviewService.getReviewList(jdId, pageInfoRequest, reviewId);
+    }
 
-	public void removeReview(final ReviewCommand.DeleteReviewRequest command) {
-		reviewService.removeReview(command);
-	}
+    public void removeReview(final ReviewCommand.DeleteReviewRequest command) {
+        reviewService.removeReview(command);
+    }
 }

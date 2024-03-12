@@ -8,9 +8,9 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class SessionUserUtil {
-	public static Long getSessionUserId(SessionUserInfo sessionUser) {
-		return Optional.ofNullable(sessionUser)
-			.map(session -> sessionUser.getId())
-			.orElse(null);
-	}
+    public static Long getSessionUserId(SessionUserInfo sessionUser) {
+        return Optional.ofNullable(sessionUser)
+            .map(session -> sessionUser.getId())
+            .orElse(null);
+    }
 }

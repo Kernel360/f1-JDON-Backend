@@ -9,15 +9,15 @@ import lombok.RequiredArgsConstructor;
 @Component
 @RequiredArgsConstructor
 public class FaqStoreImpl implements FaqStore {
-	private final FaqRepository faqRepository;
+    private final FaqRepository faqRepository;
 
-	@Override
-	public Faq save(final Faq initFaq) {
-		return faqRepository.save(initFaq);
-	}
+    @Override
+    public Faq save(final Faq initFaq) {
+        return faqRepository.save(initFaq);
+    }
 
-	@Override
-	public void delete(final Faq persistFaq) {
-		faqRepository.delete(persistFaq);
-	}
+    @Override
+    public void delete(final Faq persistFaq) {
+        faqRepository.delete(persistFaq);
+    }
 }

@@ -7,5 +7,5 @@ import kernel.jdon.moduledomain.inflearnjdskill.repository.InflearnJdSkillDomain
 import kernel.jdon.moduledomain.skill.domain.Skill;
 
 public interface InflearnJdSkillRepository extends InflearnJdSkillDomainRepository {
-	List<InflearnJdSkill> findBySkill(Skill skill);
+    List<InflearnJdSkill> findBySkill(Skill skill);
 }

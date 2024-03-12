@@ -21,21 +21,21 @@ import lombok.NoArgsConstructor;
 @Table(name = "inflearn_jd_skill")
 public class InflearnJdSkill {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "course_id", columnDefinition = "BIGINT")
-	private InflearnCourse inflearnCourse;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "course_id", columnDefinition = "BIGINT")
+    private InflearnCourse inflearnCourse;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "skill_id", columnDefinition = "BIGINT")
-	private Skill skill;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "skill_id", columnDefinition = "BIGINT")
+    private Skill skill;
 
-	@Builder
-	public InflearnJdSkill(Skill skill, InflearnCourse inflearnCourse) {
-		this.skill = skill;
-		this.inflearnCourse = inflearnCourse;
-	}
+    @Builder
+    public InflearnJdSkill(Skill skill, InflearnCourse inflearnCourse) {
+        this.skill = skill;
+        this.inflearnCourse = inflearnCourse;
+    }
 }

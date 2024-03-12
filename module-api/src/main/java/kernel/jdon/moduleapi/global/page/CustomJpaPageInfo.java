@@ -6,12 +6,12 @@ import lombok.Getter;
 
 @Getter
 public class CustomJpaPageInfo extends CustomPageInfo {
-	public CustomJpaPageInfo(Page<?> page) {
-		super(page.getPageable().getPageNumber(),
-			page.getPageable().getPageSize(),
-			page.getTotalPages(),
-			page.isFirst(),
-			page.isLast(),
-			page.isEmpty());
-	}
+    public CustomJpaPageInfo(Page<?> page) {
+        super(page.getPageable().getPageNumber(),
+            page.getPageable().getPageSize(),
+            page.getTotalPages(),
+            page.isFirst(),
+            page.isLast(),
+            page.isEmpty());
+    }
 }

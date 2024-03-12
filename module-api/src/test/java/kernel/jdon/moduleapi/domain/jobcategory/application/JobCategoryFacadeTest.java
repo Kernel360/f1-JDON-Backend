@@ -18,36 +18,36 @@ import kernel.jdon.moduleapi.domain.jobcategory.core.JobCategoryService;
 @ExtendWith(MockitoExtension.class)
 @DisplayName("JobCategory Facade 테스트")
 class JobCategoryFacadeTest {
-	@InjectMocks
-	private JobCategoryFacade jobCategoryFacade;
-	@Mock
-	private JobCategoryService jobCategoryService;
+    @InjectMocks
+    private JobCategoryFacade jobCategoryFacade;
+    @Mock
+    private JobCategoryService jobCategoryService;
 
-	@Test
-	@DisplayName("1: getJobGroupList 메서드가 존재하는 직군별 직무 목록 데이터를 응답한다.")
-	void givenNone_whenFindList_thenReturnCorrectJobGroupList() throws Exception {
-		//given
-		var jobGroupListResponse = getMockJobGroupList();
+    @Test
+    @DisplayName("1: getJobGroupList 메서드가 존재하는 직군별 직무 목록 데이터를 응답한다.")
+    void givenNone_whenFindList_thenReturnCorrectJobGroupList() throws Exception {
+        //given
+        var jobGroupListResponse = getMockJobGroupList();
 
-		//when
-		when(jobCategoryService.getJobGroupList()).thenReturn(jobGroupListResponse);
-		var response = jobCategoryFacade.getJobGroupList();
+        //when
+        when(jobCategoryService.getJobGroupList()).thenReturn(jobGroupListResponse);
+        var response = jobCategoryFacade.getJobGroupList();
 
-		//then
-		assertThat(response.getJobGroupList()).hasSize(2);
-		assertThat(response.getJobGroupList().get(0).getJobCategoryList()).hasSize(3);
-		verify(jobCategoryService, times(1)).getJobGroupList();
-	}
+        //then
+        assertThat(response.getJobGroupList()).hasSize(2);
+        assertThat(response.getJobGroupList().get(0).getJobCategoryList()).hasSize(3);
+        verify(jobCategoryService, times(1)).getJobGroupList();
+    }
 
-	private JobCategoryInfo.FindJobGroupListResponse getMockJobGroupList() {
-		var jobCategoryList = List.of(
-			mock(JobCategoryInfo.FindJobCategory.class),
-			mock(JobCategoryInfo.FindJobCategory.class),
-			mock(JobCategoryInfo.FindJobCategory.class));
-		var jobGroupList = List.of(
-			JobCategoryInfo.FindJobGroup.builder().id(1L).name("GroupName1").jobCategoryList(jobCategoryList).build(),
-			JobCategoryInfo.FindJobGroup.builder().id(2L).name("GroupName2").jobCategoryList(jobCategoryList).build());
-		var jobGroupListResponse = new JobCategoryInfo.FindJobGroupListResponse(jobGroupList);
-		return jobGroupListResponse;
-	}
+    private JobCategoryInfo.FindJobGroupListResponse getMockJobGroupList() {
+        var jobCategoryList = List.of(
+            mock(JobCategoryInfo.FindJobCategory.class),
+            mock(JobCategoryInfo.FindJobCategory.class),
+            mock(JobCategoryInfo.FindJobCategory.class));
+        var jobGroupList = List.of(
+            JobCategoryInfo.FindJobGroup.builder().id(1L).name("GroupName1").jobCategoryList(jobCategoryList).build(),
+            JobCategoryInfo.FindJobGroup.builder().id(2L).name("GroupName2").jobCategoryList(jobCategoryList).build());
+        var jobGroupListResponse = new JobCategoryInfo.FindJobGroupListResponse(jobGroupList);
+        return jobGroupListResponse;
+    }
 }

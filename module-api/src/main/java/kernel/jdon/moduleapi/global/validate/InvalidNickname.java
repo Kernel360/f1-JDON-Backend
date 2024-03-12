@@ -7,14 +7,14 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class InvalidNickname {
-	private static List<String> invalidNicknames = List.of("admin", "administer", "어드민", "관리자");
+    private static List<String> invalidNicknames = List.of("admin", "administer", "어드민", "관리자");
 
-	public static boolean isInvalid(String keyword) {
-		String findInvalidKeyword = invalidNicknames.stream()
-			.filter(e -> keyword.toUpperCase().contains(e.toUpperCase()))
-			.findAny()
-			.orElse(null);
+    public static boolean isInvalid(String keyword) {
+        String findInvalidKeyword = invalidNicknames.stream()
+            .filter(e -> keyword.toUpperCase().contains(e.toUpperCase()))
+            .findAny()
+            .orElse(null);
 
-		return Objects.isNull(findInvalidKeyword);
-	}
+        return Objects.isNull(findInvalidKeyword);
+    }
 }

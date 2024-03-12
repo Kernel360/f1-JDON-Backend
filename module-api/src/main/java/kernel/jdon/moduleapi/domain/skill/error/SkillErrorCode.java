@@ -9,29 +9,30 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public enum SkillErrorCode implements ErrorCode, BaseThrowException<SkillErrorCode.SkillBaseException> {
-	NOT_FOUND_SKILL(HttpStatus.NOT_FOUND, "존재하지 않는 기술 스킬입니다.");
+    NOT_FOUND_SKILL(HttpStatus.NOT_FOUND, "존재하지 않는 기술 스킬입니다."),
+    NOT_FOUND_SKILL_KEYWORD(HttpStatus.NOT_FOUND, "존재하지 않는 연관어입니다.");
 
-	private final HttpStatus httpStatus;
-	private final String message;
+    private final HttpStatus httpStatus;
+    private final String message;
 
-	@Override
-	public HttpStatus getHttpStatus() {
-		return httpStatus;
-	}
+    @Override
+    public HttpStatus getHttpStatus() {
+        return httpStatus;
+    }
 
-	@Override
-	public String getMessage() {
-		return message;
-	}
+    @Override
+    public String getMessage() {
+        return message;
+    }
 
-	@Override
-	public SkillErrorCode.SkillBaseException throwException() {
-		return new SkillBaseException(this);
-	}
+    @Override
+    public SkillErrorCode.SkillBaseException throwException() {
+        return new SkillBaseException(this);
+    }
 
-	public class SkillBaseException extends ApiException {
-		public SkillBaseException(SkillErrorCode skillErrorCode) {
-			super(skillErrorCode);
-		}
-	}
+    public class SkillBaseException extends ApiException {
+        public SkillBaseException(SkillErrorCode skillErrorCode) {
+            super(skillErrorCode);
+        }
+    }
 }

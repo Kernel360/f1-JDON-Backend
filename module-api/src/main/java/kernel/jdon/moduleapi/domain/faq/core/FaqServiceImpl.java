@@ -12,43 +12,43 @@ import lombok.RequiredArgsConstructor;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class FaqServiceImpl implements FaqService {
-	private final FaqStore faqStore;
-	private final FaqReader faqReader;
+    private final FaqStore faqStore;
+    private final FaqReader faqReader;
 
-	@Override
-	@Transactional
-	public FaqInfo.CreateFaqResponse create(final FaqCommand.CreateFaqRequest command) {
-		final Faq savedFaq = faqStore.save(command.toEntity());
+    @Override
+    @Transactional
+    public FaqInfo.CreateFaqResponse create(final FaqCommand.CreateFaqRequest command) {
+        final Faq savedFaq = faqStore.save(command.toEntity());
 
-		return new FaqInfo.CreateFaqResponse(savedFaq.getId());
-	}
+        return new FaqInfo.CreateFaqResponse(savedFaq.getId());
+    }
 
-	@Override
-	@Transactional
-	public FaqInfo.UpdateFaqResponse modify(final FaqCommand.UpdateFaqRequest command) {
-		final Faq findFaq = findById(command.getFaqId());
-		findFaq.update(command.getTitle(), command.getContent());
+    @Override
+    @Transactional
+    public FaqInfo.UpdateFaqResponse modify(final FaqCommand.UpdateFaqRequest command) {
+        final Faq findFaq = findById(command.getFaqId());
+        findFaq.update(command.getTitle(), command.getContent());
 
-		return new FaqInfo.UpdateFaqResponse(findFaq.getId());
-	}
+        return new FaqInfo.UpdateFaqResponse(findFaq.getId());
+    }
 
-	@Override
-	@Transactional
-	public FaqInfo.DeleteFaqResponse remove(final Long faqId) {
-		final Faq findFaq = findById(faqId);
-		faqStore.delete(findFaq);
+    @Override
+    @Transactional
+    public FaqInfo.DeleteFaqResponse remove(final Long faqId) {
+        final Faq findFaq = findById(faqId);
+        faqStore.delete(findFaq);
 
-		return new FaqInfo.DeleteFaqResponse(findFaq.getId());
-	}
+        return new FaqInfo.DeleteFaqResponse(findFaq.getId());
+    }
 
-	@Override
-	public FaqInfo.FindFaqListResponse getFaqList() {
-		final List<Faq> findFaqList = faqReader.findAllFaqList();
+    @Override
+    public FaqInfo.FindFaqListResponse getFaqList() {
+        final List<Faq> findFaqList = faqReader.findAllFaqList();
 
-		return new FaqInfo.FindFaqListResponse(findFaqList);
-	}
+        return new FaqInfo.FindFaqListResponse(findFaqList);
+    }
 
-	private Faq findById(final Long faqId) {
-		return faqReader.findById(faqId);
-	}
+    private Faq findById(final Long faqId) {
+        return faqReader.findById(faqId);
+    }
 }

@@ -9,36 +9,46 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @ConfigurationProperties(prefix = "redirect-url.login")
 public class LoginRedirectUrlProperties {
-	private final Success success;
-	private final Failure failure;
+    private final Success success;
+    private final Failure failure;
 
-	public String getSuccessMember() {
-		return this.success.getMember();
-	}
+    public String getSuccessMember() {
+        return this.success.getMember();
+    }
 
-	public String getSuccessGuest() {
-		return this.success.getGuest();
-	}
+    public String getSuccessGuest() {
+        return this.success.getGuest();
+    }
 
-	public String getFailureNotFoundEmail() {
-		return this.failure.getNotFoundEmail();
-	}
+    public String getFailureNotFoundEmail() {
+        return this.failure.getNotFoundEmail();
+    }
 
-	public String getFailureNotMatchProvider() {
-		return this.failure.getNotMatchProvider();
-	}
+    public String getFailureNotMatchProvider() {
+        return this.failure.getNotMatchProvider();
+    }
 
-	@Getter
-	@RequiredArgsConstructor
-	public static class Success {
-		private final String member;
-		private final String guest;
-	}
+    public String getFailureAnotherWithdrawAccount() {
+        return this.failure.getAnotherWithdrawAccount();
+    }
 
-	@Getter
-	@RequiredArgsConstructor
-	public static class Failure {
-		private final String notFoundEmail;
-		private final String notMatchProvider;
-	}
+    public String getFailureAlreadyWithdrawAccount() {
+        return this.failure.getAlreadyWithdrawAccount();
+    }
+
+    @Getter
+    @RequiredArgsConstructor
+    public static class Success {
+        private final String member;
+        private final String guest;
+    }
+
+    @Getter
+    @RequiredArgsConstructor
+    public static class Failure {
+        private final String notFoundEmail;
+        private final String notMatchProvider;
+        private final String anotherWithdrawAccount;
+        private final String alreadyWithdrawAccount;
+    }
 }

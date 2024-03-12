@@ -28,7 +28,7 @@ public class FavoriteFactoryImpl implements FavoriteFactory {
                 findMember.getId(),
                 findInflearnCourse.getId())
             .orElseGet(() -> createNewFavorite(findMember, findInflearnCourse));
-        
+
         return saveFavorite;
     }
 

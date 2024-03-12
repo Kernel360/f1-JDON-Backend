@@ -10,17 +10,17 @@ import org.mapstruct.ReportingPolicy;
 import kernel.jdon.moduledomain.member.domain.Member;
 
 @Mapper(
-	componentModel = "spring",
-	injectionStrategy = InjectionStrategy.CONSTRUCTOR,
-	unmappedSourcePolicy = ReportingPolicy.WARN
+    componentModel = "spring",
+    injectionStrategy = InjectionStrategy.CONSTRUCTOR,
+    unmappedSourcePolicy = ReportingPolicy.WARN
 )
 public interface MemberInfoMapper {
 
-	@Mapping(source = "member.email", target = "email")
-	@Mapping(source = "member.nickname", target = "nickname")
-	@Mapping(source = "member.birth", target = "birth")
-	@Mapping(expression = "java(member.getGender().getGender())", target = "gender")
-	@Mapping(expression = "java(member.getJobCategory().getId())", target = "jobCategoryId")
-	MemberInfo.FindMemberResponse of(Member member, List<Long> skillList);
+    @Mapping(source = "member.email", target = "email")
+    @Mapping(source = "member.nickname", target = "nickname")
+    @Mapping(source = "member.birth", target = "birth")
+    @Mapping(expression = "java(member.getGender().getGender())", target = "gender")
+    @Mapping(expression = "java(member.getJobCategory().getId())", target = "jobCategoryId")
+    MemberInfo.FindMemberResponse of(Member member, List<Long> skillList);
 
 }

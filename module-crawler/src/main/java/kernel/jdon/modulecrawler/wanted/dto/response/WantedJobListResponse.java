@@ -10,11 +10,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class WantedJobListResponse {
 
-	private List<Data> data;
+    private List<Data> data;
 
-	@Getter
-	@NoArgsConstructor(access = AccessLevel.PRIVATE)
-	public static class Data {
-		private Long id;
-	}
+    @Getter
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    public static class Data {
+        private Long id;
+    }
 }

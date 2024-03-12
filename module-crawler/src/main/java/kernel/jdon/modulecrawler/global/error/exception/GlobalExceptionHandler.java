@@ -12,10 +12,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class GlobalExceptionHandler {
 
-	@ExceptionHandler(CrawlerException.class)
-	public ResponseEntity<ErrorResponse> handlerApiException(CrawlerException e, HttpServletRequest request) {
-		log.warn(e.getErrorCode().getMessage(), e);
-		return ResponseEntity.status(e.getErrorCode().getHttpStatus().value())
-			.body(ErrorResponse.of(e.getErrorCode(), request));
-	}
+    @ExceptionHandler(CrawlerException.class)
+    public ResponseEntity<ErrorResponse> handlerApiException(CrawlerException e, HttpServletRequest request) {
+        log.warn(e.getErrorCode().getMessage(), e);
+        return ResponseEntity.status(e.getErrorCode().getHttpStatus().value())
+            .body(ErrorResponse.of(e.getErrorCode(), request));
+    }
 }

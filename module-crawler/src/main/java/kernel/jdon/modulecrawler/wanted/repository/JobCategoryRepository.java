@@ -6,5 +6,5 @@ import kernel.jdon.moduledomain.jobcategory.domain.JobCategory;
 import kernel.jdon.moduledomain.jobcategory.repository.JobCategoryDomainRepository;
 
 public interface JobCategoryRepository extends JobCategoryDomainRepository {
-	Optional<JobCategory> findByWantedCode(String wantedCode);
+    Optional<JobCategory> findByWantedCode(String wantedCode);
 }

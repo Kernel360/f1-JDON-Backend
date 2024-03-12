@@ -22,25 +22,25 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "review")
 public class Review extends AbstractEntity {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@Column(name = "content", columnDefinition = "TEXT", nullable = false)
-	private String content;
+    @Column(name = "content", columnDefinition = "TEXT", nullable = false)
+    private String content;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "created_by", columnDefinition = "BIGINT")
-	private Member member;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "created_by", columnDefinition = "BIGINT")
+    private Member member;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "wanted_jd_id", columnDefinition = "BIGINT")
-	private WantedJd wantedJd;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "wanted_jd_id", columnDefinition = "BIGINT")
+    private WantedJd wantedJd;
 
-	@Builder
-	public Review(String content, Member member, WantedJd wantedJd) {
-		this.content = content;
-		this.member = member;
-		this.wantedJd = wantedJd;
-	}
+    @Builder
+    public Review(String content, Member member, WantedJd wantedJd) {
+        this.content = content;
+        this.member = member;
+        this.wantedJd = wantedJd;
+    }
 }

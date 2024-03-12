@@ -67,12 +67,16 @@ custom-oauth2:
 
 allowed-origins:
   origin: https://localhost:3000/
-  url:
+  url-list:
     - "http://localhost:3000"
     - "https://localhost:3000"
     - "https://jdon.kr"
     - "https://jdon.netlify.app"
     - "https://jdon-test.netlify.app/"
+  ip:
+    monitoring-list:
+      - "3.34.69.116"
+      - "0:0:0:0:0:0:0:1"
 
 redirect-url:
   login:
@@ -82,9 +86,30 @@ redirect-url:
     failure:
       not-found-email: https://localhost:3000/oauth/login/fail/not-found-email
       not-match-provider: https://localhost:3000/oauth/login/fail/not-match-provider
+      another-withdraw-account: https://localhost:3000/oauth/login/fail/another-withdraw-account
+      already-withdraw-account: https://localhost:3000/oauth/login/fail/already-withdraw-account
 
 redis:
   lock:
     coffee-chat:
       wait-time: 5
       lease-time: 1
+
+crypto:
+  aes-private-key: ${AES_PRIVATE_KEY}
+  hmac-private-key: ${HMAC_PRIVATE_KEY}
+
+management:
+  info:
+    java:
+      enabled: true
+    os:
+      enabled: true
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+        exclude:

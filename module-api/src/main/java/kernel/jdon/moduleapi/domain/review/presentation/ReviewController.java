@@ -25,40 +25,40 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 public class ReviewController {
-	private final ReviewFacade reviewFacade;
-	private final ReviewDtoMapper reviewDtoMapper;
+    private final ReviewFacade reviewFacade;
+    private final ReviewDtoMapper reviewDtoMapper;
 
-	@PostMapping("/api/v1/reviews")
-	public ResponseEntity<CommonResponse<ReviewDto.CreateReviewResponse>> createReview(
-		@RequestBody @Valid final ReviewDto.CreateReviewRequest request,
-		@LoginUser final SessionUserInfo member) {
-		final ReviewCommand.CreateReviewRequest command = reviewDtoMapper.of(request, member.getId());
-		final ReviewInfo.CreateReviewResponse info = reviewFacade.createReview(command);
-		final ReviewDto.CreateReviewResponse response = reviewDtoMapper.of(info);
-		final URI uri = URI.create("/api/v1/reviews" + response.getReviewId());
+    @PostMapping("/api/v1/reviews")
+    public ResponseEntity<CommonResponse<ReviewDto.CreateReviewResponse>> createReview(
+        @RequestBody @Valid final ReviewDto.CreateReviewRequest request,
+        @LoginUser final SessionUserInfo member) {
+        final ReviewCommand.CreateReviewRequest command = reviewDtoMapper.of(request, member.getId());
+        final ReviewInfo.CreateReviewResponse info = reviewFacade.createReview(command);
+        final ReviewDto.CreateReviewResponse response = reviewDtoMapper.of(info);
+        final URI uri = URI.create("/api/v1/reviews" + response.getReviewId());
 
-		return ResponseEntity.created(uri).body(CommonResponse.of(response));
-	}
+        return ResponseEntity.created(uri).body(CommonResponse.of(response));
+    }
 
-	@GetMapping("/api/v1/reviews/{jdId}")
-	public ResponseEntity<CommonResponse<ReviewDto.CreateReviewResponse>> findReviewList(
-		@PathVariable(name = "jdId") final Long jdId,
-		@RequestParam(name = "reviewId", defaultValue = "") final Long reviewId,
-		@ModelAttribute final PageInfoRequest pageInfoRequest) {
-		final ReviewInfo.FindReviewListResponse info = reviewFacade.getReviewList(jdId,
-			pageInfoRequest, reviewId);
-		final ReviewDto.FindReviewListResponse response = reviewDtoMapper.of(info);
+    @GetMapping("/api/v1/reviews/{jdId}")
+    public ResponseEntity<CommonResponse<ReviewDto.CreateReviewResponse>> findReviewList(
+        @PathVariable(name = "jdId") final Long jdId,
+        @RequestParam(name = "reviewId", defaultValue = "") final Long reviewId,
+        @ModelAttribute final PageInfoRequest pageInfoRequest) {
+        final ReviewInfo.FindReviewListResponse info = reviewFacade.getReviewList(jdId,
+            pageInfoRequest, reviewId);
+        final ReviewDto.FindReviewListResponse response = reviewDtoMapper.of(info);
 
-		return ResponseEntity.ok().body(CommonResponse.of(response));
-	}
+        return ResponseEntity.ok().body(CommonResponse.of(response));
+    }
 
-	@DeleteMapping("/api/v1/reviews/{reviewId}")
-	public ResponseEntity<CommonResponse<Void>> removeReview(
-		@PathVariable(name = "reviewId") final Long reviewId,
-		@LoginUser final SessionUserInfo member) {
-		final ReviewCommand.DeleteReviewRequest command = reviewDtoMapper.of(reviewId, member.getId());
-		reviewFacade.removeReview(command);
+    @DeleteMapping("/api/v1/reviews/{reviewId}")
+    public ResponseEntity<CommonResponse<Void>> removeReview(
+        @PathVariable(name = "reviewId") final Long reviewId,
+        @LoginUser final SessionUserInfo member) {
+        final ReviewCommand.DeleteReviewRequest command = reviewDtoMapper.of(reviewId, member.getId());
+        reviewFacade.removeReview(command);
 
-		return ResponseEntity.noContent().build();
-	}
+        return ResponseEntity.noContent().build();
+    }
 }

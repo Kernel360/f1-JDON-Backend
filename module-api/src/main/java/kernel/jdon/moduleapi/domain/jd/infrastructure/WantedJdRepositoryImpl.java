@@ -22,13 +22,13 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import kernel.jdon.moduleapi.domain.jd.core.JdSearchType;
 import kernel.jdon.moduleapi.domain.jd.core.JdSortType;
 import kernel.jdon.moduleapi.domain.jd.presentation.JdCondition;
-import kernel.jdon.moduleapi.domain.skill.infrastructure.SkillKeywordManager;
+import kernel.jdon.moduleapi.domain.skill.core.keyword.SkillKeywordReader;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class WantedJdRepositoryImpl implements CustomWantedJdRepository {
     private final JPAQueryFactory jpaQueryFactory;
-    private final SkillKeywordManager skillKeywordManager;
+    private final SkillKeywordReader skillKeywordReader;
 
     public Page<JdReaderInfo.FindWantedJd> findWantedJdList(final Pageable pageable, final JdCondition jdCondition) {
         List<JdReaderInfo.FindWantedJd> content = jpaQueryFactory
@@ -88,13 +88,14 @@ public class WantedJdRepositoryImpl implements CustomWantedJdRepository {
     }
 
     private BooleanExpression wantedJdSkillContains(final String skill) {
-        final List<String> allKeywordAssociatedTermList = skillKeywordManager
-            .getAllKeywordAssociatedTermsByKeyword(skill);
+        final String keyword = skillKeywordReader.findSkillKeywordByRelatedKeywordIgnoreCase(skill)
+            .getSkill()
+            .getKeyword();
 
         return hasText(skill) ?
             wantedJd.id.in(JPAExpressions.select(wantedJdSkill.wantedJd.id)
                 .from(wantedJdSkill)
-                .where(wantedJdSkill.skill.keyword.in(allKeywordAssociatedTermList)))
+                .where(wantedJdSkill.skill.keyword.eq(keyword)))
             : null;
     }
 

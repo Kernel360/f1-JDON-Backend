@@ -9,31 +9,31 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public enum FavoriteErrorCode implements ErrorCode, BaseThrowException<FavoriteErrorCode.FavoriteBaseException> {
-	NOT_FOUND_FAVORITE(HttpStatus.NOT_FOUND, "존재하지 않는 찜 정보입니다."),
-	LECTURE_NOT_FAVORITED(HttpStatus.CONFLICT, "찜하지 않은 강의는 찜 취소할 수 없습니다.");
+    NOT_FOUND_FAVORITE(HttpStatus.NOT_FOUND, "존재하지 않는 찜 정보입니다."),
+    LECTURE_NOT_FAVORITED(HttpStatus.CONFLICT, "찜하지 않은 강의는 찜 취소할 수 없습니다.");
 
-	private final HttpStatus httpStatus;
-	private final String message;
+    private final HttpStatus httpStatus;
+    private final String message;
 
-	@Override
-	public HttpStatus getHttpStatus() {
-		return httpStatus;
-	}
+    @Override
+    public HttpStatus getHttpStatus() {
+        return httpStatus;
+    }
 
-	@Override
-	public String getMessage() {
-		return message;
-	}
+    @Override
+    public String getMessage() {
+        return message;
+    }
 
-	@Override
-	public FavoriteBaseException throwException() {
-		return new FavoriteBaseException(this);
-	}
+    @Override
+    public FavoriteBaseException throwException() {
+        return new FavoriteBaseException(this);
+    }
 
-	public class FavoriteBaseException extends ApiException {
-		public FavoriteBaseException(FavoriteErrorCode favoriteErrorCode) {
-			super(favoriteErrorCode);
-		}
-	}
+    public class FavoriteBaseException extends ApiException {
+        public FavoriteBaseException(FavoriteErrorCode favoriteErrorCode) {
+            super(favoriteErrorCode);
+        }
+    }
 
 }

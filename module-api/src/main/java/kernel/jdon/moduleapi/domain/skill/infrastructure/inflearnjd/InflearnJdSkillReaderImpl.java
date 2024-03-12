@@ -13,13 +13,13 @@ import lombok.RequiredArgsConstructor;
 @Component
 @RequiredArgsConstructor
 public class InflearnJdSkillReaderImpl implements InflearnJdSkillReader {
-	private final SkillRepository skillRepository;
-	private final SkillReaderInfoMapper skillReaderInfoMapper;
+    private final SkillRepository skillRepository;
+    private final SkillReaderInfoMapper skillReaderInfoMapper;
 
-	@Override
-	public List<SkillInfo.FindLecture> findInflearnLectureListBySkill(final String keyword, final Long memberId) {
-		return skillRepository.findInflearnLectureListBySkill(keyword, memberId).stream()
-			.map(skillReaderInfoMapper::of)
-			.toList();
-	}
+    @Override
+    public List<SkillInfo.FindLecture> findInflearnLectureListBySkill(final String keyword, final Long memberId) {
+        return skillRepository.findInflearnLectureListBySkill(keyword, memberId).stream()
+            .map(skillReaderInfoMapper::of)
+            .toList();
+    }
 }

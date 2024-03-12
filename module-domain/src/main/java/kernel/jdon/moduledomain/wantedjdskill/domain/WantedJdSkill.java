@@ -21,21 +21,21 @@ import lombok.NoArgsConstructor;
 @Table(name = "wanted_jd_skill")
 public class WantedJdSkill {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "skill_id", columnDefinition = "BIGINT", nullable = false)
-	private Skill skill;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "skill_id", columnDefinition = "BIGINT", nullable = false)
+    private Skill skill;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "wanted_jd_id", columnDefinition = "BIGINT", nullable = false)
-	private WantedJd wantedJd;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "wanted_jd_id", columnDefinition = "BIGINT", nullable = false)
+    private WantedJd wantedJd;
 
-	@Builder
-	public WantedJdSkill(Skill skill, WantedJd wantedJd) {
-		this.skill = skill;
-		this.wantedJd = wantedJd;
-	}
+    @Builder
+    public WantedJdSkill(Skill skill, WantedJd wantedJd) {
+        this.skill = skill;
+        this.wantedJd = wantedJd;
+    }
 }

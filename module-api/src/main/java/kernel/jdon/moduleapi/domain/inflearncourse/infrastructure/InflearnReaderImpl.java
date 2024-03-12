@@ -11,11 +11,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class InflearnReaderImpl implements InflearnReader {
 
-	private final InflearnCourseRepository inflearnCourseRepository;
+    private final InflearnCourseRepository inflearnCourseRepository;
 
-	@Override
-	public InflearnCourse findById(Long lectureId) {
-		return inflearnCourseRepository.findById(lectureId)
-			.orElseThrow(InflearncourseErrorCode.NOT_FOUND_INFLEARN_COURSE::throwException);
-	}
+    @Override
+    public InflearnCourse findById(Long lectureId) {
+        return inflearnCourseRepository.findById(lectureId)
+            .orElseThrow(InflearncourseErrorCode.NOT_FOUND_INFLEARN_COURSE::throwException);
+    }
 }

@@ -20,24 +20,24 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "skill_history")
 public class SkillHistory {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@Column(name = "keyword", columnDefinition = "VARCHAR(50)", nullable = false)
-	private String keyword;
+    @Column(name = "keyword", columnDefinition = "VARCHAR(50)", nullable = false)
+    private String keyword;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "job_category_id", columnDefinition = "BIGINT")
-	private JobCategory jobCategory;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "job_category_id", columnDefinition = "BIGINT")
+    private JobCategory jobCategory;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "wanted_jd_id", columnDefinition = "BIGINT")
-	private WantedJd wantedJd;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "wanted_jd_id", columnDefinition = "BIGINT")
+    private WantedJd wantedJd;
 
-	public SkillHistory(String keyword, JobCategory jobCategory, WantedJd wantedJd) {
-		this.keyword = keyword;
-		this.jobCategory = jobCategory;
-		this.wantedJd = wantedJd;
-	}
+    public SkillHistory(String keyword, JobCategory jobCategory, WantedJd wantedJd) {
+        this.keyword = keyword;
+        this.jobCategory = jobCategory;
+        this.wantedJd = wantedJd;
+    }
 }

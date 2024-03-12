@@ -9,19 +9,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class WantedJdSkillReaderInfo {
 
-	@Getter
-	public static class FindJd {
-		private String company;
-		private String title;
-		private String imageUrl;
-		private String jdUrl;
+    @Getter
+    public static class FindJd {
+        private String company;
+        private String title;
+        private String imageUrl;
+        private String jdUrl;
 
-		@QueryProjection
-		public FindJd(String company, String title, String imageUrl, String jdUrl) {
-			this.company = company;
-			this.title = title;
-			this.imageUrl = imageUrl;
-			this.jdUrl = jdUrl;
-		}
-	}
+        @QueryProjection
+        public FindJd(String company, String title, String imageUrl, String jdUrl) {
+            this.company = company;
+            this.title = title;
+            this.imageUrl = imageUrl;
+            this.jdUrl = jdUrl;
+        }
+    }
 }

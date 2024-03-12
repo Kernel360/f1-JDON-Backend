@@ -15,9 +15,9 @@ import kernel.jdon.moduleapi.global.validate.GenderValidator;
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Gender {
-	String message() default "(여성, 남성) 중 올바른 값을 입력해주세요.";
+    String message() default "(여성, 남성) 중 올바른 값을 입력해주세요.";
 
-	Class<?>[] groups() default {};
+    Class<?>[] groups() default {};
 
-	Class<? extends Payload>[] payload() default {};
+    Class<? extends Payload>[] payload() default {};
 }

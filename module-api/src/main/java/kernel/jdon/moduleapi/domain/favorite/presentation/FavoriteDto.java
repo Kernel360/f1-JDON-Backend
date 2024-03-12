@@ -13,36 +13,36 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class FavoriteDto {
 
-	@Getter
-	@AllArgsConstructor
-	public static class FindFavoriteListResponse {
-		private List<FindFavorite> content;
-		private CustomPageInfo pageInfo;
-	}
+    @Getter
+    @AllArgsConstructor
+    public static class FindFavoriteListResponse {
+        private List<FindFavorite> content;
+        private CustomPageInfo pageInfo;
+    }
 
-	@Getter
-	@AllArgsConstructor
-	public static class FindFavorite {
-		private Long lectureId;
-		private String title;
-		private String lectureUrl;
-		private String imageUrl;
-		private String instructor;
-		private Long studentCount;
-		private Integer price;
-	}
+    @Getter
+    @AllArgsConstructor
+    public static class FindFavorite {
+        private Long lectureId;
+        private String title;
+        private String lectureUrl;
+        private String imageUrl;
+        private String instructor;
+        private Long studentCount;
+        private Integer price;
+    }
 
-	@Getter
-	@Builder
-	public static class UpdateRequest {
-		private Long lectureId;
-		@NotNull(message = "isFavorite은 null이 될 수 없습니다.")
-		private Boolean isFavorite;
-	}
+    @Getter
+    @Builder
+    public static class UpdateRequest {
+        private Long lectureId;
+        @NotNull(message = "isFavorite은 null이 될 수 없습니다.")
+        private Boolean isFavorite;
+    }
 
-	@Getter
-	@AllArgsConstructor
-	public static class UpdateResponse {
-		private Long lectureId;
-	}
+    @Getter
+    @AllArgsConstructor
+    public static class UpdateResponse {
+        private Long lectureId;
+    }
 }

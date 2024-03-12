@@ -15,9 +15,9 @@ import kernel.jdon.moduleapi.global.validate.NicknameValidator;
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface IsValidNickname {
-	String message() default "사용할 수 없는 닉네임입니다.";
+    String message() default "사용할 수 없는 닉네임입니다.";
 
-	Class<?>[] groups() default {};
+    Class<?>[] groups() default {};
 
-	Class<? extends Payload>[] payload() default {};
+    Class<? extends Payload>[] payload() default {};
 }

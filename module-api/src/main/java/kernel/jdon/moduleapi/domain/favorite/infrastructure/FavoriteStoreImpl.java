@@ -9,16 +9,16 @@ import lombok.RequiredArgsConstructor;
 @Component
 @RequiredArgsConstructor
 public class FavoriteStoreImpl implements FavoriteStore {
-	private final FavoriteRepository favoriteRepository;
+    private final FavoriteRepository favoriteRepository;
 
-	@Override
-	public Favorite save(final Favorite favorite) {
-		return favoriteRepository.save(favorite);
-	}
+    @Override
+    public Favorite save(final Favorite favorite) {
+        return favoriteRepository.save(favorite);
+    }
 
-	@Override
-	public void delete(final Favorite favorite) {
-		favoriteRepository.delete(favorite);
-	}
+    @Override
+    public void delete(final Favorite favorite) {
+        favoriteRepository.delete(favorite);
+    }
 
 }

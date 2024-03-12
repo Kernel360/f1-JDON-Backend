@@ -22,19 +22,19 @@ import lombok.NoArgsConstructor;
 @Table(name = "job_category")
 public class JobCategory extends AbstractEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@Column(name = "name", columnDefinition = "VARCHAR(255)", nullable = false, unique = true)
-	private String name;
+    @Column(name = "name", columnDefinition = "VARCHAR(255)", nullable = false, unique = true)
+    private String name;
 
-	@Column(name = "parent_id", columnDefinition = "BIGINT")
-	private Long parentId;
+    @Column(name = "parent_id", columnDefinition = "BIGINT")
+    private Long parentId;
 
-	@Column(name = "wanted_code", columnDefinition = "VARCHAR(255)", nullable = false)
-	private String wantedCode;
+    @Column(name = "wanted_code", columnDefinition = "VARCHAR(255)", nullable = false)
+    private String wantedCode;
 
-	@OneToMany(mappedBy = "jobCategory")
-	private List<Skill> skillList = new ArrayList<>();
+    @OneToMany(mappedBy = "jobCategory")
+    private List<Skill> skillList = new ArrayList<>();
 }

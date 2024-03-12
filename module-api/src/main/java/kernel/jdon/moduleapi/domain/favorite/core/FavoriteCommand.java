@@ -9,12 +9,12 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class FavoriteCommand {
-	@Getter
-	@Builder
-	@AllArgsConstructor
-	public static class UpdateRequest {
-		private Long lectureId;
-		@NotNull(message = "isFavorite은 null이 될 수 없습니다.")
-		private Boolean isFavorite;
-	}
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    public static class UpdateRequest {
+        private Long lectureId;
+        @NotNull(message = "isFavorite은 null이 될 수 없습니다.")
+        private Boolean isFavorite;
+    }
 }
