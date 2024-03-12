@@ -67,7 +67,7 @@ public class OAuth2SecurityConfig {
 
         http.cors(corsCustomizer -> corsCustomizer.configurationSource(request -> {
             CorsConfiguration config = new CorsConfiguration();
-            config.setAllowedOrigins(allowOriginProperties.getUrl());
+            config.setAllowedOrigins(allowOriginProperties.getUrlList());
             config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
             config.setAllowedHeaders(List.of("*"));
             config.setAllowCredentials(true);
@@ -86,7 +86,7 @@ public class OAuth2SecurityConfig {
             .requestMatchers(HttpMethod.GET, permitAllGET).permitAll()
             .requestMatchers(HttpMethod.POST, permitAllPOST).permitAll()
             .requestMatchers(HttpMethod.GET, authenticatedGET).authenticated()
-            .requestMatchers("/actuator/**").access(hasIpAddress(allowOriginProperties.getMonitoring()))
+            .requestMatchers("/actuator/**").access(hasIpAddress(allowOriginProperties.getAllowIpMonitoringList()))
             .anyRequest().authenticated());
         http.oauth2Login(oauth2Configurer -> oauth2Configurer
             .successHandler(jdonOAuth2AuthenticationSuccessHandler)
