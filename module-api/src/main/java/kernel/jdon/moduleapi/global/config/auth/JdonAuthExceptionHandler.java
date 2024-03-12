@@ -18,36 +18,44 @@ import kernel.jdon.moduleapi.global.exception.AuthException;
 
 @Component
 public class JdonAuthExceptionHandler
-	implements AuthenticationEntryPoint, AccessDeniedHandler, AuthenticationFailureHandler {
-	private final HandlerExceptionResolver resolver;
-	private final LoginRedirectUrlProperties loginRedirectUrlProperties;
+    implements AuthenticationEntryPoint, AccessDeniedHandler, AuthenticationFailureHandler {
+    private final HandlerExceptionResolver resolver;
+    private final LoginRedirectUrlProperties loginRedirectUrlProperties;
 
-	public JdonAuthExceptionHandler(@Qualifier("handlerExceptionResolver") HandlerExceptionResolver resolver,
-		LoginRedirectUrlProperties loginRedirectUrlProperties) {
-		this.resolver = resolver;
-		this.loginRedirectUrlProperties = loginRedirectUrlProperties;
-	}
+    public JdonAuthExceptionHandler(@Qualifier("handlerExceptionResolver") HandlerExceptionResolver resolver,
+        LoginRedirectUrlProperties loginRedirectUrlProperties) {
+        this.resolver = resolver;
+        this.loginRedirectUrlProperties = loginRedirectUrlProperties;
+    }
 
-	@Override
-	public void commence(HttpServletRequest request, HttpServletResponse response,
-		AuthenticationException authException) {
-		resolver.resolveException(request, response, null, new AuthException(AuthErrorCode.UNAUTHORIZED));
-	}
+    @Override
+    public void commence(HttpServletRequest request, HttpServletResponse response,
+        AuthenticationException authException) {
+        resolver.resolveException(request, response, null, new AuthException(AuthErrorCode.UNAUTHORIZED));
+    }
 
-	@Override
-	public void handle(HttpServletRequest request, HttpServletResponse response,
-		AccessDeniedException accessDeniedException) {
-		resolver.resolveException(request, response, null, new AuthException(AuthErrorCode.FORBIDDEN));
-	}
+    @Override
+    public void handle(HttpServletRequest request, HttpServletResponse response,
+        AccessDeniedException accessDeniedException) {
+        resolver.resolveException(request, response, null, new AuthException(AuthErrorCode.FORBIDDEN));
+    }
 
-	@Override
-	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
-		AuthenticationException exception) throws IOException {
-		if (AuthErrorCode.UNAUTHORIZED_OAUTH_RETURN_NULL_EMAIL == ((AuthException)exception).getErrorCode()) {
-			response.sendRedirect(loginRedirectUrlProperties.getFailureNotFoundEmail());
-		}
-		if (AuthErrorCode.UNAUTHORIZED_NOT_MATCH_PROVIDER_TYPE == ((AuthException)exception).getErrorCode()) {
-			response.sendRedirect(loginRedirectUrlProperties.getFailureNotMatchProvider());
-		}
-	}
+    @Override
+    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
+        AuthenticationException exception) throws IOException {
+        String redirectUrl = null;
+        if (AuthErrorCode.UNAUTHORIZED_OAUTH_RETURN_NULL_EMAIL == ((AuthException)exception).getErrorCode()) {
+            redirectUrl = loginRedirectUrlProperties.getFailureNotFoundEmail();
+        }
+        if (AuthErrorCode.UNAUTHORIZED_NOT_MATCH_PROVIDER_TYPE == ((AuthException)exception).getErrorCode()) {
+            redirectUrl = loginRedirectUrlProperties.getFailureNotMatchProvider();
+        }
+        if (AuthErrorCode.CONFLICT_WITHDRAW_BY_OTHER_SOCIAL_PROVIDER == ((AuthException)exception).getErrorCode()) {
+            redirectUrl = loginRedirectUrlProperties.getFailureAnotherWithdrawAccount();
+        }
+        if (AuthErrorCode.CONFLICT_WITHDRAW_ACCOUNT == ((AuthException)exception).getErrorCode()) {
+            redirectUrl = loginRedirectUrlProperties.getFailureAlreadyWithdrawAccount();
+        }
+        response.sendRedirect(redirectUrl);
+    }
 }
