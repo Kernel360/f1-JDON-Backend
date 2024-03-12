@@ -13,13 +13,13 @@ import lombok.RequiredArgsConstructor;
 @Component
 @RequiredArgsConstructor
 public class WantedJdSkillReaderImpl implements WantedJdSkillReader {
-	private final SkillRepository skillRepository;
-	private final SkillReaderInfoMapper skillReaderInfoMapper;
+    private final SkillRepository skillRepository;
+    private final SkillReaderInfoMapper skillReaderInfoMapper;
 
-	@Override
-	public List<SkillInfo.FindJd> findWantedJdListBySkill(String keyword) {
-		return skillRepository.findWantedJdListBySkill(keyword).stream()
-			.map(skillReaderInfoMapper::of)
-			.toList();
-	}
+    @Override
+    public List<SkillInfo.FindJd> findWantedJdListBySkill(String keyword) {
+        return skillRepository.findWantedJdListBySkill(keyword).stream()
+            .map(skillReaderInfoMapper::of)
+            .toList();
+    }
 }
