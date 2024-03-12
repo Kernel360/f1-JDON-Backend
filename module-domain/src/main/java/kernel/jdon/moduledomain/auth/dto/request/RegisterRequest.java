@@ -15,25 +15,25 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class RegisterRequest {
-	private String encrypted;
-	private String hmac;
-	private String nickname;
-	private LocalDate birth;
-	private String gender;
-	private Long jobCategoryId;
-	private List<Long> skillList;
+    private String encrypted;
+    private String hmac;
+    private String nickname;
+    private LocalDate birth;
+    private String gender;
+    private Long jobCategoryId;
+    private List<Long> skillList;
 
-	public Member toEntity(RegisterMemberDto registerMemberDto) {
-		return Member.builder()
-			.email(registerMemberDto.getEmail())
-			.nickname(nickname)
-			.birth(birth.toString())
-			.gender(Gender.ofType(gender))
-			.role(registerMemberDto.getMemberRole())
-			.accountStatus(MemberAccountStatus.ACTIVE)
-			.socialProvider(registerMemberDto.getSocialProvider())
-			.jobCategory(registerMemberDto.getJobCategory())
-			.joinDate(LocalDateTime.now())
-			.build();
-	}
+    public Member toEntity(RegisterMemberDto registerMemberDto) {
+        return Member.builder()
+            .email(registerMemberDto.getEmail())
+            .nickname(nickname)
+            .birth(birth.toString())
+            .gender(Gender.ofType(gender))
+            .role(registerMemberDto.getMemberRole())
+            .accountStatus(MemberAccountStatus.ACTIVE)
+            .socialProvider(registerMemberDto.getSocialProvider())
+            .jobCategory(registerMemberDto.getJobCategory())
+            .joinDate(LocalDateTime.now())
+            .build();
+    }
 }

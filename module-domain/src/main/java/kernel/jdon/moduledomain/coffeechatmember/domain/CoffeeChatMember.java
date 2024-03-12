@@ -28,25 +28,25 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CoffeeChatMember {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@CreatedDate
-	@Column(name = "created_date", columnDefinition = "DATETIME", nullable = false, updatable = false)
-	private LocalDateTime createdDate;
+    @CreatedDate
+    @Column(name = "created_date", columnDefinition = "DATETIME", nullable = false, updatable = false)
+    private LocalDateTime createdDate;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "created_by", columnDefinition = "BIGINT")
-	private Member member;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "created_by", columnDefinition = "BIGINT")
+    private Member member;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "coffee_chat_id", columnDefinition = "BIGINT")
-	private CoffeeChat coffeeChat;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "coffee_chat_id", columnDefinition = "BIGINT")
+    private CoffeeChat coffeeChat;
 
-	@Builder
-	private CoffeeChatMember(Member member, CoffeeChat coffeeChat) {
-		this.member = member;
-		this.coffeeChat = coffeeChat;
-	}
+    @Builder
+    private CoffeeChatMember(Member member, CoffeeChat coffeeChat) {
+        this.member = member;
+        this.coffeeChat = coffeeChat;
+    }
 }

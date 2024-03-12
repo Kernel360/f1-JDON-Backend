@@ -18,20 +18,20 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver {
 
-	private final HttpSession httpSession;
+    private final HttpSession httpSession;
 
-	@Override
-	public boolean supportsParameter(MethodParameter parameter) {
-		boolean isLoginUserAnnotation = Objects.nonNull(parameter.getParameterAnnotation(LoginUser.class));
-		boolean isUserClass = SessionUserInfo.class.equals(parameter.getParameterType());
+    @Override
+    public boolean supportsParameter(MethodParameter parameter) {
+        boolean isLoginUserAnnotation = Objects.nonNull(parameter.getParameterAnnotation(LoginUser.class));
+        boolean isUserClass = SessionUserInfo.class.equals(parameter.getParameterType());
 
-		return isLoginUserAnnotation && isUserClass;
-	}
+        return isLoginUserAnnotation && isUserClass;
+    }
 
-	@Override
-	public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
-		NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
+    @Override
+    public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
+        NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
 
-		return httpSession.getAttribute("USER");
-	}
+        return httpSession.getAttribute("USER");
+    }
 }

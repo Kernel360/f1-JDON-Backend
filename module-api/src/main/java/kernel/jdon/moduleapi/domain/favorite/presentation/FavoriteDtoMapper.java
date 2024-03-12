@@ -8,15 +8,15 @@ import kernel.jdon.moduleapi.domain.favorite.core.FavoriteCommand;
 import kernel.jdon.moduleapi.domain.favorite.core.FavoriteInfo;
 
 @Mapper(
-	componentModel = "spring",
-	injectionStrategy = InjectionStrategy.CONSTRUCTOR,
-	unmappedTargetPolicy = ReportingPolicy.ERROR
+    componentModel = "spring",
+    injectionStrategy = InjectionStrategy.CONSTRUCTOR,
+    unmappedTargetPolicy = ReportingPolicy.ERROR
 )
 public interface FavoriteDtoMapper {
-	FavoriteDto.FindFavoriteListResponse of(FavoriteInfo.FindFavoriteListResponse info);
+    FavoriteDto.FindFavoriteListResponse of(FavoriteInfo.FindFavoriteListResponse info);
 
-	FavoriteCommand.UpdateRequest of(FavoriteDto.UpdateRequest request);
+    FavoriteCommand.UpdateRequest of(FavoriteDto.UpdateRequest request);
 
-	FavoriteDto.UpdateResponse of(FavoriteInfo.UpdateResponse info);
+    FavoriteDto.UpdateResponse of(FavoriteInfo.UpdateResponse info);
 
 }

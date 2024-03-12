@@ -20,25 +20,25 @@ import lombok.NoArgsConstructor;
 @DynamicUpdate
 @Table(name = "faq")
 public class Faq extends AbstractEntity {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@Column(name = "title", columnDefinition = "VARCHAR(255)", nullable = false)
-	private String title;
+    @Column(name = "title", columnDefinition = "VARCHAR(255)", nullable = false)
+    private String title;
 
-	@Column(name = "content", columnDefinition = "TEXT", nullable = false)
-	private String content;
+    @Column(name = "content", columnDefinition = "TEXT", nullable = false)
+    private String content;
 
-	@Builder
-	public Faq(Long id, String title, String content) {
-		this.id = id;
-		this.title = title;
-		this.content = content;
-	}
+    @Builder
+    public Faq(Long id, String title, String content) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+    }
 
-	public void update(String title, String content) {
-		this.title = title;
-		this.content = content;
-	}
+    public void update(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
 }

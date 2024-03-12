@@ -1,6 +1,13 @@
 package kernel.jdon.moduledomain.memberskill.domain;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import kernel.jdon.moduledomain.member.domain.Member;
 import kernel.jdon.moduledomain.skill.domain.Skill;
 import lombok.Builder;
@@ -13,21 +20,21 @@ import lombok.NoArgsConstructor;
 @Getter
 public class MemberSkill {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "member_id", columnDefinition = "BIGINT")
-	private Member member;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id", columnDefinition = "BIGINT")
+    private Member member;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "skill_id", columnDefinition = "BIGINT")
-	private Skill skill;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "skill_id", columnDefinition = "BIGINT")
+    private Skill skill;
 
-	@Builder
-	public MemberSkill(Member member, Skill skill) {
-		this.member = member;
-		this.skill = skill;
-	}
+    @Builder
+    public MemberSkill(Member member, Skill skill) {
+        this.member = member;
+        this.skill = skill;
+    }
 }

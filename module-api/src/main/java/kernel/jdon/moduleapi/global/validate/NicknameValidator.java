@@ -6,8 +6,8 @@ import kernel.jdon.moduleapi.global.annotation.validate.IsValidNickname;
 
 public class NicknameValidator implements ConstraintValidator<IsValidNickname, String> {
 
-	@Override
-	public boolean isValid(String nickname, ConstraintValidatorContext constraintValidatorContext) {
-		return InvalidNickname.isInvalid(nickname);
-	}
+    @Override
+    public boolean isValid(String nickname, ConstraintValidatorContext constraintValidatorContext) {
+        return InvalidNickname.isInvalid(nickname);
+    }
 }

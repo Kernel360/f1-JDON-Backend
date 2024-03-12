@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class JdInfo {
-	
+
     @Getter
     @Builder
     public static class FindWantedJdResponse {

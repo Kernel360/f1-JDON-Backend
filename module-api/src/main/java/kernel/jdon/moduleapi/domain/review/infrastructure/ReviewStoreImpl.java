@@ -9,16 +9,16 @@ import lombok.RequiredArgsConstructor;
 @Component
 @RequiredArgsConstructor
 public class ReviewStoreImpl implements ReviewStore {
-	private final ReviewRepository reviewRepository;
+    private final ReviewRepository reviewRepository;
 
-	@Override
-	public Review save(final Review initReview) {
-		return reviewRepository.save(initReview);
-	}
+    @Override
+    public Review save(final Review initReview) {
+        return reviewRepository.save(initReview);
+    }
 
-	@Override
-	public void delete(Review review) {
-		reviewRepository.delete(review);
-	}
+    @Override
+    public void delete(Review review) {
+        reviewRepository.delete(review);
+    }
 
 }

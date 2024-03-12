@@ -8,20 +8,20 @@ import kernel.jdon.moduleapi.domain.faq.core.FaqCommand;
 import kernel.jdon.moduleapi.domain.faq.core.FaqInfo;
 
 @Mapper(
-	componentModel = "spring",
-	injectionStrategy = InjectionStrategy.CONSTRUCTOR,
-	unmappedTargetPolicy = ReportingPolicy.ERROR
+    componentModel = "spring",
+    injectionStrategy = InjectionStrategy.CONSTRUCTOR,
+    unmappedTargetPolicy = ReportingPolicy.ERROR
 )
 public interface FaqDtoMapper {
-	FaqCommand.CreateFaqRequest of(FaqDto.CreateFaqRequest request);
+    FaqCommand.CreateFaqRequest of(FaqDto.CreateFaqRequest request);
 
-	FaqDto.CreateFaqResponse of(FaqInfo.CreateFaqResponse info);
+    FaqDto.CreateFaqResponse of(FaqInfo.CreateFaqResponse info);
 
-	FaqCommand.UpdateFaqRequest of(FaqDto.UpdateFaqRequest request, Long faqId);
+    FaqCommand.UpdateFaqRequest of(FaqDto.UpdateFaqRequest request, Long faqId);
 
-	FaqDto.UpdateFaqResponse of(FaqInfo.UpdateFaqResponse info);
+    FaqDto.UpdateFaqResponse of(FaqInfo.UpdateFaqResponse info);
 
-	FaqDto.DeleteFaqResponse of(FaqInfo.DeleteFaqResponse info);
+    FaqDto.DeleteFaqResponse of(FaqInfo.DeleteFaqResponse info);
 
-	FaqDto.FindFaqListResponse of(FaqInfo.FindFaqListResponse info);
+    FaqDto.FindFaqListResponse of(FaqInfo.FindFaqListResponse info);
 }

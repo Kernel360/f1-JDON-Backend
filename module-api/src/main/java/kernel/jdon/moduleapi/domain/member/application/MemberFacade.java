@@ -13,32 +13,32 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class MemberFacade {
-	private final MemberService memberService;
-	private final CustomOAuth2UserService customOAuth2UserService;
+    private final MemberService memberService;
+    private final CustomOAuth2UserService customOAuth2UserService;
 
-	public MemberInfo.FindMemberResponse getMember(final Long memberId) {
-		return memberService.getMember(memberId);
-	}
+    public MemberInfo.FindMemberResponse getMember(final Long memberId) {
+        return memberService.getMember(memberId);
+    }
 
-	public MemberInfo.UpdateMemberResponse modifyMember(final Long memberId,
-		final MemberCommand.UpdateMemberRequest command) {
+    public MemberInfo.UpdateMemberResponse modifyMember(final Long memberId,
+        final MemberCommand.UpdateMemberRequest command) {
 
-		return memberService.modifyMember(memberId, command);
-	}
+        return memberService.modifyMember(memberId, command);
+    }
 
-	public void checkNicknameDuplicate(final MemberCommand.NicknameDuplicateRequest command) {
-		memberService.checkNicknameDuplicate(command);
-	}
+    public void checkNicknameDuplicate(final MemberCommand.NicknameDuplicateRequest command) {
+        memberService.checkNicknameDuplicate(command);
+    }
 
-	public MemberInfo.RegisterResponse register(final MemberCommand.RegisterRequest command) {
-		return memberService.register(command);
-	}
+    public MemberInfo.RegisterResponse register(final MemberCommand.RegisterRequest command) {
+        return memberService.register(command);
+    }
 
-	public MemberInfo.WithdrawResponse withdrawMember(final MemberCommand.WithdrawRequest command) {
-		boolean success = customOAuth2UserService.sendDeleteRequestToOAuth2(command);
-		if (!success) {
-			throw new ApiException(AuthErrorCode.ERROR_FAIL_TO_UNLINK_OAUTH2);
-		}
-		return memberService.removeMember(command);
-	}
+    public MemberInfo.WithdrawResponse withdrawMember(final MemberCommand.WithdrawRequest command) {
+        boolean success = customOAuth2UserService.sendDeleteRequestToOAuth2(command);
+        if (!success) {
+            throw new ApiException(AuthErrorCode.ERROR_FAIL_TO_UNLINK_OAUTH2);
+        }
+        return memberService.removeMember(command);
+    }
 }

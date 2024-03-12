@@ -10,7 +10,7 @@ import kernel.jdon.moduledomain.favorite.repository.FavoriteDomainRepository;
 
 public interface FavoriteRepository extends FavoriteDomainRepository {
 
-	Optional<Favorite> findFavoriteByMemberIdAndInflearnCourseId(Long memberId, Long inflearnId);
+    Optional<Favorite> findFavoriteByMemberIdAndInflearnCourseId(Long memberId, Long inflearnId);
 
-	Page<Favorite> findFavoriteByMemberId(Long memberId, Pageable pageable);
+    Page<Favorite> findFavoriteByMemberId(Long memberId, Pageable pageable);
 }

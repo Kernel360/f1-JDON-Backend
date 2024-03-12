@@ -12,16 +12,16 @@ import lombok.RequiredArgsConstructor;
 @Component
 @RequiredArgsConstructor
 public class FaqReaderImpl implements FaqReader {
-	private final FaqRepository faqRepository;
+    private final FaqRepository faqRepository;
 
-	@Override
-	public Faq findById(final Long faqId) {
-		return faqRepository.findById(faqId)
-			.orElseThrow(FaqErrorCode.NOT_FOUND_FAQ::throwException);
-	}
+    @Override
+    public Faq findById(final Long faqId) {
+        return faqRepository.findById(faqId)
+            .orElseThrow(FaqErrorCode.NOT_FOUND_FAQ::throwException);
+    }
 
-	@Override
-	public List<Faq> findAllFaqList() {
-		return faqRepository.findAll();
-	}
+    @Override
+    public List<Faq> findAllFaqList() {
+        return faqRepository.findAll();
+    }
 }

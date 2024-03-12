@@ -6,6 +6,6 @@ import org.springframework.data.domain.Pageable;
 import kernel.jdon.moduleapi.domain.coffeechat.core.CoffeeChatCommand;
 
 public interface CustomCoffeeChatRepository {
-	Page<CoffeeChatReaderInfo.FindCoffeeChatListResponse> findCoffeeChatList(Pageable pageable,
-		CoffeeChatCommand.FindCoffeeChatListRequest readerCommand);
+    Page<CoffeeChatReaderInfo.FindCoffeeChatListResponse> findCoffeeChatList(Pageable pageable,
+        CoffeeChatCommand.FindCoffeeChatListRequest readerCommand);
 }

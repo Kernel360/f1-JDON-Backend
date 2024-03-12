@@ -11,44 +11,44 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class MemberInfo {
 
-	@Getter
-	@Builder
-	public static class FindMemberResponse {
-		private final String email;
-		private final String nickname;
-		private final String birth;
-		private final String gender;
-		private final Long jobCategoryId;
-		private final List<Long> skillList;
-	}
+    @Getter
+    @Builder
+    public static class FindMemberResponse {
+        private final String email;
+        private final String nickname;
+        private final String birth;
+        private final String gender;
+        private final Long jobCategoryId;
+        private final List<Long> skillList;
+    }
 
-	@Getter
-	@AllArgsConstructor
-	public static class UpdateMemberResponse {
-		private final Long memberId;
+    @Getter
+    @AllArgsConstructor
+    public static class UpdateMemberResponse {
+        private final Long memberId;
 
-		public static UpdateMemberResponse of(final Long memberId) {
-			return new UpdateMemberResponse(memberId);
-		}
-	}
+        public static UpdateMemberResponse of(final Long memberId) {
+            return new UpdateMemberResponse(memberId);
+        }
+    }
 
-	@Getter
-	@Builder
-	public static class RegisterResponse {
-		private final Long memberId;
+    @Getter
+    @Builder
+    public static class RegisterResponse {
+        private final Long memberId;
 
-		public static RegisterResponse of(final Long memberId) {
-			return new RegisterResponse(memberId);
-		}
-	}
+        public static RegisterResponse of(final Long memberId) {
+            return new RegisterResponse(memberId);
+        }
+    }
 
-	@Getter
-	@AllArgsConstructor
-	public static class WithdrawResponse {
-		private final Long memberId;
+    @Getter
+    @AllArgsConstructor
+    public static class WithdrawResponse {
+        private final Long memberId;
 
-		public static MemberInfo.WithdrawResponse of(final Long memberId) {
-			return new MemberInfo.WithdrawResponse(memberId);
-		}
-	}
+        public static MemberInfo.WithdrawResponse of(final Long memberId) {
+            return new MemberInfo.WithdrawResponse(memberId);
+        }
+    }
 }

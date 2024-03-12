@@ -7,7 +7,7 @@ import java.util.Arrays;
 public enum JdSearchType {
     COMPANY("company"),
     TITLE("title");
-	
+
     private final String searchCondition;
 
     JdSearchType(String searchCondition) {

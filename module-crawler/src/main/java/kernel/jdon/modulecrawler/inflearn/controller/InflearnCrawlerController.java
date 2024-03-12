@@ -11,13 +11,13 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class InflearnCrawlerController {
 
-	private final CrawlerService crawlerService;
+    private final CrawlerService crawlerService;
 
-	@GetMapping("/api/v1/crawler/inflearn")
-	public ResponseEntity<Void> getInflearnData() {
-		crawlerService.createCourseInfo();
+    @GetMapping("/api/v1/crawler/inflearn")
+    public ResponseEntity<Void> getInflearnData() {
+        crawlerService.createCourseInfo();
 
-		return ResponseEntity.noContent().build();
-	}
+        return ResponseEntity.noContent().build();
+    }
 
 }

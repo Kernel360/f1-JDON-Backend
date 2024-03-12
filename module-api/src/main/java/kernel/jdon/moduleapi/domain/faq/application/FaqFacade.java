@@ -10,22 +10,22 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class FaqFacade {
-	private final FaqService faqService;
+    private final FaqService faqService;
 
-	public FaqInfo.CreateFaqResponse create(final FaqCommand.CreateFaqRequest command) {
-		return faqService.create(command);
-	}
+    public FaqInfo.CreateFaqResponse create(final FaqCommand.CreateFaqRequest command) {
+        return faqService.create(command);
+    }
 
-	public FaqInfo.UpdateFaqResponse modify(final FaqCommand.UpdateFaqRequest command) {
-		return faqService.modify(command);
-	}
+    public FaqInfo.UpdateFaqResponse modify(final FaqCommand.UpdateFaqRequest command) {
+        return faqService.modify(command);
+    }
 
-	public FaqInfo.DeleteFaqResponse remove(final Long faqId) {
-		return faqService.remove(faqId);
-	}
+    public FaqInfo.DeleteFaqResponse remove(final Long faqId) {
+        return faqService.remove(faqId);
+    }
 
-	public FaqInfo.FindFaqListResponse getFaqList() {
-		return faqService.getFaqList();
-	}
+    public FaqInfo.FindFaqListResponse getFaqList() {
+        return faqService.getFaqList();
+    }
 
 }

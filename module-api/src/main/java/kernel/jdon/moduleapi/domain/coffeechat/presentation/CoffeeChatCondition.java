@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class CoffeeChatCondition {
-	private CoffeeChatSortType sort;
-	private String keyword;
-	private Long jobCategory;
+    private CoffeeChatSortType sort;
+    private String keyword;
+    private Long jobCategory;
 }

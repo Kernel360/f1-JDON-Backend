@@ -8,19 +8,19 @@ import lombok.Getter;
 
 @Getter
 public class InflearnCourseCounter {
-	private int savedCourseCount = 0;
-	private List<InflearnCourse> newCourses = new ArrayList<>();
+    private int savedCourseCount = 0;
+    private List<InflearnCourse> newCourses = new ArrayList<>();
 
-	public void incrementSavedCourseCount() {
-		this.savedCourseCount++;
-	}
+    public void incrementSavedCourseCount() {
+        this.savedCourseCount++;
+    }
 
-	public void addNewCourse(InflearnCourse course) {
-		newCourses.add(course);
-	}
+    public void addNewCourse(InflearnCourse course) {
+        newCourses.add(course);
+    }
 
-	public void resetState() {
-		savedCourseCount = 0;
-		newCourses.clear();
-	}
+    public void resetState() {
+        savedCourseCount = 0;
+        newCourses.clear();
+    }
 }

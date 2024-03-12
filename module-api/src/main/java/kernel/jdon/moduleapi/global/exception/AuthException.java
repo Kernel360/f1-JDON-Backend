@@ -7,10 +7,10 @@ import lombok.Getter;
 
 @Getter
 public class AuthException extends AuthenticationException {
-	private final transient ErrorCode errorCode;
+    private final transient ErrorCode errorCode;
 
-	public AuthException(ErrorCode errorCode) {
-		super(errorCode.getMessage());
-		this.errorCode = errorCode;
-	}
+    public AuthException(ErrorCode errorCode) {
+        super(errorCode.getMessage());
+        this.errorCode = errorCode;
+    }
 }

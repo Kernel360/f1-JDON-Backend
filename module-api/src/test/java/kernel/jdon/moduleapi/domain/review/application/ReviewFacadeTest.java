@@ -21,71 +21,71 @@ import kernel.jdon.moduleapi.global.page.PageInfoRequest;
 @DisplayName("Review Facade 테스트")
 @ExtendWith(MockitoExtension.class)
 class ReviewFacadeTest {
-	@InjectMocks
-	private ReviewFacade reviewFacade;
-	@Mock
-	private ReviewService reviewService;
+    @InjectMocks
+    private ReviewFacade reviewFacade;
+    @Mock
+    private ReviewService reviewService;
 
-	@Test
-	@DisplayName("1: 리뷰 생성 정보가 주어졌을 때, createReview 메서드가 응답값을 반환한다.")
-	void givenCreateReviewCommand_whenCreateReview_thenCreateReviewInfo() throws Exception {
-		//given
-		final var mockRequestCommand = mockRequestCommand();
-		final var mockRequestInfo = mock(ReviewInfo.CreateReviewResponse.class);
-		given(reviewService.createReview(mockRequestCommand)).willReturn(mockRequestInfo);
+    @Test
+    @DisplayName("1: 리뷰 생성 정보가 주어졌을 때, createReview 메서드가 응답값을 반환한다.")
+    void givenCreateReviewCommand_whenCreateReview_thenCreateReviewInfo() throws Exception {
+        //given
+        final var mockRequestCommand = mockRequestCommand();
+        final var mockRequestInfo = mock(ReviewInfo.CreateReviewResponse.class);
+        given(reviewService.createReview(mockRequestCommand)).willReturn(mockRequestInfo);
 
-		//when
-		final var response = reviewFacade.createReview(mockRequestCommand);
+        //when
+        final var response = reviewFacade.createReview(mockRequestCommand);
 
-		//then
-		assertThat(response).isEqualTo(mockRequestInfo);
-		then(reviewService).should(times(1)).createReview(mockRequestCommand);
-	}
+        //then
+        assertThat(response).isEqualTo(mockRequestInfo);
+        then(reviewService).should(times(1)).createReview(mockRequestCommand);
+    }
 
-	private ReviewCommand.CreateReviewRequest mockRequestCommand() {
-		return ReviewCommand.CreateReviewRequest.builder().build();
-	}
+    private ReviewCommand.CreateReviewRequest mockRequestCommand() {
+        return ReviewCommand.CreateReviewRequest.builder().build();
+    }
 
-	@Test
-	@DisplayName("2: JD id와 pageinfoRequest가 주어졌을 때, getReviewList 메서드가 리뷰 목록을 반환한다.")
-	void givenJdIdAndPageInfoRequest_whenGetReviewList_thenCollectFindReviewListInfo() throws Exception {
-		//given
-		final var jdId = 1L;
-		final var reviewId = 30L;
-		final var mockPageInfoRequest = mock(PageInfoRequest.class);
-		final var mockFindReviewListInfo = new ReviewInfo.FindReviewListResponse(
-			List.of(
-				mock(ReviewInfo.FindReview.class),
-				mock(ReviewInfo.FindReview.class)),
-			mock(CustomSliceInfo.class));
-		given(reviewService.getReviewList(jdId, mockPageInfoRequest, reviewId)).willReturn(mockFindReviewListInfo);
+    @Test
+    @DisplayName("2: JD id와 pageinfoRequest가 주어졌을 때, getReviewList 메서드가 리뷰 목록을 반환한다.")
+    void givenJdIdAndPageInfoRequest_whenGetReviewList_thenCollectFindReviewListInfo() throws Exception {
+        //given
+        final var jdId = 1L;
+        final var reviewId = 30L;
+        final var mockPageInfoRequest = mock(PageInfoRequest.class);
+        final var mockFindReviewListInfo = new ReviewInfo.FindReviewListResponse(
+            List.of(
+                mock(ReviewInfo.FindReview.class),
+                mock(ReviewInfo.FindReview.class)),
+            mock(CustomSliceInfo.class));
+        given(reviewService.getReviewList(jdId, mockPageInfoRequest, reviewId)).willReturn(mockFindReviewListInfo);
 
-		//when
-		var response = reviewFacade.getReviewList(jdId, mockPageInfoRequest, reviewId);
+        //when
+        var response = reviewFacade.getReviewList(jdId, mockPageInfoRequest, reviewId);
 
-		//then
-		assertThat(response.getContent()).hasSize(2);
-		then(reviewService).should(times(1)).getReviewList(jdId, mockPageInfoRequest, reviewId);
-	}
+        //then
+        assertThat(response.getContent()).hasSize(2);
+        then(reviewService).should(times(1)).getReviewList(jdId, mockPageInfoRequest, reviewId);
+    }
 
-	@Test
-	@DisplayName("3: 리뷰 삭제 정보가 주어졌을 때, removeReview 메서드가 reviewStore의 delete를 실행한다.")
-	void givenValidWriter_whenRemoveReview_thenExecuteDeleteReview() throws Exception {
-		//given
-		final var mockDeleteCommand = mockDeleteCommand();
-		willDoNothing().given(reviewService).removeReview(mockDeleteCommand);
+    @Test
+    @DisplayName("3: 리뷰 삭제 정보가 주어졌을 때, removeReview 메서드가 reviewStore의 delete를 실행한다.")
+    void givenValidWriter_whenRemoveReview_thenExecuteDeleteReview() throws Exception {
+        //given
+        final var mockDeleteCommand = mockDeleteCommand();
+        willDoNothing().given(reviewService).removeReview(mockDeleteCommand);
 
-		//when
-		reviewFacade.removeReview(mockDeleteCommand);
+        //when
+        reviewFacade.removeReview(mockDeleteCommand);
 
-		//then
-		then(reviewService).should(times(1)).removeReview(mockDeleteCommand);
-	}
+        //then
+        then(reviewService).should(times(1)).removeReview(mockDeleteCommand);
+    }
 
-	private ReviewCommand.DeleteReviewRequest mockDeleteCommand() {
-		return ReviewCommand.DeleteReviewRequest.builder()
-			.reviewId(1L)
-			.memberId(1L)
-			.build();
-	}
+    private ReviewCommand.DeleteReviewRequest mockDeleteCommand() {
+        return ReviewCommand.DeleteReviewRequest.builder()
+            .reviewId(1L)
+            .memberId(1L)
+            .build();
+    }
 }

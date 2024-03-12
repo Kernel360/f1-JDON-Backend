@@ -9,21 +9,21 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class SkillFacade {
-	private final SkillService skillService;
+    private final SkillService skillService;
 
-	public SkillInfo.FindHotSkillListResponse getHotSkillList() {
-		return skillService.getHotSkillList();
-	}
+    public SkillInfo.FindHotSkillListResponse getHotSkillList() {
+        return skillService.getHotSkillList();
+    }
 
-	public SkillInfo.FindMemberSkillListResponse getMemberSkillList(final Long memberId) {
-		return skillService.getMemberSkillList(memberId);
-	}
+    public SkillInfo.FindMemberSkillListResponse getMemberSkillList(final Long memberId) {
+        return skillService.getMemberSkillList(memberId);
+    }
 
-	public SkillInfo.FindJobCategorySkillListResponse getJobCategorySkillList(final Long jobCategoryId) {
-		return skillService.getJobCategorySkillList(jobCategoryId);
-	}
+    public SkillInfo.FindJobCategorySkillListResponse getJobCategorySkillList(final Long jobCategoryId) {
+        return skillService.getJobCategorySkillList(jobCategoryId);
+    }
 
-	public SkillInfo.FindDataListBySkillResponse getDataListBySkill(final String keyword, final Long memberId) {
-		return skillService.getDataListBySkill(keyword, memberId);
-	}
+    public SkillInfo.FindDataListBySkillResponse getDataListBySkill(final String keyword, final Long memberId) {
+        return skillService.getDataListBySkill(keyword, memberId);
+    }
 }

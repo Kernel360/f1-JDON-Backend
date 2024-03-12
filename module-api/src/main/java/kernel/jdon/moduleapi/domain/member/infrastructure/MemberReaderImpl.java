@@ -13,28 +13,28 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MemberReaderImpl implements MemberReader {
 
-	private final MemberRepository memberRepository;
+    private final MemberRepository memberRepository;
 
-	@Override
-	public Member findById(Long memberId) {
-		return memberRepository.findById(memberId)
-			.orElseThrow(MemberErrorCode.NOT_FOUND_MEMBER::throwException);
-	}
+    @Override
+    public Member findById(Long memberId) {
+        return memberRepository.findById(memberId)
+            .orElseThrow(MemberErrorCode.NOT_FOUND_MEMBER::throwException);
+    }
 
-	@Override
-	public List<Long> findSkillIdListByMember(final Member member) {
-		return member.getMemberSkillList().stream()
-			.map(memberSkill -> memberSkill.getSkill().getId())
-			.toList();
-	}
+    @Override
+    public List<Long> findSkillIdListByMember(final Member member) {
+        return member.getMemberSkillList().stream()
+            .map(memberSkill -> memberSkill.getSkill().getId())
+            .toList();
+    }
 
-	@Override
-	public boolean existsByNickname(final String nickname) {
-		return memberRepository.existsByNickname(nickname);
-	}
+    @Override
+    public boolean existsByNickname(final String nickname) {
+        return memberRepository.existsByNickname(nickname);
+    }
 
-	@Override
-	public Member findByEmail(final String email) {
-		return memberRepository.findByEmail(email);
-	}
+    @Override
+    public Member findByEmail(final String email) {
+        return memberRepository.findByEmail(email);
+    }
 }

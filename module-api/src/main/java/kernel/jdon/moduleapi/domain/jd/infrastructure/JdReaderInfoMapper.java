@@ -7,10 +7,10 @@ import org.mapstruct.ReportingPolicy;
 import kernel.jdon.moduleapi.domain.jd.core.JdInfo;
 
 @Mapper(
-	componentModel = "spring",
-	injectionStrategy = InjectionStrategy.CONSTRUCTOR,
-	unmappedTargetPolicy = ReportingPolicy.ERROR
+    componentModel = "spring",
+    injectionStrategy = InjectionStrategy.CONSTRUCTOR,
+    unmappedTargetPolicy = ReportingPolicy.ERROR
 )
 public interface JdReaderInfoMapper {
-	JdInfo.FindWantedJd of(JdReaderInfo.FindWantedJd readerInfo);
+    JdInfo.FindWantedJd of(JdReaderInfo.FindWantedJd readerInfo);
 }

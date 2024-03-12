@@ -6,7 +6,7 @@ import kernel.jdon.moduledomain.inflearncourse.domain.InflearnCourse;
 import kernel.jdon.moduledomain.inflearncourse.repository.InflearnCourseDomainRepository;
 
 public interface InflearnCourseRepository extends InflearnCourseDomainRepository {
-	
-	Optional<InflearnCourse> findById(Long id);
+
+    Optional<InflearnCourse> findById(Long id);
 
 }
