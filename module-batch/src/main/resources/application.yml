@@ -1,0 +1,54 @@
+server:
+  port: 1223
+
+spring:
+
+  datasource:
+    url: ${DB_URL}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+logging:
+  level:
+    root: info
+
+decorator:
+  datasource:
+    p6spy:
+      enable-logging: true
+
+scraping:
+  inflearn:
+    url: https://www.inflearn.com/courses
+    detail_url_prefix: https://www.inflearn.com
+    max_courses_per_keyword: 3
+    max_courses_per_page: 24
+    sleep: # ?? millis
+      min_initial: 1000
+      max_initial: 3000
+      max: 10000
+      increment: 1000
+
+  wanted:
+    url:
+      detail: https://www.wanted.co.kr/wd/
+      api:
+        detail: https://www.wanted.co.kr/api/v4/jobs/
+        list: https://www.wanted.co.kr/api/chaos/navigation/v1/results?country=kr&
+
+    max_fetch_jd_list:
+      size: 10            # ???? ? ? ? ?? Job Description? ???? ??
+      offset: 5           # ? ???? ?? ? ? ?? Job Description? ???? ??
+
+    limit:
+      fail_count: 10      # ???? ??? JD? ????? ? ??? ??? ??
+
+    sleep:
+      threshold_count: 10 # ??? ???? Job Description? ????? ? ?? ?? ?? ????? ??
+      time_millis: 1000   # ?? ??? ??? ??? ??? ??
+
