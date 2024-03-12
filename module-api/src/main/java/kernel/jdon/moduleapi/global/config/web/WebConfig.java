@@ -17,39 +17,39 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class WebConfig implements WebMvcConfigurer {
 
-	private final LoginUserArgumentResolver loginUserArgumentResolver;
+    private final LoginUserArgumentResolver loginUserArgumentResolver;
 
-	@Override
-	public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
-		argumentResolvers.add(loginUserArgumentResolver);
-	}
+    @Override
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
+        argumentResolvers.add(loginUserArgumentResolver);
+    }
 
-	@Override
-	public void addFormatters(FormatterRegistry registry) {
+    @Override
+    public void addFormatters(FormatterRegistry registry) {
 
-		registry.addConverter(new CoffeeChatSortConverter());
-		registry.addConverter(new JdSearchTypeConverter());
-		registry.addConverter(new JdSortTypeConverter());
-	}
+        registry.addConverter(new CoffeeChatSortConverter());
+        registry.addConverter(new JdSearchTypeConverter());
+        registry.addConverter(new JdSortTypeConverter());
+    }
 
-	private static class CoffeeChatSortConverter implements Converter<String, CoffeeChatSortType> {
-		@Override
-		public CoffeeChatSortType convert(String source) {
-			return CoffeeChatSortType.of(source);
-		}
-	}
+    private static class CoffeeChatSortConverter implements Converter<String, CoffeeChatSortType> {
+        @Override
+        public CoffeeChatSortType convert(String source) {
+            return CoffeeChatSortType.of(source);
+        }
+    }
 
-	private static class JdSearchTypeConverter implements Converter<String, JdSearchType> {
-		@Override
-		public JdSearchType convert(String source) {
-			return JdSearchType.of(source);
-		}
-	}
+    private static class JdSearchTypeConverter implements Converter<String, JdSearchType> {
+        @Override
+        public JdSearchType convert(String source) {
+            return JdSearchType.of(source);
+        }
+    }
 
-	private static class JdSortTypeConverter implements Converter<String, JdSortType> {
-		@Override
-		public JdSortType convert(String source) {
-			return JdSortType.of(source);
-		}
-	}
+    private static class JdSortTypeConverter implements Converter<String, JdSortType> {
+        @Override
+        public JdSortType convert(String source) {
+            return JdSortType.of(source);
+        }
+    }
 }

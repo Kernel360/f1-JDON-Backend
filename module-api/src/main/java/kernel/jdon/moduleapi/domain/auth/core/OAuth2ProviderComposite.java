@@ -9,21 +9,21 @@ import java.util.Set;
 
 import org.springframework.stereotype.Component;
 
-import kernel.jdon.moduledomain.member.domain.SocialProviderType;
 import kernel.jdon.moduleapi.domain.auth.error.AuthErrorCode;
+import kernel.jdon.moduledomain.member.domain.SocialProviderType;
 
 @Component
 public class OAuth2ProviderComposite {
-	private final Map<SocialProviderType, OAuth2Strategy> oauth2ProviderMap;
+    private final Map<SocialProviderType, OAuth2Strategy> oauth2ProviderMap;
 
-	public OAuth2ProviderComposite(Set<OAuth2Strategy> clients) {
-		this.oauth2ProviderMap = clients.stream()
-			.collect(toMap(OAuth2Strategy::getOAuth2ProviderType, identity()));
-	}
+    public OAuth2ProviderComposite(Set<OAuth2Strategy> clients) {
+        this.oauth2ProviderMap = clients.stream()
+            .collect(toMap(OAuth2Strategy::getOAuth2ProviderType, identity()));
+    }
 
-	public OAuth2Strategy getOAuth2Strategy(SocialProviderType provider) {
-		return Optional.ofNullable(oauth2ProviderMap.get(provider))
-			.orElseThrow(AuthErrorCode.NOT_FOUND_PROVIDER::throwException);
-	}
+    public OAuth2Strategy getOAuth2Strategy(SocialProviderType provider) {
+        return Optional.ofNullable(oauth2ProviderMap.get(provider))
+            .orElseThrow(AuthErrorCode.NOT_FOUND_PROVIDER::throwException);
+    }
 
 }

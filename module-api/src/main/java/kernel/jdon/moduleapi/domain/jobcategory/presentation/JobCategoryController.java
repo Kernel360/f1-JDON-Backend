@@ -12,15 +12,15 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 public class JobCategoryController {
-	private final JobCategoryFacade jobCategoryFacade;
-	private final JobCategoryMapper jobCategoryMapper;
+    private final JobCategoryFacade jobCategoryFacade;
+    private final JobCategoryMapper jobCategoryMapper;
 
-	@GetMapping("/api/v1/job-categories")
-	public ResponseEntity<CommonResponse<JobCategoryDto.FindJobGroupListResponse>> getJobGroupList() {
-		final JobCategoryInfo.FindJobGroupListResponse info = jobCategoryFacade.getJobGroupList();
-		final JobCategoryDto.FindJobGroupListResponse response = jobCategoryMapper.of(info);
+    @GetMapping("/api/v1/job-categories")
+    public ResponseEntity<CommonResponse<JobCategoryDto.FindJobGroupListResponse>> getJobGroupList() {
+        final JobCategoryInfo.FindJobGroupListResponse info = jobCategoryFacade.getJobGroupList();
+        final JobCategoryDto.FindJobGroupListResponse response = jobCategoryMapper.of(info);
 
-		return ResponseEntity.ok(CommonResponse.of(response));
-	}
+        return ResponseEntity.ok(CommonResponse.of(response));
+    }
 
 }

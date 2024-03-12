@@ -12,14 +12,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import kernel.jdon.moduleapi.domain.coffeechat.infrastructure.CoffeeChatRepository;
+import kernel.jdon.moduleapi.domain.member.infrastructure.MemberRepository;
 import kernel.jdon.moduledomain.coffeechat.domain.CoffeeChat;
 import kernel.jdon.moduledomain.member.domain.Gender;
 import kernel.jdon.moduledomain.member.domain.Member;
 import kernel.jdon.moduledomain.member.domain.MemberAccountStatus;
 import kernel.jdon.moduledomain.member.domain.MemberRole;
 import kernel.jdon.moduledomain.member.domain.SocialProviderType;
-import kernel.jdon.moduleapi.domain.coffeechat.infrastructure.CoffeeChatRepository;
-import kernel.jdon.moduleapi.domain.member.infrastructure.MemberRepository;
 
 @SpringBootTest
 class CoffeeChatApplyFacadeTest {

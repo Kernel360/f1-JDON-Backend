@@ -7,7 +7,7 @@ import java.util.Arrays;
 public enum JdSortType {
     LATEST("latest"),
     REVIEW("review");
-	
+
     private final String sortCondition;
 
     JdSortType(String sortCondition) {

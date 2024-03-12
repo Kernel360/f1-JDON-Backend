@@ -11,23 +11,23 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ReviewReaderInfo {
 
-	@Getter
-	public static class FindReview {
-		private final Long id;
-		private final String content;
-		private final String nickname;
-		private final LocalDateTime createdDate;
-		private final Long memberId;
+    @Getter
+    public static class FindReview {
+        private final Long id;
+        private final String content;
+        private final String nickname;
+        private final LocalDateTime createdDate;
+        private final Long memberId;
 
-		@QueryProjection
-		public FindReview(Long id, String content, String nickname, LocalDateTime createdDate,
-			Long memberId) {
-			this.id = id;
-			this.content = content;
-			this.nickname = nickname;
-			this.createdDate = createdDate;
-			this.memberId = memberId;
-		}
-	}
+        @QueryProjection
+        public FindReview(Long id, String content, String nickname, LocalDateTime createdDate,
+            Long memberId) {
+            this.id = id;
+            this.content = content;
+            this.nickname = nickname;
+            this.createdDate = createdDate;
+            this.memberId = memberId;
+        }
+    }
 
 }

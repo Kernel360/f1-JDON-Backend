@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @ConfigurationProperties(prefix = "redis.lock.coffee-chat")
 public class CoffeeChatLockConfig {
-	private final Long waitTime;
-	private final Long leaseTime;
+    private final Long waitTime;
+    private final Long leaseTime;
 
 }

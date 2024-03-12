@@ -7,9 +7,9 @@ import lombok.Getter;
 @AllArgsConstructor
 public class RegisterResponse {
 
-	private Long memberId;
+    private Long memberId;
 
-	public static RegisterResponse of(Long memberId) {
-		return new RegisterResponse(memberId);
-	}
+    public static RegisterResponse of(Long memberId) {
+        return new RegisterResponse(memberId);
+    }
 }

@@ -11,11 +11,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class WantedCrawlerController {
 
-	private final WantedCrawlerService wantedCrawlerService;
+    private final WantedCrawlerService wantedCrawlerService;
 
-	@GetMapping("/api/v1/crawler/wanted")
-	public ResponseEntity<Void> getWantedData() throws InterruptedException {
-		wantedCrawlerService.fetchJd();
-		return ResponseEntity.noContent().build();
-	}
+    @GetMapping("/api/v1/crawler/wanted")
+    public ResponseEntity<Void> getWantedData() throws InterruptedException {
+        wantedCrawlerService.fetchJd();
+        return ResponseEntity.noContent().build();
+    }
 }

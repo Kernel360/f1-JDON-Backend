@@ -5,7 +5,7 @@ import java.util.List;
 import kernel.jdon.moduledomain.faq.domain.Faq;
 
 public interface FaqReader {
-	Faq findById(Long faqId);
+    Faq findById(Long faqId);
 
-	List<Faq> findAllFaqList();
+    List<Faq> findAllFaqList();
 }

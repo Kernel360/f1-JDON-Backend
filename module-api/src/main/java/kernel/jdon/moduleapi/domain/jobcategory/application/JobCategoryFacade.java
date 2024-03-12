@@ -9,9 +9,9 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class JobCategoryFacade {
-	private final JobCategoryService jobCategoryService;
+    private final JobCategoryService jobCategoryService;
 
-	public JobCategoryInfo.FindJobGroupListResponse getJobGroupList() {
-		return jobCategoryService.getJobGroupList();
-	}
+    public JobCategoryInfo.FindJobGroupListResponse getJobGroupList() {
+        return jobCategoryService.getJobGroupList();
+    }
 }

@@ -8,8 +8,8 @@ import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 @ConfigurationPropertiesScan
 public class ModuleCrawlerApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(ModuleCrawlerApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(ModuleCrawlerApplication.class, args);
+    }
 
 }

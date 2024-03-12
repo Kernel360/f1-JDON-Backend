@@ -15,15 +15,15 @@ import lombok.RequiredArgsConstructor;
 @Component
 @RequiredArgsConstructor
 public class ReviewFactoryImpl implements ReviewFactory {
-	private final MemberReader memberReader;
-	private final JdReader jdReader;
-	private final ReviewStore reviewStore;
+    private final MemberReader memberReader;
+    private final JdReader jdReader;
+    private final ReviewStore reviewStore;
 
-	public Review saveReview(final ReviewCommand.CreateReviewRequest command) {
-		final Member findMember = memberReader.findById(command.getMemberId());
-		final WantedJd findWantedJd = jdReader.findWantedJd(command.getJdId());
+    public Review saveReview(final ReviewCommand.CreateReviewRequest command) {
+        final Member findMember = memberReader.findById(command.getMemberId());
+        final WantedJd findWantedJd = jdReader.findWantedJd(command.getJdId());
 
-		return reviewStore.save(command.toEntity(findMember, findWantedJd));
-	}
+        return reviewStore.save(command.toEntity(findMember, findWantedJd));
+    }
 
 }

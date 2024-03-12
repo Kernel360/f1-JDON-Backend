@@ -23,40 +23,40 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Slf4j
 public class JdonOAuth2AuthenticationSuccessHandler implements AuthenticationSuccessHandler {
-	private final LoginRedirectUrlProperties loginRedirectUrlProperties;
-	private final CryptoManager cryptoManager;
+    private final LoginRedirectUrlProperties loginRedirectUrlProperties;
+    private final CryptoManager cryptoManager;
 
-	@Override
-	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-		Authentication authentication) throws IOException {
-		JdonOAuth2User jdonOAuth2User = (JdonOAuth2User)authentication.getPrincipal();
-		if (isTemporaryUser(jdonOAuth2User)) {
-			String query = createUserInfoString(jdonOAuth2User.getEmail(), jdonOAuth2User.getSocialProviderType());
-			String encodedQueryString = createEncryptQueryString(query);
-			response.sendRedirect(joinToString(loginRedirectUrlProperties.getSuccessGuest(), encodedQueryString));
-			return;
-		}
-		response.sendRedirect(loginRedirectUrlProperties.getSuccessMember());
-	}
+    @Override
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
+        Authentication authentication) throws IOException {
+        JdonOAuth2User jdonOAuth2User = (JdonOAuth2User)authentication.getPrincipal();
+        if (isTemporaryUser(jdonOAuth2User)) {
+            String query = createUserInfoString(jdonOAuth2User.getEmail(), jdonOAuth2User.getSocialProviderType());
+            String encodedQueryString = createEncryptQueryString(query);
+            response.sendRedirect(joinToString(loginRedirectUrlProperties.getSuccessGuest(), encodedQueryString));
+            return;
+        }
+        response.sendRedirect(loginRedirectUrlProperties.getSuccessMember());
+    }
 
-	private boolean isTemporaryUser(JdonOAuth2User jdonOAuth2User) {
-		return jdonOAuth2User.getAuthorities().contains(new SimpleGrantedAuthority(MemberRole.ROLE_GUEST.name()));
-	}
+    private boolean isTemporaryUser(JdonOAuth2User jdonOAuth2User) {
+        return jdonOAuth2User.getAuthorities().contains(new SimpleGrantedAuthority(MemberRole.ROLE_GUEST.name()));
+    }
 
-	private String createUserInfoString(String email, String provider) {
-		return joinToString(createQueryString("email", email), createQueryString("provider", provider));
-	}
+    private String createUserInfoString(String email, String provider) {
+        return joinToString(createQueryString("email", email), createQueryString("provider", provider));
+    }
 
-	private String createEncryptQueryString(String info) {
-		String encoded = null;
-		try {
-			encoded = cryptoManager.encryptAESCBC(info);
-			encoded = joinToString(createQueryString("value", URLEncoder.encode(encoded, StandardCharsets.UTF_8)),
-				createQueryString("hmac",
-					URLEncoder.encode(cryptoManager.generateHMAC(encoded), StandardCharsets.UTF_8)));
-		} catch (Exception e) {
-			log.warn(e.getMessage(), e);
-		}
-		return encoded;
-	}
+    private String createEncryptQueryString(String info) {
+        String encoded = null;
+        try {
+            encoded = cryptoManager.encryptAESCBC(info);
+            encoded = joinToString(createQueryString("value", URLEncoder.encode(encoded, StandardCharsets.UTF_8)),
+                createQueryString("hmac",
+                    URLEncoder.encode(cryptoManager.generateHMAC(encoded), StandardCharsets.UTF_8)));
+        } catch (Exception e) {
+            log.warn(e.getMessage(), e);
+        }
+        return encoded;
+    }
 }

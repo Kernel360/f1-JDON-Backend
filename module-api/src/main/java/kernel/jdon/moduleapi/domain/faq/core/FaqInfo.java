@@ -11,45 +11,45 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class FaqInfo {
 
-	@Getter
-	@Builder
-	public static class CreateFaqResponse {
-		private final Long faqId;
-	}
+    @Getter
+    @Builder
+    public static class CreateFaqResponse {
+        private final Long faqId;
+    }
 
-	@Getter
-	@Builder
-	public static class UpdateFaqResponse {
-		private final Long faqId;
-	}
+    @Getter
+    @Builder
+    public static class UpdateFaqResponse {
+        private final Long faqId;
+    }
 
-	@Getter
-	@Builder
-	public static class DeleteFaqResponse {
-		private final Long faqId;
-	}
+    @Getter
+    @Builder
+    public static class DeleteFaqResponse {
+        private final Long faqId;
+    }
 
-	@Getter
-	public static class FindFaqListResponse {
-		private final List<FindFaq> faqList;
+    @Getter
+    public static class FindFaqListResponse {
+        private final List<FindFaq> faqList;
 
-		public FindFaqListResponse(List<Faq> faqList) {
-			this.faqList = faqList.stream()
-				.map(FindFaq::new)
-				.toList();
-		}
-	}
+        public FindFaqListResponse(List<Faq> faqList) {
+            this.faqList = faqList.stream()
+                .map(FindFaq::new)
+                .toList();
+        }
+    }
 
-	@Getter
-	public static class FindFaq {
-		private final Long faqId;
-		private final String title;
-		private final String content;
+    @Getter
+    public static class FindFaq {
+        private final Long faqId;
+        private final String title;
+        private final String content;
 
-		public FindFaq(Faq faq) {
-			this.faqId = faq.getId();
-			this.title = faq.getTitle();
-			this.content = faq.getContent();
-		}
-	}
+        public FindFaq(Faq faq) {
+            this.faqId = faq.getId();
+            this.title = faq.getTitle();
+            this.content = faq.getContent();
+        }
+    }
 }

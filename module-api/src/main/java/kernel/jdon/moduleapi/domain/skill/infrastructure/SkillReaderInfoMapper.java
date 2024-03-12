@@ -8,17 +8,17 @@ import org.mapstruct.ReportingPolicy;
 import kernel.jdon.moduleapi.domain.skill.core.SkillInfo;
 
 @Mapper(
-	componentModel = "spring",
-	injectionStrategy = InjectionStrategy.CONSTRUCTOR,
-	unmappedTargetPolicy = ReportingPolicy.ERROR
+    componentModel = "spring",
+    injectionStrategy = InjectionStrategy.CONSTRUCTOR,
+    unmappedTargetPolicy = ReportingPolicy.ERROR
 )
 public interface SkillReaderInfoMapper {
-	SkillInfo.FindHotSkill of(SkillReaderInfo.FindHotSkill info);
+    SkillInfo.FindHotSkill of(SkillReaderInfo.FindHotSkill info);
 
-	@Mapping(source = "skillId", target = "id")
-	SkillInfo.FindMemberSkill of(SkillReaderInfo.FindMemberSkill info);
+    @Mapping(source = "skillId", target = "id")
+    SkillInfo.FindMemberSkill of(SkillReaderInfo.FindMemberSkill info);
 
-	SkillInfo.FindJd of(SkillReaderInfo.FindWantedJd info);
+    SkillInfo.FindJd of(SkillReaderInfo.FindWantedJd info);
 
-	SkillInfo.FindLecture of(SkillReaderInfo.FindInflearnLecture info);
+    SkillInfo.FindLecture of(SkillReaderInfo.FindInflearnLecture info);
 }

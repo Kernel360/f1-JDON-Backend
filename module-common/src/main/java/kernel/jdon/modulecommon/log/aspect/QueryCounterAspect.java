@@ -17,44 +17,44 @@ import lombok.extern.slf4j.Slf4j;
 @Aspect
 @Slf4j
 public class QueryCounterAspect {
-	private final ThreadLocal<LoggingForm> currentLoggingForm;
+    private final ThreadLocal<LoggingForm> currentLoggingForm;
 
-	public QueryCounterAspect() {
-		this.currentLoggingForm = new ThreadLocal<>();
-	}
+    public QueryCounterAspect() {
+        this.currentLoggingForm = new ThreadLocal<>();
+    }
 
-	@Around("execution( * javax.sql.DataSource.getConnection())")
-	public Object captureConnection(final ProceedingJoinPoint joinPoint) throws Throwable {
-		final Object connection = joinPoint.proceed();
+    @Around("execution( * javax.sql.DataSource.getConnection())")
+    public Object captureConnection(final ProceedingJoinPoint joinPoint) throws Throwable {
+        final Object connection = joinPoint.proceed();
 
-		return new ConnectionProxyHandler(connection, getCurrentLoggingForm()).getProxy();
-	}
+        return new ConnectionProxyHandler(connection, getCurrentLoggingForm()).getProxy();
+    }
 
-	private LoggingForm getCurrentLoggingForm() {
-		if (currentLoggingForm.get() == null) {
-			currentLoggingForm.set(new LoggingForm());
-		}
-		return currentLoggingForm.get();
-	}
+    private LoggingForm getCurrentLoggingForm() {
+        if (currentLoggingForm.get() == null) {
+            currentLoggingForm.set(new LoggingForm());
+        }
+        return currentLoggingForm.get();
+    }
 
-	@After("within(@org.springframework.web.bind.annotation.RestController *)")
-	public void loggingAfterApiFinish() {
-		final LoggingForm loggingForm = getCurrentLoggingForm();
+    @After("within(@org.springframework.web.bind.annotation.RestController *)")
+    public void loggingAfterApiFinish() {
+        final LoggingForm loggingForm = getCurrentLoggingForm();
 
-		final ServletRequestAttributes attributes =
-			(ServletRequestAttributes)RequestContextHolder.getRequestAttributes();
+        final ServletRequestAttributes attributes =
+            (ServletRequestAttributes)RequestContextHolder.getRequestAttributes();
 
-		if (isInRequestScope(attributes)) {
-			final HttpServletRequest request = attributes.getRequest();
-			loggingForm.setApiMethod(request.getMethod());
-			loggingForm.setApiUrl(request.getRequestURI());
-		}
+        if (isInRequestScope(attributes)) {
+            final HttpServletRequest request = attributes.getRequest();
+            loggingForm.setApiMethod(request.getMethod());
+            loggingForm.setApiUrl(request.getRequestURI());
+        }
 
-		log.info("{}", getCurrentLoggingForm());
-		currentLoggingForm.remove();
-	}
+        log.info("{}", getCurrentLoggingForm());
+        currentLoggingForm.remove();
+    }
 
-	private boolean isInRequestScope(final ServletRequestAttributes attributes) {
-		return attributes != null;
-	}
+    private boolean isInRequestScope(final ServletRequestAttributes attributes) {
+        return attributes != null;
+    }
 }

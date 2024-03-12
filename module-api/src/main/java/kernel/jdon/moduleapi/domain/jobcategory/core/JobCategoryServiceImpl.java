@@ -12,15 +12,15 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class JobCategoryServiceImpl implements JobCategoryService {
-	private final JobCategoryReader jobCategoryReader;
+    private final JobCategoryReader jobCategoryReader;
 
-	@Override
-	public JobCategoryInfo.FindJobGroupListResponse getJobGroupList() {
-		final List<JobCategory> findJobGroupList = jobCategoryReader.findByParentIdIsNull();
-		final Map<Long, List<JobCategory>> findGroupedCategoryList = findJobGroupList.stream()
-			.collect(Collectors.toMap(JobCategory::getId,
-				jobGroup -> jobCategoryReader.findByParentId(jobGroup.getId())));
+    @Override
+    public JobCategoryInfo.FindJobGroupListResponse getJobGroupList() {
+        final List<JobCategory> findJobGroupList = jobCategoryReader.findByParentIdIsNull();
+        final Map<Long, List<JobCategory>> findGroupedCategoryList = findJobGroupList.stream()
+            .collect(Collectors.toMap(JobCategory::getId,
+                jobGroup -> jobCategoryReader.findByParentId(jobGroup.getId())));
 
-		return new JobCategoryInfo.FindJobGroupListResponse(findJobGroupList, findGroupedCategoryList);
-	}
+        return new JobCategoryInfo.FindJobGroupListResponse(findJobGroupList, findGroupedCategoryList);
+    }
 }

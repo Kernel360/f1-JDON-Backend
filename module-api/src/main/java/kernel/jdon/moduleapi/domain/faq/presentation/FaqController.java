@@ -21,46 +21,46 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 public class FaqController {
-	private final FaqFacade faqFacade;
-	private final FaqDtoMapper faqDtoMapper;
+    private final FaqFacade faqFacade;
+    private final FaqDtoMapper faqDtoMapper;
 
-	@PostMapping("/api/v1/faqs")
-	public ResponseEntity<CommonResponse<FaqDto.CreateFaqResponse>> create(
-		@RequestBody @Valid final FaqDto.CreateFaqRequest request) {
-		final FaqCommand.CreateFaqRequest command = faqDtoMapper.of(request);
-		final FaqInfo.CreateFaqResponse info = faqFacade.create(command);
-		final FaqDto.CreateFaqResponse response = faqDtoMapper.of(info);
-		final URI uri = URI.create("/api/v1/faqs/" + response.getFaqId());
+    @PostMapping("/api/v1/faqs")
+    public ResponseEntity<CommonResponse<FaqDto.CreateFaqResponse>> create(
+        @RequestBody @Valid final FaqDto.CreateFaqRequest request) {
+        final FaqCommand.CreateFaqRequest command = faqDtoMapper.of(request);
+        final FaqInfo.CreateFaqResponse info = faqFacade.create(command);
+        final FaqDto.CreateFaqResponse response = faqDtoMapper.of(info);
+        final URI uri = URI.create("/api/v1/faqs/" + response.getFaqId());
 
-		return ResponseEntity.created(uri).body(CommonResponse.of(response));
-	}
+        return ResponseEntity.created(uri).body(CommonResponse.of(response));
+    }
 
-	@DeleteMapping("/api/v1/faqs/{faqId}")
-	public ResponseEntity<CommonResponse<FaqDto.DeleteFaqResponse>> remove(
-		@PathVariable(name = "faqId") final Long faqId) {
-		FaqInfo.DeleteFaqResponse info = faqFacade.remove(faqId);
-		FaqDto.DeleteFaqResponse response = faqDtoMapper.of(info);
+    @DeleteMapping("/api/v1/faqs/{faqId}")
+    public ResponseEntity<CommonResponse<FaqDto.DeleteFaqResponse>> remove(
+        @PathVariable(name = "faqId") final Long faqId) {
+        FaqInfo.DeleteFaqResponse info = faqFacade.remove(faqId);
+        FaqDto.DeleteFaqResponse response = faqDtoMapper.of(info);
 
-		return ResponseEntity.ok(CommonResponse.of(response));
-	}
+        return ResponseEntity.ok(CommonResponse.of(response));
+    }
 
-	@PutMapping("/api/v1/faqs/{id}")
-	public ResponseEntity<CommonResponse<FaqDto.UpdateFaqResponse>> modify(
-		@PathVariable(name = "id") final Long faqId,
-		@RequestBody @Valid final FaqDto.UpdateFaqRequest request) {
-		final FaqCommand.UpdateFaqRequest command = faqDtoMapper.of(request, faqId);
-		final FaqInfo.UpdateFaqResponse info = faqFacade.modify(command);
-		final FaqDto.UpdateFaqResponse response = faqDtoMapper.of(info);
+    @PutMapping("/api/v1/faqs/{id}")
+    public ResponseEntity<CommonResponse<FaqDto.UpdateFaqResponse>> modify(
+        @PathVariable(name = "id") final Long faqId,
+        @RequestBody @Valid final FaqDto.UpdateFaqRequest request) {
+        final FaqCommand.UpdateFaqRequest command = faqDtoMapper.of(request, faqId);
+        final FaqInfo.UpdateFaqResponse info = faqFacade.modify(command);
+        final FaqDto.UpdateFaqResponse response = faqDtoMapper.of(info);
 
-		return ResponseEntity.ok().body(CommonResponse.of(response));
-	}
+        return ResponseEntity.ok().body(CommonResponse.of(response));
+    }
 
-	@GetMapping("/api/v1/faqs")
-	public ResponseEntity<CommonResponse<FaqDto.FindFaqListResponse>> getFaqList() {
-		final FaqInfo.FindFaqListResponse info = faqFacade.getFaqList();
-		final FaqDto.FindFaqListResponse response = faqDtoMapper.of(info);
+    @GetMapping("/api/v1/faqs")
+    public ResponseEntity<CommonResponse<FaqDto.FindFaqListResponse>> getFaqList() {
+        final FaqInfo.FindFaqListResponse info = faqFacade.getFaqList();
+        final FaqDto.FindFaqListResponse response = faqDtoMapper.of(info);
 
-		return ResponseEntity.ok().body(CommonResponse.of(response));
-	}
+        return ResponseEntity.ok().body(CommonResponse.of(response));
+    }
 
 }
