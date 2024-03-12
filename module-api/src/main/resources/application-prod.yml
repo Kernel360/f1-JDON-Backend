@@ -85,7 +85,8 @@ redirect-url:
     failure:
       not-found-email: https://jdon.kr/oauth/login/fail/not-found-email
       not-match-provider: https://jdon.kr/oauth/login/fail/not-match-provider
-
+      another-withdraw-account: https://jdon.kr/oauth/login/fail/another-withdraw-account
+      already-withdraw-account: https://jdon.kr/oauth/login/fail/already-withdraw-account
 
 redis:
   lock:

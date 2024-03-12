@@ -81,6 +81,8 @@ redirect-url:
     failure:
       not-found-email: http://localhost:3000/oauth/login/fail/not-found-email
       not-match-provider: http://localhost:3000/oauth/login/fail/not-match-provider
+      another-withdraw-account: http://localhost:3000/oauth/login/fail/another-withdraw-account
+      already-withdraw-account: http://localhost:3000/oauth/login/fail/already-withdraw-account
 
 redis:
   lock:
