@@ -61,12 +61,16 @@ custom-oauth2:
 
 allowed-origins:
   origin: http://localhost:3000/
-  url:
+  url-list:
     - "http://localhost:3000"
     - "https://localhost:3000"
     - "https://jdon.kr"
     - "https://jdon.netlify.app"
     - "https://jdon-test.netlify.app/"
+  ip:
+    monitoring-list:
+      - "3.34.69.116"
+      - "0:0:0:0:0:0:0:1"
 
 # http://localhost:3000
 redirect-url:
@@ -83,3 +87,22 @@ redis:
     coffee-chat:
       wait-time: 5
       lease-time: 1
+
+crypto:
+  aes-private-key: JDON_SECRET_KEY_AES_USE_THIS_KEY
+  hmac-private-key: JDON_SECRET_KEY_HMAC_USE_THIS_KK
+
+management:
+  info:
+    java:
+      enabled: true
+    os:
+      enabled: true
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+        exclude:
