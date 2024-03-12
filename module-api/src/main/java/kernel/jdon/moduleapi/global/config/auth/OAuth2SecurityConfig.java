@@ -34,6 +34,7 @@ public class OAuth2SecurityConfig {
         List<IpAddressMatcher> matcherList = ipAddress.stream().map(IpAddressMatcher::new).toList();
         return (authentication, context) -> {
             HttpServletRequest request = context.getRequest();
+            log.info("request.getRemoteAddr() = {}", request.getRemoteAddr());
             boolean isIpMatch = matcherList.stream()
                 .anyMatch(matcher -> matcher.matches(request));
 
