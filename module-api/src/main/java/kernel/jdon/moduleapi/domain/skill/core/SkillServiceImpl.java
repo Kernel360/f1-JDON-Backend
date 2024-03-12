@@ -62,8 +62,8 @@ public class SkillServiceImpl implements SkillService {
         return new SkillInfo.FindDataListBySkillResponse(searchKeyword, findLectureList, findJdList);
     }
 
-    private String getKeyword(final String relatedKeyword) {
-        return Optional.ofNullable(relatedKeyword)
+    private String getKeyword(final String searchKeyword) {
+        return Optional.ofNullable(searchKeyword)
             .filter(StringUtils::hasText)
             .map(skillKeywordReader::findSkillKeywordByRelatedKeywordIgnoreCase)
             .map(SkillKeyword::getSkill)
