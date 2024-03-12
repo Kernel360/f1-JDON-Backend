@@ -56,9 +56,7 @@ public class CustomOAuth2UserServiceImpl extends DefaultOAuth2UserService implem
 
     private List<SimpleGrantedAuthority> getAuthorities(final SessionUserInfo userInfo, final Member member) {
         if (Objects.nonNull(member)) {
-            checkAccountStatusActive(userInfo, member);
-            checkRightSocialProvider(member, userInfo.getSocialProvider(),
-                AuthErrorCode.UNAUTHORIZED_NOT_MATCH_PROVIDER_TYPE);
+            validateLoginMember(userInfo, member);
             updateMemberLoginData(userInfo, member);
             return List.of(new SimpleGrantedAuthority(MemberRole.ROLE_USER.name()));
         }
@@ -70,12 +68,14 @@ public class CustomOAuth2UserServiceImpl extends DefaultOAuth2UserService implem
         memberStore.updateLastLoginDate(member);
     }
 
-    private void checkAccountStatusActive(final SessionUserInfo userInfo, final Member member) {
+    private void validateLoginMember(final SessionUserInfo userInfo, final Member member) {
         if (member.isWithDrawMember()) {
             checkRightSocialProvider(member, userInfo.getSocialProvider(),
                 AuthErrorCode.CONFLICT_WITHDRAW_BY_OTHER_SOCIAL_PROVIDER);
             throw new AuthException(AuthErrorCode.CONFLICT_WITHDRAW_ACCOUNT);
         }
+        checkRightSocialProvider(member, userInfo.getSocialProvider(),
+            AuthErrorCode.UNAUTHORIZED_NOT_MATCH_PROVIDER_TYPE);
     }
 
     private void checkRightSocialProvider(final Member member, final SocialProviderType socialProvider,

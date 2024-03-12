@@ -43,21 +43,19 @@ public class JdonAuthExceptionHandler
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
         AuthenticationException exception) throws IOException {
+        String redirectUrl = null;
         if (AuthErrorCode.UNAUTHORIZED_OAUTH_RETURN_NULL_EMAIL == ((AuthException)exception).getErrorCode()) {
-            response.sendRedirect(loginRedirectUrlProperties.getFailureNotFoundEmail());
-            return;
+            redirectUrl = loginRedirectUrlProperties.getFailureNotFoundEmail();
         }
         if (AuthErrorCode.UNAUTHORIZED_NOT_MATCH_PROVIDER_TYPE == ((AuthException)exception).getErrorCode()) {
-            response.sendRedirect(loginRedirectUrlProperties.getFailureNotMatchProvider());
-            return;
+            redirectUrl = loginRedirectUrlProperties.getFailureNotMatchProvider();
         }
         if (AuthErrorCode.CONFLICT_WITHDRAW_BY_OTHER_SOCIAL_PROVIDER == ((AuthException)exception).getErrorCode()) {
-            response.sendRedirect(loginRedirectUrlProperties.getFailureAnotherWithdrawAccount());
-            return;
+            redirectUrl = loginRedirectUrlProperties.getFailureAnotherWithdrawAccount();
         }
         if (AuthErrorCode.CONFLICT_WITHDRAW_ACCOUNT == ((AuthException)exception).getErrorCode()) {
-            response.sendRedirect(loginRedirectUrlProperties.getFailureAlreadyWithdrawAccount());
+            redirectUrl = loginRedirectUrlProperties.getFailureAlreadyWithdrawAccount();
         }
+        response.sendRedirect(redirectUrl);
     }
-
 }
