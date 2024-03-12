@@ -28,6 +28,14 @@ public class LoginRedirectUrlProperties {
         return this.failure.getNotMatchProvider();
     }
 
+    public String getFailureAnotherWithdrawAccount() {
+        return this.failure.getAnotherWithdrawAccount();
+    }
+
+    public String getFailureAlreadyWithdrawAccount() {
+        return this.failure.getAlreadyWithdrawAccount();
+    }
+
     @Getter
     @RequiredArgsConstructor
     public static class Success {
@@ -40,5 +48,7 @@ public class LoginRedirectUrlProperties {
     public static class Failure {
         private final String notFoundEmail;
         private final String notMatchProvider;
+        private final String anotherWithdrawAccount;
+        private final String alreadyWithdrawAccount;
     }
 }

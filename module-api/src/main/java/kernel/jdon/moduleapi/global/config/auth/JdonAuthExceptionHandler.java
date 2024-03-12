@@ -51,8 +51,13 @@ public class JdonAuthExceptionHandler
             response.sendRedirect(loginRedirectUrlProperties.getFailureNotMatchProvider());
             return;
         }
-        resolver.resolveException(request, response, null,
-            new AuthException(((AuthException)exception).getErrorCode()));
+        if (AuthErrorCode.CONFLICT_WITHDRAW_BY_OTHER_SOCIAL_PROVIDER == ((AuthException)exception).getErrorCode()) {
+            response.sendRedirect(loginRedirectUrlProperties.getFailureAnotherWithdrawAccount());
+            return;
+        }
+        if (AuthErrorCode.CONFLICT_WITHDRAW_ACCOUNT == ((AuthException)exception).getErrorCode()) {
+            response.sendRedirect(loginRedirectUrlProperties.getFailureAlreadyWithdrawAccount());
+        }
     }
 
 }
