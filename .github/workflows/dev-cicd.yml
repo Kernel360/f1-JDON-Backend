@@ -2,7 +2,7 @@ name: Java CD with Gradle and Docker
 
 on:
   push:
-    branches: [ "develop" ]
+    branches: [ "develop", "feature/#448-ci-cd" ]
 
 jobs:
   integration:
