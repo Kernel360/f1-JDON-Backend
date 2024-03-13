@@ -5,7 +5,7 @@ on:
     branches: [ "develop" ]
 
 jobs:
-  deploy:
+  integration:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -16,7 +16,35 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Deploy to Prod WAS Server
+      - name: Grant execute permission for gradlew
+        run: |
+          cd /module-api
+          chmod +x gradlew
+        shell: bash
+
+      - name: gradle Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Build with Gradle
+        run: |
+          ./gradlew clean build test
+        shell: bash
+
+  deploy:
+    needs: integration
+    runs-on: ubuntu-latest
+    if: >
+      github.event.pull_request.merged == true &&
+      !contains(join(github.event.pull_request.labels.*.name, ','), 'NO-Deploy')
+    steps:
+      - name: Deploy to Dev-EC2
         uses: appleboy/ssh-action@v0.1.6
         with:
           host: ${{ secrets.AWS_DEV_HOST }}
