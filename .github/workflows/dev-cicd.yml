@@ -2,13 +2,9 @@ name: Java CD with Gradle and Docker
 
 on:
   push:
-    branches: [ "develop", "feature/#448-ci-cd" ]
+    branches: [ "develop" ]
 
 jobs:
-  #  integration:
-  #    runs-on: ubuntu-latest
-  #    steps:
-
   deploy:
     runs-on: ubuntu-latest
     steps:
