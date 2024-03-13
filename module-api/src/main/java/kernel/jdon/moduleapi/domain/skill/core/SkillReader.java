@@ -14,5 +14,5 @@ public interface SkillReader {
 
     List<Skill> findAllByIdList(List<Long> skillList);
 
-    String findOriginSkillKeywordBySkillKeywordList(List<SkillKeyword> findSkillKeywordList);
+    List<String> findOriginSkillKeywordListBySkillKeywordList(List<SkillKeyword> findSkillKeywordList);
 }

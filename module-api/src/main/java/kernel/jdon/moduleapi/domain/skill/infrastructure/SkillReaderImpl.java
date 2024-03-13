@@ -50,10 +50,10 @@ public class SkillReaderImpl implements SkillReader {
     }
 
     @Override
-    public String findOriginSkillKeywordBySkillKeywordList(List<SkillKeyword> findSkillKeywordList) {
+    public List<String> findOriginSkillKeywordListBySkillKeywordList(List<SkillKeyword> findSkillKeywordList) {
         return findSkillKeywordList.stream()
-            .findFirst()
             .map(skillKeyword -> skillKeyword.getSkill().getKeyword())
-            .orElse(null);
+            .distinct()
+            .toList();
     }
 }

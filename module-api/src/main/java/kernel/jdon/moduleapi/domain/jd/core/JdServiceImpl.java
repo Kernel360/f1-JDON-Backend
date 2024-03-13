@@ -10,6 +10,7 @@ import kernel.jdon.moduleapi.domain.jd.presentation.JdCondition;
 import kernel.jdon.moduleapi.domain.skill.core.SkillReader;
 import kernel.jdon.moduleapi.domain.skill.core.keyword.SkillKeywordReader;
 import kernel.jdon.moduleapi.global.page.PageInfoRequest;
+import kernel.jdon.moduledomain.skillkeyword.domain.SkillKeyword;
 import kernel.jdon.moduledomain.wantedjd.domain.WantedJd;
 import lombok.RequiredArgsConstructor;
 
@@ -32,12 +33,14 @@ public class JdServiceImpl implements JdService {
     @Override
     public JdInfo.FindWantedJdListResponse getJdList(final PageInfoRequest pageInfoRequest,
         final JdCondition jdCondition) {
-        final String findOriginSkillKeyword = Optional.ofNullable(jdCondition.getSkill())
+        final String searchKeyword = Optional.ofNullable(jdCondition.getSkill())
             .filter(StringUtils::hasText)
-            .map(skillKeywordReader::findAllByRelatedKeywordIgnoreCase)
-            .map(skillReader::findOriginSkillKeywordBySkillKeywordList)
             .orElse(null);
+        final List<SkillKeyword> findSkillKeywordList = skillKeywordReader.findAllByRelatedKeywordIgnoreCase(
+            searchKeyword);
+        final List<String> findOriginSkillKeywordList = skillReader.findOriginSkillKeywordListBySkillKeywordList(
+            findSkillKeywordList);
 
-        return jdReader.findWantedJdList(pageInfoRequest, jdCondition, findOriginSkillKeyword);
+        return jdReader.findWantedJdList(pageInfoRequest, jdCondition, findOriginSkillKeywordList);
     }
 }

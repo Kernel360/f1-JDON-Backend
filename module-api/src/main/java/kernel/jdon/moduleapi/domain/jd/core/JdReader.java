@@ -12,5 +12,5 @@ public interface JdReader {
     List<JdInfo.FindSkill> findSkillListByWantedJd(WantedJd wantedJd);
 
     JdInfo.FindWantedJdListResponse findWantedJdList(PageInfoRequest pageInfoRequest, JdCondition jdCondition,
-        String originSkillKeyword);
+        List<String> skillKeywordList);
 }

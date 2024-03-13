@@ -29,7 +29,7 @@ public class WantedJdRepositoryImpl implements CustomWantedJdRepository {
     private final JPAQueryFactory jpaQueryFactory;
 
     public Page<JdReaderInfo.FindWantedJd> findWantedJdList(final Pageable pageable, final JdCondition jdCondition,
-        final String originSkillKeyword) {
+        final List<String> originSkillKeywordList) {
         List<JdReaderInfo.FindWantedJd> content = jpaQueryFactory
             .select(new QJdReaderInfo_FindWantedJd(
                 wantedJd.id,
@@ -39,7 +39,7 @@ public class WantedJdRepositoryImpl implements CustomWantedJdRepository {
                 jobCategory.name))
             .from(wantedJd)
             .join(jobCategory).on(wantedJd.jobCategory.eq(jobCategory))
-            .where(searchWantedJdCondition(jdCondition, originSkillKeyword))
+            .where(searchWantedJdCondition(jdCondition, originSkillKeywordList))
             .orderBy(createOrderSpecifier(jdCondition.getSort()))
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())
@@ -48,15 +48,16 @@ public class WantedJdRepositoryImpl implements CustomWantedJdRepository {
         Long totalCount = jpaQueryFactory
             .select(wantedJd.count())
             .from(wantedJd)
-            .where(searchWantedJdCondition(jdCondition, originSkillKeyword))
+            .where(searchWantedJdCondition(jdCondition, originSkillKeywordList))
             .fetchOne();
 
         return new PageImpl<>(content, pageable, totalCount);
     }
 
-    private BooleanBuilder searchWantedJdCondition(final JdCondition jdCondition, final String originSkillKeyword) {
+    private BooleanBuilder searchWantedJdCondition(final JdCondition jdCondition,
+        final List<String> originSkillKeywordList) {
         BooleanBuilder searchCondition = new BooleanBuilder();
-        searchCondition.and(wantedJdSkillContains(originSkillKeyword));
+        searchCondition.and(wantedJdSkillContains(originSkillKeywordList));
         searchCondition.and(wantedJdJobCategoryContains(jdCondition.getJobCategory()));
         searchCondition.and(wantedJdKeywordContains(jdCondition.getKeywordType(), jdCondition.getKeyword()));
 
@@ -86,11 +87,11 @@ public class WantedJdRepositoryImpl implements CustomWantedJdRepository {
             : null;
     }
 
-    private BooleanExpression wantedJdSkillContains(final String originSkillKeyword) {
-        return hasText(originSkillKeyword) ?
+    private BooleanExpression wantedJdSkillContains(final List<String> originSkillKeywordList) {
+        return !originSkillKeywordList.isEmpty() ?
             wantedJd.id.in(JPAExpressions.select(wantedJdSkill.wantedJd.id)
                 .from(wantedJdSkill)
-                .where(wantedJdSkill.skill.keyword.eq(originSkillKeyword)))
+                .where(wantedJdSkill.skill.keyword.in(originSkillKeywordList)))
             : null;
     }
 

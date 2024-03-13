@@ -13,6 +13,7 @@ import kernel.jdon.moduleapi.domain.skill.core.keyword.SkillKeywordReader;
 import kernel.jdon.moduleapi.domain.skill.core.wantedjd.WantedJdSkillReader;
 import kernel.jdon.moduledomain.jobcategory.domain.JobCategory;
 import kernel.jdon.moduledomain.skill.domain.SkillType;
+import kernel.jdon.moduledomain.skillkeyword.domain.SkillKeyword;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -53,9 +54,14 @@ public class SkillServiceImpl implements SkillService {
     @Override
     public SkillInfo.FindDataListBySkillResponse getDataListBySkill(final String relatedKeyword, final Long memberId) {
         final String searchKeyword = getKeyword(relatedKeyword);
-        final List<SkillInfo.FindJd> findJdList = wantedJdSkillReader.findWantedJdListBySkill(searchKeyword);
+        final List<SkillKeyword> findSkillKeywordList = skillKeywordReader.findAllByRelatedKeywordIgnoreCase(
+            searchKeyword);
+        final List<String> findOriginSkillKeywordList = skillReader.findOriginSkillKeywordListBySkillKeywordList(
+            findSkillKeywordList);
+        final List<SkillInfo.FindJd> findJdList = wantedJdSkillReader.findWantedJdListBySkill(
+            findOriginSkillKeywordList);
         final List<SkillInfo.FindLecture> findLectureList = inflearnJdSkillReader.findInflearnLectureListBySkill(
-            searchKeyword, memberId);
+            findOriginSkillKeywordList, memberId);
 
         return new SkillInfo.FindDataListBySkillResponse(searchKeyword, findLectureList, findJdList);
     }
@@ -63,9 +69,7 @@ public class SkillServiceImpl implements SkillService {
     private String getKeyword(final String searchKeyword) {
         return Optional.ofNullable(searchKeyword)
             .filter(StringUtils::hasText)
-            .map(skillKeywordReader::findAllByRelatedKeywordIgnoreCase)
-            .map(skillReader::findOriginSkillKeywordBySkillKeywordList)
-            .orElseGet(() -> getHotSkillKeyword());
+            .orElseGet(this::getHotSkillKeyword);
     }
 
     private String getHotSkillKeyword() {
