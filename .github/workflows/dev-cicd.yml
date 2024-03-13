@@ -1,0 +1,29 @@
+name: Java CD with Gradle and Docker
+
+on:
+  push:
+    branches: [ "develop", "feature/#448-ci-cd" ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      #      - name: Set up JDK 17
+      #        uses: actions/setup-java@v3
+      #        with:
+      #          java-version: '17'
+      #          distribution: 'temurin'
+
+      - name: Deploy to Prod WAS Server
+        uses: appleboy/ssh-action@v0.1.4
+        with:
+          host: ${{ secrets.AWS_DEV_HOST }}
+          username: ${{ secrets.AWS_DEV_USERNAME }}
+          key: ${{ secrets.AWS_DEV_KEY }}
+          port: ${{ secrets.AWS_DEV_PORT }}
+          script: |
+            cd /home/ec2-user
+            echo "hihi" > test.text
