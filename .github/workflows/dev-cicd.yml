@@ -1,8 +1,8 @@
 name: JDON-Backend DEV CI-CD
 
 on:
-  pull_request:
-    branches: [ develop ]
+  #  pull_request:
+  #    branches: [ develop ]
   push:
     branches:
       - feature/#448-ci-cd
@@ -19,27 +19,27 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: gradle Cache dependencies
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
+      #      - name: gradle Cache dependencies
+      #        uses: actions/cache@v3
+      #        with:
+      #          path: |
+      #            ~/.gradle/caches
+      #            ~/.gradle/wrapper
+      #          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+      #          restore-keys: |
+      #            ${{ runner.os }}-gradle-
 
       - name: Grant execute permission for gradlew
         run: |
           cd module-api
           chmod +x gradlew
-        shell: bash
-
-      - name: Build with Gradle
-        run: |
-          cd module-api
           ./gradlew clean build --stacktrace test
         shell: bash
+
+  #      - name: Build with Gradle
+  #        run: |
+  #          cd module-api
+  #        shell: bash
 
   deploy:
     needs: integration
