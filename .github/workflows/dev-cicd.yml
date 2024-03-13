@@ -1,8 +1,11 @@
-name: Java CD with Gradle and Docker
+name: JDON-Backend DEV CI-CD
 
 on:
+  pull_request:
+    branches: [ develop ]
   push:
-    branches: [ "develop", "feature/#448-ci-cd" ]
+    branches:
+      - feature/#448-ci-cd
 
 jobs:
   integration:
@@ -18,9 +21,7 @@ jobs:
 
       - name: Grant execute permission for gradlew
         run: |
-          pwd
           cd module-api
-          pwd
           chmod +x gradlew
         shell: bash
 
@@ -36,9 +37,7 @@ jobs:
 
       - name: Build with Gradle
         run: |
-          pwd
           cd module-api
-          pwd
           ./gradlew clean build --stacktrace test
         shell: bash
 
