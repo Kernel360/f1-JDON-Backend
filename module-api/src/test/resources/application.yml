@@ -60,3 +60,8 @@ redis:
 
 allowed-origins:
   origin: http://localhost:3000/
+  url-list:
+    - "http://localhost:3000"
+  ip:
+    monitoring-list:
+      - "0:0:0:0:0:0:0:1"
