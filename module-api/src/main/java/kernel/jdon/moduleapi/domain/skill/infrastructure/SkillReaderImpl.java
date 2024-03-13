@@ -9,6 +9,7 @@ import kernel.jdon.moduleapi.domain.skill.core.SkillReader;
 import kernel.jdon.moduleapi.domain.skill.error.SkillErrorCode;
 import kernel.jdon.moduleapi.global.exception.ApiException;
 import kernel.jdon.moduledomain.skill.domain.Skill;
+import kernel.jdon.moduledomain.skillkeyword.domain.SkillKeyword;
 import lombok.RequiredArgsConstructor;
 
 @Component
@@ -46,5 +47,13 @@ public class SkillReaderImpl implements SkillReader {
             throw new ApiException(SkillErrorCode.NOT_FOUND_SKILL);
         }
         return skillList;
+    }
+
+    @Override
+    public String findOriginSkillKeywordBySkillKeywordList(List<SkillKeyword> findSkillKeywordList) {
+        return findSkillKeywordList.stream()
+            .findFirst()
+            .map(skillKeyword -> skillKeyword.getSkill().getKeyword())
+            .orElse(null);
     }
 }

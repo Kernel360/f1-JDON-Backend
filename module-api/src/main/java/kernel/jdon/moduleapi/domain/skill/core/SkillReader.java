@@ -3,6 +3,7 @@ package kernel.jdon.moduleapi.domain.skill.core;
 import java.util.List;
 
 import kernel.jdon.moduledomain.skill.domain.Skill;
+import kernel.jdon.moduledomain.skillkeyword.domain.SkillKeyword;
 
 public interface SkillReader {
     List<SkillInfo.FindHotSkill> findHotSkillList();
@@ -12,4 +13,6 @@ public interface SkillReader {
     Skill findById(final Long jobCategoryId);
 
     List<Skill> findAllByIdList(List<Long> skillList);
+
+    String findOriginSkillKeywordBySkillKeywordList(List<SkillKeyword> findSkillKeywordList);
 }
