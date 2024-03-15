@@ -92,6 +92,7 @@ public class SkillRepositoryImpl implements CustomSkillRepository {
                         .select(skill.id)
                         .from(skill)
                         .where(skill.keyword.in(originSkillKeywordList))))
+            .orderBy(Expressions.numberTemplate(Double.class, "function('rand')").asc())
             .limit(inflearnLectureCount)
             .fetch();
     }
