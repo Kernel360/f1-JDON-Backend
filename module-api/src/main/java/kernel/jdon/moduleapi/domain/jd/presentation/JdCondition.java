@@ -15,8 +15,7 @@ public class JdCondition {
     private final JdSortType sort;
 
     public static JdCondition of(final String skill, final Long jobCategory,
-        final JdSearchType keywordType, final String keyword,
-        final JdSortType sort) {
+        final JdSearchType keywordType, final String keyword, final JdSortType sort) {
         return new JdCondition(skill, jobCategory, keywordType, keyword, sort);
     }
 }

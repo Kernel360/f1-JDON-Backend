@@ -12,7 +12,6 @@ import kernel.jdon.moduleapi.domain.skill.core.inflearnjd.InflearnJdSkillReader;
 import kernel.jdon.moduleapi.domain.skill.core.keyword.SkillKeywordReader;
 import kernel.jdon.moduleapi.domain.skill.core.wantedjd.WantedJdSkillReader;
 import kernel.jdon.moduledomain.jobcategory.domain.JobCategory;
-import kernel.jdon.moduledomain.skill.domain.Skill;
 import kernel.jdon.moduledomain.skill.domain.SkillType;
 import kernel.jdon.moduledomain.skillkeyword.domain.SkillKeyword;
 import lombok.RequiredArgsConstructor;
@@ -30,12 +29,14 @@ public class SkillServiceImpl implements SkillService {
     @Override
     public SkillInfo.FindHotSkillListResponse getHotSkillList() {
         final List<SkillInfo.FindHotSkill> hotSkillList = skillReader.findHotSkillList();
+
         return new SkillInfo.FindHotSkillListResponse(hotSkillList);
     }
 
     @Override
     public SkillInfo.FindMemberSkillListResponse getMemberSkillList(final Long memberId) {
         final List<SkillInfo.FindMemberSkill> memberSkillList = skillReader.findMemberSkillList(memberId);
+
         return new SkillInfo.FindMemberSkillListResponse(memberSkillList);
     }
 
@@ -51,13 +52,16 @@ public class SkillServiceImpl implements SkillService {
     }
 
     @Override
-    public SkillInfo.FindDataListBySkillResponse getDataListBySkill(String relatedkeyword, final Long memberId) {
-        final String searchKeyword = getKeyword(relatedkeyword);
-
-        final List<SkillInfo.FindJd> findJdList = wantedJdSkillReader.findWantedJdListBySkill(
+    public SkillInfo.FindDataListBySkillResponse getDataListBySkill(final String relatedKeyword, final Long memberId) {
+        final String searchKeyword = getKeyword(relatedKeyword);
+        final List<SkillKeyword> findSkillKeywordList = skillKeywordReader.findAllByRelatedKeywordIgnoreCase(
             searchKeyword);
+        final List<String> findOriginSkillKeywordList = skillReader.findOriginSkillKeywordListBySkillKeywordList(
+            findSkillKeywordList);
+        final List<SkillInfo.FindJd> findJdList = wantedJdSkillReader.findWantedJdListBySkill(
+            findOriginSkillKeywordList);
         final List<SkillInfo.FindLecture> findLectureList = inflearnJdSkillReader.findInflearnLectureListBySkill(
-            searchKeyword, memberId);
+            findOriginSkillKeywordList, memberId);
 
         return new SkillInfo.FindDataListBySkillResponse(searchKeyword, findLectureList, findJdList);
     }
@@ -65,9 +69,6 @@ public class SkillServiceImpl implements SkillService {
     private String getKeyword(final String searchKeyword) {
         return Optional.ofNullable(searchKeyword)
             .filter(StringUtils::hasText)
-            .map(skillKeywordReader::findSkillKeywordByRelatedKeywordIgnoreCase)
-            .map(SkillKeyword::getSkill)
-            .map(Skill::getKeyword)
             .orElseGet(this::getHotSkillKeyword);
     }
 

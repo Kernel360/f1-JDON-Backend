@@ -51,7 +51,7 @@ public class SkillRepositoryImpl implements CustomSkillRepository {
     }
 
     @Override
-    public List<SkillReaderInfo.FindWantedJd> findWantedJdListBySkill(final String keyword) {
+    public List<SkillReaderInfo.FindWantedJd> findWantedJdListBySkill(final List<String> originSkillKeywordList) {
         final int wantedJdCount = 6;
 
         return jpaQueryFactory
@@ -66,14 +66,15 @@ public class SkillRepositoryImpl implements CustomSkillRepository {
                     JPAExpressions
                         .select(skill.id)
                         .from(skill)
-                        .where(skill.keyword.eq(keyword))))
+                        .where(skill.keyword.in(originSkillKeywordList))))
             .orderBy(Expressions.numberTemplate(Double.class, "function('rand')").asc())
             .limit(wantedJdCount)
             .fetch();
     }
 
     @Override
-    public List<SkillReaderInfo.FindInflearnLecture> findInflearnLectureListBySkill(String keyword, Long memberId) {
+    public List<SkillReaderInfo.FindInflearnLecture> findInflearnLectureListBySkill(
+        final List<String> originSkillKeywordList, Long memberId) {
         final int inflearnLectureCount = 3;
 
         return jpaQueryFactory
@@ -90,7 +91,8 @@ public class SkillRepositoryImpl implements CustomSkillRepository {
                     JPAExpressions
                         .select(skill.id)
                         .from(skill)
-                        .where(skill.keyword.eq(keyword))))
+                        .where(skill.keyword.in(originSkillKeywordList))))
+            .orderBy(Expressions.numberTemplate(Double.class, "function('rand')").asc())
             .limit(inflearnLectureCount)
             .fetch();
     }

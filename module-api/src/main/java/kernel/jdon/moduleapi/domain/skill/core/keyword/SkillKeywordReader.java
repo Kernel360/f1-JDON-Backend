@@ -1,7 +1,9 @@
 package kernel.jdon.moduleapi.domain.skill.core.keyword;
 
+import java.util.List;
+
 import kernel.jdon.moduledomain.skillkeyword.domain.SkillKeyword;
 
 public interface SkillKeywordReader {
-    SkillKeyword findSkillKeywordByRelatedKeywordIgnoreCase(String relatedKeyword);
+    List<SkillKeyword> findAllByRelatedKeywordIgnoreCase(String relatedKeyword);
 }
