@@ -39,10 +39,11 @@ public class JdReaderImpl implements JdReader {
 
     @Override
     public JdInfo.FindWantedJdListResponse findWantedJdList(final PageInfoRequest pageInfoRequest,
-        final JdCondition jdCondition) {
+        final JdCondition jdCondition, final List<String> originSkillKeywordList) {
         final Pageable pageable = PageRequest.of(pageInfoRequest.getPage(), pageInfoRequest.getSize());
 
-        final Page<JdReaderInfo.FindWantedJd> readerInfo = wantedJdRepository.findWantedJdList(pageable, jdCondition);
+        final Page<JdReaderInfo.FindWantedJd> readerInfo = wantedJdRepository.findWantedJdList(pageable, jdCondition,
+            originSkillKeywordList);
 
         final List<JdInfo.FindWantedJd> content = readerInfo.stream()
             .map(jdReaderInfoMapper::of)
