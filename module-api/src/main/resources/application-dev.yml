@@ -1,5 +1,4 @@
 spring:
-
   config:
     activate:
       on-profile: dev
@@ -66,13 +65,11 @@ custom-oauth2:
     delete-user-url: https://kapi.kakao.com/v1/user/unlink
 
 allowed-origins:
-  origin: https://localhost:3000/
+  origin: https://dev.jdon.kr/
   url-list:
-    - "http://localhost:3000"
+    - "https://dev.jdon.kr"
     - "https://localhost:3000"
-    - "https://jdon.kr"
-    - "https://jdon.netlify.app"
-    - "https://jdon-test.netlify.app/"
+
   ip:
     monitoring-list:
       - "3.34.69.116"
@@ -81,13 +78,13 @@ allowed-origins:
 redirect-url:
   login:
     success:
-      member: https://localhost:3000/oauth/login/success
-      guest: https://localhost:3000/oauth/info?
+      member: https://dev.jdon.kr/oauth/login/success
+      guest: https://dev.jdon.kr/oauth/info?
     failure:
-      not-found-email: https://localhost:3000/oauth/login/fail/not-found-email
-      not-match-provider: https://localhost:3000/oauth/login/fail/not-match-provider
-      another-withdraw-account: https://localhost:3000/oauth/login/fail/another-withdraw-account
-      already-withdraw-account: https://localhost:3000/oauth/login/fail/already-withdraw-account
+      not-found-email: https://dev.jdon.kr/oauth/login/fail/not-found-email
+      not-match-provider: https://dev.jdon.kr/oauth/login/fail/not-match-provider
+      another-withdraw-account: https://dev.jdon.kr/oauth/login/fail/another-withdraw-account
+      already-withdraw-account: https://dev.jdon.kr/oauth/login/fail/already-withdraw-account
 
 redis:
   lock:
