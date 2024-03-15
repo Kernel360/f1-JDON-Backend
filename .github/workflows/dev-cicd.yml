@@ -2,7 +2,8 @@ name: JDON-Backend DEV CI-CD
 
 on:
   pull_request:
-    branches: [ develop ]
+    types: [ opened, closed ]
+    branches: [ develop, feature/#448-ci-cd ]
 
 jobs:
   integration:

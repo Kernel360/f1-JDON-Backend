@@ -7,7 +7,8 @@ public interface CustomSkillRepository {
 
     List<SkillReaderInfo.FindMemberSkill> findMemberSkillList(Long memberId);
 
-    List<SkillReaderInfo.FindWantedJd> findWantedJdListBySkill(String keyword);
+    List<SkillReaderInfo.FindWantedJd> findWantedJdListBySkill(List<String> skillKeywordList);
 
-    List<SkillReaderInfo.FindInflearnLecture> findInflearnLectureListBySkill(String keyword, Long memberId);
+    List<SkillReaderInfo.FindInflearnLecture> findInflearnLectureListBySkill(List<String> skillKeywordList,
+        Long memberId);
 }
