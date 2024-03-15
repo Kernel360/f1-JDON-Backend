@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.hibernate.validator.constraints.Range;
-import org.hibernate.validator.constraints.URL;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -12,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import kernel.jdon.moduleapi.global.page.CustomPageInfo;
 import lombok.AccessLevel;
@@ -95,7 +95,8 @@ public class CoffeeChatDto {
         @Future(message = "일시는 과거 시점으로 설정할 수 없습니다.")
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
         private LocalDateTime meetDate;
-        @URL(message = "URL형식이 올바르지 않습니다.")
+        @NotBlank(message = "오픈채팅 링크는 필수 입력 항목 입니다.")
+        @Pattern(regexp = "https:\\/\\/open\\.kakao\\.com\\/o\\/[A-Za-z0-9]{8}$", message = "URL 형식이 올바르지 않습니다.")
         private String openChatUrl;
     }
 
@@ -116,7 +117,8 @@ public class CoffeeChatDto {
         @Future(message = "일시는 과거 시점으로 설정할 수 없습니다.")
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
         private LocalDateTime meetDate;
-        @URL(message = "URL형식이 올바르지 않습니다.")
+        @NotBlank(message = "오픈채팅 링크는 필수 입력 항목 입니다.")
+        @Pattern(regexp = "https:\\/\\/open\\.kakao\\.com\\/o\\/[A-Za-z0-9]{8}$", message = "URL 형식이 올바르지 않습니다.")
         private String openChatUrl;
     }
 
