@@ -3,6 +3,7 @@ package kernel.jdon.moduleapi.domain.jd.core;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
@@ -13,7 +14,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import kernel.jdon.moduleapi.domain.jd.presentation.JdCondition;
+import kernel.jdon.moduleapi.domain.skill.core.SkillReader;
+import kernel.jdon.moduleapi.domain.skill.core.keyword.SkillKeywordReader;
 import kernel.jdon.moduleapi.global.page.PageInfoRequest;
+import kernel.jdon.moduledomain.skillkeyword.domain.SkillKeyword;
 import kernel.jdon.moduledomain.wantedjd.domain.WantedJd;
 
 @DisplayName("Jd Service Impl 테스트")
@@ -25,6 +29,10 @@ class JdServiceImplTest {
     private JdReader jdReader;
     @Mock
     private JdInfoMapper jdInfoMapper;
+    @Mock
+    private SkillKeywordReader skillKeywordReader;
+    @Mock
+    private SkillReader skillReader;
 
     @Test
     @DisplayName("1: jdId가 주어졌을 때 getJd 메서드가 jd 상세정보와 스킬목록을 반환한다.")
@@ -68,7 +76,13 @@ class JdServiceImplTest {
         final var mockPageInfoRequest = mock(PageInfoRequest.class);
         final var mockJdCondition = mock(JdCondition.class);
         final var mockFindWantedJdListInfo = mock(JdInfo.FindWantedJdListResponse.class);
-        given(jdReader.findWantedJdList(mockPageInfoRequest, mockJdCondition))
+        final var mockSkillKeywordList = Collections.singletonList(mock(SkillKeyword.class));
+        final var mockOriginSkillKeywordList = Collections.singletonList(mockJdCondition.getSkill());
+        given(skillKeywordReader.findAllByRelatedKeywordIgnoreCase(mockJdCondition.getSkill()))
+            .willReturn(mockSkillKeywordList);
+        given(skillReader.findOriginSkillKeywordListBySkillKeywordList(mockSkillKeywordList))
+            .willReturn(mockOriginSkillKeywordList);
+        given(jdReader.findWantedJdList(mockPageInfoRequest, mockJdCondition, mockOriginSkillKeywordList))
             .willReturn(mockFindWantedJdListInfo);
 
         //when
@@ -76,7 +90,11 @@ class JdServiceImplTest {
 
         //then
         assertThat(response).isEqualTo(mockFindWantedJdListInfo);
+        then(skillKeywordReader).should(times(1))
+            .findAllByRelatedKeywordIgnoreCase(mockJdCondition.getSkill());
+        then(skillReader).should(times(1))
+            .findOriginSkillKeywordListBySkillKeywordList(mockSkillKeywordList);
         then(jdReader).should(times(1))
-            .findWantedJdList(mockPageInfoRequest, mockJdCondition);
+            .findWantedJdList(mockPageInfoRequest, mockJdCondition, mockOriginSkillKeywordList);
     }
 }
