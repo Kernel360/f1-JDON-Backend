@@ -17,8 +17,9 @@ public class InflearnJdSkillReaderImpl implements InflearnJdSkillReader {
     private final SkillReaderInfoMapper skillReaderInfoMapper;
 
     @Override
-    public List<SkillInfo.FindLecture> findInflearnLectureListBySkill(final String keyword, final Long memberId) {
-        return skillRepository.findInflearnLectureListBySkill(keyword, memberId).stream()
+    public List<SkillInfo.FindLecture> findInflearnLectureListBySkill(final List<String> originSkillKeywordList,
+        final Long memberId) {
+        return skillRepository.findInflearnLectureListBySkill(originSkillKeywordList, memberId).stream()
             .map(skillReaderInfoMapper::of)
             .toList();
     }

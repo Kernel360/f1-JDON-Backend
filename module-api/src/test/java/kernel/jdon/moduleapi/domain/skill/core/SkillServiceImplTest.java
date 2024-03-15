@@ -21,6 +21,7 @@ import kernel.jdon.moduleapi.domain.skill.core.inflearnjd.InflearnJdSkillReader;
 import kernel.jdon.moduleapi.domain.skill.core.keyword.SkillKeywordReader;
 import kernel.jdon.moduleapi.domain.skill.core.wantedjd.WantedJdSkillReader;
 import kernel.jdon.moduledomain.jobcategory.domain.JobCategory;
+import kernel.jdon.moduledomain.skillkeyword.domain.SkillKeyword;
 import kernel.jdon.util.JsonFileReader;
 
 @DisplayName("Skill Service Impl 테스트")
@@ -100,17 +101,27 @@ class SkillServiceImplTest {
         //given
         final var hotSkillKeyword = "hotSkill_keyword";
         final var hotSkillList = Collections.singletonList(new SkillInfo.FindHotSkill(1L, hotSkillKeyword));
+        final var mockSkillKeyword = Collections.singletonList(mock(SkillKeyword.class));
+        final var mockOriginSkillKeywordList = Collections.singletonList(hotSkillKeyword);
         final var memberId = 1L;
         given(skillReader.findHotSkillList()).willReturn(hotSkillList);
-        given(wantedJdSkillReader.findWantedJdListBySkill(hotSkillKeyword)).willReturn(null);
-        given(inflearnJdSkillReader.findInflearnLectureListBySkill(hotSkillKeyword, memberId)).willReturn(null);
+        given(skillKeywordReader.findAllByRelatedKeywordIgnoreCase(hotSkillKeyword)).willReturn(mockSkillKeyword);
+        given(skillReader.findOriginSkillKeywordListBySkillKeywordList(mockSkillKeyword)).willReturn(
+            mockOriginSkillKeywordList);
+        given(wantedJdSkillReader.findWantedJdListBySkill(mockOriginSkillKeywordList)).willReturn(null);
+        given(inflearnJdSkillReader.findInflearnLectureListBySkill(mockOriginSkillKeywordList, memberId)).willReturn(
+            null);
 
         //when
         final var response = skillServiceImpl.getDataListBySkill(keyword, memberId);
 
         //then
         assertThat(response.getKeyword()).isEqualTo(hotSkillKeyword);
-        then(wantedJdSkillReader).should(times(1)).findWantedJdListBySkill(hotSkillKeyword);
-        then(inflearnJdSkillReader).should(times(1)).findInflearnLectureListBySkill(hotSkillKeyword, memberId);
+        then(skillReader).should(times(1)).findHotSkillList();
+        then(skillKeywordReader).should(times(1)).findAllByRelatedKeywordIgnoreCase(hotSkillKeyword);
+        then(skillReader).should(times(1)).findOriginSkillKeywordListBySkillKeywordList(mockSkillKeyword);
+        then(wantedJdSkillReader).should(times(1)).findWantedJdListBySkill(mockOriginSkillKeywordList);
+        then(inflearnJdSkillReader).should(times(1))
+            .findInflearnLectureListBySkill(mockOriginSkillKeywordList, memberId);
     }
 }

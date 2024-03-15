@@ -1,0 +1,62 @@
+name: JDON-Backend PROD CI-CD
+
+on:
+  pull_request:
+    types: [ opened, closed ]
+    branches: [ main ]
+
+permissions:
+  contents: read
+
+jobs:
+  integration:
+    runs-on: ubuntu-latest
+
+    services:
+      redis:
+        image: redis:latest
+        ports:
+          - 6379:6379
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: gradle Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+      - name: Grant execute permission for gradlew & Build
+        run: |
+          cd module-api
+          chmod +x gradlew
+          ./gradlew clean build --stacktrace test
+        shell: bash
+
+  deploy:
+    needs: integration
+    runs-on: ubuntu-latest
+    if: >
+      github.event.pull_request.merged == true &&
+      !contains(join(github.event.pull_request.labels.*.name, ','), 'NO-Deploy')
+    steps:
+      - name: Deploy to Dev-EC2
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.AWS_PROD_HOST }}
+          username: ${{ secrets.AWS_PROD_USERNAME }}
+          key: ${{ secrets.AWS_PROD_KEY }}
+          script: |
+            cd /home/ec2-user/app
+            sh module-api-deploy.sh
+            echo "deploy success"
