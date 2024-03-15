@@ -30,8 +30,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.0'
     implementation 'org.redisson:redisson-spring-boot-starter:3.26.0'
-    implementation 'io.micrometer:micrometer-registry-prometheus'
-    implementation 'com.github.loki4j:loki-logback-appender:1.5.1'
 
     runtimeOnly 'com.mysql:mysql-connector-j'
 
@@ -53,6 +51,13 @@ dependencies {
     // security
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+
+    //monitoring
+    implementation 'io.micrometer:micrometer-registry-prometheus'
+    implementation 'com.github.loki4j:loki-logback-appender:1.5.1'
+    implementation 'ch.qos.logback.contrib:logback-jackson:0.1.5'
+    implementation 'ch.qos.logback.contrib:logback-json-classic:0.1.5'
+    implementation 'net.logstash.logback:logstash-logback-encoder:6.1'
 
     // test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
