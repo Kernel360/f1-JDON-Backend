@@ -1,9 +1,9 @@
-name: JDON-Backend DEV CI-CD
+name: JDON-Backend PROD CI-CD
 
 on:
   pull_request:
     types: [ opened, closed ]
-    branches: [ develop ]
+    branches: [ main ]
 
 permissions:
   contents: read
@@ -53,9 +53,9 @@ jobs:
       - name: Deploy to Dev-EC2
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: ${{ secrets.AWS_DEV_HOST }}
-          username: ${{ secrets.AWS_DEV_USERNAME }}
-          key: ${{ secrets.AWS_DEV_KEY }}
+          host: ${{ secrets.AWS_PROD_HOST }}
+          username: ${{ secrets.AWS_PROD_USERNAME }}
+          key: ${{ secrets.AWS_PROD_KEY }}
           script: |
             cd /home/ec2-user/app
             sh module-api-deploy.sh
