@@ -65,8 +65,7 @@ allowed-origins:
     - "http://localhost:3000"
     - "https://localhost:3000"
     - "https://jdon.kr"
-    - "https://jdon.netlify.app"
-    - "https://jdon-test.netlify.app/"
+    - "https://dev.jdon.kr"
   ip:
     monitoring-list:
       - "3.34.69.116"
