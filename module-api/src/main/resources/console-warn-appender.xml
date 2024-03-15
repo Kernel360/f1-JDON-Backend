@@ -1,0 +1,26 @@
+<included>
+    <appender name="WARN" class="ch.qos.logback.core.ConsoleAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>WARN</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <mdc/>
+                <pattern>
+                    <pattern>
+                        {
+                        "timestamp": "%date{yyyyMMdd HHmmss.SSSSSS}",
+                        "message": "%yellow(%message)"
+                        }
+                    </pattern>
+                </pattern>
+            </providers>
+            <jsonGeneratorDecorator class="net.logstash.logback.decorate.CompositeJsonGeneratorDecorator">
+                <decorator class="net.logstash.logback.decorate.PrettyPrintingJsonGeneratorDecorator"/>
+            </jsonGeneratorDecorator>
+            <timestampPattern>yyyyMMddHHmmss.SSSSSS</timestampPattern>
+        </encoder>
+    </appender>
+</included>

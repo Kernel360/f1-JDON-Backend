@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <configuration>
-    <!-- 로그 패턴에 색상 적용 %clr(pattern){color} -->
-    <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter"/>
+    <include resource="console-error-appender.xml"/>
+    <include resource="console-warn-appender.xml"/>
+    <include resource="console-info-appender.xml"/>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
 
-    <!-- log 변수 값 설정 -->
-    <property name="CONSOLE_LOG_PATTERN"
-              value="%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){green} %clr(%-5level){yellow} %clr(%-40.40logger{39}){cyan} %clr([%X{REQUEST_METHOD} %X{REQUEST_URI}]){blue} %clr(%X{REQUEST_ID}){magenta} %clr(%X{REQUEST_IP}){yellow} %clr(%X{REQUEST_TIME}){blue} %m%n"/>
-
-    <!-- 콘솔(STDOUT) -->
-    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-        <layout class="ch.qos.logback.classic.PatternLayout">
-            <Pattern>${CONSOLE_LOG_PATTERN}</Pattern>
-        </layout>
-    </appender>
-
-    <!-- log root 레벨 설정 (logging.level.root=info)-->
-    <root level="info">
-        <!-- 참조할 appender 설정 - STDOUT -->
-        <appender-ref ref="STDOUT"/>
+    <root level="INFO">
+        <springProfile name="!prod">
+            <appender-ref ref="CONSOLE"/>
+        </springProfile>
     </root>
 
+    <root level="INFO">
+        <springProfile name="prod">
+            <appender-ref ref="INFO"/>
+            <appender-ref ref="ERROR"/>
+            <appender-ref ref="WARN"/>
+        </springProfile>
+    </root>
 </configuration>
