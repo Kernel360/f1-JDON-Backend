@@ -5,6 +5,9 @@ on:
     types: [ opened, closed ]
     branches: [ develop, feature/#448-ci-cd ]
 
+permissions:
+  contents: read
+
 jobs:
   integration:
     runs-on: ubuntu-latest
