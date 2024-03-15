@@ -66,11 +66,7 @@ custom-oauth2:
 allowed-origins:
   origin: https://jdon.kr/
   url-list:
-    - "http://localhost:3000"
-    - "https://localhost:3000"
     - "https://jdon.kr"
-    - "https://jdon.netlify.app"
-    - "https://jdon-test.netlify.app/"
   ip:
     monitoring-list:
       - "3.34.69.116"
