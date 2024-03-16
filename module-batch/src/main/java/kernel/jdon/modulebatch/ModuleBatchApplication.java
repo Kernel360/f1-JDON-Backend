@@ -1,13 +1,14 @@
 package kernel.jdon.modulebatch;
 
-import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 
 @SpringBootApplication
 @ConfigurationPropertiesScan
-@EnableBatchProcessing
+@EntityScan(basePackages = "kernel.jdon")
+// @EnableJpaRepositories(basePackages = "kernel.jdon")
 public class ModuleBatchApplication {
 
     public static void main(String[] args) {
