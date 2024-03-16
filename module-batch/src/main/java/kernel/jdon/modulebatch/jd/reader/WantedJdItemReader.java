@@ -35,7 +35,8 @@ public class WantedJdItemReader implements ItemReader<WantedJobDetailListRespons
     private final RestTemplate restTemplate;
     private final ScrapingWantedProperties scrapingWantedProperties;
     private final JobCategoryRepository jobCategoryRepository;
-    private final Integer offset;
+    private final JobSearchJobPosition jobPosition; // todo : 외부에서 전달 받는 방법은?
+    private int offset = 0;
 
     @Override
     public WantedJobDetailListResponse read() throws
@@ -43,33 +44,37 @@ public class WantedJdItemReader implements ItemReader<WantedJobDetailListRespons
         UnexpectedInputException,
         ParseException,
         NonTransientResourceException {
-        // todo : 외부에서 변경되어 JobParameter로 전달되는 jobPosition && offset
-        JobSearchJobPosition jobPosition = JobSearchJobPosition.JOB_POSITION_SERVER;
-        int offset = 10;
 
-        final JobCategory findJobCategory = findByJobPosition(jobPosition);
+        // JobSearchJobPosition jobPosition = JobSearchJobPosition.JOB_POSITION_SERVER;
+
         final WantedJobListResponse jobList = fetchJobList(jobPosition, offset);
         final Set<Long> jobIdSet = jobList.getData().stream()
             .map(WantedJobListResponse.Data::getId)
             .collect(Collectors.toCollection(LinkedHashSet::new));
         final List<WantedJobDetailResponse> jobDetailList = jobIdSet.stream()
-            .map(jobId -> getJobDetail(findJobCategory, jobId))
+            .map(jobId -> getJobDetail(jobPosition, jobId))
             .toList();
+
+        incrementOffset();
 
         return jobDetailList.size() > 0 ? new WantedJobDetailListResponse(jobDetailList) : null;
     }
 
-    private WantedJobDetailResponse getJobDetail(final JobCategory jobCategory, final Long jobDetailId) {
+    private void incrementOffset() {
+        offset += scrapingWantedProperties.getMaxFetchJdListOffset();
+    }
+
+    private WantedJobDetailResponse getJobDetail(final JobSearchJobPosition jobPosition, final Long jobDetailId) {
         WantedJobDetailResponse jobDetail = fetchJobDetail(jobDetailId);
-        addJobDetailInfo(jobDetail, jobCategory, jobDetailId);
+        addJobDetailInfo(jobDetail, jobPosition);
 
         return jobDetail;
     }
 
-    private void addJobDetailInfo(final WantedJobDetailResponse jobDetail, final JobCategory jobCategory,
-        final Long jobDetailId) {
-        final String jobUrlDetail = scrapingWantedProperties.getDetailUrl();
-        jobDetail.addDetailInfo(joinToString(jobUrlDetail, jobDetailId), jobCategory);
+    private void addJobDetailInfo(final WantedJobDetailResponse jobDetail, final JobSearchJobPosition jobPosition) {
+        final JobCategory findJobCategory = findByJobPosition(jobPosition);
+
+        jobDetail.addDetailInfo(scrapingWantedProperties.getDetailUrl(), findJobCategory, jobPosition);
     }
 
     private WantedJobListResponse fetchJobList(final JobSearchJobPosition jobPosition, final int offset) {

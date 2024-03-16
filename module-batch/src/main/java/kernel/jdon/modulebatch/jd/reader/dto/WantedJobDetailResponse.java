@@ -1,9 +1,13 @@
 package kernel.jdon.modulebatch.jd.reader.dto;
 
+import static kernel.jdon.modulecommon.util.StringUtil.*;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import kernel.jdon.modulebatch.jd.search.JobSearchJobPosition;
 import kernel.jdon.moduledomain.jobcategory.domain.JobCategory;
 import kernel.jdon.moduledomain.wantedjd.domain.WantedJd;
 import lombok.AccessLevel;
@@ -17,14 +21,16 @@ public class WantedJobDetailResponse {
     private JobDetail job;
     private String detailUrl;
     private JobCategory jobCategory;
+    private JobSearchJobPosition jobPosition;
 
     public WantedJobDetailResponse(String detailUrl) {
         this.detailUrl = detailUrl;
     }
 
-    public void addDetailInfo(String detailUrl, JobCategory jobCategory) {
-        this.detailUrl = detailUrl;
+    public void addDetailInfo(String detailUrl, JobCategory jobCategory, JobSearchJobPosition jobPosition) {
+        this.detailUrl = joinToString(detailUrl, this.job.id);
         this.jobCategory = jobCategory;
+        this.jobPosition = jobPosition;
     }
 
     public WantedJd toWantedJdEntity() {
@@ -40,6 +46,7 @@ public class WantedJobDetailResponse {
             .intro(this.getJob().getDetail().getIntro())
             .benefits(this.getJob().getDetail().getBenefits())
             .preferredPoints(this.getJob().getDetail().getPreferredPoints())
+            .scrapingDate(LocalDateTime.now())
             .build();
     }
 
