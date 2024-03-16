@@ -7,16 +7,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.springframework.batch.core.configuration.annotation.StepScope;
-import org.springframework.batch.item.ItemReader;
-import org.springframework.batch.item.NonTransientResourceException;
-import org.springframework.batch.item.ParseException;
-import org.springframework.batch.item.UnexpectedInputException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import kernel.jdon.modulebatch.config.ScrapingWantedProperties;
-import kernel.jdon.modulebatch.jd.reader.dto.WantedJobDetailListResponse;
 import kernel.jdon.modulebatch.jd.reader.dto.WantedJobDetailResponse;
 import kernel.jdon.modulebatch.jd.reader.dto.WantedJobListResponse;
 import kernel.jdon.modulebatch.jd.repository.JobCategoryRepository;
@@ -30,39 +24,23 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@StepScope
 @Component
 @RequiredArgsConstructor
-public class WantedJdItemReader implements ItemReader<WantedJobDetailListResponse> {
+public class WantedJdClient {
     private final RestTemplate restTemplate;
     private final ScrapingWantedProperties scrapingWantedProperties;
     private final JobCategoryRepository jobCategoryRepository;
-    private int offset = 0;
 
-    @Override
-    public WantedJobDetailListResponse read() throws
-        Exception,
-        UnexpectedInputException,
-        ParseException,
-        NonTransientResourceException {
-
-        JobSearchJobPosition jobPosition = JobSearchJobPosition.JOB_POSITION_SERVER;
+    public List<WantedJobDetailResponse> getJobDetailList(final JobSearchJobPosition jobPosition, final int offset) {
 
         final WantedJobListResponse jobList = fetchJobList(jobPosition, offset);
         final Set<Long> jobIdSet = jobList.getData().stream()
             .map(WantedJobListResponse.Data::getId)
             .collect(Collectors.toCollection(LinkedHashSet::new));
-        final List<WantedJobDetailResponse> jobDetailList = jobIdSet.stream()
+
+        return jobIdSet.stream()
             .map(jobId -> getJobDetail(jobPosition, jobId))
             .toList();
-
-        incrementOffset();
-
-        return jobDetailList.size() > 0 ? new WantedJobDetailListResponse(jobDetailList) : null;
-    }
-
-    private void incrementOffset() {
-        offset += scrapingWantedProperties.getMaxFetchJdListOffset();
     }
 
     private WantedJobDetailResponse getJobDetail(final JobSearchJobPosition jobPosition, final Long jobDetailId) {
