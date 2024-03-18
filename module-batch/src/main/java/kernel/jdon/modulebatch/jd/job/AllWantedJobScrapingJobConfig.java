@@ -24,7 +24,7 @@ public class AllWantedJobScrapingJobConfig {
     private static final String JOB_NAME = "정기_원티드_채용공고_스크래핑_";
     private static final String BEAN_PREFIX = JOB_NAME + "_";
 
-    private static final int CHUNK_SIZE = 3;
+    private static final int CHUNK_SIZE = 1;
 
     private final FrontendWantedJdItemReader frontendWantedJdItemReader;
     private final BackendWantedJdItemReader backendWantedJdItemReader;
