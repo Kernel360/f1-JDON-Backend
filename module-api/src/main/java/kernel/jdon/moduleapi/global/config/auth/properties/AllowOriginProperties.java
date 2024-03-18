@@ -1,4 +1,4 @@
-package kernel.jdon.moduleapi.global.config.auth;
+package kernel.jdon.moduleapi.global.config.auth.properties;
 
 import java.util.List;
 
