@@ -4,6 +4,8 @@ import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.stereotype.Component;
 
 import kernel.jdon.modulebatch.global.config.ScrapingWantedProperties;
+import kernel.jdon.modulebatch.global.exception.BatchException;
+import kernel.jdon.modulebatch.global.exception.BatchServerErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -36,7 +38,7 @@ public class JobDetailFetchManager {
             Thread.sleep(scrapingWantedProperties.getSleepTimeMillis());
         } catch (InterruptedException e) {
             log.error("JobListFetchManager.performSleep {}", "Thread sleep 중 Error 발생");
-            throw new RuntimeException(e); // todo: 에러코드 정의 필요
+            throw new BatchException(BatchServerErrorCode.INTERNAL_SERVER_ERROR_THREAD_SLEEP);
         }
     }
 }
