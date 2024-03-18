@@ -40,7 +40,7 @@ public class CryptoManager {
     private Cipher getCipher(final int mode) throws Exception {
         final SecretKeySpec secretKey = new SecretKeySpec(
             cryptoProperties.getAesPrivateKeyByByte(), cryptoProperties.getCryptoAlgorithm());
-        final IvParameterSpec IV = new IvParameterSpec(cryptoProperties.getAesPrivateKeyByByte());
+        final IvParameterSpec IV = new IvParameterSpec(cryptoProperties.getAesIVByByte());
         final Cipher cipher = Cipher.getInstance(cryptoProperties.getCryptoTransformation());
         cipher.init(mode, secretKey, IV);
 
