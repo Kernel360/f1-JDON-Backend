@@ -18,6 +18,7 @@ public abstract class AbstractEntity {
     @CreatedDate
     @Column(name = "created_date", columnDefinition = "DATETIME", nullable = false, updatable = false)
     private LocalDateTime createdDate;
+
     @LastModifiedDate
     @Column(name = "modified_date", columnDefinition = "DATETIME")
     private LocalDateTime modifiedDate;
