@@ -2,7 +2,7 @@ name: JDON-Backend DEV CI-CD
 
 on:
   push:
-    branches: [ develop, feature/#448-ci-cd ]
+    branches: [ develop, feaure/#448-cicd ]
   pull_request:
     types: [ opened, closed ]
     branches: [ develop ]
