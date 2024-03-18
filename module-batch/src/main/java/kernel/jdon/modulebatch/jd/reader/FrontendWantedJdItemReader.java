@@ -30,9 +30,6 @@ public class FrontendWantedJdItemReader implements ItemReader<WantedJobDetailLis
         UnexpectedInputException,
         ParseException,
         NonTransientResourceException {
-        if (jobListFetchManager.getOffset() == 10) {
-            return null;
-        }
         final JobSearchJobPosition jobPosition = JobSearchJobPosition.JOB_POSITION_FRONTEND;
         final List<WantedJobDetailResponse> jobDetailList = wantedJdClient.getJobDetailList(jobPosition,
             jobListFetchManager.getOffset());
