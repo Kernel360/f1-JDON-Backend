@@ -9,7 +9,7 @@ import org.springframework.batch.item.ParseException;
 import org.springframework.batch.item.UnexpectedInputException;
 import org.springframework.stereotype.Component;
 
-import kernel.jdon.modulebatch.config.ScrapingWantedProperties;
+import kernel.jdon.modulebatch.jd.reader.counter.JobListFetchManager;
 import kernel.jdon.modulebatch.jd.reader.dto.WantedJobDetailListResponse;
 import kernel.jdon.modulebatch.jd.reader.dto.WantedJobDetailResponse;
 import kernel.jdon.modulebatch.jd.search.JobSearchJobPosition;
@@ -22,8 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class FrontendWantedJdItemReader implements ItemReader<WantedJobDetailListResponse> {
     private final WantedJdClient wantedJdClient;
-    private final ScrapingWantedProperties scrapingWantedProperties;
-    private int offset = 0;
+    private final JobListFetchManager jobListFetchManager;
 
     @Override
     public WantedJobDetailListResponse read() throws
@@ -31,16 +30,16 @@ public class FrontendWantedJdItemReader implements ItemReader<WantedJobDetailLis
         UnexpectedInputException,
         ParseException,
         NonTransientResourceException {
+        if (jobListFetchManager.getOffset() == 10) {
+            return null;
+        }
         final JobSearchJobPosition jobPosition = JobSearchJobPosition.JOB_POSITION_FRONTEND;
-        final List<WantedJobDetailResponse> jobDetailList = wantedJdClient.getJobDetailList(jobPosition, offset);
+        final List<WantedJobDetailResponse> jobDetailList = wantedJdClient.getJobDetailList(jobPosition,
+            jobListFetchManager.getOffset());
 
-        incrementOffset();
+        jobListFetchManager.incrementOffset();
 
         return !jobDetailList.isEmpty() ? new WantedJobDetailListResponse(jobDetailList) : null;
-    }
-
-    private void incrementOffset() {
-        offset += scrapingWantedProperties.getMaxFetchJdListOffset();
     }
 
 }
