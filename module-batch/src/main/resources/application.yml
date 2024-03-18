@@ -28,7 +28,7 @@ scraping:
     detail_url_prefix: https://www.inflearn.com
     max_courses_per_keyword: 3
     max_courses_per_page: 24
-    sleep: # ?? millis
+    sleep: # 단위 millis
       min_initial: 1000
       max_initial: 3000
       max: 10000
@@ -41,11 +41,18 @@ scraping:
         detail: https://www.wanted.co.kr/api/v4/jobs/
         list: https://www.wanted.co.kr/api/chaos/navigation/v1/results?country=kr&
 
+    all_scraping:
+      sleep_count: 2 # 지정된 횟수 만큼 offset 단위 호출하고 대기할 지 유휴 카운트 설정.
+
+    #    part-scraping:
+    #      limit:
+    #        fail_count: 10      # 연속으로 중복된 JD가 스크래핑될 때 제한할 개수를 설정
+
     max_fetch_jd_list:
-      size: 10            # 스크래핑 시 총 몇 개의 Job Description을 가져올지 설정
+      size: 20            # 스크래핑 시 총 몇 개의 Job Description을 가져올지 설정
       offset: 5           # 각 스크래핑 요청 당 몇 개의 Job Description을 가져올지 설정
 
-    limit:
+    limit: # todo : 위 part-scraping 필드로 이동 예정
       fail_count: 10      # 연속으로 중복된 JD가 스크래핑될 때 제한할 개수를 설정
 
     sleep:

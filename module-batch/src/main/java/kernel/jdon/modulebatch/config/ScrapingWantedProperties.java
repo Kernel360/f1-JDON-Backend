@@ -13,6 +13,7 @@ public class ScrapingWantedProperties {
     private final Limit limit;
     private final Sleep sleep;
     private final Url url;
+    private final AllScraping allScraping;
 
     public String getDetailUrl() {
         return this.url.detail;
@@ -78,5 +79,11 @@ public class ScrapingWantedProperties {
     public static class Api {
         private final String detail;
         private final String list;
+    }
+
+    @Getter
+    @RequiredArgsConstructor
+    public static class AllScraping {
+        private final int sleepCount;
     }
 }
