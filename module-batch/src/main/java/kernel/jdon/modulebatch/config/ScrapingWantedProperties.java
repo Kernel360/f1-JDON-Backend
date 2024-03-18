@@ -31,20 +31,8 @@ public class ScrapingWantedProperties {
         return this.maxFetchJdList.offset;
     }
 
-    public int getMaxFetchJdListSize() {
-        return this.maxFetchJdList.size;
-    }
-
     public int getSleepTimeMillis() {
         return this.sleep.timeMillis;
-    }
-
-    public int getSleepThresholdCount() {
-        return this.sleep.thresholdCount;
-    }
-
-    public int getLimitFailCount() {
-        return this.limit.failCount;
     }
 
     @Getter
@@ -84,6 +72,7 @@ public class ScrapingWantedProperties {
     @Getter
     @RequiredArgsConstructor
     public static class AllScraping {
-        private final int sleepCount;
+        private final int jobListSleepCount;
+        private final int jobDetailSleepCount;
     }
 }
