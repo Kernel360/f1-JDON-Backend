@@ -1,4 +1,4 @@
-package kernel.jdon.modulebatch.config;
+package kernel.jdon.modulebatch.global.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
