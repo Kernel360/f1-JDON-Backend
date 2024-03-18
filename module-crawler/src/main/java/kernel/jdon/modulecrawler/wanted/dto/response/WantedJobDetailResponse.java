@@ -71,7 +71,7 @@ public class WantedJobDetailResponse {
         private String deadlineDate;
 
         public String getFirstCompanyImage() {
-            return String.valueOf(companyImages.get(0).url);
+            return !companyImages.isEmpty() ? companyImages.get(0).url : null;
         }
     }
 
