@@ -33,7 +33,7 @@ public class WantedJobDetailResponse {
         return Optional.ofNullable(deadlineDateString)
             .map(str -> {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-                return LocalDate.parse(this.job.deadlineDate, formatter).atStartOfDay();
+                return LocalDate.parse(this.job.deadlineDate, formatter).plusDays(1).atStartOfDay();
             })
             .orElse(null);
     }
