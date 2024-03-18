@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import kernel.jdon.modulebatch.config.ScrapingWantedProperties;
+import kernel.jdon.modulebatch.jd.reader.counter.JobDetailFetchManager;
 import kernel.jdon.modulebatch.jd.reader.dto.WantedJobDetailResponse;
 import kernel.jdon.modulebatch.jd.reader.dto.WantedJobListResponse;
 import kernel.jdon.modulebatch.jd.repository.JobCategoryRepository;
@@ -29,17 +30,22 @@ import lombok.extern.slf4j.Slf4j;
 public class WantedJdClient {
     private final RestTemplate restTemplate;
     private final ScrapingWantedProperties scrapingWantedProperties;
+    private final JobDetailFetchManager jobDetailFetchManager;
     private final JobCategoryRepository jobCategoryRepository;
 
     public List<WantedJobDetailResponse> getJobDetailList(final JobSearchJobPosition jobPosition, final int offset) {
-
         final WantedJobListResponse jobList = fetchJobList(jobPosition, offset);
+
         final Set<Long> jobIdSet = jobList.getData().stream()
             .map(WantedJobListResponse.Data::getId)
             .collect(Collectors.toCollection(LinkedHashSet::new));
 
         return jobIdSet.stream()
-            .map(jobId -> getJobDetail(jobPosition, jobId))
+            .map(jobId -> {
+                WantedJobDetailResponse jobDetail = getJobDetail(jobPosition, jobId);
+                jobDetailFetchManager.incrementSleepCounter();
+                return jobDetail;
+            })
             .toList();
     }
 

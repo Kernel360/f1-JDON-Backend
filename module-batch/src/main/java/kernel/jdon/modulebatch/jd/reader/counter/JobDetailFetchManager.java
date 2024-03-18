@@ -11,26 +11,16 @@ import lombok.extern.slf4j.Slf4j;
 @StepScope
 @Component
 @RequiredArgsConstructor
-public class JobListFetchManager {
+public class JobDetailFetchManager {
     private final ScrapingWantedProperties scrapingWantedProperties;
-    private int offset = 0;
     private int sleepCount = 0;
 
-    public int getOffset() {
-        return this.offset;
-    }
-
-    public void incrementOffset() {
-        this.offset += scrapingWantedProperties.getMaxFetchJdListOffset();
-        incrementSleepCounter();
+    public void incrementSleepCounter() {
+        sleepCount++;
         if (isSleepRequired()) {
             performSleep();
             resetSleepCounter();
         }
-    }
-
-    private void incrementSleepCounter() {
-        sleepCount++;
     }
 
     private void resetSleepCounter() {
@@ -38,7 +28,7 @@ public class JobListFetchManager {
     }
 
     private boolean isSleepRequired() {
-        return this.sleepCount == scrapingWantedProperties.getAllScraping().getJobListSleepCount();
+        return this.sleepCount == scrapingWantedProperties.getAllScraping().getJobDetailSleepCount();
     }
 
     private void performSleep() {
