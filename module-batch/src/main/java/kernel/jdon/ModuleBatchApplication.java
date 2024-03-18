@@ -8,7 +8,6 @@ import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 @SpringBootApplication
 @ConfigurationPropertiesScan
 @EntityScan(basePackages = "kernel.jdon")
-// @EnableJpaRepositories(basePackages = "kernel.jdon")
 public class ModuleBatchApplication {
 
     public static void main(String[] args) {
