@@ -98,7 +98,7 @@ public class WantedJdRepositoryImpl implements CustomWantedJdRepository {
     private OrderSpecifier createOrderSpecifier(final JdSortType sort) {
         return switch (sort) {
             case REVIEW -> new OrderSpecifier<>(Order.DESC, wantedJd.reviewList.size());
-            default -> new OrderSpecifier<>(Order.DESC, wantedJd.scrapingDate);
+            default -> new OrderSpecifier<>(Order.DESC, wantedJd.modifiedDate);
         };
     }
 }
