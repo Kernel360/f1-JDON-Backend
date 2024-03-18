@@ -17,7 +17,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import kernel.jdon.moduleapi.domain.auth.core.OAuth2Strategy;
 import kernel.jdon.moduleapi.domain.member.core.MemberCommand;
-import kernel.jdon.moduleapi.global.config.auth.WithdrawProperties;
+import kernel.jdon.moduleapi.global.config.auth.properties.WithdrawProperties;
 import kernel.jdon.moduleapi.global.dto.SessionUserInfo;
 import kernel.jdon.moduledomain.member.domain.SocialProviderType;
 import lombok.RequiredArgsConstructor;

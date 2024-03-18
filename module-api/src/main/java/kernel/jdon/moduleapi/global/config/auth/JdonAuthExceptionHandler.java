@@ -14,18 +14,23 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import kernel.jdon.moduleapi.domain.auth.error.AuthErrorCode;
+import kernel.jdon.moduleapi.global.config.auth.properties.AllowOriginProperties;
+import kernel.jdon.moduleapi.global.config.auth.properties.LoginRedirectUrlProperties;
 import kernel.jdon.moduleapi.global.exception.AuthException;
+import kernel.jdon.modulecommon.error.ErrorCode;
 
 @Component
 public class JdonAuthExceptionHandler
     implements AuthenticationEntryPoint, AccessDeniedHandler, AuthenticationFailureHandler {
     private final HandlerExceptionResolver resolver;
     private final LoginRedirectUrlProperties loginRedirectUrlProperties;
+    private final AllowOriginProperties allowOriginProperties;
 
     public JdonAuthExceptionHandler(@Qualifier("handlerExceptionResolver") HandlerExceptionResolver resolver,
-        LoginRedirectUrlProperties loginRedirectUrlProperties) {
+        LoginRedirectUrlProperties loginRedirectUrlProperties, AllowOriginProperties allowOriginProperties) {
         this.resolver = resolver;
         this.loginRedirectUrlProperties = loginRedirectUrlProperties;
+        this.allowOriginProperties = allowOriginProperties;
     }
 
     @Override
@@ -43,19 +48,23 @@ public class JdonAuthExceptionHandler
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
         AuthenticationException exception) throws IOException {
-        String redirectUrl = null;
-        if (AuthErrorCode.UNAUTHORIZED_OAUTH_RETURN_NULL_EMAIL == ((AuthException)exception).getErrorCode()) {
-            redirectUrl = loginRedirectUrlProperties.getFailureNotFoundEmail();
+        ErrorCode errorCode = ((AuthException)exception).getErrorCode();
+        if (AuthErrorCode.UNAUTHORIZED_OAUTH_RETURN_NULL_EMAIL == errorCode) {
+            response.sendRedirect(loginRedirectUrlProperties.getFailureNotFoundEmail());
+            return;
         }
-        if (AuthErrorCode.UNAUTHORIZED_NOT_MATCH_PROVIDER_TYPE == ((AuthException)exception).getErrorCode()) {
-            redirectUrl = loginRedirectUrlProperties.getFailureNotMatchProvider();
+        if (AuthErrorCode.UNAUTHORIZED_NOT_MATCH_PROVIDER_TYPE == errorCode) {
+            response.sendRedirect(loginRedirectUrlProperties.getFailureNotMatchProvider());
+            return;
         }
-        if (AuthErrorCode.CONFLICT_WITHDRAW_BY_OTHER_SOCIAL_PROVIDER == ((AuthException)exception).getErrorCode()) {
-            redirectUrl = loginRedirectUrlProperties.getFailureAnotherWithdrawAccount();
+        if (AuthErrorCode.CONFLICT_WITHDRAW_BY_OTHER_SOCIAL_PROVIDER == errorCode) {
+            response.sendRedirect(loginRedirectUrlProperties.getFailureAnotherWithdrawAccount());
+            return;
         }
-        if (AuthErrorCode.CONFLICT_WITHDRAW_ACCOUNT == ((AuthException)exception).getErrorCode()) {
-            redirectUrl = loginRedirectUrlProperties.getFailureAlreadyWithdrawAccount();
+        if (AuthErrorCode.CONFLICT_WITHDRAW_ACCOUNT == errorCode) {
+            response.sendRedirect(loginRedirectUrlProperties.getFailureAlreadyWithdrawAccount());
+            return;
         }
-        response.sendRedirect(redirectUrl);
+        response.sendRedirect(allowOriginProperties.getOrigin());
     }
 }

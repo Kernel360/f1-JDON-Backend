@@ -17,6 +17,7 @@ import org.springframework.web.cors.CorsConfiguration;
 
 import jakarta.servlet.http.HttpServletRequest;
 import kernel.jdon.moduleapi.domain.auth.core.CustomOAuth2UserServiceImpl;
+import kernel.jdon.moduleapi.global.config.auth.properties.AllowOriginProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

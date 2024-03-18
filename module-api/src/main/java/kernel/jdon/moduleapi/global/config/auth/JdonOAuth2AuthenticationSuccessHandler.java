@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import kernel.jdon.moduleapi.domain.auth.core.JdonOAuth2User;
 import kernel.jdon.moduleapi.domain.auth.util.CryptoManager;
+import kernel.jdon.moduleapi.global.config.auth.properties.LoginRedirectUrlProperties;
 import kernel.jdon.moduledomain.member.domain.MemberRole;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

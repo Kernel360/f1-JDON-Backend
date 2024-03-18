@@ -1,8 +1,7 @@
 name: JDON-Backend DEV CI-CD
 
 on:
-  pull_request:
-    types: [ opened, closed ]
+  push:
     branches: [ develop ]
 
 permissions:
@@ -47,7 +46,6 @@ jobs:
     needs: integration
     runs-on: ubuntu-latest
     if: >
-      github.event.pull_request.merged == true &&
       !contains(join(github.event.pull_request.labels.*.name, ','), 'NO-Deploy')
     steps:
       - name: Deploy to Dev-EC2
