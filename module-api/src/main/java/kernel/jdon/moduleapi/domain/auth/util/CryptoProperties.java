@@ -21,6 +21,10 @@ public class CryptoProperties {
         return aesPrivateKey.getBytes(StandardCharsets.UTF_8);
     }
 
+    public byte[] getAesIVByByte() {
+        return aesPrivateKey.substring(0, 16).getBytes(StandardCharsets.UTF_8);
+    }
+
     public byte[] getHmacPrivateKeyByByte() {
         return hmacPrivateKey.getBytes(StandardCharsets.UTF_8);
     }
