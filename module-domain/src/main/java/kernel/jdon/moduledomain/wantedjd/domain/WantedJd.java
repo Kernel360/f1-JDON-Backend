@@ -113,4 +113,17 @@ public class WantedJd extends AbstractEntity {
             })
             .orElse(null);
     }
+
+    public void updateWantedJd(WantedJd wantedJd) {
+        this.companyName = wantedJd.companyName;
+        this.title = wantedJd.title;
+        this.imageUrl = wantedJd.imageUrl;
+        this.requirements = wantedJd.requirements;
+        this.mainTasks = wantedJd.mainTasks;
+        this.intro = wantedJd.intro;
+        this.benefits = wantedJd.benefits;
+        this.preferredPoints = wantedJd.preferredPoints;
+        this.deadlineDate = wantedJd.deadlineDate;
+        this.wantedJdStatus = wantedJd.wantedJdStatus;
+    }
 }
