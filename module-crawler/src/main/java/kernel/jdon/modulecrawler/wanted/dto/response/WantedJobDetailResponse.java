@@ -1,5 +1,7 @@
 package kernel.jdon.modulecrawler.wanted.dto.response;
 
+import static kernel.jdon.moduledomain.wantedjd.domain.WantedJdActiveStatus.*;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -10,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import kernel.jdon.moduledomain.jobcategory.domain.JobCategory;
 import kernel.jdon.moduledomain.wantedjd.domain.WantedJd;
-import kernel.jdon.moduledomain.wantedjd.domain.WantedJdActiveStatus;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,7 +33,7 @@ public class WantedJobDetailResponse {
         return Optional.ofNullable(deadlineDateString)
             .map(str -> {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-                return LocalDate.parse(this.job.deadlineDate, formatter).atStartOfDay();
+                return LocalDate.parse(this.job.deadlineDate, formatter).plusDays(1).atStartOfDay();
             })
             .orElse(null);
     }
@@ -50,7 +51,7 @@ public class WantedJobDetailResponse {
             .intro(this.job.detail.intro)
             .benefits(this.job.detail.benefits)
             .preferredPoints(this.job.detail.preferredPoints)
-            .wantedJdStatus(WantedJdActiveStatus.OPEN)
+            .wantedJdStatus(getWantedJdActiveStatus(this.job.deadlineDate))
             .deadlineDate(getDeadlineDate(this.job.deadlineDate))
             .build();
     }
