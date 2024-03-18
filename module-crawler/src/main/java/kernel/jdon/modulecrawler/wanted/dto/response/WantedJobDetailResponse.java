@@ -1,12 +1,6 @@
 package kernel.jdon.modulecrawler.wanted.dto.response;
 
-import static kernel.jdon.moduledomain.wantedjd.domain.WantedJdActiveStatus.*;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Optional;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -29,31 +23,21 @@ public class WantedJobDetailResponse {
         this.jobCategory = jobCategory;
     }
 
-    private LocalDateTime getDeadlineDate(String deadlineDateString) {
-        return Optional.ofNullable(deadlineDateString)
-            .map(str -> {
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-                return LocalDate.parse(this.job.deadlineDate, formatter).plusDays(1).atStartOfDay();
-            })
-            .orElse(null);
-    }
-
     public WantedJd toWantedJdEntity() {
-        return WantedJd.builder()
-            .jobCategory(this.jobCategory)
-            .companyName(this.job.company.name)
-            .title(this.job.title)
-            .detailId(this.job.id)
-            .detailUrl(this.detailUrl)
-            .imageUrl(this.job.getFirstCompanyImage())
-            .requirements(this.job.detail.requirements)
-            .mainTasks(this.job.detail.mainTasks)
-            .intro(this.job.detail.intro)
-            .benefits(this.job.detail.benefits)
-            .preferredPoints(this.job.detail.preferredPoints)
-            .wantedJdStatus(getWantedJdActiveStatus(this.job.deadlineDate))
-            .deadlineDate(getDeadlineDate(this.job.deadlineDate))
-            .build();
+        return new WantedJd(
+            this.job.company.name,
+            this.job.title,
+            this.job.id,
+            this.detailUrl,
+            this.job.getFirstCompanyImage(),
+            this.job.detail.requirements,
+            this.job.detail.mainTasks,
+            this.job.detail.intro,
+            this.job.detail.benefits,
+            this.job.detail.preferredPoints,
+            this.job.deadlineDate,
+            this.jobCategory
+        );
     }
 
     @Getter

@@ -1,8 +1,13 @@
 package kernel.jdon.moduledomain.wantedjd.domain;
 
+import static kernel.jdon.moduledomain.wantedjd.domain.WantedJdActiveStatus.*;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -22,7 +27,6 @@ import kernel.jdon.moduledomain.jobcategory.domain.JobCategory;
 import kernel.jdon.moduledomain.review.domain.Review;
 import kernel.jdon.moduledomain.wantedjdskill.domain.WantedJdSkill;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -83,10 +87,9 @@ public class WantedJd extends AbstractEntity {
     @OneToMany(mappedBy = "wantedJd")
     private List<Review> reviewList = new ArrayList<>();
 
-    @Builder
     public WantedJd(String companyName, String title, Long detailId, String detailUrl, String imageUrl,
         String requirements, String mainTasks, String intro, String benefits, String preferredPoints,
-        LocalDateTime deadlineDate, WantedJdActiveStatus wantedJdStatus, JobCategory jobCategory) {
+        String deadlineDate, JobCategory jobCategory) {
         this.companyName = companyName;
         this.title = title;
         this.detailId = detailId;
@@ -97,8 +100,17 @@ public class WantedJd extends AbstractEntity {
         this.intro = intro;
         this.benefits = benefits;
         this.preferredPoints = preferredPoints;
-        this.deadlineDate = deadlineDate;
-        this.wantedJdStatus = wantedJdStatus;
+        this.deadlineDate = getDeadlineDate(deadlineDate);
         this.jobCategory = jobCategory;
+        this.wantedJdStatus = getWantedJdActiveStatus(deadlineDate);
+    }
+
+    private LocalDateTime getDeadlineDate(String deadlineDateString) {
+        return Optional.ofNullable(deadlineDateString)
+            .map(str -> {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                return LocalDate.parse(deadlineDateString, formatter).plusDays(1).atStartOfDay();
+            })
+            .orElse(null);
     }
 }
