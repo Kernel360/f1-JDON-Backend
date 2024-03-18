@@ -1,11 +1,16 @@
 package kernel.jdon.modulecrawler.wanted.dto.response;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import kernel.jdon.moduledomain.jobcategory.domain.JobCategory;
 import kernel.jdon.moduledomain.wantedjd.domain.WantedJd;
+import kernel.jdon.moduledomain.wantedjd.domain.WantedJdActiveStatus;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,19 +28,30 @@ public class WantedJobDetailResponse {
         this.jobCategory = jobCategory;
     }
 
+    private LocalDateTime getDeadlineDate(String deadlineDateString) {
+        return Optional.ofNullable(deadlineDateString)
+            .map(str -> {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                return LocalDate.parse(this.job.deadlineDate, formatter).atStartOfDay();
+            })
+            .orElse(null);
+    }
+
     public WantedJd toWantedJdEntity() {
         return WantedJd.builder()
-            .jobCategory(this.getJobCategory())
-            .companyName(this.getJob().getCompany().getName())
-            .title(this.getJob().getTitle())
-            .detailId(this.getJob().getId())
-            .detailUrl(this.getDetailUrl())
-            .imageUrl(this.getJob().getCompanyImages())
-            .requirements(this.getJob().getDetail().getRequirements())
-            .mainTasks(this.getJob().getDetail().getMainTasks())
-            .intro(this.getJob().getDetail().getIntro())
-            .benefits(this.getJob().getDetail().getBenefits())
-            .preferredPoints(this.getJob().getDetail().getPreferredPoints())
+            .jobCategory(this.jobCategory)
+            .companyName(this.job.company.name)
+            .title(this.job.title)
+            .detailId(this.job.id)
+            .detailUrl(this.detailUrl)
+            .imageUrl(this.job.getFirstCompanyImage())
+            .requirements(this.job.detail.requirements)
+            .mainTasks(this.job.detail.mainTasks)
+            .intro(this.job.detail.intro)
+            .benefits(this.job.detail.benefits)
+            .preferredPoints(this.job.detail.preferredPoints)
+            .wantedJdStatus(WantedJdActiveStatus.OPEN)
+            .deadlineDate(getDeadlineDate(this.job.deadlineDate))
             .build();
     }
 
@@ -51,9 +67,11 @@ public class WantedJobDetailResponse {
         private List<WantedSkill> skill;
         @JsonProperty("company_images")
         private List<CompanyImages> companyImages;
+        @JsonProperty("due_time")
+        private String deadlineDate;
 
-        public String getCompanyImages() {
-            return String.valueOf(companyImages.get(0).url);
+        public String getFirstCompanyImage() {
+            return !companyImages.isEmpty() ? companyImages.get(0).url : null;
         }
     }
 
