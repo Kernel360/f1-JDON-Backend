@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<configuration>
+<included>
     <!-- 로그 패턴에 색상 적용 %clr(pattern){color} -->
     <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter"/>
 
@@ -9,15 +8,8 @@
 
     <!-- 콘솔(STDOUT) -->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-        <layout class="ch.qos.logback.classic.PatternLayout">
+        <encoder>
             <Pattern>${CONSOLE_LOG_PATTERN}</Pattern>
-        </layout>
+        </encoder>
     </appender>
-
-    <!-- log root 레벨 설정 (logging.level.root=info)-->
-    <root level="info">
-        <!-- 참조할 appender 설정 - STDOUT -->
-        <appender-ref ref="STDOUT"/>
-    </root>
-
-</configuration>
+</included>
