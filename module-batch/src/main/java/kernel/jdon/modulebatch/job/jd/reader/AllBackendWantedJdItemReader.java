@@ -20,7 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 @StepScope
 @Component
 @RequiredArgsConstructor
-public class FrontendWantedJdItemReader implements ItemReader<WantedJobDetailListResponse> {
+public class AllBackendWantedJdItemReader implements ItemReader<WantedJobDetailListResponse> {
     private final WantedJdClient wantedJdClient;
     private final JobListFetchManager jobListFetchManager;
 
@@ -30,7 +30,7 @@ public class FrontendWantedJdItemReader implements ItemReader<WantedJobDetailLis
         UnexpectedInputException,
         ParseException,
         NonTransientResourceException {
-        final JobSearchJobPosition jobPosition = JobSearchJobPosition.JOB_POSITION_FRONTEND;
+        final JobSearchJobPosition jobPosition = JobSearchJobPosition.JOB_POSITION_SERVER;
         final List<WantedJobDetailResponse> jobDetailList = wantedJdClient.getJobDetailList(jobPosition,
             jobListFetchManager.getOffset());
 
@@ -38,5 +38,4 @@ public class FrontendWantedJdItemReader implements ItemReader<WantedJobDetailLis
 
         return !jobDetailList.isEmpty() ? new WantedJobDetailListResponse(jobDetailList) : null;
     }
-
 }

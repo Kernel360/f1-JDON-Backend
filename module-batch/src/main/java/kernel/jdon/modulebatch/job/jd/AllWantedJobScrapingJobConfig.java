@@ -11,9 +11,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
 
-import kernel.jdon.modulebatch.job.jd.listener.PartWantedJobScrapingJobListener;
-import kernel.jdon.modulebatch.job.jd.reader.BackendWantedJdItemReader;
-import kernel.jdon.modulebatch.job.jd.reader.FrontendWantedJdItemReader;
+import kernel.jdon.modulebatch.job.jd.listener.AllWantedJobScrapingJobListener;
+import kernel.jdon.modulebatch.job.jd.reader.AllBackendWantedJdItemReader;
+import kernel.jdon.modulebatch.job.jd.reader.AllFrontendWantedJdItemReader;
 import kernel.jdon.modulebatch.job.jd.reader.dto.WantedJobDetailListResponse;
 import kernel.jdon.modulebatch.job.jd.writer.WantedJdItemWriter;
 import lombok.RequiredArgsConstructor;
@@ -26,16 +26,16 @@ public class AllWantedJobScrapingJobConfig {
 
     private static final int CHUNK_SIZE = 1;
 
-    private final FrontendWantedJdItemReader frontendWantedJdItemReader;
-    private final BackendWantedJdItemReader backendWantedJdItemReader;
+    private final AllFrontendWantedJdItemReader allFrontendWantedJdItemReader;
+    private final AllBackendWantedJdItemReader allBackendWantedJdItemReader;
     private final WantedJdItemWriter wantedJdItemWriter;
     private final PlatformTransactionManager platformTransactionManager;
 
     @Bean(BEAN_PREFIX + "job")
-    public Job wantedJdJob(JobRepository jobRepository) {
+    public Job allWantedJdScrapingJob(JobRepository jobRepository) {
         return new JobBuilder(BEAN_PREFIX + "job", jobRepository)
             .incrementer(new RunIdIncrementer())
-            .listener(new PartWantedJobScrapingJobListener())
+            .listener(new AllWantedJobScrapingJobListener())
             .start(backendWantedJdStep(jobRepository)) // 백엔드 JD 스크래핑
             .next(frontendWantedJdStep(jobRepository)) // 프론트엔드 JD 스크래핑
             .build();
@@ -46,7 +46,7 @@ public class AllWantedJobScrapingJobConfig {
     public Step backendWantedJdStep(JobRepository jobRepository) {
         return new StepBuilder(BEAN_PREFIX + "백엔드_step", jobRepository)
             .<WantedJobDetailListResponse, WantedJobDetailListResponse>chunk(CHUNK_SIZE, platformTransactionManager)
-            .reader(backendWantedJdItemReader)
+            .reader(allBackendWantedJdItemReader)
             .writer(wantedJdItemWriter)
             .build();
     }
@@ -56,7 +56,7 @@ public class AllWantedJobScrapingJobConfig {
     public Step frontendWantedJdStep(JobRepository jobRepository) {
         return new StepBuilder(BEAN_PREFIX + "프론트엔드_step", jobRepository)
             .<WantedJobDetailListResponse, WantedJobDetailListResponse>chunk(CHUNK_SIZE, platformTransactionManager)
-            .reader(frontendWantedJdItemReader)
+            .reader(allFrontendWantedJdItemReader)
             .writer(wantedJdItemWriter)
             .build();
     }
