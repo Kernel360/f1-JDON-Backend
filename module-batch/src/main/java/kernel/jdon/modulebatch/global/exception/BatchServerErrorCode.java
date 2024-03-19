@@ -2,6 +2,7 @@ package kernel.jdon.modulebatch.global.exception;
 
 import org.springframework.http.HttpStatus;
 
+import kernel.jdon.modulecommon.error.BaseThrowException;
 import kernel.jdon.modulecommon.error.ErrorCode;
 import lombok.RequiredArgsConstructor;
 

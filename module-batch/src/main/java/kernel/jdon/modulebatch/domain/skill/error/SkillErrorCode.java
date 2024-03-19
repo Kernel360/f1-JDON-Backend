@@ -2,8 +2,8 @@ package kernel.jdon.modulebatch.domain.skill.error;
 
 import org.springframework.http.HttpStatus;
 
-import kernel.jdon.modulebatch.global.exception.BaseThrowException;
 import kernel.jdon.modulebatch.global.exception.BatchException;
+import kernel.jdon.modulecommon.error.BaseThrowException;
 import kernel.jdon.modulecommon.error.ErrorCode;
 import lombok.RequiredArgsConstructor;
 
