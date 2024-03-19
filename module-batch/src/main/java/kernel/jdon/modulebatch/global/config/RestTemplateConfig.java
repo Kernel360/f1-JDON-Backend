@@ -38,7 +38,7 @@ public class RestTemplateConfig {
                 return retryTemplate.execute(context -> execution.execute(request, body));
             } catch (Throwable throwable) {
                 log.error("AppConfig.clientHttpRequestInterceptor {}", "restTemplate retry 중 Error 발생");
-                throw new BatchException(BatchServerErrorCode.INTERNAL_SERVER_ERROR_THREAD_SLEEP);
+                throw new BatchException(BatchServerErrorCode.INTERNAL_SERVER_ERROR_REST_TEMPLATE_RETRY);
             }
         };
     }
