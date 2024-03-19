@@ -2,8 +2,8 @@ package kernel.jdon.modulecrawler.global.error.code;
 
 import org.springframework.http.HttpStatus;
 
+import kernel.jdon.modulecommon.error.BaseThrowException;
 import kernel.jdon.modulecommon.error.ErrorCode;
-import kernel.jdon.modulecrawler.global.error.exception.BaseThrowException;
 import kernel.jdon.modulecrawler.global.error.exception.CrawlerException;
 import lombok.AllArgsConstructor;
 
