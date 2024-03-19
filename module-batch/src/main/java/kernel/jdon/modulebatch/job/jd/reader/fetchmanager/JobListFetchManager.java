@@ -40,7 +40,7 @@ public class JobListFetchManager {
     }
 
     private boolean isSleepRequired() {
-        return this.sleepCount == scrapingWantedProperties.getAllScraping().getJobListSleepCount();
+        return this.sleepCount == scrapingWantedProperties.getScraping().getAll().getJobListSleepCount();
     }
 
     private void performSleep() {

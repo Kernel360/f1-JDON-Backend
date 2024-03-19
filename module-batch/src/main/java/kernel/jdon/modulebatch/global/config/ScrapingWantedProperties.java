@@ -12,8 +12,6 @@ public class ScrapingWantedProperties {
     private final Sleep sleep;
     private final Url url;
     private final Scraping scraping;
-    private final AllScraping allScraping;
-    private final PartScraping partScraping;
 
     public String getDetailUrl() {
         return this.url.detail;
@@ -36,7 +34,7 @@ public class ScrapingWantedProperties {
     }
 
     public int getJobDetailDuplicateLimitCount() {
-        return this.partScraping.jobDetailDuplicateLimitCount;
+        return this.scraping.part.jobDetailDuplicateLimitCount;
     }
 
     public int getSleepTimeMillis() {
@@ -69,6 +67,8 @@ public class ScrapingWantedProperties {
     public static class Scraping {
         private final int jobListLimit;
         private final int jobListOffset;
+        private final AllScraping all;
+        private final PartScraping part;
     }
 
     @Getter
