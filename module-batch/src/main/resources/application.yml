@@ -42,19 +42,15 @@ scraping:
         list: https://www.wanted.co.kr/api/chaos/navigation/v1/results?country=kr&
 
     all_scraping:
-      job_list_sleep_count: 2         # 지정된 횟수 만큼 offset 단위 호출하고 대기할 지 유휴 카운트 설정.
-      job_detail_sleep_count: 3 #10   # 지정된 횟수 만큼 jd 상세 API를 호출하고 대기할 지 유휴 카운트 설정.
+      job_list_sleep_count: 5      # 지정된 횟수 만큼 offset 단위 호출하고 대기할 지 유휴 카운트 설정.
+      job_detail_sleep_count: 10   # 지정된 횟수 만큼 jd 상세 API를 호출하고 대기할 지 유휴 카운트 설정.
 
-    #    part-scraping:
-    #      limit:
-    #        fail_count: 10      # 연속으로 중복된 JD가 스크래핑될 때 제한할 개수를 설정
+    part_scraping:
+      job_detail_duplicate_limit_count: 5 # 연속으로 중복된 JD 상세내역이 스크래핑될 때 스크래핑을 중지할 개수를 설정(항상 limit보다 작다)
 
-    max_fetch_jd_list:
-      size: 20 #100           # 스크래핑 시 총 몇 개의 Job Description을 가져올지 설정
-      offset: 5 #100          # 각 스크래핑 요청 당 몇 개의 Job Description을 가져올지 설정
-
-    limit: # todo : 위 part-scraping 필드로 이동 예정
-      fail_count: 10      # 연속으로 중복된 JD가 스크래핑될 때 제한할 개수를 설정
+    scraping:
+      job_list_limit: 100           # 각 스크래핑 요청 당 몇 개의 Job Description을 가져올지 설정
+      job_list_offset: 100          # 몇 번째 Job Description부터 가져올지 설정
 
     sleep:
       threshold_count: 10 # 지정된 개수까지 Job Description을 스크래핑한 후 해당 시간 만큼 지연하도록 설정
