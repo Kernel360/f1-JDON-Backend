@@ -11,7 +11,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
 
-import kernel.jdon.modulebatch.job.jd.processor.WantedJdItemProcessor;
 import kernel.jdon.modulebatch.job.jd.reader.BackendWantedJdItemReader;
 import kernel.jdon.modulebatch.job.jd.reader.FrontendWantedJdItemReader;
 import kernel.jdon.modulebatch.job.jd.reader.dto.WantedJobDetailListResponse;
@@ -28,7 +27,6 @@ public class AllWantedJobScrapingJobConfig {
 
     private final FrontendWantedJdItemReader frontendWantedJdItemReader;
     private final BackendWantedJdItemReader backendWantedJdItemReader;
-    private final WantedJdItemProcessor wantedJdItemProcessor;
     private final WantedJdItemWriter wantedJdItemWriter;
     private final PlatformTransactionManager platformTransactionManager;
 
@@ -47,7 +45,6 @@ public class AllWantedJobScrapingJobConfig {
         return new StepBuilder(BEAN_PREFIX + "백엔드_step", jobRepository)
             .<WantedJobDetailListResponse, WantedJobDetailListResponse>chunk(CHUNK_SIZE, platformTransactionManager)
             .reader(backendWantedJdItemReader)
-            .processor(wantedJdItemProcessor)
             .writer(wantedJdItemWriter)
             .build();
     }
@@ -58,9 +55,7 @@ public class AllWantedJobScrapingJobConfig {
         return new StepBuilder(BEAN_PREFIX + "프론트엔드_step", jobRepository)
             .<WantedJobDetailListResponse, WantedJobDetailListResponse>chunk(CHUNK_SIZE, platformTransactionManager)
             .reader(frontendWantedJdItemReader)
-            .processor(wantedJdItemProcessor)
             .writer(wantedJdItemWriter)
             .build();
     }
-
 }
