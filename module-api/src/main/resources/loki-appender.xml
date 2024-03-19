@@ -4,6 +4,9 @@
             <url>http://3.34.69.116:3100/loki/api/v1/push</url>
         </http>
         <format>
+            <label>
+                <pattern>host=${HOSTNAME},level=%level,profile=${spring.profiles.active}</pattern>
+            </label>
             <message class="com.github.loki4j.logback.JsonLayout"/>
         </format>
     </appender>

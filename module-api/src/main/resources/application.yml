@@ -9,4 +9,4 @@ server:
 
 spring:
   profiles:
-    default: default
+    active: "@spring.profiles.active@"
