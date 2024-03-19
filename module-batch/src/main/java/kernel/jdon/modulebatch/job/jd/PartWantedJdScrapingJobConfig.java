@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import kernel.jdon.modulebatch.job.jd.listener.PartWantedJobScrapingJobListener;
 import kernel.jdon.modulebatch.job.jd.reader.PartBackendWantedJdItemReader;
 import kernel.jdon.modulebatch.job.jd.reader.PartFrontendWantedJdItemReader;
 import kernel.jdon.modulebatch.job.jd.reader.dto.WantedJobDetailListResponse;
@@ -34,6 +35,7 @@ public class PartWantedJdScrapingJobConfig {
     public Job partWantedJdScrapingJob(JobRepository jobRepository) {
         return new JobBuilder(BEAN_PREFIX + "job", jobRepository)
             .incrementer(new RunIdIncrementer())
+            .listener(new PartWantedJobScrapingJobListener())
             .start(partBackendWantedJdStep(jobRepository)) // 백엔드 JD 스크래핑
             .next(partFrontendWantedJdStep(jobRepository)) // 프론트엔드 JD 스크래핑
             .build();
