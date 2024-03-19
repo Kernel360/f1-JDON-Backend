@@ -20,9 +20,11 @@ public class AppConfig {
 
     @Bean
     public RestTemplate restTemplate(RestTemplateBuilder restTemplateBuilder) {
+        final int connectTimeoutSecond = 5;
+        final int readTimeoutSecond = 5;
         return restTemplateBuilder
-            .setConnectTimeout(Duration.ofSeconds(5))
-            .setReadTimeout(Duration.ofSeconds(5))
+            .setConnectTimeout(Duration.ofSeconds(connectTimeoutSecond))
+            .setReadTimeout(Duration.ofSeconds(readTimeoutSecond))
             .additionalInterceptors(clientHttpRequestInterceptor())
             .build();
     }
