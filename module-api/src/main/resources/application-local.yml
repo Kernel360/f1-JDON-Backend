@@ -45,7 +45,6 @@ spring:
       pageable:
         max-page-size: 100
 
-
 logging:
   level:
     root: info
