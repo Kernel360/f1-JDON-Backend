@@ -9,8 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
@@ -22,7 +27,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
-import kernel.jdon.moduledomain.base.AbstractEntity;
 import kernel.jdon.moduledomain.jobcategory.domain.JobCategory;
 import kernel.jdon.moduledomain.review.domain.Review;
 import kernel.jdon.moduledomain.wantedjdskill.domain.WantedJdSkill;
@@ -32,9 +36,10 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
+@EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "wanted_jd", uniqueConstraints = @UniqueConstraint(columnNames = {"detail_id", "job_category_id"}))
-public class WantedJd extends AbstractEntity {
+public class WantedJd {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -77,6 +82,15 @@ public class WantedJd extends AbstractEntity {
     @Column(name = "active_status", columnDefinition = "VARCHAR(50)", nullable = false)
     private WantedJdActiveStatus wantedJdStatus = WantedJdActiveStatus.OPEN;
 
+    @CreatedDate
+    @Column(name = "created_date", columnDefinition = "DATETIME", nullable = false, updatable = false)
+    private LocalDateTime createdDate;
+
+    /** modifiedDate의 setter를 열어주기 때문에 AbstractEntity를 상속받지 않고 직접 구현 **/
+    @LastModifiedDate
+    @Column(name = "modified_date", columnDefinition = "DATETIME")
+    private LocalDateTime modifiedDate;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "job_category_id", columnDefinition = "BIGINT")
     private JobCategory jobCategory;
@@ -112,5 +126,19 @@ public class WantedJd extends AbstractEntity {
                 return LocalDate.parse(deadlineDateString, formatter).plusDays(1).atStartOfDay();
             })
             .orElse(null);
+    }
+
+    public void updateWantedJd(WantedJd wantedJd) {
+        this.companyName = wantedJd.companyName;
+        this.title = wantedJd.title;
+        this.imageUrl = wantedJd.imageUrl;
+        this.requirements = wantedJd.requirements;
+        this.mainTasks = wantedJd.mainTasks;
+        this.intro = wantedJd.intro;
+        this.benefits = wantedJd.benefits;
+        this.preferredPoints = wantedJd.preferredPoints;
+        this.deadlineDate = wantedJd.deadlineDate;
+        this.wantedJdStatus = wantedJd.wantedJdStatus;
+        this.modifiedDate = LocalDateTime.now();
     }
 }
