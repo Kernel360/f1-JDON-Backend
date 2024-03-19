@@ -15,6 +15,7 @@ import kernel.jdon.modulebatch.job.jd.reader.BackendWantedJdItemReader;
 import kernel.jdon.modulebatch.job.jd.reader.FrontendWantedJdItemReader;
 import kernel.jdon.modulebatch.job.jd.reader.dto.WantedJobDetailListResponse;
 import kernel.jdon.modulebatch.job.jd.writer.WantedJdItemWriter;
+import kernel.jdon.modulebatch.listener.AllWantedJobScrapingJobListener;
 import lombok.RequiredArgsConstructor;
 
 @Configuration
@@ -34,6 +35,7 @@ public class AllWantedJobScrapingJobConfig {
     public Job wantedJdJob(JobRepository jobRepository) {
         return new JobBuilder(BEAN_PREFIX + "job", jobRepository)
             .incrementer(new RunIdIncrementer())
+            .listener(new AllWantedJobScrapingJobListener())
             .start(backendWantedJdStep(jobRepository)) // 백엔드 JD 스크래핑
             .next(frontendWantedJdStep(jobRepository)) // 프론트엔드 JD 스크래핑
             .build();
