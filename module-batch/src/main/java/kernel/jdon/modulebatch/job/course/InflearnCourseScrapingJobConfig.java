@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import kernel.jdon.modulebatch.job.course.processor.InflearnCourseItemProcessor;
 import kernel.jdon.modulebatch.job.course.reader.InflearnCourseItemReader;
 import kernel.jdon.modulebatch.job.course.reader.dto.InflearnCourseResponse;
 import kernel.jdon.modulebatch.job.course.writer.InflearnCourseItemWriter;
@@ -24,6 +25,7 @@ public class InflearnCourseScrapingJobConfig {
 
     private final InflearnJobExecutionListener inflearnJobExecutionListener;
     private final InflearnCourseItemReader inflearnCourseItemReader;
+    private final InflearnCourseItemProcessor inflearnCourseItemProcessor;
     private final InflearnCourseItemWriter inflearnCourseItemWriter;
 
     @Bean(name = "inflearnCrawlJob")
@@ -39,8 +41,9 @@ public class InflearnCourseScrapingJobConfig {
     @JobScope
     public Step inflearnCourseStep(JobRepository jobRepository, PlatformTransactionManager transactionManager) {
         return new StepBuilder("inflearnCourseStep", jobRepository)
-            .<InflearnCourseResponse, InflearnCourseResponse>chunk(1, transactionManager)
+            .<String, InflearnCourseResponse>chunk(3, transactionManager)
             .reader(inflearnCourseItemReader)
+            .processor(inflearnCourseItemProcessor)
             .writer(inflearnCourseItemWriter)
             .allowStartIfComplete(true)
             .build();

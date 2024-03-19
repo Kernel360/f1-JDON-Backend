@@ -1,5 +1,6 @@
 package kernel.jdon.modulebatch.job.course.reader;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -11,29 +12,32 @@ import org.springframework.batch.item.UnexpectedInputException;
 import org.springframework.stereotype.Component;
 
 import jakarta.annotation.PostConstruct;
-import kernel.jdon.modulebatch.job.course.reader.dto.InflearnCourseResponse;
+import kernel.jdon.modulebatch.domain.skill.BackendSkillType;
+import kernel.jdon.modulebatch.domain.skill.FrontendSkillType;
 import lombok.RequiredArgsConstructor;
 
 @Component
 @StepScope
 @RequiredArgsConstructor
-public class InflearnCourseItemReader implements ItemReader<InflearnCourseResponse> {
+public class InflearnCourseItemReader implements ItemReader<String> {
 
-    private final InflearnCourseClient inflearnCourseClient;
-    private Iterator<InflearnCourseResponse> dataIterator;
+    private Iterator<String> keywordIterator;
+    private List<String> keywordList;
 
     @PostConstruct
     public void postConstruct() {
-        List<InflearnCourseResponse> data = inflearnCourseClient.getInflearnData();
-        this.dataIterator = data.iterator();
+        keywordList = new ArrayList<>();
+        keywordList.addAll(FrontendSkillType.getAllKeywords());
+        keywordList.addAll(BackendSkillType.getAllKeywords());
+        this.keywordIterator = keywordList.iterator();
     }
 
     @Override
-    public InflearnCourseResponse read() throws
+    public String read() throws
         Exception,
         UnexpectedInputException,
         ParseException,
         NonTransientResourceException {
-        return dataIterator.hasNext() ? dataIterator.next() : null;
+        return keywordIterator.hasNext() ? keywordIterator.next() : null;
     }
 }

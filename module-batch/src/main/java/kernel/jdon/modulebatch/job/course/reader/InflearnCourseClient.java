@@ -3,14 +3,11 @@ package kernel.jdon.modulebatch.job.course.reader;
 import static kernel.jdon.modulecommon.util.StringUtil.*;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Component;
 
-import kernel.jdon.modulebatch.domain.skill.BackendSkillType;
-import kernel.jdon.modulebatch.domain.skill.FrontendSkillType;
 import kernel.jdon.modulebatch.global.config.ScrapingInflearnProperties;
 import kernel.jdon.modulebatch.job.course.reader.condition.CourseSearchSort;
 import kernel.jdon.modulebatch.job.course.reader.dto.InflearnCourseResponse;
@@ -31,27 +28,17 @@ public class InflearnCourseClient {
     private final ScrapingInflearnProperties scrapingInflearnProperties;
     private final CourseScraperService courseScraperService;
     private final CourseParserService courseParserService;
-    // TODO: writer로 옮기기
 
-    public List<InflearnCourseResponse> getInflearnData() {
-        List<InflearnCourseResponse> responses = new ArrayList<>();
-        List<String> keywordList = new ArrayList<>();
-        keywordList.addAll(FrontendSkillType.getAllKeywords());
-        keywordList.addAll(BackendSkillType.getAllKeywords());
-        // TODO: InflearnCourseResponse 생성해서 반환
-        log.info("keywordList:" + keywordList);
+    public InflearnCourseResponse getInflearnDataByKeyword(String keyword) {
 
-        for (String keyword : keywordList) {
-            log.info("keyword: " + keyword);
-            InflearnCourseCounter inflearnCourseCounter = new InflearnCourseCounter();
-            processKeyword(keyword, 1, inflearnCourseCounter);
-            if (!inflearnCourseCounter.getNewCourses().isEmpty()) {
-                responses.add(
-                    new InflearnCourseResponse(keyword, new ArrayList<>(inflearnCourseCounter.getNewCourses())));
-            }
+        log.info("keyword:" + keyword);
+        InflearnCourseCounter inflearnCourseCounter = new InflearnCourseCounter();
+        processKeyword(keyword, 1, inflearnCourseCounter);
+        if (!inflearnCourseCounter.getNewCourses().isEmpty()) {
+            return new InflearnCourseResponse(keyword, new ArrayList<>(inflearnCourseCounter.getNewCourses()));
         }
 
-        return responses;
+        return null;
     }
 
     private void processKeyword(String skillKeyword, int pageNum, InflearnCourseCounter inflearnCourseCounter) {
