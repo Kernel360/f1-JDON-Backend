@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import kernel.jdon.modulebatch.job.jd.listener.AllWantedJobScrapingJobListener;
 import kernel.jdon.modulebatch.job.jd.reader.BackendWantedJdItemReader;
 import kernel.jdon.modulebatch.job.jd.reader.FrontendWantedJdItemReader;
 import kernel.jdon.modulebatch.job.jd.reader.dto.WantedJobDetailListResponse;
