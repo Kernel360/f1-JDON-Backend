@@ -3,7 +3,7 @@ package kernel.jdon.moduleapi.domain.skill.error;
 import org.springframework.http.HttpStatus;
 
 import kernel.jdon.moduleapi.global.exception.ApiException;
-import kernel.jdon.moduleapi.global.exception.BaseThrowException;
+import kernel.jdon.modulecommon.error.BaseThrowException;
 import kernel.jdon.modulecommon.error.ErrorCode;
 import lombok.RequiredArgsConstructor;
 
