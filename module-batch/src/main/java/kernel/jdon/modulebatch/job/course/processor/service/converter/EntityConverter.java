@@ -1,4 +1,4 @@
-package kernel.jdon.modulebatch.job.course.reader.service.converter;
+package kernel.jdon.modulebatch.job.course.processor.service.converter;
 
 import kernel.jdon.moduledomain.inflearncourse.domain.InflearnCourse;
 import kernel.jdon.moduledomain.inflearnjdskill.domain.InflearnJdSkill;

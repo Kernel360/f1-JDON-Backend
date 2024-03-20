@@ -1,8 +1,8 @@
-package kernel.jdon.modulebatch.job.course.reader.service;
+package kernel.jdon.modulebatch.job.course.processor.service;
 
 import org.springframework.stereotype.Component;
 
-import kernel.jdon.modulebatch.job.course.reader.service.converter.KeywordTranslator;
+import kernel.jdon.modulebatch.job.course.processor.service.converter.KeywordTranslator;
 
 @Component
 public class CourseKeywordAnalyzer {

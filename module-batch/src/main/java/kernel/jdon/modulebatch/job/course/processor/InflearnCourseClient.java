@@ -1,4 +1,4 @@
-package kernel.jdon.modulebatch.job.course.reader;
+package kernel.jdon.modulebatch.job.course.processor;
 
 import static kernel.jdon.modulecommon.util.StringUtil.*;
 
@@ -10,12 +10,12 @@ import org.springframework.stereotype.Component;
 
 import kernel.jdon.modulebatch.global.config.ScrapingInflearnProperties;
 import kernel.jdon.modulebatch.job.course.dto.InflearnCourseAndSkillKeywordInfo;
-import kernel.jdon.modulebatch.job.course.reader.condition.CourseSearchSort;
-import kernel.jdon.modulebatch.job.course.reader.service.CourseParser;
-import kernel.jdon.modulebatch.job.course.reader.service.CourseScraper;
-import kernel.jdon.modulebatch.job.course.reader.service.manager.DynamicSleepTimeManager;
-import kernel.jdon.modulebatch.job.course.reader.service.manager.InflearnCourseCounter;
-import kernel.jdon.modulebatch.job.course.reader.service.manager.LastPageDiscriminator;
+import kernel.jdon.modulebatch.job.course.processor.condition.CourseSearchSort;
+import kernel.jdon.modulebatch.job.course.processor.service.CourseParser;
+import kernel.jdon.modulebatch.job.course.processor.service.CourseScraper;
+import kernel.jdon.modulebatch.job.course.processor.service.manager.DynamicSleepTimeManager;
+import kernel.jdon.modulebatch.job.course.processor.service.manager.InflearnCourseCounter;
+import kernel.jdon.modulebatch.job.course.processor.service.manager.LastPageDiscriminator;
 import kernel.jdon.moduledomain.inflearncourse.domain.InflearnCourse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

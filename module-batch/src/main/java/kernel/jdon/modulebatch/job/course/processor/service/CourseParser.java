@@ -1,12 +1,12 @@
-package kernel.jdon.modulebatch.job.course.reader.service;
+package kernel.jdon.modulebatch.job.course.processor.service;
 
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Component;
 
 import kernel.jdon.modulebatch.global.config.ScrapingInflearnProperties;
-import kernel.jdon.modulebatch.job.course.reader.service.converter.EntityConverter;
-import kernel.jdon.modulebatch.job.course.reader.service.converter.SkillStandardizer;
+import kernel.jdon.modulebatch.job.course.processor.service.converter.EntityConverter;
+import kernel.jdon.modulebatch.job.course.processor.service.converter.SkillStandardizer;
 import kernel.jdon.moduledomain.inflearncourse.domain.InflearnCourse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

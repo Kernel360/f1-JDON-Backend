@@ -1,4 +1,4 @@
-package kernel.jdon.modulebatch.job.course.reader.condition;
+package kernel.jdon.modulebatch.job.course.processor.condition;
 
 import kernel.jdon.modulebatch.global.condition.SearchCondition;
 import lombok.AllArgsConstructor;

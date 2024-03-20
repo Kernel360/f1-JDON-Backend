@@ -10,7 +10,7 @@ import kernel.jdon.modulebatch.domain.inflearnjdskill.repository.InflearnJdSkill
 import kernel.jdon.modulebatch.domain.skill.error.SkillErrorCode;
 import kernel.jdon.modulebatch.domain.skill.repository.SkillRepository;
 import kernel.jdon.modulebatch.global.exception.BatchException;
-import kernel.jdon.modulebatch.job.course.reader.service.converter.EntityConverter;
+import kernel.jdon.modulebatch.job.course.processor.service.converter.EntityConverter;
 import kernel.jdon.moduledomain.inflearncourse.domain.InflearnCourse;
 import kernel.jdon.moduledomain.inflearnjdskill.domain.InflearnJdSkill;
 import kernel.jdon.moduledomain.jobcategory.domain.JobCategory;

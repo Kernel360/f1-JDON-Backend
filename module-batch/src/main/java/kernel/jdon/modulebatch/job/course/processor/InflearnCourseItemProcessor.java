@@ -5,7 +5,6 @@ import org.springframework.batch.item.ItemProcessor;
 import org.springframework.stereotype.Component;
 
 import kernel.jdon.modulebatch.job.course.dto.InflearnCourseAndSkillKeywordInfo;
-import kernel.jdon.modulebatch.job.course.reader.InflearnCourseClient;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

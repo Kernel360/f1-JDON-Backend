@@ -1,4 +1,4 @@
-package kernel.jdon.modulebatch.job.course.reader.service.manager;
+package kernel.jdon.modulebatch.job.course.processor.service.manager;
 
 import kernel.jdon.modulebatch.global.config.ScrapingInflearnProperties;
 

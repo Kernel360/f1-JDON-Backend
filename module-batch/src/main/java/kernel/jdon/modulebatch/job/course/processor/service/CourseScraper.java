@@ -1,4 +1,4 @@
-package kernel.jdon.modulebatch.job.course.reader.service;
+package kernel.jdon.modulebatch.job.course.processor.service;
 
 import java.io.IOException;
 
