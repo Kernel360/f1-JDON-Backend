@@ -1,4 +1,4 @@
-package kernel.jdon.modulebatch.listener;
+package kernel.jdon.modulebatch.job.course.listener;
 
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.JobExecution;
@@ -12,12 +12,9 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 public class InflearnJobExecutionListener implements JobExecutionListener {
 
-    private static final String PAGE_KEY = "currentPage";
-
     @Override
     public void beforeJob(@NonNull JobExecution jobExecution) {
         log.info("Job 시작");
-        jobExecution.getExecutionContext().putInt(PAGE_KEY, 1);
     }
 
     @Override

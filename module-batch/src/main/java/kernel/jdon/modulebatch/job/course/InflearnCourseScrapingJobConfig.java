@@ -4,7 +4,6 @@ import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobScope;
 import org.springframework.batch.core.job.builder.JobBuilder;
-import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -13,10 +12,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import kernel.jdon.modulebatch.job.course.dto.InflearnCourseAndSkillKeywordInfo;
+import kernel.jdon.modulebatch.job.course.listener.InflearnJobExecutionListener;
 import kernel.jdon.modulebatch.job.course.processor.InflearnCourseItemProcessor;
 import kernel.jdon.modulebatch.job.course.reader.InflearnCourseItemReader;
 import kernel.jdon.modulebatch.job.course.writer.InflearnCourseItemWriter;
-import kernel.jdon.modulebatch.listener.InflearnJobExecutionListener;
 import lombok.RequiredArgsConstructor;
 
 @Configuration
@@ -31,7 +30,6 @@ public class InflearnCourseScrapingJobConfig {
     @Bean(name = "inflearnCrawlJob")
     public Job inflearnCrawlJob(JobRepository jobRepository, @Qualifier("inflearnCourseStep") Step inflearnCourseStep) {
         return new JobBuilder("inflearnCrawlJob", jobRepository)
-            .incrementer(new RunIdIncrementer())
             .listener(inflearnJobExecutionListener)
             .start(inflearnCourseStep)
             .build();
