@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import kernel.jdon.modulebatch.job.course.reader.InflearnCourseClient;
 import kernel.jdon.modulebatch.job.course.reader.dto.InflearnCourseResponse;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -18,7 +19,7 @@ public class InflearnCourseItemProcessor implements ItemProcessor<String, Inflea
     private final InflearnCourseClient inflearnCourseClient;
 
     @Override
-    public InflearnCourseResponse process(String keyword) throws Exception {
+    public InflearnCourseResponse process(@NonNull String keyword) throws Exception {
         log.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> 처리 작업 시작");
 
         return inflearnCourseClient.getInflearnDataByKeyword(keyword);

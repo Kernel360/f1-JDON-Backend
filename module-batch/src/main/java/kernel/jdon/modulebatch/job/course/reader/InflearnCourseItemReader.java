@@ -24,15 +24,14 @@ import lombok.extern.slf4j.Slf4j;
 public class InflearnCourseItemReader implements ItemReader<String> {
 
     private Iterator<String> keywordIterator;
-    private List<String> keywordList;
 
     @PostConstruct
     public void postConstruct() {
-        keywordList = new ArrayList<>();
+        List<String> keywordList = new ArrayList<>();
         keywordList.addAll(FrontendSkillType.getAllKeywords());
         keywordList.addAll(BackendSkillType.getAllKeywords());
         this.keywordIterator = keywordList.iterator();
-        log.info("강의 수집할 기술스택 목록: " + keywordList.toString());
+        log.info("강의 수집할 기술스택 목록: " + keywordList);
     }
 
     @Override

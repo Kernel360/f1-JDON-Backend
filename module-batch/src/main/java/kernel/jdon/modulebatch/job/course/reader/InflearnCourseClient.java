@@ -33,16 +33,17 @@ public class InflearnCourseClient {
 
         log.info("keyword:" + keyword);
         InflearnCourseCounter inflearnCourseCounter = new InflearnCourseCounter();
-        processKeyword(keyword, 1, inflearnCourseCounter);
-        if (!inflearnCourseCounter.getNewCourses().isEmpty()) {
-            return new InflearnCourseResponse(keyword, new ArrayList<>(inflearnCourseCounter.getNewCourses()));
+        processKeyword(keyword, inflearnCourseCounter);
+        if (!inflearnCourseCounter.getNewCourseList().isEmpty()) {
+            return new InflearnCourseResponse(keyword, new ArrayList<>(inflearnCourseCounter.getNewCourseList()));
         }
 
         return null;
     }
 
-    private void processKeyword(String skillKeyword, int pageNum, InflearnCourseCounter inflearnCourseCounter) {
+    private void processKeyword(String skillKeyword, InflearnCourseCounter inflearnCourseCounter) {
         final int maxCoursesPerKeyword = scrapingInflearnProperties.getMaxCoursesPerKeyword();
+        int pageNum = 1;
         LastPageDiscriminator lastPageDiscriminator = new LastPageDiscriminator(scrapingInflearnProperties);
         DynamicSleepTimeManager sleepTimeManager = new DynamicSleepTimeManager(scrapingInflearnProperties);
 
