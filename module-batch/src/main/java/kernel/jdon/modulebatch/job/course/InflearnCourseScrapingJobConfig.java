@@ -12,9 +12,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import kernel.jdon.modulebatch.job.course.dto.InflearnCourseAndSkillKeywordInfo;
 import kernel.jdon.modulebatch.job.course.processor.InflearnCourseItemProcessor;
 import kernel.jdon.modulebatch.job.course.reader.InflearnCourseItemReader;
-import kernel.jdon.modulebatch.job.course.reader.dto.InflearnCourseResponse;
 import kernel.jdon.modulebatch.job.course.writer.InflearnCourseItemWriter;
 import kernel.jdon.modulebatch.listener.InflearnJobExecutionListener;
 import lombok.RequiredArgsConstructor;
@@ -41,7 +41,7 @@ public class InflearnCourseScrapingJobConfig {
     @JobScope
     public Step inflearnCourseStep(JobRepository jobRepository, PlatformTransactionManager transactionManager) {
         return new StepBuilder("inflearnCourseStep", jobRepository)
-            .<String, InflearnCourseResponse>chunk(3, transactionManager)
+            .<String, InflearnCourseAndSkillKeywordInfo>chunk(3, transactionManager)
             .reader(inflearnCourseItemReader)
             .processor(inflearnCourseItemProcessor)
             .writer(inflearnCourseItemWriter)

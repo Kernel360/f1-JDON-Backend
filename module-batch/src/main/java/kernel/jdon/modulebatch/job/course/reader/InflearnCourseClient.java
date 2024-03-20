@@ -9,8 +9,8 @@ import org.jsoup.select.Elements;
 import org.springframework.stereotype.Component;
 
 import kernel.jdon.modulebatch.global.config.ScrapingInflearnProperties;
+import kernel.jdon.modulebatch.job.course.dto.InflearnCourseAndSkillKeywordInfo;
 import kernel.jdon.modulebatch.job.course.reader.condition.CourseSearchSort;
-import kernel.jdon.modulebatch.job.course.reader.dto.InflearnCourseResponse;
 import kernel.jdon.modulebatch.job.course.reader.service.CourseParser;
 import kernel.jdon.modulebatch.job.course.reader.service.CourseScraper;
 import kernel.jdon.modulebatch.job.course.reader.service.manager.DynamicSleepTimeManager;
@@ -29,13 +29,14 @@ public class InflearnCourseClient {
     private final CourseScraper courseScraper;
     private final CourseParser courseParser;
 
-    public InflearnCourseResponse getInflearnDataByKeyword(String keyword) {
+    public InflearnCourseAndSkillKeywordInfo getInflearnDataByKeyword(String keyword) {
 
         log.info("keyword:" + keyword);
         InflearnCourseCounter inflearnCourseCounter = new InflearnCourseCounter();
         processKeyword(keyword, inflearnCourseCounter);
         if (!inflearnCourseCounter.getNewCourseList().isEmpty()) {
-            return new InflearnCourseResponse(keyword, new ArrayList<>(inflearnCourseCounter.getNewCourseList()));
+            return new InflearnCourseAndSkillKeywordInfo(keyword,
+                new ArrayList<>(inflearnCourseCounter.getNewCourseList()));
         }
 
         return null;

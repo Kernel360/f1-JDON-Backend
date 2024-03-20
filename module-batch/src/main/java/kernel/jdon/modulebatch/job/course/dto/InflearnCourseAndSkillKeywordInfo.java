@@ -1,4 +1,4 @@
-package kernel.jdon.modulebatch.job.course.reader.dto;
+package kernel.jdon.modulebatch.job.course.dto;
 
 import java.util.List;
 
@@ -9,11 +9,11 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class InflearnCourseResponse {
+public class InflearnCourseAndSkillKeywordInfo {
     private String skillKeyword;
     private List<InflearnCourse> inflearnCourseList;
 
-    public InflearnCourseResponse(String skillKeyword, List<InflearnCourse> inflearnCourseList) {
+    public InflearnCourseAndSkillKeywordInfo(String skillKeyword, List<InflearnCourse> inflearnCourseList) {
         this.skillKeyword = skillKeyword;
         this.inflearnCourseList = inflearnCourseList;
     }

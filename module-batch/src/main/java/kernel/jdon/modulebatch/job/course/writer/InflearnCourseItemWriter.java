@@ -5,7 +5,7 @@ import org.springframework.batch.item.Chunk;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.stereotype.Component;
 
-import kernel.jdon.modulebatch.job.course.reader.dto.InflearnCourseResponse;
+import kernel.jdon.modulebatch.job.course.dto.InflearnCourseAndSkillKeywordInfo;
 import kernel.jdon.modulebatch.job.course.writer.service.CourseStorer;
 import kernel.jdon.moduledomain.inflearncourse.domain.InflearnCourse;
 import lombok.RequiredArgsConstructor;
@@ -15,13 +15,13 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @StepScope
 @RequiredArgsConstructor
-public class InflearnCourseItemWriter implements ItemWriter<InflearnCourseResponse> {
+public class InflearnCourseItemWriter implements ItemWriter<InflearnCourseAndSkillKeywordInfo> {
     private final CourseStorer courseStorer;
 
     @Override
-    public void write(Chunk<? extends InflearnCourseResponse> responses) throws Exception {
+    public void write(Chunk<? extends InflearnCourseAndSkillKeywordInfo> responses) throws Exception {
         log.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> 쓰기 작업 시작");
-        for (InflearnCourseResponse response : responses) {
+        for (InflearnCourseAndSkillKeywordInfo response : responses) {
             log.info("inflearnCourseResponse의 기술 스택: " + response.getSkillKeyword());
             for (InflearnCourse course : response.getInflearnCourseList()) {
                 log.info("inflearnCourseResponse의 강의 제목: " + course.getTitle());
