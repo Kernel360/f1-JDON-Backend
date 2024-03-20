@@ -92,7 +92,7 @@ public class WantedJd {
     private LocalDateTime modifiedDate;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "job_category_id", columnDefinition = "BIGINT")
+    @JoinColumn(name = "job_category_id", columnDefinition = "BIGINT", nullable = false)
     private JobCategory jobCategory;
 
     @OneToMany(mappedBy = "wantedJd")
