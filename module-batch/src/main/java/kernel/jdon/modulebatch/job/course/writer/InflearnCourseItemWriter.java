@@ -6,7 +6,8 @@ import org.springframework.batch.item.ItemWriter;
 import org.springframework.stereotype.Component;
 
 import kernel.jdon.modulebatch.job.course.reader.dto.InflearnCourseResponse;
-import kernel.jdon.modulebatch.job.course.reader.service.CourseStorageService;
+import kernel.jdon.modulebatch.job.course.writer.service.CourseStorer;
+import kernel.jdon.moduledomain.inflearncourse.domain.InflearnCourse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -15,17 +16,19 @@ import lombok.extern.slf4j.Slf4j;
 @StepScope
 @RequiredArgsConstructor
 public class InflearnCourseItemWriter implements ItemWriter<InflearnCourseResponse> {
-    private final CourseStorageService courseStorageService;
+    private final CourseStorer courseStorer;
 
     @Override
     public void write(Chunk<? extends InflearnCourseResponse> responses) throws Exception {
-        log.info("write에 진입");
+        log.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> 쓰기 작업 시작");
         for (InflearnCourseResponse response : responses) {
-            log.info("inflearnCourseResponse의 skillKeyword: " + response.getSkillKeyword());
-            log.info("inflearnCourseResponse의 courses: " + response.getCourses());
-            courseStorageService.createInflearnCourseAndInflearnJdSkill(
+            log.info("inflearnCourseResponse의 기술 스택: " + response.getSkillKeyword());
+            for (InflearnCourse course : response.getInflearnCourseList()) {
+                log.info("inflearnCourseResponse의 강의 제목: " + course.getTitle());
+            }
+            courseStorer.createInflearnCourseAndInflearnJdSkill(
                 response.getSkillKeyword(),
-                response.getCourses()
+                response.getInflearnCourseList()
             );
         }
     }

@@ -15,7 +15,9 @@ import jakarta.annotation.PostConstruct;
 import kernel.jdon.modulebatch.domain.skill.BackendSkillType;
 import kernel.jdon.modulebatch.domain.skill.FrontendSkillType;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Component
 @StepScope
 @RequiredArgsConstructor
@@ -30,6 +32,7 @@ public class InflearnCourseItemReader implements ItemReader<String> {
         keywordList.addAll(FrontendSkillType.getAllKeywords());
         keywordList.addAll(BackendSkillType.getAllKeywords());
         this.keywordIterator = keywordList.iterator();
+        log.info("강의 수집할 기술스택 목록: " + keywordList.toString());
     }
 
     @Override
@@ -38,6 +41,7 @@ public class InflearnCourseItemReader implements ItemReader<String> {
         UnexpectedInputException,
         ParseException,
         NonTransientResourceException {
+        log.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> 읽기 작업 시작");
         return keywordIterator.hasNext() ? keywordIterator.next() : null;
     }
 }

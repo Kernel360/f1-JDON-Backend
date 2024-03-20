@@ -1,4 +1,4 @@
-package kernel.jdon.modulebatch.job.course.reader.service.infrastructure;
+package kernel.jdon.modulebatch.job.course.reader.service.manager;
 
 import java.util.Random;
 

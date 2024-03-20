@@ -2,21 +2,21 @@ package kernel.jdon.modulebatch.job.course.reader.service;
 
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import kernel.jdon.modulebatch.global.config.ScrapingInflearnProperties;
-import kernel.jdon.modulebatch.job.course.reader.converter.EntityConverter;
-import kernel.jdon.modulebatch.job.course.reader.converter.SkillStandardizer;
+import kernel.jdon.modulebatch.job.course.reader.service.converter.EntityConverter;
+import kernel.jdon.modulebatch.job.course.reader.service.converter.SkillStandardizer;
 import kernel.jdon.moduledomain.inflearncourse.domain.InflearnCourse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@Service
+@Component
 @RequiredArgsConstructor
-public class CourseParserService {
+public class CourseParser {
 
-    private final CourseKeywordAnalysisService courseKeywordAnalysisService;
+    private final CourseKeywordAnalyzer courseKeywordAnalyzer;
     private final ScrapingInflearnProperties scrapingInflearnProperties;
 
     public InflearnCourse parseCourse(Element courseElement, String skillKeyword) {
@@ -26,9 +26,8 @@ public class CourseParserService {
         String relativeLecturePath = courseElement.select("a.course_card_front").attr("href");
         String lectureUrl = scrapingInflearnProperties.getDetailUrlPrefix() + relativeLecturePath;
         log.info("title: " + title);
-        log.info("description: " + description);
 
-        if (!courseKeywordAnalysisService.isKeywordPresentInTitleAndDescription(title, description,
+        if (!courseKeywordAnalyzer.isKeywordPresentInTitleAndDescription(title, description,
             SkillStandardizer.standardize(skillKeyword))) {
             return null;
         }

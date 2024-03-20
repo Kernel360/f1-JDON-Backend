@@ -11,11 +11,11 @@ import org.springframework.stereotype.Component;
 import kernel.jdon.modulebatch.global.config.ScrapingInflearnProperties;
 import kernel.jdon.modulebatch.job.course.reader.condition.CourseSearchSort;
 import kernel.jdon.modulebatch.job.course.reader.dto.InflearnCourseResponse;
-import kernel.jdon.modulebatch.job.course.reader.service.CourseParserService;
-import kernel.jdon.modulebatch.job.course.reader.service.CourseScraperService;
-import kernel.jdon.modulebatch.job.course.reader.service.infrastructure.DynamicSleepTimeManager;
-import kernel.jdon.modulebatch.job.course.reader.service.infrastructure.InflearnCourseCounter;
-import kernel.jdon.modulebatch.job.course.reader.service.infrastructure.LastPageDiscriminator;
+import kernel.jdon.modulebatch.job.course.reader.service.CourseParser;
+import kernel.jdon.modulebatch.job.course.reader.service.CourseScraper;
+import kernel.jdon.modulebatch.job.course.reader.service.manager.DynamicSleepTimeManager;
+import kernel.jdon.modulebatch.job.course.reader.service.manager.InflearnCourseCounter;
+import kernel.jdon.modulebatch.job.course.reader.service.manager.LastPageDiscriminator;
 import kernel.jdon.moduledomain.inflearncourse.domain.InflearnCourse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,8 +26,8 @@ import lombok.extern.slf4j.Slf4j;
 public class InflearnCourseClient {
 
     private final ScrapingInflearnProperties scrapingInflearnProperties;
-    private final CourseScraperService courseScraperService;
-    private final CourseParserService courseParserService;
+    private final CourseScraper courseScraper;
+    private final CourseParser courseParser;
 
     public InflearnCourseResponse getInflearnDataByKeyword(String keyword) {
 
@@ -70,11 +70,11 @@ public class InflearnCourseClient {
     private boolean scrapeAndParsePage(String currentUrl, String skillKeyword,
         InflearnCourseCounter inflearnCourseCounter, LastPageDiscriminator lastPageDiscriminator) {
         try {
-            Elements scrapeCourseElements = courseScraperService.scrapeCourses(currentUrl);
+            Elements scrapeCourseElements = courseScraper.scrapeCourses(currentUrl);
             int coursesCount = scrapeCourseElements.size();
-            log.info("courseCount: " + coursesCount);
+            log.info("페이지에 존재하는 강의 수: " + coursesCount);
             lastPageDiscriminator.checkIfLastPageBasedOnCourseCount(coursesCount);
-            parseAndCreateCourses(scrapeCourseElements, currentUrl, skillKeyword, inflearnCourseCounter);
+            parseAndCreateCourses(scrapeCourseElements, skillKeyword, inflearnCourseCounter);
             return true;
         } catch (Exception e) {
             log.error("페이지 처리 중 오류 발생: {}", currentUrl, e);
@@ -95,7 +95,7 @@ public class InflearnCourseClient {
         return joinToString(path, "?", queryString);
     }
 
-    private void parseAndCreateCourses(Elements courseElements, String lectureUrl, String skillKeyword,
+    private void parseAndCreateCourses(Elements courseElements, String skillKeyword,
         InflearnCourseCounter inflearnCourseCounter) {
         final int maxCoursesPerKeyword = scrapingInflearnProperties.getMaxCoursesPerKeyword();
 
@@ -104,7 +104,7 @@ public class InflearnCourseClient {
                 break;
             }
 
-            InflearnCourse parsedCourse = courseParserService.parseCourse(courseElement, skillKeyword);
+            InflearnCourse parsedCourse = courseParser.parseCourse(courseElement, skillKeyword);
 
             if (parsedCourse != null) {
                 inflearnCourseCounter.addNewCourse(parsedCourse);

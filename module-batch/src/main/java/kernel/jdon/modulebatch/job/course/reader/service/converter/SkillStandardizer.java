@@ -1,4 +1,4 @@
-package kernel.jdon.modulebatch.job.course.reader.converter;
+package kernel.jdon.modulebatch.job.course.reader.service.converter;
 
 import java.util.Arrays;
 import java.util.HashMap;

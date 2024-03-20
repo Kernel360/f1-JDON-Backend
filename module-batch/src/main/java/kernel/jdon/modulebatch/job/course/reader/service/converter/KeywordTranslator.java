@@ -1,4 +1,4 @@
-package kernel.jdon.modulebatch.job.course.reader.converter;
+package kernel.jdon.modulebatch.job.course.reader.service.converter;
 
 public enum KeywordTranslator {
     // 프론트

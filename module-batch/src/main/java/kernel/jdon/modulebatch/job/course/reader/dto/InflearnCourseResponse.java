@@ -11,10 +11,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class InflearnCourseResponse {
     private String skillKeyword;
-    private List<InflearnCourse> courses;
+    private List<InflearnCourse> inflearnCourseList;
 
-    public InflearnCourseResponse(String skillKeyword, List<InflearnCourse> courses) {
+    public InflearnCourseResponse(String skillKeyword, List<InflearnCourse> inflearnCourseList) {
         this.skillKeyword = skillKeyword;
-        this.courses = courses;
+        this.inflearnCourseList = inflearnCourseList;
     }
 }

@@ -1,8 +1,8 @@
-package kernel.jdon.modulebatch.job.course.reader.service;
+package kernel.jdon.modulebatch.job.course.writer.service;
 
 import java.util.List;
 
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import kernel.jdon.modulebatch.domain.inflearncourse.repository.InflearnCourseRepository;
@@ -10,17 +10,17 @@ import kernel.jdon.modulebatch.domain.inflearnjdskill.repository.InflearnJdSkill
 import kernel.jdon.modulebatch.domain.skill.error.SkillErrorCode;
 import kernel.jdon.modulebatch.domain.skill.repository.SkillRepository;
 import kernel.jdon.modulebatch.global.exception.BatchException;
-import kernel.jdon.modulebatch.job.course.reader.converter.EntityConverter;
+import kernel.jdon.modulebatch.job.course.reader.service.converter.EntityConverter;
 import kernel.jdon.moduledomain.inflearncourse.domain.InflearnCourse;
 import kernel.jdon.moduledomain.inflearnjdskill.domain.InflearnJdSkill;
 import kernel.jdon.moduledomain.jobcategory.domain.JobCategory;
 import kernel.jdon.moduledomain.skill.domain.Skill;
 import lombok.RequiredArgsConstructor;
 
-@Service
+@Component
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class CourseStorageService {
+public class CourseStorer {
 
     private final InflearnCourseRepository inflearnCourseRepository;
     private final InflearnJdSkillRepository inflearnJdSkillRepository;
