@@ -23,7 +23,7 @@ public class JobListFetchManager {
     }
 
     public void incrementOffset() {
-        this.offset += scrapingWantedProperties.getMaxFetchJdListOffset();
+        this.offset += scrapingWantedProperties.getJobListOffset();
         incrementSleepCounter();
         if (isSleepRequired()) {
             performSleep();
@@ -40,7 +40,7 @@ public class JobListFetchManager {
     }
 
     private boolean isSleepRequired() {
-        return this.sleepCount == scrapingWantedProperties.getAllScraping().getJobListSleepCount();
+        return this.sleepCount == scrapingWantedProperties.getScraping().getAll().getJobListSleepCount();
     }
 
     private void performSleep() {

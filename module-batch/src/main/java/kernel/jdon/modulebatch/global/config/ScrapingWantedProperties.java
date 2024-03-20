@@ -9,11 +9,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @ConfigurationProperties(prefix = "scraping.wanted")
 public class ScrapingWantedProperties {
-    private final MaxFetchJdList maxFetchJdList;
-    private final Limit limit;
     private final Sleep sleep;
     private final Url url;
-    private final AllScraping allScraping;
+    private final Scraping scraping;
 
     public String getDetailUrl() {
         return this.url.detail;
@@ -27,25 +25,20 @@ public class ScrapingWantedProperties {
         return this.url.api.list;
     }
 
-    public int getMaxFetchJdListOffset() {
-        return this.maxFetchJdList.offset;
+    public int getJobListOffset() {
+        return this.scraping.jobListOffset;
+    }
+
+    public int getJobListLimit() {
+        return this.scraping.jobListLimit;
+    }
+
+    public int getJobDetailDuplicateLimitCount() {
+        return this.scraping.part.jobDetailDuplicateLimitCount;
     }
 
     public int getSleepTimeMillis() {
         return this.sleep.timeMillis;
-    }
-
-    @Getter
-    @RequiredArgsConstructor
-    public static class MaxFetchJdList {
-        private final int size;
-        private final int offset;
-    }
-
-    @Getter
-    @RequiredArgsConstructor
-    public static class Limit {
-        private final int failCount;
     }
 
     @Getter
@@ -71,8 +64,23 @@ public class ScrapingWantedProperties {
 
     @Getter
     @RequiredArgsConstructor
+    public static class Scraping {
+        private final int jobListLimit;
+        private final int jobListOffset;
+        private final AllScraping all;
+        private final PartScraping part;
+    }
+
+    @Getter
+    @RequiredArgsConstructor
     public static class AllScraping {
         private final int jobListSleepCount;
         private final int jobDetailSleepCount;
+    }
+
+    @Getter
+    @RequiredArgsConstructor
+    public static class PartScraping {
+        private final int jobDetailDuplicateLimitCount;
     }
 }

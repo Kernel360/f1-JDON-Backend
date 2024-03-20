@@ -1,4 +1,4 @@
-package kernel.jdon.modulebatch.listener;
+package kernel.jdon.modulebatch.job.jd.listener;
 
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.JobExecution;

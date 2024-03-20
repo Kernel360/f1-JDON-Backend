@@ -20,7 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 @StepScope
 @Component
 @RequiredArgsConstructor
-public class FrontendWantedJdItemReader implements ItemReader<WantedJobDetailListResponse> {
+public class AllFrontendWantedJdItemReader implements ItemReader<WantedJobDetailListResponse> {
     private final WantedJdClient wantedJdClient;
     private final JobListFetchManager jobListFetchManager;
 

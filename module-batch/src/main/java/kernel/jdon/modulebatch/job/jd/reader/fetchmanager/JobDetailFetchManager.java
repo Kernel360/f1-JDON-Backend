@@ -21,16 +21,24 @@ public class JobDetailFetchManager {
         sleepCount++;
         if (isSleepRequired()) {
             performSleep();
-            resetSleepCounter();
+            resetSleepCount();
         }
     }
 
-    private void resetSleepCounter() {
+    public int getDuplicateLimitCount() {
+        return scrapingWantedProperties.getJobDetailDuplicateLimitCount();
+    }
+
+    private void resetSleepCount() {
         sleepCount = 0;
     }
 
     private boolean isSleepRequired() {
-        return this.sleepCount == scrapingWantedProperties.getAllScraping().getJobDetailSleepCount();
+        return this.sleepCount >= scrapingWantedProperties.getScraping().getAll().getJobDetailSleepCount();
+    }
+
+    public boolean isDuplicateRequired(final int count) {
+        return count >= scrapingWantedProperties.getScraping().getPart().getJobDetailDuplicateLimitCount();
     }
 
     private void performSleep() {

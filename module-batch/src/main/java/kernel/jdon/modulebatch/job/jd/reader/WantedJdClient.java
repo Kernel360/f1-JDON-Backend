@@ -2,6 +2,7 @@ package kernel.jdon.modulebatch.job.jd.reader;
 
 import static kernel.jdon.modulecommon.util.StringUtil.*;
 
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -12,12 +13,14 @@ import org.springframework.web.client.RestTemplate;
 
 import kernel.jdon.modulebatch.domain.jobcategory.error.JobCategoryErrorCode;
 import kernel.jdon.modulebatch.domain.jobcategory.repository.JobCategoryRepository;
+import kernel.jdon.modulebatch.domain.wantedjd.repository.WantedJdRepository;
 import kernel.jdon.modulebatch.global.config.ScrapingWantedProperties;
 import kernel.jdon.modulebatch.job.jd.reader.condition.JobSearchExperience;
 import kernel.jdon.modulebatch.job.jd.reader.condition.JobSearchJobCategory;
 import kernel.jdon.modulebatch.job.jd.reader.condition.JobSearchJobPosition;
 import kernel.jdon.modulebatch.job.jd.reader.condition.JobSearchLocation;
 import kernel.jdon.modulebatch.job.jd.reader.condition.JobSearchSort;
+import kernel.jdon.modulebatch.job.jd.reader.dto.PartJobDetailListInfo;
 import kernel.jdon.modulebatch.job.jd.reader.dto.WantedJobDetailResponse;
 import kernel.jdon.modulebatch.job.jd.reader.dto.WantedJobListResponse;
 import kernel.jdon.modulebatch.job.jd.reader.fetchmanager.JobDetailFetchManager;
@@ -33,13 +36,11 @@ public class WantedJdClient {
     private final ScrapingWantedProperties scrapingWantedProperties;
     private final JobDetailFetchManager jobDetailFetchManager;
     private final JobCategoryRepository jobCategoryRepository;
+    private final WantedJdRepository wantedJdRepository;
 
     public List<WantedJobDetailResponse> getJobDetailList(final JobSearchJobPosition jobPosition, final int offset) {
         final WantedJobListResponse jobList = fetchJobList(jobPosition, offset);
-
-        final Set<Long> jobIdSet = jobList.getData().stream()
-            .map(WantedJobListResponse.Data::getId)
-            .collect(Collectors.toCollection(LinkedHashSet::new));
+        final Set<Long> jobIdSet = getUniqueJobIdSet(jobList);
 
         return jobIdSet.stream()
             .map(jobId -> {
@@ -48,6 +49,40 @@ public class WantedJdClient {
                 return jobDetail;
             })
             .toList();
+    }
+
+    public PartJobDetailListInfo getPartJobDetailList(final JobSearchJobPosition jobPosition,
+        final int offset) {
+        final WantedJobListResponse jobList = fetchJobList(jobPosition, offset);
+        final Set<Long> jobIdSet = getUniqueJobIdSet(jobList);
+
+        return getJobDetailList(jobPosition, jobIdSet);
+    }
+
+    private PartJobDetailListInfo getJobDetailList(final JobSearchJobPosition jobPosition,
+        final Set<Long> jobIdSet) {
+        List<WantedJobDetailResponse> jobDetailList = new ArrayList<>();
+        int duplicateCount = 0;
+        boolean isMaxDuplicate = false;
+        for (Long jobDetailId : jobIdSet) {
+            if (jobDetailFetchManager.isDuplicateRequired(duplicateCount)) {
+                isMaxDuplicate = true;
+                logReaderEnd(jobPosition, jobDetailId);
+                return new PartJobDetailListInfo(isMaxDuplicate, jobDetailList); // 중복된 채용공고 스크래핑 시 Reader 종료
+            }
+
+            WantedJobDetailResponse jobDetail = getJobDetail(jobPosition, jobDetailId);
+
+            if (isJobDetailExist(jobDetail.getJobCategory(), jobDetail.getDetailJobId())) {
+                duplicateCount++;
+            } else {
+                duplicateCount = 0;
+                jobDetailFetchManager.incrementSleepCounter();
+                jobDetailList.add(jobDetail);
+            }
+        }
+
+        return new PartJobDetailListInfo(isMaxDuplicate, jobDetailList);
     }
 
     private WantedJobDetailResponse getJobDetail(final JobSearchJobPosition jobPosition, final Long jobDetailId) {
@@ -77,7 +112,7 @@ public class WantedJdClient {
     }
 
     private String createJobListUrl(final JobSearchJobPosition jobPosition, final int offset) {
-        final int maxFetchJDListOffset = scrapingWantedProperties.getMaxFetchJdListOffset();
+        final int limit = scrapingWantedProperties.getJobListLimit();
         final String jobApiListUrl = scrapingWantedProperties.getApiListUrl();
 
         return joinToString(
@@ -87,13 +122,34 @@ public class WantedJdClient {
             createQueryString(JobSearchSort.SEARCH_KEY, JobSearchSort.SORT_LATEST.getSearchValue()),
             createQueryString(JobSearchLocation.SEARCH_KEY, JobSearchLocation.LOCATIONS_ALL.getSearchValue()),
             createQueryString(JobSearchExperience.SEARCH_KEY, JobSearchExperience.EXPERIENCE_ALL.getSearchValue()),
-            createQueryString("limit", String.valueOf(maxFetchJDListOffset)),
+            createQueryString("limit", String.valueOf(limit)),
             createQueryString("offset", String.valueOf(offset))
         );
+    }
+
+    private Set<Long> getUniqueJobIdSet(WantedJobListResponse jobList) {
+        return jobList.getData().stream()
+            .map(WantedJobListResponse.Data::getId)
+            .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
     private JobCategory findByJobPosition(final JobSearchJobPosition jobPosition) {
         return jobCategoryRepository.findByWantedCode(jobPosition.getSearchValue())
             .orElseThrow(JobCategoryErrorCode.NOT_FOUND_JOB_CATEGORY::throwException);
+    }
+
+    private boolean isJobDetailExist(final JobCategory jobCategory, final Long jobDetailId) {
+        return wantedJdRepository.existsByJobCategoryAndDetailId(jobCategory, jobDetailId);
+    }
+
+    private void logReaderEnd(final JobSearchJobPosition jobPosition, final Long jobDetailId) {
+        if (jobPosition == JobSearchJobPosition.JOB_POSITION_SERVER) {
+            log.info("[부분_원티드_채용공고_스크래핑_job Reader] 중복 데이터 연속된 {}개로 Reader 종료. 최종 JobDetailId = {}",
+                jobDetailFetchManager.getDuplicateLimitCount(), jobDetailId);
+        }
+        if (jobPosition == JobSearchJobPosition.JOB_POSITION_FRONTEND) {
+            log.info("[부분_원티드_채용공고_스크래핑_job Reader] 중복 데이터 연속된 {}개로 Reader 종료. 최종 JobDetailId = {}",
+                jobDetailFetchManager.getDuplicateLimitCount(), jobDetailId);
+        }
     }
 }
