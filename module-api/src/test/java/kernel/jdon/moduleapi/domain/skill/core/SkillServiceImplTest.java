@@ -18,10 +18,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import kernel.jdon.moduleapi.domain.jobcategory.core.JobCategoryReader;
 import kernel.jdon.moduleapi.domain.skill.core.inflearnjd.InflearnJdSkillReader;
-import kernel.jdon.moduleapi.domain.skill.core.keyword.SkillKeywordReader;
 import kernel.jdon.moduleapi.domain.skill.core.wantedjd.WantedJdSkillReader;
+import kernel.jdon.moduleapi.domain.skill.infrastructure.keyword.SkillKeywordCache;
 import kernel.jdon.moduledomain.jobcategory.domain.JobCategory;
-import kernel.jdon.moduledomain.skillkeyword.domain.SkillKeyword;
 import kernel.jdon.util.JsonFileReader;
 
 @DisplayName("Skill Service Impl 테스트")
@@ -36,7 +35,7 @@ class SkillServiceImplTest {
     @Mock
     private InflearnJdSkillReader inflearnJdSkillReader;
     @Mock
-    private SkillKeywordReader skillKeywordReader;
+    private SkillKeywordCache skillKeywordCache;
     @InjectMocks
     private SkillServiceImpl skillServiceImpl;
 
@@ -96,32 +95,30 @@ class SkillServiceImplTest {
     @NullSource
     @ValueSource(strings = {""})
     @DisplayName("4: keyword가 존재하지 않을 때 getDataListBySkill 메서드가 인기있는 keyword 기반으로 데이터를 응답한다.")
-    void givenEmptyKeyword_whenFindList_thenReturnCorrectDataListByHotSkill(final String keyword) throws
-        Exception {
+    void givenEmptyKeyword_whenFindList_thenReturnCorrectDataListByHotSkill(final String keyword) throws Exception {
         //given
         final var hotSkillKeyword = "hotSkill_keyword";
         final var hotSkillList = Collections.singletonList(new SkillInfo.FindHotSkill(1L, hotSkillKeyword));
-        final var mockSkillKeyword = Collections.singletonList(mock(SkillKeyword.class));
-        final var mockOriginSkillKeywordList = Collections.singletonList(hotSkillKeyword);
         final var memberId = 1L;
+
+        given(skillKeywordCache.findAssociatedKeywords(keyword)).willReturn(Collections.emptyList());
+        given(skillKeywordCache.findAssociatedKeywords(hotSkillKeyword)).willReturn(
+            Collections.singletonList(hotSkillKeyword));
         given(skillReader.findHotSkillList()).willReturn(hotSkillList);
-        given(skillKeywordReader.findAllByRelatedKeywordIgnoreCase(hotSkillKeyword)).willReturn(mockSkillKeyword);
-        given(skillReader.findOriginSkillKeywordListBySkillKeywordList(mockSkillKeyword)).willReturn(
-            mockOriginSkillKeywordList);
-        given(wantedJdSkillReader.findWantedJdListBySkill(mockOriginSkillKeywordList)).willReturn(null);
-        given(inflearnJdSkillReader.findInflearnLectureListBySkill(mockOriginSkillKeywordList, memberId)).willReturn(
-            null);
+        given(wantedJdSkillReader.findWantedJdListBySkill(Collections.singletonList(hotSkillKeyword))).willReturn(null);
+        given(inflearnJdSkillReader.findInflearnLectureListBySkill(Collections.singletonList(hotSkillKeyword),
+            memberId)).willReturn(null);
 
         //when
         final var response = skillServiceImpl.getDataListBySkill(keyword, memberId);
 
         //then
         assertThat(response.getKeyword()).isEqualTo(hotSkillKeyword);
+        then(skillKeywordCache).should(times(1)).findAssociatedKeywords(keyword);
+        then(skillKeywordCache).should(times(1)).findAssociatedKeywords(hotSkillKeyword);
         then(skillReader).should(times(1)).findHotSkillList();
-        then(skillKeywordReader).should(times(1)).findAllByRelatedKeywordIgnoreCase(hotSkillKeyword);
-        then(skillReader).should(times(1)).findOriginSkillKeywordListBySkillKeywordList(mockSkillKeyword);
-        then(wantedJdSkillReader).should(times(1)).findWantedJdListBySkill(mockOriginSkillKeywordList);
+        then(wantedJdSkillReader).should(times(1)).findWantedJdListBySkill(Collections.singletonList(hotSkillKeyword));
         then(inflearnJdSkillReader).should(times(1))
-            .findInflearnLectureListBySkill(mockOriginSkillKeywordList, memberId);
+            .findInflearnLectureListBySkill(Collections.singletonList(hotSkillKeyword), memberId);
     }
 }
