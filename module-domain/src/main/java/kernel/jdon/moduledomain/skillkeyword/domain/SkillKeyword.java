@@ -27,7 +27,7 @@ public class SkillKeyword {
     @Column(name = "related_keyword", columnDefinition = "VARCHAR(50)", nullable = false)
     private String relatedKeyword;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "skill_id", referencedColumnName = "id")
     private Skill skill;
 }
