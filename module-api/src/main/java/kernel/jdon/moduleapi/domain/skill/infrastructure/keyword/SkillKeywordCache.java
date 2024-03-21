@@ -60,11 +60,6 @@ public class SkillKeywordCache {
                     hashOperations.put(SKILL_KEYWORDS, relatedKeyword.toLowerCase(), finalAssociatedKeywords);
                 });
             }
-            // else {
-            //     associatedKeywords = new HashSet<>(
-            //         Collections.singletonList(skillReader.findHotSkillList().get(0).getKeyword().toLowerCase()));
-            //     hashOperations.put(SKILL_KEYWORDS, relatedKeyword.toLowerCase(), associatedKeywords);
-            // }
         }
 
         return associatedKeywords.stream()
