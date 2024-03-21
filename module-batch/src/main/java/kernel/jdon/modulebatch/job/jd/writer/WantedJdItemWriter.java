@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 import kernel.jdon.modulebatch.domain.skill.error.SkillErrorCode;
 import kernel.jdon.modulebatch.domain.skill.repository.SkillRepository;
-import kernel.jdon.modulebatch.domain.skillhistory.repository.SkillHistoryRepository;
+import kernel.jdon.modulebatch.domain.skillhistory.repository.SkillHistoryStore;
 import kernel.jdon.modulebatch.domain.wantedjd.repository.WantedJdRepository;
 import kernel.jdon.modulebatch.domain.wantedjdskill.repository.WantedJdSkillRepository;
 import kernel.jdon.modulebatch.job.jd.reader.condition.JobSearchJobPosition;
@@ -19,7 +19,6 @@ import kernel.jdon.modulebatch.job.jd.reader.dto.WantedJobDetailResponse;
 import kernel.jdon.moduledomain.jobcategory.domain.JobCategory;
 import kernel.jdon.moduledomain.skill.domain.Skill;
 import kernel.jdon.moduledomain.skill.domain.SkillType;
-import kernel.jdon.moduledomain.skillhistory.domain.SkillHistory;
 import kernel.jdon.moduledomain.wantedjd.domain.WantedJd;
 import kernel.jdon.moduledomain.wantedjdskill.domain.WantedJdSkill;
 import lombok.RequiredArgsConstructor;
@@ -29,9 +28,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class WantedJdItemWriter implements ItemWriter<WantedJobDetailListResponse> {
     private final WantedJdRepository wantedJdRepository;
-    private final SkillHistoryRepository skillHistoryRepository;
     private final WantedJdSkillRepository wantedJdSkillRepository;
     private final SkillRepository skillRepository;
+    private final SkillHistoryStore skillHistoryStore;
 
     @Override
     public void write(Chunk<? extends WantedJobDetailListResponse> chunk) throws Exception {
@@ -57,7 +56,7 @@ public class WantedJdItemWriter implements ItemWriter<WantedJobDetailListRespons
 
     private void changeSkillHistory(final WantedJd findWantedJd, final JobCategory jdJobCategory,
         final List<WantedJobDetailResponse.WantedSkill> wantedJdSkillList) {
-        skillHistoryRepository.deleteAllByWantedJdId(findWantedJd.getId());
+        skillHistoryStore.deleteAllByWantedJdId(findWantedJd.getId());
         createSkillHistory(jdJobCategory, findWantedJd, wantedJdSkillList);
     }
 
@@ -74,11 +73,7 @@ public class WantedJdItemWriter implements ItemWriter<WantedJobDetailListRespons
     /** 원본 기술스택 명 이력 저장 **/
     private void createSkillHistory(final JobCategory jobCategory, final WantedJd wantedJd,
         final List<WantedJobDetailResponse.WantedSkill> wantedDetailSkillList) {
-
-        for (WantedJobDetailResponse.WantedSkill wantedJdDetailSkill : wantedDetailSkillList) {
-            final SkillHistory skillHistory = new SkillHistory(wantedJdDetailSkill.getKeyword(), jobCategory, wantedJd);
-            skillHistoryRepository.save(skillHistory);
-        }
+        skillHistoryStore.saveSkillHistoryList(jobCategory.getId(), wantedJd.getId(), wantedDetailSkillList);
     }
 
     /** 기술스택 저장 **/
