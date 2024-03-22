@@ -20,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class WantedJdItemWriter implements ItemWriter<WantedJobDetailListResponse> {
     private final WantedJdRepository wantedJdRepository;
-    private final WantedJdSkillStore wantedJdSkillStore;
+    private final WantedJdSkillDto wantedJdSkillDto;
     private final SkillHistoryStore skillHistoryStore;
 
     @Override
@@ -53,7 +53,7 @@ public class WantedJdItemWriter implements ItemWriter<WantedJobDetailListRespons
 
     private void changeWantedJdSkillList(final WantedJobDetailResponse wantedJobDetail, final WantedJd findWantedJd,
         final List<WantedJobDetailResponse.WantedSkill> wantedJdSkillList) {
-        wantedJdSkillStore.deleteAllByWantedJdId(findWantedJd.getId());
+        wantedJdSkillDto.deleteAllByWantedJdId(findWantedJd.getId());
         createWantedJdSkill(wantedJobDetail, findWantedJd, wantedJdSkillList);
     }
 
@@ -72,6 +72,6 @@ public class WantedJdItemWriter implements ItemWriter<WantedJobDetailListRespons
         final WantedJobDetailResponse wantedJobDetail,
         final WantedJd wantedJd,
         final List<WantedJobDetailResponse.WantedSkill> wantedDetailSkillList) {
-        wantedJdSkillStore.saveWantedJdSkillList(wantedJobDetail, wantedJd, wantedDetailSkillList);
+        wantedJdSkillDto.saveWantedJdSkillList(wantedJobDetail, wantedJd, wantedDetailSkillList);
     }
 }
