@@ -25,6 +25,7 @@ public interface JdInfoMapper {
     @Mapping(source = "wantedJd.intro", target = "intro")
     @Mapping(source = "wantedJd.benefits", target = "benefits")
     @Mapping(source = "wantedJd.preferredPoints", target = "preferredPoints")
+    @Mapping(expression = "java(kernel.jdon.modulecommon.util.DateParserUtil.localDateTimeToDateString(wantedJd.getDeadlineDate()))", target = "deadlineDate")
     @Mapping(source = "skillList", target = "skillList")
     @Mapping(expression = "java(wantedJd.getReviewList().size())", target = "reviewCount")
     @Mapping(expression = "java(wantedJd.getJobCategory().getName())", target = "jobCategoryName")

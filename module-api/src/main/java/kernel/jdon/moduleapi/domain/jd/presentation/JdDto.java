@@ -25,6 +25,7 @@ public class JdDto {
         private final String preferredPoints;
         private final String jobCategoryName;
         private final int reviewCount;
+        private final String deadlineDate;
         private final List<FindSkill> skillList;
     }
 
