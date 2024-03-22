@@ -44,7 +44,7 @@ public class Skill {
     @JoinColumn(name = "job_category_id", columnDefinition = "BIGINT")
     private JobCategory jobCategory;
 
-    @OneToMany(mappedBy = "skill")
+    @OneToMany(mappedBy = "skill", fetch = FetchType.EAGER)
     private List<SkillKeyword> skillKeywordList = new ArrayList<>();
 
 }

@@ -1,6 +1,6 @@
 package kernel.jdon.moduleapi.domain.skill.infrastructure.keyword;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -10,8 +10,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 import jakarta.annotation.PostConstruct;
-import kernel.jdon.moduleapi.domain.skill.core.SkillReader;
 import kernel.jdon.moduleapi.domain.skill.infrastructure.SkillRepository;
+import kernel.jdon.moduledomain.skill.domain.Skill;
 import kernel.jdon.moduledomain.skillkeyword.domain.SkillKeyword;
 import lombok.RequiredArgsConstructor;
 
@@ -21,7 +21,6 @@ public class SkillKeywordCache {
 
     private static final String SKILL_KEYWORDS = "SkillKeywords";
     private final SkillRepository skillRepository;
-    private final SkillReader skillReader;
     private final SkillKeywordRepository skillKeywordRepository;
     private final RedisTemplate<String, Object> redisTemplate;
     private HashOperations<String, String, Set<String>> hashOperations;
@@ -30,18 +29,21 @@ public class SkillKeywordCache {
     public void initializeCache() {
         this.hashOperations = redisTemplate.opsForHash();
 
-        List<SkillKeyword> skillKeywordList = skillKeywordRepository.findAll();
+        List<Skill> skillList = skillRepository.findAll();
+        skillList.forEach(skill -> {
+            Set<String> keywordSet = new HashSet<>();
+            String keyword = skill.getKeyword().toLowerCase();
+            keywordSet.add(keyword);
+            hashOperations.put(SKILL_KEYWORDS, skill.getKeyword().toLowerCase(), keywordSet);
 
-        skillKeywordList.forEach(skillKeyword -> {
-            String relatedKeyword = skillKeyword.getRelatedKeyword().toLowerCase();
-            String keyword = skillKeyword.getSkill().getKeyword().toLowerCase();
-            Set<String> keywords = hashOperations.get(SKILL_KEYWORDS, relatedKeyword);
-
-            if (keywords == null) {
-                keywords = new HashSet<>(Collections.singletonList(keyword));
-            }
-            hashOperations.put(SKILL_KEYWORDS, relatedKeyword, keywords);
-            hashOperations.put(SKILL_KEYWORDS, keyword, new HashSet<>(Collections.singleton(keyword)));
+            List<SkillKeyword> skillKeywordList = skill.getSkillKeywordList();
+            skillKeywordList.forEach(skillKeyword -> {
+                String relatedKeyword = skillKeyword.getRelatedKeyword().toLowerCase();
+                Set<String> existingKeywordSet = hashOperations.get(SKILL_KEYWORDS, relatedKeyword);
+                if (existingKeywordSet != null) {
+                    hashOperations.put(SKILL_KEYWORDS, relatedKeyword, existingKeywordSet);
+                }
+            });
         });
     }
 
@@ -62,8 +64,6 @@ public class SkillKeywordCache {
             }
         }
 
-        return associatedKeywords.stream()
-            .toList();
+        return new ArrayList<>(associatedKeywords);
     }
-
 }
