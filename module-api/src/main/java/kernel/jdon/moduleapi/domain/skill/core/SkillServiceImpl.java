@@ -1,6 +1,8 @@
 package kernel.jdon.moduleapi.domain.skill.core;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,16 +52,19 @@ public class SkillServiceImpl implements SkillService {
 
     @Override
     public SkillInfo.FindDataListBySkillResponse getDataListBySkill(final String relatedKeyword, final Long memberId) {
-        List<String> findOriginSkillKeywordList = skillKeywordCache.findAssociatedKeywords(relatedKeyword);
-        String searchKeyword = relatedKeyword;
-        if (findOriginSkillKeywordList.isEmpty()) {
-            findOriginSkillKeywordList = skillKeywordCache.findAssociatedKeywords(getHotSkillKeyword());
-            searchKeyword = findOriginSkillKeywordList.get(0);
+        String searchKeyword = Optional.ofNullable(relatedKeyword)
+            .map(String::trim)
+            .filter(keyword -> !keyword.isEmpty())
+            .orElseGet(this::getHotSkillKeyword);
+
+        final List<String> findOriginSkillKeywordList = skillKeywordCache.findAssociatedKeywords(searchKeyword);
+        List<SkillInfo.FindJd> findJdList = Collections.emptyList();
+        List<SkillInfo.FindLecture> findLectureList = Collections.emptyList();
+        if (!findOriginSkillKeywordList.isEmpty()) {
+            findJdList = wantedJdSkillReader.findWantedJdListBySkill(findOriginSkillKeywordList);
+            findLectureList = inflearnJdSkillReader.findInflearnLectureListBySkill(findOriginSkillKeywordList,
+                memberId);
         }
-        final List<SkillInfo.FindJd> findJdList = wantedJdSkillReader.findWantedJdListBySkill(
-            findOriginSkillKeywordList);
-        final List<SkillInfo.FindLecture> findLectureList = inflearnJdSkillReader.findInflearnLectureListBySkill(
-            findOriginSkillKeywordList, memberId);
 
         return new SkillInfo.FindDataListBySkillResponse(searchKeyword, findLectureList, findJdList);
     }
