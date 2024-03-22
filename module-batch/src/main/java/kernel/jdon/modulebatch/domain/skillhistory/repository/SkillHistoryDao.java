@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
-public class SkillHistoryStore {
+public class SkillHistoryDao {
     private final JdbcSkillHistoryRepository jdbcSkillHistoryRepository;
     private final SkillHistoryRepository skillHistoryRepository;
 

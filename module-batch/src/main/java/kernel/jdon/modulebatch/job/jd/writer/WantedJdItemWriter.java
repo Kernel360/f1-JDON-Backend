@@ -7,7 +7,7 @@ import org.springframework.batch.item.Chunk;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.stereotype.Component;
 
-import kernel.jdon.modulebatch.domain.skillhistory.repository.SkillHistoryStore;
+import kernel.jdon.modulebatch.domain.skillhistory.repository.SkillHistoryDao;
 import kernel.jdon.modulebatch.domain.wantedjd.repository.WantedJdRepository;
 import kernel.jdon.modulebatch.job.jd.reader.dto.WantedJobDetailListResponse;
 import kernel.jdon.modulebatch.job.jd.reader.dto.WantedJobDetailResponse;
@@ -21,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 public class WantedJdItemWriter implements ItemWriter<WantedJobDetailListResponse> {
     private final WantedJdRepository wantedJdRepository;
     private final WantedJdSkillDto wantedJdSkillDto;
-    private final SkillHistoryStore skillHistoryStore;
+    private final SkillHistoryDao skillHistoryDao;
 
     @Override
     public void write(Chunk<? extends WantedJobDetailListResponse> chunk) throws Exception {
@@ -47,7 +47,7 @@ public class WantedJdItemWriter implements ItemWriter<WantedJobDetailListRespons
 
     private void changeSkillHistory(final WantedJd findWantedJd, final JobCategory jdJobCategory,
         final List<WantedJobDetailResponse.WantedSkill> wantedJdSkillList) {
-        skillHistoryStore.deleteAllByWantedJdId(findWantedJd.getId());
+        skillHistoryDao.deleteAllByWantedJdId(findWantedJd.getId());
         createSkillHistory(jdJobCategory, findWantedJd, wantedJdSkillList);
     }
 
@@ -64,7 +64,7 @@ public class WantedJdItemWriter implements ItemWriter<WantedJobDetailListRespons
     /** 원본 기술스택 명 이력 저장 **/
     private void createSkillHistory(final JobCategory jobCategory, final WantedJd wantedJd,
         final List<WantedJobDetailResponse.WantedSkill> wantedDetailSkillList) {
-        skillHistoryStore.saveSkillHistoryList(jobCategory.getId(), wantedJd.getId(), wantedDetailSkillList);
+        skillHistoryDao.saveSkillHistoryList(jobCategory.getId(), wantedJd.getId(), wantedDetailSkillList);
     }
 
     /** 기술스택 저장 **/
