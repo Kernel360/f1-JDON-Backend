@@ -34,8 +34,8 @@ public class SkillKeywordCache {
     }
 
     private void loadSkillsAndSkillKeywordsIntoCache() {
-        List<Skill> skills = skillRepository.findAll();
-        skills.forEach(skill -> {
+        List<Skill> skillList = skillRepository.findAll();
+        skillList.forEach(skill -> {
             String keyword = skill.getKeyword().toLowerCase();
             cacheKeyword(keyword);
 
@@ -51,30 +51,30 @@ public class SkillKeywordCache {
     }
 
     private void cacheRelatedKeyword(String relatedKeyword, String keyword) {
-        Set<String> keywords = Optional.ofNullable(hashOperations.get(SKILL_KEYWORDS, relatedKeyword))
+        Set<String> keywordSet = Optional.ofNullable(hashOperations.get(SKILL_KEYWORDS, relatedKeyword))
             .orElseGet(HashSet::new);
-        keywords.add(keyword);
-        hashOperations.put(SKILL_KEYWORDS, relatedKeyword, keywords);
+        keywordSet.add(keyword);
+        hashOperations.put(SKILL_KEYWORDS, relatedKeyword, keywordSet);
     }
 
     /** 캐시에서 데이터 제공하는 부분 **/
     public List<String> findAssociatedKeywords(String relatedKeyword) {
-        Set<String> associatedKeywords = Optional.ofNullable(
+        Set<String> associatedKeywordSet = Optional.ofNullable(
                 hashOperations.get(SKILL_KEYWORDS, relatedKeyword.toLowerCase()))
             .orElseGet(() -> findAndCacheAssociatedKeywords(relatedKeyword));
 
-        return new ArrayList<>(associatedKeywords);
+        return new ArrayList<>(associatedKeywordSet);
     }
 
     private Set<String> findAndCacheAssociatedKeywords(String relatedKeyword) {
-        Set<String> associatedKeywords = skillKeywordRepository.findAllByRelatedKeywordIgnoreCase(relatedKeyword)
+        Set<String> associatedKeywordSet = skillKeywordRepository.findAllByRelatedKeywordIgnoreCase(relatedKeyword)
             .stream()
             .map(skillKeyword -> skillKeyword.getSkill().getKeyword().toLowerCase())
             .collect(Collectors.toSet());
 
-        if (!associatedKeywords.isEmpty()) {
-            hashOperations.put(SKILL_KEYWORDS, relatedKeyword.toLowerCase(), associatedKeywords);
+        if (!associatedKeywordSet.isEmpty()) {
+            hashOperations.put(SKILL_KEYWORDS, relatedKeyword.toLowerCase(), associatedKeywordSet);
         }
-        return associatedKeywords;
+        return associatedKeywordSet;
     }
 }
