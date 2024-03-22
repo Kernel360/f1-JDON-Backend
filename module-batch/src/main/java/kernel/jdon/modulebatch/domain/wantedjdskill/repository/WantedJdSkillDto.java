@@ -1,11 +1,11 @@
-package kernel.jdon.modulebatch.job.jd.writer;
+package kernel.jdon.modulebatch.domain.wantedjdskill.repository;
 
 import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import kernel.jdon.modulebatch.domain.wantedjdskill.repository.WantedJdSkillRepository;
 import kernel.jdon.modulebatch.job.jd.reader.dto.WantedJobDetailResponse;
+import kernel.jdon.modulebatch.job.jd.writer.JdbcWantedJdSkillRepository;
 import kernel.jdon.moduledomain.wantedjd.domain.WantedJd;
 import lombok.RequiredArgsConstructor;
 

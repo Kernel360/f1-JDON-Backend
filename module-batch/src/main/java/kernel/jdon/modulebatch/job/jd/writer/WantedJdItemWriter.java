@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import kernel.jdon.modulebatch.domain.skillhistory.repository.SkillHistoryDao;
 import kernel.jdon.modulebatch.domain.wantedjd.repository.WantedJdRepository;
+import kernel.jdon.modulebatch.domain.wantedjdskill.repository.WantedJdSkillDto;
 import kernel.jdon.modulebatch.job.jd.reader.dto.WantedJobDetailListResponse;
 import kernel.jdon.modulebatch.job.jd.reader.dto.WantedJobDetailResponse;
 import kernel.jdon.moduledomain.jobcategory.domain.JobCategory;
