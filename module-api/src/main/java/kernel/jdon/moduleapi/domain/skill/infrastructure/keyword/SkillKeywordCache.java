@@ -75,6 +75,7 @@ public class SkillKeywordCache {
         if (!associatedKeywordSet.isEmpty()) {
             hashOperations.put(SKILL_KEYWORDS, relatedKeyword.toLowerCase(), associatedKeywordSet);
         }
+        
         return associatedKeywordSet;
     }
 }
