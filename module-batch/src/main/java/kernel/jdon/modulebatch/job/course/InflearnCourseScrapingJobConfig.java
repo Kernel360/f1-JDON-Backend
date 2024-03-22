@@ -6,7 +6,6 @@ import org.springframework.batch.core.configuration.annotation.JobScope;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -22,24 +21,29 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class InflearnCourseScrapingJobConfig {
 
+    private static final int CHUNK_SIZE = 1;
+    private static final String JOB_NAME = "인프런_강의_스크래핑";
+    private static final String BEAN_PREFIX = JOB_NAME + "_";
+
+    private final PlatformTransactionManager platformTransactionManager;
     private final InflearnJobExecutionListener inflearnJobExecutionListener;
     private final InflearnCourseItemReader inflearnCourseItemReader;
     private final InflearnCourseItemProcessor inflearnCourseItemProcessor;
     private final InflearnCourseItemWriter inflearnCourseItemWriter;
 
-    @Bean(name = "inflearnCrawlJob")
-    public Job inflearnCrawlJob(JobRepository jobRepository, @Qualifier("inflearnCourseStep") Step inflearnCourseStep) {
+    @Bean(name = BEAN_PREFIX + "job")
+    public Job inflearnCrawlJob(JobRepository jobRepository) {
         return new JobBuilder("inflearnCrawlJob", jobRepository)
             .listener(inflearnJobExecutionListener)
-            .start(inflearnCourseStep)
+            .start(inflearnCourseStep(jobRepository))
             .build();
     }
 
-    @Bean(name = "inflearnCourseStep")
+    @Bean(name = BEAN_PREFIX + "step")
     @JobScope
-    public Step inflearnCourseStep(JobRepository jobRepository, PlatformTransactionManager transactionManager) {
+    public Step inflearnCourseStep(JobRepository jobRepository) {
         return new StepBuilder("inflearnCourseStep", jobRepository)
-            .<String, InflearnCourseAndSkillKeywordInfo>chunk(3, transactionManager)
+            .<String, InflearnCourseAndSkillKeywordInfo>chunk(CHUNK_SIZE, platformTransactionManager)
             .reader(inflearnCourseItemReader)
             .processor(inflearnCourseItemProcessor)
             .writer(inflearnCourseItemWriter)
