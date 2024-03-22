@@ -10,7 +10,8 @@ import lombok.RequiredArgsConstructor;
 public enum BatchServerErrorCode
     implements ErrorCode, BaseThrowException<BatchServerErrorCode.BatchServerBaseException> {
     INTERNAL_SERVER_ERROR_THREAD_SLEEP(HttpStatus.INTERNAL_SERVER_ERROR, "Thread sleep 중 서버 애러가 발생했습니다."),
-    INTERNAL_SERVER_ERROR_REST_TEMPLATE_RETRY(HttpStatus.INTERNAL_SERVER_ERROR, "RestTemplate Retry 중 서버 에러가 발생했습니다.");
+    INTERNAL_SERVER_ERROR_REST_TEMPLATE_RETRY(HttpStatus.INTERNAL_SERVER_ERROR, "RestTemplate Retry 중 서버 에러가 발생했습니다."),
+    INTERNAL_SERVER_ERROR_SCHEDULER(HttpStatus.INTERNAL_SERVER_ERROR, "스케줄링에 의해 Job 실행 중 에러가 발생했습니다.");
 
     private final HttpStatus httpStatus;
     private final String message;
