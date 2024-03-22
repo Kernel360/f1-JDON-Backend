@@ -1,10 +1,7 @@
 package kernel.jdon.modulebatch.job.jd.writer;
 
-import static kernel.jdon.modulecommon.util.StringUtil.*;
-
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,7 +27,6 @@ public class JdbcWantedJdSkillRepository {
         final WantedJobDetailResponse wantedJobDetail,
         final WantedJd wantedJd,
         final List<WantedJobDetailResponse.WantedSkill> wantedDetailSkillList) {
-        final List<String> expectValues = new ArrayList<>();
 
         jdbcTemplate.batchUpdate(
             "INSERT INTO wanted_jd_skill (wanted_jd_id, skill_id) VALUES (?, ?)",
@@ -52,8 +48,6 @@ public class JdbcWantedJdSkillRepository {
 
                     ps.setLong(1, wantedJd.getId());
                     ps.setLong(2, findSkillId);
-
-                    expectValues.add(joinToString("(", wantedJd.getId(), ", ", findSkillId, ")"));
                 }
 
                 @Override
@@ -61,17 +55,6 @@ public class JdbcWantedJdSkillRepository {
                     return wantedDetailSkillList.size();
                 }
             });
-
-        writeInsertLog(expectValues);
-    }
-
-    private void writeInsertLog(List<String> valus) {
-        if (!valus.isEmpty()) {
-            StringBuilder insertLog = new StringBuilder(
-                "[wanted_jd_skill batchUpdate 실행 예상 쿼리] INSERT INTO skill_history (wanted_jd_id, skill_id) VALUES ");
-            valus.forEach(value -> insertLog.append(joinToString(value, ", ")));
-            log.info(insertLog.deleteCharAt(insertLog.length() - 2).toString());
-        }
     }
 
     private Long findByJobCategoryIdAndKeyword(final Long jobCategoryId, final String keyword) {
