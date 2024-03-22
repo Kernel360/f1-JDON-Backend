@@ -9,7 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class DateParserUtil {
 
-    public static String dateTimeToString(LocalDateTime localDateTime) {
-        return localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+    public static String localDateTimeToDateString(final LocalDateTime localDateTime) {
+        final String toString = localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
+        return toString.substring(0, 10);
     }
 }
