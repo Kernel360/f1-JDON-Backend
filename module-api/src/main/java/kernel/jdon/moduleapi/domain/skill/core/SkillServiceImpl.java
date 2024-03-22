@@ -57,7 +57,7 @@ public class SkillServiceImpl implements SkillService {
             .filter(keyword -> !keyword.isEmpty())
             .orElseGet(this::getHotSkillKeyword);
 
-        final List<String> findOriginSkillKeywordList = skillKeywordCache.findAssociatedKeywords(searchKeyword);
+        final List<String> findOriginSkillKeywordList = skillKeywordCache.findRelatedKeywordList(searchKeyword);
         List<SkillInfo.FindJd> findJdList = Collections.emptyList();
         List<SkillInfo.FindLecture> findLectureList = Collections.emptyList();
         if (!findOriginSkillKeywordList.isEmpty()) {

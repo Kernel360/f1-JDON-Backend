@@ -58,24 +58,24 @@ public class SkillKeywordCache {
     }
 
     /** 캐시에서 데이터 제공하는 부분 **/
-    public List<String> findAssociatedKeywords(String relatedKeyword) {
-        Set<String> associatedKeywordSet = Optional.ofNullable(
+    public List<String> findRelatedKeywordList(String relatedKeyword) {
+        Set<String> relatedKeywordSet = Optional.ofNullable(
                 hashOperations.get(SKILL_KEYWORDS, relatedKeyword.toLowerCase()))
-            .orElseGet(() -> findAndCacheAssociatedKeywords(relatedKeyword));
+            .orElseGet(() -> findAndCacheRelatedKeywordList(relatedKeyword));
 
-        return new ArrayList<>(associatedKeywordSet);
+        return new ArrayList<>(relatedKeywordSet);
     }
 
-    private Set<String> findAndCacheAssociatedKeywords(String relatedKeyword) {
-        Set<String> associatedKeywordSet = skillKeywordRepository.findAllByRelatedKeywordIgnoreCase(relatedKeyword)
+    private Set<String> findAndCacheRelatedKeywordList(String relatedKeyword) {
+        Set<String> relatedKeywordSet = skillKeywordRepository.findAllByRelatedKeywordIgnoreCase(relatedKeyword)
             .stream()
             .map(skillKeyword -> skillKeyword.getSkill().getKeyword().toLowerCase())
             .collect(Collectors.toSet());
 
-        if (!associatedKeywordSet.isEmpty()) {
-            hashOperations.put(SKILL_KEYWORDS, relatedKeyword.toLowerCase(), associatedKeywordSet);
+        if (!relatedKeywordSet.isEmpty()) {
+            hashOperations.put(SKILL_KEYWORDS, relatedKeyword.toLowerCase(), relatedKeywordSet);
         }
-        
-        return associatedKeywordSet;
+
+        return relatedKeywordSet;
     }
 }

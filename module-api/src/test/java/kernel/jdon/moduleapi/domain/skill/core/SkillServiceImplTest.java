@@ -101,7 +101,7 @@ class SkillServiceImplTest {
         final var hotSkillList = Collections.singletonList(new SkillInfo.FindHotSkill(1L, hotSkillKeyword));
         final var memberId = 1L;
 
-        given(skillKeywordCache.findAssociatedKeywords(hotSkillKeyword)).willReturn(
+        given(skillKeywordCache.findRelatedKeywordList(hotSkillKeyword)).willReturn(
             Collections.singletonList(hotSkillKeyword));
         given(skillReader.findHotSkillList()).willReturn(hotSkillList);
         given(wantedJdSkillReader.findWantedJdListBySkill(Collections.singletonList(hotSkillKeyword))).willReturn(null);
@@ -113,7 +113,7 @@ class SkillServiceImplTest {
 
         //then
         assertThat(response.getKeyword()).isEqualTo(hotSkillKeyword);
-        then(skillKeywordCache).should(times(1)).findAssociatedKeywords(hotSkillKeyword);
+        then(skillKeywordCache).should(times(1)).findRelatedKeywordList(hotSkillKeyword);
         then(skillReader).should(times(1)).findHotSkillList();
         then(wantedJdSkillReader).should(times(1)).findWantedJdListBySkill(Collections.singletonList(hotSkillKeyword));
         then(inflearnJdSkillReader).should(times(1))
