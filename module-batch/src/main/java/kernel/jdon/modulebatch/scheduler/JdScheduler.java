@@ -17,8 +17,8 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class JdScheduler {
     private final JobLauncher jobLauncher;
-    private final Job 부분_원티드_채용공고_스크래핑_job;
-    private final Job 전체_원티드_채용공고_스크래핑_job;
+    private final Job partWantedJdScrapingJob;
+    private final Job allWantedJdScrapingJob;
 
     @Scheduled(cron = "0 0 0 ? * MON,THU") // 매주 월요일 목요일 00시
     public void runPartWantedJdScrapingJob() {
@@ -27,7 +27,7 @@ public class JdScheduler {
             .toJobParameters();
         try {
             log.info("[부분_원티드_채용공고_스크래핑_job] 스케줄러 시작");
-            jobLauncher.run(부분_원티드_채용공고_스크래핑_job, jobParameters);
+            jobLauncher.run(partWantedJdScrapingJob, jobParameters);
             log.info("[부분_원티드_채용공고_스크래핑_job] 스케줄러 종료");
         } catch (Exception e) {
             log.error("[부분_원티드_채용공고_스크래핑_job] 실행중 Error 발생");
@@ -42,7 +42,7 @@ public class JdScheduler {
             .toJobParameters();
         try {
             log.info("[전체_원티드_채용공고_스크래핑_job] 스케줄러 시작");
-            jobLauncher.run(전체_원티드_채용공고_스크래핑_job, jobParameters);
+            jobLauncher.run(allWantedJdScrapingJob, jobParameters);
             log.info("[전체_원티드_채용공고_스크래핑_job] 스케줄러 종료");
         } catch (Exception e) {
             log.error("[전체_원티드_채용공고_스크래핑_job] 실행중 Error 발생");

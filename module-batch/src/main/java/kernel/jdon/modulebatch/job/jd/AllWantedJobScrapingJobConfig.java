@@ -21,8 +21,6 @@ import lombok.RequiredArgsConstructor;
 @Configuration
 @RequiredArgsConstructor
 public class AllWantedJobScrapingJobConfig {
-    private static final String JOB_NAME = "전체_원티드_채용공고_스크래핑";
-    private static final String BEAN_PREFIX = JOB_NAME + "_";
 
     private static final int CHUNK_SIZE = 1;
 
@@ -31,30 +29,35 @@ public class AllWantedJobScrapingJobConfig {
     private final WantedJdItemWriter wantedJdItemWriter;
     private final PlatformTransactionManager platformTransactionManager;
 
-    @Bean(BEAN_PREFIX + "job")
+    /**
+     * [전체_원티드_채용공고_스크래핑]
+     * 직군별 전체 원티드 JD 데이터를 수집 및 적재한다.
+     * 기존에 존재하는 JD는 update, 신규 JD는 insert
+     */
+    @Bean
     public Job allWantedJdScrapingJob(JobRepository jobRepository) {
-        return new JobBuilder(BEAN_PREFIX + "job", jobRepository)
+        return new JobBuilder("allWantedJdScrapingJob", jobRepository)
             .incrementer(new RunIdIncrementer())
             .listener(new AllWantedJobScrapingJobListener())
-            .start(backendWantedJdStep(jobRepository)) // 백엔드 JD 스크래핑
-            .next(frontendWantedJdStep(jobRepository)) // 프론트엔드 JD 스크래핑
+            .start(allBackendWantedJdScrapingStep(jobRepository)) // 백엔드 JD 스크래핑
+            .next(allFrontendWantedJdScrapingStep(jobRepository)) // 프론트엔드 JD 스크래핑
             .build();
     }
 
-    @Bean(BEAN_PREFIX + "백엔드_step")
+    @Bean
     @JobScope
-    public Step backendWantedJdStep(JobRepository jobRepository) {
-        return new StepBuilder(BEAN_PREFIX + "백엔드_step", jobRepository)
+    public Step allBackendWantedJdScrapingStep(JobRepository jobRepository) {
+        return new StepBuilder("allBackendWantedJdScrapingStep", jobRepository)
             .<WantedJobDetailListResponse, WantedJobDetailListResponse>chunk(CHUNK_SIZE, platformTransactionManager)
             .reader(allBackendWantedJdItemReader)
             .writer(wantedJdItemWriter)
             .build();
     }
 
-    @Bean(BEAN_PREFIX + "프론트엔드_step")
+    @Bean
     @JobScope
-    public Step frontendWantedJdStep(JobRepository jobRepository) {
-        return new StepBuilder(BEAN_PREFIX + "프론트엔드_step", jobRepository)
+    public Step allFrontendWantedJdScrapingStep(JobRepository jobRepository) {
+        return new StepBuilder("allFrontendWantedJdScrapingStep", jobRepository)
             .<WantedJobDetailListResponse, WantedJobDetailListResponse>chunk(CHUNK_SIZE, platformTransactionManager)
             .reader(allFrontendWantedJdItemReader)
             .writer(wantedJdItemWriter)
