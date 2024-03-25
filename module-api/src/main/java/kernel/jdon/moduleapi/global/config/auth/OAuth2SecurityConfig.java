@@ -46,6 +46,7 @@ public class OAuth2SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         final String[] permitAllGET = {
+            "/actuator/health",
             "/oauth2/authorization/**",
             "/api/v1/coffeechats/**",
             "/api/v1/skills/hot",
