@@ -2,11 +2,9 @@
 
 <configuration>
     <springProfile name="local">
-        <include resource="slack-appender-local.xml"/>
         <include resource="stdout-appender.xml"/>
         <root level="INFO">
             <appender-ref ref="STDOUT"/>
-            <appender-ref ref="ASYNC_SLACK"/>
         </root>
     </springProfile>
 
