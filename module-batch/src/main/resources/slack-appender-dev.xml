@@ -6,7 +6,7 @@
             <pattern>
                 [Dev 배치 서버 에러 발생]
                 ${PID:-} --- [%15.15thread] %-40.40logger{36} %msg%n %n
-                * CURRENT_MODULE : MODULE-API %n
+                * CURRENT_MODULE : MODULE-BATCH %n
                 * REQUEST_ID : %X{REQUEST_ID:-NO REQUEST ID} %n
                 * REQUEST_METHOD : %X{REQUEST_METHOD:-NO REQUEST METHOD} %n
                 * REQUEST_URI : %X{REQUEST_URI:-NO REQUEST URI} %n
