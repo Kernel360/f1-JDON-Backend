@@ -20,15 +20,15 @@ public class JdScheduler {
     private final Job partWantedJdScrapingJob;
     private final Job allWantedJdScrapingJob;
 
-    @Scheduled(cron = "0 0 0 ? * MON,THU") // 매주 월요일 목요일 00시
+    @Scheduled(cron = "0 0 18 * * ?") // todo: 매일 오후 18시 -> 테스트 성공 시 매일 자정으로 변경 예정
     public void runPartWantedJdScrapingJob() {
         JobParameters jobParameters = new JobParametersBuilder()
             .addLong("time", System.currentTimeMillis())
             .toJobParameters();
         try {
-            log.info("[부분_원티드_채용공고_스크래핑_job] 스케줄러 시작");
+            log.warn("[부분_원티드_채용공고_스크래핑_job] 스케줄러 시작");
             jobLauncher.run(partWantedJdScrapingJob, jobParameters);
-            log.info("[부분_원티드_채용공고_스크래핑_job] 스케줄러 종료");
+            log.warn("[부분_원티드_채용공고_스크래핑_job] 스케줄러 종료");
         } catch (Exception e) {
             log.error("[부분_원티드_채용공고_스크래핑_job] 실행중 Error 발생");
             throw new BatchException(BatchServerErrorCode.INTERNAL_SERVER_ERROR_SCHEDULER);
@@ -41,9 +41,9 @@ public class JdScheduler {
             .addLong("time", System.currentTimeMillis())
             .toJobParameters();
         try {
-            log.info("[전체_원티드_채용공고_스크래핑_job] 스케줄러 시작");
+            log.warn("[전체_원티드_채용공고_스크래핑_job] 스케줄러 시작");
             jobLauncher.run(allWantedJdScrapingJob, jobParameters);
-            log.info("[전체_원티드_채용공고_스크래핑_job] 스케줄러 종료");
+            log.warn("[전체_원티드_채용공고_스크래핑_job] 스케줄러 종료");
         } catch (Exception e) {
             log.error("[전체_원티드_채용공고_스크래핑_job] 실행중 Error 발생");
             throw new BatchException(BatchServerErrorCode.INTERNAL_SERVER_ERROR_SCHEDULER);
