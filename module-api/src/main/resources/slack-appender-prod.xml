@@ -24,7 +24,7 @@
         <appender-ref ref="SLACK"/>
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <!-- 슬랙에 전송할 로그 레벨 지정-->
-            <level>WARN</level>
+            <level>ERROR</level>
         </filter>
     </appender>
 </included>
