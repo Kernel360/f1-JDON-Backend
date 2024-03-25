@@ -44,10 +44,12 @@ spring:
     web:
       pageable:
         max-page-size: 100
-
 logging:
   level:
     root: info
+  slack:
+    webhook-uri: ${SLACK_WEBHOOK_URL}
+  config: classpath:logback-spring.xml
 
 decorator:
   datasource:
