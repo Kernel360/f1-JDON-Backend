@@ -20,7 +20,7 @@ public class JdScheduler {
     private final Job partWantedJdScrapingJob;
     private final Job allWantedJdScrapingJob;
 
-    @Scheduled(cron = "0 0 18 * * ?") // todo: 매일 오후 18시 -> 테스트 성공 시 매일 자정으로 변경 예정
+    @Scheduled(cron = "0 0 1 ? * SUN-TUE,THU-SAT") // 수요일을 제외한 모든 요일 01시
     public void runPartWantedJdScrapingJob() {
         JobParameters jobParameters = new JobParametersBuilder()
             .addLong("time", System.currentTimeMillis())
@@ -35,7 +35,7 @@ public class JdScheduler {
         }
     }
 
-    @Scheduled(cron = "0 0 0 ? * WED") // 매주 수요일 00시
+    @Scheduled(cron = "0 0 1 ? * WED") // 매주 수요일 01시
     public void runAllWantedJdScrapingJob() {
         JobParameters jobParameters = new JobParametersBuilder()
             .addLong("time", System.currentTimeMillis())
