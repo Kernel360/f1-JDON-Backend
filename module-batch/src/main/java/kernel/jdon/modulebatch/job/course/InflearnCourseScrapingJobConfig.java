@@ -22,8 +22,6 @@ import lombok.RequiredArgsConstructor;
 public class InflearnCourseScrapingJobConfig {
 
     private static final int CHUNK_SIZE = 1;
-    private static final String JOB_NAME = "인프런_강의_스크래핑";
-    private static final String BEAN_PREFIX = JOB_NAME + "_";
 
     private final PlatformTransactionManager platformTransactionManager;
     private final InflearnJobExecutionListener inflearnJobExecutionListener;
@@ -31,18 +29,18 @@ public class InflearnCourseScrapingJobConfig {
     private final InflearnCourseItemProcessor inflearnCourseItemProcessor;
     private final InflearnCourseItemWriter inflearnCourseItemWriter;
 
-    @Bean(name = BEAN_PREFIX + "job")
-    public Job inflearnCrawlJob(JobRepository jobRepository) {
-        return new JobBuilder("inflearnCrawlJob", jobRepository)
+    @Bean
+    public Job inflearnCourseScrapingJob(JobRepository jobRepository) {
+        return new JobBuilder("inflearnCourseScrapingJob", jobRepository)
             .listener(inflearnJobExecutionListener)
-            .start(inflearnCourseStep(jobRepository))
+            .start(inflearnCourseScrapingStep(jobRepository))
             .build();
     }
 
-    @Bean(name = BEAN_PREFIX + "step")
+    @Bean
     @JobScope
-    public Step inflearnCourseStep(JobRepository jobRepository) {
-        return new StepBuilder("inflearnCourseStep", jobRepository)
+    public Step inflearnCourseScrapingStep(JobRepository jobRepository) {
+        return new StepBuilder("inflearnCourseScrapingStep", jobRepository)
             .<String, InflearnCourseAndSkillKeywordInfo>chunk(CHUNK_SIZE, platformTransactionManager)
             .reader(inflearnCourseItemReader)
             .processor(inflearnCourseItemProcessor)
