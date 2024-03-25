@@ -30,31 +30,19 @@ public class SkillKeywordCache {
     @PostConstruct
     public void initializeCache() {
         hashOperations = redisTemplate.opsForHash();
-        loadSkillsAndSkillKeywordsIntoCache();
+        loadSkillsIntoCache();
     }
 
-    private void loadSkillsAndSkillKeywordsIntoCache() {
+    private void loadSkillsIntoCache() {
         List<Skill> skillList = skillRepository.findAll();
         skillList.forEach(skill -> {
             String keyword = skill.getKeyword().toLowerCase();
             cacheKeyword(keyword);
-
-            skill.getSkillKeywordList().forEach(skillKeyword -> {
-                String relatedKeyword = skillKeyword.getRelatedKeyword().toLowerCase();
-                cacheRelatedKeyword(relatedKeyword, keyword);
-            });
         });
     }
 
     private void cacheKeyword(String keyword) {
         hashOperations.putIfAbsent(SKILL_KEYWORDS, keyword, new HashSet<>(Set.of(keyword)));
-    }
-
-    private void cacheRelatedKeyword(String relatedKeyword, String keyword) {
-        Set<String> keywordSet = Optional.ofNullable(hashOperations.get(SKILL_KEYWORDS, relatedKeyword))
-            .orElseGet(HashSet::new);
-        keywordSet.add(keyword);
-        hashOperations.put(SKILL_KEYWORDS, relatedKeyword, keywordSet);
     }
 
     /** 캐시에서 데이터 제공하는 부분 **/
