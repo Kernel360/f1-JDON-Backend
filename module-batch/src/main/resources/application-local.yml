@@ -1,0 +1,26 @@
+spring:
+  config:
+    activate:
+      on-profile: local
+    import:
+      optional:classpath:/constant/scraping.yml
+
+
+  datasource:
+    url: ${BATCH_DB_URL}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+logging:
+  level:
+    root: info
+
+decorator:
+  datasource:
+    p6spy:
+      enable-logging: true
