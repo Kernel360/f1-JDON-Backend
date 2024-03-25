@@ -1,0 +1,28 @@
+spring:
+  config:
+    activate:
+      on-profile: prod
+    import:
+      optional:classpath:/constant/scraping.yml
+
+  datasource:
+    url: ${BATCH_DB_URL}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+logging:
+  level:
+    root: info
+  slack:
+    webhook-uri: ${SLACK_WEBHOOK_URL}
+  config: classpath:logback-spring.xml
+
+decorator:
+  datasource:
+    p6spy:
+      enable-logging: true
