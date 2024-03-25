@@ -1,0 +1,56 @@
+spring:
+  config:
+    activate:
+      on-profile: local
+
+  datasource:
+    url: ${BATCH_DB_URL}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+logging:
+  level:
+    root: info
+
+decorator:
+  datasource:
+    p6spy:
+      enable-logging: true
+
+scraping:
+  inflearn:
+    url: https://www.inflearn.com/courses
+    detail_url_prefix: https://www.inflearn.com
+    max_courses_per_keyword: 3
+    max_courses_per_page: 24
+    sleep: # 단위 millis
+      min_initial: 1000
+      max_initial: 3000
+      max: 10000
+      increment: 1000
+
+  wanted:
+    url:
+      detail: https://www.wanted.co.kr/wd/
+      api:
+        detail: https://www.wanted.co.kr/api/v4/jobs/
+        list: https://www.wanted.co.kr/api/chaos/navigation/v1/results?country=kr&
+
+    scraping:
+      job_list_limit: 100           # 각 스크래핑 요청 당 몇 개의 Job Description을 가져올지 설정
+      job_list_offset: 100          # 몇 번째 Job Description부터 가져올지 설정
+      all:
+        job_list_sleep_count: 5      # 지정된 횟수 만큼 offset 단위 호출하고 대기할 지 유휴 카운트 설정.
+        job_detail_sleep_count: 10   # 지정된 횟수 만큼 jd 상세 API를 호출하고 대기할 지 유휴 카운트 설정.
+      part:
+        job_detail_duplicate_limit_count: 5 # 연속으로 중복된 JD 상세내역이 스크래핑될 때 스크래핑을 중지할 개수를 설정(항상 limit보다 작다)
+
+    sleep:
+      threshold_count: 10 # 지정된 개수까지 Job Description을 스크래핑한 후 해당 시간 만큼 지연하도록 설정
+      time_millis: 1000   # 지연 시간의 길이를 밀리초 단위로 설정
+
