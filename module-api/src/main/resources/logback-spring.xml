@@ -1,19 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <configuration>
-    <include resource="loki-appender.xml"/>
-    <include resource="stdout-appender.xml"/>
-
-    <root level="INFO">
-        <springProfile name="local">
+    <springProfile name="local">
+        <include resource="stdout-appender.xml"/>
+        <root level="INFO">
             <appender-ref ref="STDOUT"/>
-        </springProfile>
-    </root>
+        </root>
+    </springProfile>
 
-    <root level="INFO">
-        <springProfile name="!local">
+    <springProfile name="dev">
+        <include resource="slack-appender-dev.xml"/>
+        <include resource="stdout-appender.xml"/>
+        <include resource="loki-appender.xml"/>
+        <root level="INFO">
             <appender-ref ref="STDOUT"/>
             <appender-ref ref="LOKI"/>
-        </springProfile>
-    </root>
+            <appender-ref ref="ASYNC_SLACK"/>
+        </root>
+    </springProfile>
+
+    <springProfile name="prod">
+        <include resource="slack-appender-prod.xml"/>
+        <include resource="stdout-appender.xml"/>
+        <include resource="loki-appender.xml"/>
+        <root level="INFO">
+            <appender-ref ref="STDOUT"/>
+            <appender-ref ref="LOKI"/>
+            <appender-ref ref="ASYNC_SLACK"/>
+        </root>
+    </springProfile>
+
 </configuration>
