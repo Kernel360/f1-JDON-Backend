@@ -15,8 +15,13 @@ public class CoffeeChatScheduler {
     private final CoffeeChatRepository coffeeChatRepository;
 
     @Transactional
-    @Scheduled(cron = "0 0 0 * * ?")
+    @Scheduled(cron = "0 30 * * * ?")
     public void expirePastCoffeeChats() {
-        coffeeChatRepository.updateStatusToCloseForPastCoffeeChats();
+        log.info("[expirePastCoffeeChats] 스케쥴러 실행");
+        try {
+            coffeeChatRepository.updateStatusToCloseForPastCoffeeChats();
+        } catch (Exception e) {
+            log.error("[expirePastCoffeeChats] 스케쥴러 실행 중 Error 발생", e);
+        }
     }
 }
