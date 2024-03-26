@@ -84,7 +84,7 @@ public class SlackSender {
         final String activeProfile = String.join(", ", applicationContext.getEnvironment().getActiveProfiles());
         sendMessage(
             SlackMessage.of(title)
-                .setColor("#439FE0")
+                .setColor("#009000")
                 .putMessage("Start-Job-Scheduler-Name", jobSchedulerName)
                 .putMessage("Active-Profile", activeProfile));
     }
