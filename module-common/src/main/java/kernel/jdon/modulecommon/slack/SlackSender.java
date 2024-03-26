@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import com.slack.api.Slack;
@@ -24,9 +25,10 @@ import lombok.extern.slf4j.Slf4j;
 public class SlackSender {
     private final Slack slackClient = Slack.getInstance();
     private final SlackProperties slackProperties;
+    private final ApplicationContext applicationContext;
 
     /** 슬랙 메시지 전송 **/
-    public void sendMessage(SlackMessage slackMessage) {
+    public void sendMessage(final SlackMessage slackMessage) {
         if (!hasText(slackProperties.getWebhookUri())) {
             return;
         }
@@ -46,19 +48,28 @@ public class SlackSender {
 
     /** 메시지 본문 내용 **/
     @NotNull
-    private List<Field> getFieldList(SlackMessage slackMessage) {
+    private List<Field> getFieldList(final SlackMessage slackMessage) {
         return slackMessage.getMessages().stream()
             .map(message -> generateSlackField(message.getTitle(), message.getContent()))
             .toList();
     }
 
     /** Slack Field 생성 **/
-    private Field generateSlackField(String title, String value) {
+    private Field generateSlackField(final String title, final String value) {
         return Field.builder()
             .title(title)
             .value(value)
             .valueShortEnough(false)
             .build();
+    }
+
+    public void sendServerStart(final String moduleName) {
+        final String activeProfile = String.join(", ", applicationContext.getEnvironment().getActiveProfiles());
+        sendMessage(
+            SlackMessage.of("서버 실행 알림")
+                .setColor("#439FE0")
+                .putMessage("Start-Module-Name", moduleName)
+                .putMessage("Active-Profile", activeProfile));
     }
 
     @Getter
