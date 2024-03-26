@@ -7,10 +7,12 @@ import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
+import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import kernel.jdon.modulebatch.domain.wantedjd.repository.WantedJdRepository;
 import kernel.jdon.modulebatch.job.jd.listener.AllWantedJobScrapingJobListener;
 import kernel.jdon.modulebatch.job.jd.reader.AllBackendWantedJdItemReader;
 import kernel.jdon.modulebatch.job.jd.reader.AllFrontendWantedJdItemReader;
@@ -28,6 +30,7 @@ public class AllWantedJobScrapingJobConfig {
     private final AllBackendWantedJdItemReader allBackendWantedJdItemReader;
     private final WantedJdItemWriter wantedJdItemWriter;
     private final PlatformTransactionManager platformTransactionManager;
+    private final WantedJdRepository wantedJdRepository;
 
     /**
      * [전체_원티드_채용공고_스크래핑]
@@ -41,6 +44,7 @@ public class AllWantedJobScrapingJobConfig {
             .listener(new AllWantedJobScrapingJobListener())
             .start(allBackendWantedJdScrapingStep(jobRepository)) // 백엔드 JD 스크래핑
             .next(allFrontendWantedJdScrapingStep(jobRepository)) // 프론트엔드 JD 스크래핑
+            .next(updateJdStatusStep(jobRepository)) // JD 상태 업데이트
             .build();
     }
 
@@ -61,6 +65,17 @@ public class AllWantedJobScrapingJobConfig {
             .<WantedJobDetailListResponse, WantedJobDetailListResponse>chunk(CHUNK_SIZE, platformTransactionManager)
             .reader(allFrontendWantedJdItemReader)
             .writer(wantedJdItemWriter)
+            .build();
+    }
+
+    @Bean
+    @JobScope
+    public Step updateJdStatusStep(JobRepository jobRepository) {
+        return new StepBuilder("updateJdStatusStep", jobRepository)
+            .tasklet((contribution, chunkContext) -> {
+                wantedJdRepository.updateWantedJdActiveStatus();
+                return RepeatStatus.FINISHED;
+            }, platformTransactionManager)
             .build();
     }
 }
