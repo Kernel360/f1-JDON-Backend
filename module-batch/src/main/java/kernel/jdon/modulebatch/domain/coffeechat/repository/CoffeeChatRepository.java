@@ -7,6 +7,6 @@ import kernel.jdon.moduledomain.coffeechat.repository.CoffeeChatDomainRepository
 
 public interface CoffeeChatRepository extends CoffeeChatDomainRepository {
     @Modifying
-    @Query("update CoffeeChat c set c.coffeeChatStatus = 'CLOSE' where c.meetDate < CURRENT_TIMESTAMP")
+    @Query("update CoffeeChat c set c.coffeeChatStatus = 'CLOSE' where c.coffeeChatStatus <> 'CLOSE' and c.meetDate < CURRENT_TIMESTAMP")
     void updateStatusToCloseForPastCoffeeChats();
 }
