@@ -20,8 +20,8 @@ public class CoffeeChatScheduler {
     @Scheduled(cron = "0 30 * * * ?")
     public void expirePastCoffeeChats() {
         log.info("[expirePastCoffeeChats] 스케쥴러 실행");
+        slackSender.sendSchedulerStart("expirePastCoffeeChats");
         try {
-            slackSender.sendSchedulerStart("expirePastCoffeeChats");
             coffeeChatRepository.updateStatusToCloseForPastCoffeeChats();
         } catch (Exception e) {
             log.error("[expirePastCoffeeChats] 스케쥴러 실행 중 Error 발생", e);
