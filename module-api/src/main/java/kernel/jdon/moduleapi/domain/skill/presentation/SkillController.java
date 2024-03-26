@@ -2,7 +2,9 @@ package kernel.jdon.moduleapi.domain.skill.presentation;
 
 import java.util.Optional;
 
+import org.hibernate.validator.constraints.Length;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,6 +18,7 @@ import kernel.jdon.modulecommon.dto.response.CommonResponse;
 import lombok.RequiredArgsConstructor;
 
 @RestController
+@Validated
 @RequiredArgsConstructor
 public class SkillController {
     private final SkillFacade skillFacade;
@@ -49,7 +52,7 @@ public class SkillController {
 
     @GetMapping("/api/v1/skills/search")
     public ResponseEntity<CommonResponse<SkillDto.FindDataListBySkillResponse>> getLectureListAndJdListBySkill(
-        @RequestParam(name = "keyword", defaultValue = "") final String keyword,
+        @RequestParam(name = "keyword", defaultValue = "") @Length(max = 20) final String keyword,
         @LoginUser final SessionUserInfo member) {
         final Long memberId = getSessionUserId(member);
         final SkillInfo.FindDataListBySkillResponse info = skillFacade.getDataListBySkill(keyword, memberId);

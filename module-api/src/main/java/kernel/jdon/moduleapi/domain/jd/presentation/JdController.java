@@ -1,6 +1,8 @@
 package kernel.jdon.moduleapi.domain.jd.presentation;
 
+import org.hibernate.validator.constraints.Length;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +18,7 @@ import kernel.jdon.modulecommon.dto.response.CommonResponse;
 import lombok.RequiredArgsConstructor;
 
 @RestController
+@Validated
 @RequiredArgsConstructor
 public class JdController {
     private final JdFacade jdFacade;
@@ -36,7 +39,7 @@ public class JdController {
         @RequestParam(value = "skill", defaultValue = "") final String skill,
         @RequestParam(value = "jobCategory", defaultValue = "") final Long jobCategory,
         @RequestParam(value = "keywordType", defaultValue = "") final JdSearchType keywordType,
-        @RequestParam(value = "keyword", defaultValue = "") final String keyword,
+        @RequestParam(value = "keyword", defaultValue = "") @Length(max = 20) final String keyword,
         @RequestParam(value = "sort", defaultValue = "") final JdSortType sort) {
         final JdInfo.FindWantedJdListResponse info = jdFacade.getJdList(pageInfoRequest,
             JdCondition.of(skill, jobCategory, keywordType, keyword, sort));
