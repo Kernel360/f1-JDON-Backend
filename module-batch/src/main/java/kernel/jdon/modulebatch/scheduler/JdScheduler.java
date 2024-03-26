@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import kernel.jdon.modulebatch.global.exception.BatchException;
 import kernel.jdon.modulebatch.global.exception.BatchServerErrorCode;
+import kernel.jdon.modulecommon.slack.SlackSender;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -19,6 +20,7 @@ public class JdScheduler {
     private final JobLauncher jobLauncher;
     private final Job partWantedJdScrapingJob;
     private final Job allWantedJdScrapingJob;
+    private final SlackSender slackSender;
 
     @Scheduled(cron = "0 0 1 ? * SUN-TUE,THU-SAT") // 수요일을 제외한 모든 요일 01시
     public void runPartWantedJdScrapingJob() {
@@ -26,11 +28,11 @@ public class JdScheduler {
             .addLong("time", System.currentTimeMillis())
             .toJobParameters();
         try {
-            log.warn("[부분_원티드_채용공고_스크래핑_job] 스케줄러 시작");
+            slackSender.sendSchedulerStart("partWantedJdScrapingJob");
             jobLauncher.run(partWantedJdScrapingJob, jobParameters);
-            log.warn("[부분_원티드_채용공고_스크래핑_job] 스케줄러 종료");
+            slackSender.sendSchedulerEnd("partWantedJdScrapingJob");
         } catch (Exception e) {
-            log.error("[부분_원티드_채용공고_스크래핑_job] 실행중 Error 발생");
+            log.error("[partWantedJdScrapingJob] 실행중 Error 발생");
             throw new BatchException(BatchServerErrorCode.INTERNAL_SERVER_ERROR_SCHEDULER);
         }
     }
@@ -41,11 +43,11 @@ public class JdScheduler {
             .addLong("time", System.currentTimeMillis())
             .toJobParameters();
         try {
-            log.warn("[전체_원티드_채용공고_스크래핑_job] 스케줄러 시작");
+            slackSender.sendSchedulerStart("allWantedJdScrapingJob");
             jobLauncher.run(allWantedJdScrapingJob, jobParameters);
-            log.warn("[전체_원티드_채용공고_스크래핑_job] 스케줄러 종료");
+            slackSender.sendSchedulerEnd("allWantedJdScrapingJob");
         } catch (Exception e) {
-            log.error("[전체_원티드_채용공고_스크래핑_job] 실행중 Error 발생");
+            log.error("[allWantedJdScrapingJob] 실행중 Error 발생");
             throw new BatchException(BatchServerErrorCode.INTERNAL_SERVER_ERROR_SCHEDULER);
         }
     }
