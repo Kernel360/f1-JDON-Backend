@@ -149,8 +149,4 @@ public class CoffeeChat extends AbstractEntity {
     private void changeStatusOpen() {
         this.coffeeChatStatus = CoffeeChatActiveStatus.OPEN;
     }
-
-    public void changeStatusClose() {
-        this.coffeeChatStatus = CoffeeChatActiveStatus.CLOSE;
-    }
 }
