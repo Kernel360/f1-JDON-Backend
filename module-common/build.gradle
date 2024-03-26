@@ -28,6 +28,7 @@ dependencies {
 
     // slack
     implementation 'com.slack.api:slack-api-client:1.30.0'
+    implementation 'com.github.maricn:logback-slack-appender:1.4.0'
 
     compileOnly 'org.projectlombok:lombok'
 
