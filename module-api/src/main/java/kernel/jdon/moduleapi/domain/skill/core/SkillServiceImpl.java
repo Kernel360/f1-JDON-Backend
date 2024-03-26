@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import kernel.jdon.moduleapi.domain.jobcategory.core.JobCategoryReader;
 import kernel.jdon.moduleapi.domain.skill.core.inflearnjd.InflearnJdSkillReader;
 import kernel.jdon.moduleapi.domain.skill.core.wantedjd.WantedJdSkillReader;
-import kernel.jdon.moduleapi.domain.skill.infrastructure.keyword.SkillKeywordCache;
 import kernel.jdon.moduledomain.jobcategory.domain.JobCategory;
 import kernel.jdon.moduledomain.skill.domain.SkillType;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +22,6 @@ public class SkillServiceImpl implements SkillService {
     private final WantedJdSkillReader wantedJdSkillReader;
     private final InflearnJdSkillReader inflearnJdSkillReader;
     private final JobCategoryReader jobCategoryReader;
-    private final SkillKeywordCache skillKeywordCache;
 
     @Override
     public SkillInfo.FindHotSkillListResponse getHotSkillList() {
