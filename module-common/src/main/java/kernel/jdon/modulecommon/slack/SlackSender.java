@@ -72,6 +72,23 @@ public class SlackSender {
                 .putMessage("Active-Profile", activeProfile));
     }
 
+    public void sendSchedulerStart(final String jobSchedulerName) {
+        sendScheduler(jobSchedulerName, "배치 스케줄러 실행 알림");
+    }
+
+    public void sendSchedulerEnd(final String jobSchedulerName) {
+        sendScheduler(jobSchedulerName, "배치 스케줄러 종료 알림");
+    }
+
+    private void sendScheduler(final String jobSchedulerName, final String title) {
+        final String activeProfile = String.join(", ", applicationContext.getEnvironment().getActiveProfiles());
+        sendMessage(
+            SlackMessage.of(title)
+                .setColor("#439FE0")
+                .putMessage("Start-Job-Scheduler-Name", jobSchedulerName)
+                .putMessage("Active-Profile", activeProfile));
+    }
+
     @Getter
     @RequiredArgsConstructor
     @ConfigurationProperties(prefix = "logging.slack")
