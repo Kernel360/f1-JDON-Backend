@@ -3,7 +3,9 @@ package kernel.jdon.moduleapi.domain.coffeechat.presentation;
 import java.net.URI;
 import java.util.Optional;
 
+import org.hibernate.validator.constraints.Length;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -28,6 +30,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
+@Validated
 @RequiredArgsConstructor
 public class CoffeeChatController {
 
@@ -38,7 +41,7 @@ public class CoffeeChatController {
     public ResponseEntity<CommonResponse<CoffeeChatInfo.FindCoffeeChatListResponse>> getCoffeeChatList(
         @ModelAttribute final PageInfoRequest pageInfoRequest,
         @RequestParam(value = "sort", defaultValue = "") final CoffeeChatSortType sort,
-        @RequestParam(value = "keyword", defaultValue = "") final String keyword,
+        @RequestParam(value = "keyword", defaultValue = "") @Length(max = 20) final String keyword,
         @RequestParam(value = "jobCategory", defaultValue = "") final Long jobCategory) {
         final CoffeeChatCommand.FindCoffeeChatListRequest request = coffeeChatDtoMapper.of(
             new CoffeeChatCondition(sort, keyword, jobCategory));
