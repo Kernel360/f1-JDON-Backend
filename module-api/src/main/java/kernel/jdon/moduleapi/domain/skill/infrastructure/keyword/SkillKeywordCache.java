@@ -28,24 +28,24 @@ public class SkillKeywordCache {
     }
 
     /** 캐시에서 데이터 제공하는 부분 **/
-    public List<String> findRelatedKeywordList(String relatedKeyword) {
+    public List<String> findOriginKeywordList(String relatedKeyword) {
         Set<String> relatedKeywordSet = Optional.ofNullable(
                 hashOperations.get(SKILL_KEYWORDS, relatedKeyword.toLowerCase()))
-            .orElseGet(() -> findAndCacheRelatedKeywordList(relatedKeyword));
+            .orElseGet(() -> findAndCacheOriginKeywordList(relatedKeyword));
 
         return new ArrayList<>(relatedKeywordSet);
     }
 
-    private Set<String> findAndCacheRelatedKeywordList(String relatedKeyword) {
-        Set<String> relatedKeywordSet = skillKeywordRepository.findAllByRelatedKeywordIgnoreCase(relatedKeyword)
+    private Set<String> findAndCacheOriginKeywordList(String relatedKeyword) {
+        Set<String> originKeywordSet = skillKeywordRepository.findAllByRelatedKeywordIgnoreCase(relatedKeyword)
             .stream()
             .map(skillKeyword -> skillKeyword.getSkill().getKeyword().toLowerCase())
             .collect(Collectors.toSet());
 
-        if (!relatedKeywordSet.isEmpty()) {
-            hashOperations.put(SKILL_KEYWORDS, relatedKeyword.toLowerCase(), relatedKeywordSet);
+        if (!originKeywordSet.isEmpty()) {
+            hashOperations.put(SKILL_KEYWORDS, relatedKeyword.toLowerCase(), originKeywordSet);
         }
 
-        return relatedKeywordSet;
+        return originKeywordSet;
     }
 }

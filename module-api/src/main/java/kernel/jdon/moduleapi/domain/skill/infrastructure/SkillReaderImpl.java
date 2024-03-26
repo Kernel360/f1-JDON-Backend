@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import kernel.jdon.moduleapi.domain.skill.core.SkillInfo;
 import kernel.jdon.moduleapi.domain.skill.core.SkillReader;
 import kernel.jdon.moduleapi.domain.skill.error.SkillErrorCode;
+import kernel.jdon.moduleapi.domain.skill.infrastructure.keyword.SkillKeywordCache;
 import kernel.jdon.moduleapi.global.exception.ApiException;
 import kernel.jdon.moduledomain.skill.domain.Skill;
 import kernel.jdon.moduledomain.skillkeyword.domain.SkillKeyword;
@@ -16,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SkillReaderImpl implements SkillReader {
     private final SkillRepository skillRepository;
+    private final SkillKeywordCache skillKeywordCache;
     private final SkillReaderInfoMapper skillReaderInfoMapper;
 
     @Override
@@ -55,5 +57,10 @@ public class SkillReaderImpl implements SkillReader {
             .map(skillKeyword -> skillKeyword.getSkill().getKeyword())
             .distinct()
             .toList();
+    }
+
+    @Override
+    public List<String> findOriginKeywordList(String keyword) {
+        return skillKeywordCache.findOriginKeywordList(keyword);
     }
 }
