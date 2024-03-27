@@ -27,7 +27,7 @@ public class SkillKeywordCache {
         hashOperations = redisTemplate.opsForHash();
     }
 
-    /** 캐시에서 데이터 제공하는 부분 **/
+    /** 레디스에서 연관검색어에 따른 실제 키워드를 조회 후 반환하는 메서드 **/
     public List<String> findOriginKeywordListByRelatedKeyword(String relatedKeyword) {
         Set<String> relatedKeywordSet = Optional.ofNullable(
                 hashOperations.get(SKILL_KEYWORDS, relatedKeyword.toLowerCase()))
@@ -36,6 +36,7 @@ public class SkillKeywordCache {
         return new ArrayList<>(relatedKeywordSet);
     }
 
+    /** 레디스에 연관검색어가 존재하지 않을 경우 레디스에 저장한 후 반환하는 메서드 **/
     private Set<String> findAndCacheOriginKeywordList(String relatedKeyword) {
         Set<String> originKeywordSet = skillKeywordRepository.findAllByRelatedKeywordIgnoreCase(relatedKeyword)
             .stream()
