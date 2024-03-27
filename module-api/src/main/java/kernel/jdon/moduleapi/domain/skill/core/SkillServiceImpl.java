@@ -56,15 +56,20 @@ public class SkillServiceImpl implements SkillService {
             .orElseGet(this::getHotSkillKeyword);
 
         final List<String> findOriginSkillKeywordList = skillReader.findOriginKeywordListByKeyword(searchKeyword);
-        List<SkillInfo.FindJd> findJdList = Collections.emptyList();
-        List<SkillInfo.FindLecture> findLectureList = Collections.emptyList();
-        if (!findOriginSkillKeywordList.isEmpty()) {
-            findJdList = wantedJdSkillReader.findWantedJdListBySkill(findOriginSkillKeywordList);
-            findLectureList = inflearnJdSkillReader.findInflearnLectureListBySkill(findOriginSkillKeywordList,
-                memberId);
-        }
+        FindDataListDto findDataListDto = findDataListsIfKeywordExists(findOriginSkillKeywordList, memberId);
 
-        return new SkillInfo.FindDataListBySkillResponse(searchKeyword, findLectureList, findJdList);
+        return new SkillInfo.FindDataListBySkillResponse(searchKeyword, findDataListDto.findLectureList,
+            findDataListDto.findJdList);
+    }
+
+    private FindDataListDto findDataListsIfKeywordExists(List<String> keywordList, Long memberId) {
+        if (keywordList.isEmpty()) {
+            return new FindDataListDto(Collections.emptyList(), Collections.emptyList());
+        }
+        List<SkillInfo.FindJd> findJdList = wantedJdSkillReader.findWantedJdListBySkill(keywordList);
+        List<SkillInfo.FindLecture> findLectureList = inflearnJdSkillReader.findInflearnLectureListBySkill(keywordList,
+            memberId);
+        return new FindDataListDto(findLectureList, findJdList);
     }
 
     private String getHotSkillKeyword() {
