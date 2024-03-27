@@ -28,7 +28,7 @@ public class SkillKeywordCache {
     }
 
     /** 캐시에서 데이터 제공하는 부분 **/
-    public List<String> findOriginKeywordList(String relatedKeyword) {
+    public List<String> findOriginKeywordListByRelatedKeyword(String relatedKeyword) {
         Set<String> relatedKeywordSet = Optional.ofNullable(
                 hashOperations.get(SKILL_KEYWORDS, relatedKeyword.toLowerCase()))
             .orElseGet(() -> findAndCacheOriginKeywordList(relatedKeyword));

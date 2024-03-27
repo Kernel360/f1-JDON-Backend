@@ -61,6 +61,6 @@ public class SkillReaderImpl implements SkillReader {
 
     @Override
     public List<String> findOriginKeywordListByKeyword(String keyword) {
-        return skillKeywordCache.findOriginKeywordList(keyword);
+        return skillKeywordCache.findOriginKeywordListByRelatedKeyword(keyword);
     }
 }
