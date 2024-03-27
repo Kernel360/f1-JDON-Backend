@@ -13,17 +13,20 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import kernel.jdon.modulebatch.domain.wantedjd.repository.WantedJdRepository;
+import kernel.jdon.modulebatch.job.jd.listener.AllBackendWantedJobScrapingJStepListener;
 import kernel.jdon.modulebatch.job.jd.listener.AllWantedJobScrapingJobListener;
+import kernel.jdon.modulebatch.job.jd.listener.UpdateJdStatusStepListener;
 import kernel.jdon.modulebatch.job.jd.reader.AllBackendWantedJdItemReader;
 import kernel.jdon.modulebatch.job.jd.reader.AllFrontendWantedJdItemReader;
 import kernel.jdon.modulebatch.job.jd.reader.dto.WantedJobDetailListResponse;
 import kernel.jdon.modulebatch.job.jd.writer.WantedJdItemWriter;
+import kernel.jdon.modulecommon.slack.SlackSender;
 import lombok.RequiredArgsConstructor;
 
 @Configuration
 @RequiredArgsConstructor
 public class AllWantedJobScrapingJobConfig {
-
+    private static final String JOB_NAME = "allWantedJdScrapingJob";
     private static final int CHUNK_SIZE = 1;
 
     private final AllFrontendWantedJdItemReader allFrontendWantedJdItemReader;
@@ -31,6 +34,7 @@ public class AllWantedJobScrapingJobConfig {
     private final WantedJdItemWriter wantedJdItemWriter;
     private final PlatformTransactionManager platformTransactionManager;
     private final WantedJdRepository wantedJdRepository;
+    private final SlackSender slackSender;
 
     /**
      * [전체_원티드_채용공고_스크래핑]
@@ -39,7 +43,7 @@ public class AllWantedJobScrapingJobConfig {
      */
     @Bean
     public Job allWantedJdScrapingJob(JobRepository jobRepository) {
-        return new JobBuilder("allWantedJdScrapingJob", jobRepository)
+        return new JobBuilder(JOB_NAME, jobRepository)
             .incrementer(new RunIdIncrementer())
             .listener(new AllWantedJobScrapingJobListener())
             .start(allBackendWantedJdScrapingStep(jobRepository)) // 백엔드 JD 스크래핑
@@ -52,6 +56,7 @@ public class AllWantedJobScrapingJobConfig {
     @JobScope
     public Step allBackendWantedJdScrapingStep(JobRepository jobRepository) {
         return new StepBuilder("allBackendWantedJdScrapingStep", jobRepository)
+            .listener(new AllBackendWantedJobScrapingJStepListener(slackSender))
             .<WantedJobDetailListResponse, WantedJobDetailListResponse>chunk(CHUNK_SIZE, platformTransactionManager)
             .reader(allBackendWantedJdItemReader)
             .writer(wantedJdItemWriter)
@@ -62,6 +67,7 @@ public class AllWantedJobScrapingJobConfig {
     @JobScope
     public Step allFrontendWantedJdScrapingStep(JobRepository jobRepository) {
         return new StepBuilder("allFrontendWantedJdScrapingStep", jobRepository)
+            .listener(new AllBackendWantedJobScrapingJStepListener(slackSender))
             .<WantedJobDetailListResponse, WantedJobDetailListResponse>chunk(CHUNK_SIZE, platformTransactionManager)
             .reader(allFrontendWantedJdItemReader)
             .writer(wantedJdItemWriter)
@@ -72,6 +78,7 @@ public class AllWantedJobScrapingJobConfig {
     @JobScope
     public Step updateJdStatusStep(JobRepository jobRepository) {
         return new StepBuilder("updateJdStatusStep", jobRepository)
+            .listener(new UpdateJdStatusStepListener(slackSender))
             .tasklet((contribution, chunkContext) -> {
                 wantedJdRepository.updateWantedJdActiveStatus();
                 return RepeatStatus.FINISHED;

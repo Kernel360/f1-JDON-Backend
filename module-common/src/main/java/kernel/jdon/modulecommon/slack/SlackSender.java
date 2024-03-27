@@ -72,12 +72,23 @@ public class SlackSender {
                 .putMessage("Active-Profile", activeProfile));
     }
 
-    public void sendSchedulerStart(final String jobSchedulerName) {
-        sendScheduler(jobSchedulerName, "배치 스케줄러 실행 알림");
+    public void sendStepError(final String stepName) {
+        final String activeProfile = String.join(", ", applicationContext.getEnvironment().getActiveProfiles());
+        sendMessage(
+            SlackMessage.of("Step 에러 발생 알림")
+                .setColor("#ff0000")
+                .putMessage("Start-Module-Name", "module-batch")
+                .putMessage("Active-Profile", activeProfile)
+                .putMessage("Step-Name", stepName));
     }
 
-    public void sendSchedulerEnd(final String jobSchedulerName) {
-        sendScheduler(jobSchedulerName, "배치 스케줄러 종료 알림");
+    private void sendStep(final String stepName, final String title) {
+        final String activeProfile = String.join(", ", applicationContext.getEnvironment().getActiveProfiles());
+        sendMessage(
+            SlackMessage.of(title)
+                .setColor("#009000")
+                .putMessage("Start-Job-Scheduler-Name", stepName)
+                .putMessage("Active-Profile", activeProfile));
     }
 
     private void sendScheduler(final String jobSchedulerName, final String title) {
@@ -87,6 +98,22 @@ public class SlackSender {
                 .setColor("#009000")
                 .putMessage("Start-Job-Scheduler-Name", jobSchedulerName)
                 .putMessage("Active-Profile", activeProfile));
+    }
+
+    public void sendSchedulerStart(final String jobSchedulerName) {
+        sendScheduler(jobSchedulerName, "배치 스케줄러 실행 알림");
+    }
+
+    public void sendSchedulerEnd(final String jobSchedulerName) {
+        sendScheduler(jobSchedulerName, "배치 스케줄러 종료 알림");
+    }
+
+    public void sendStepStart(final String stepName) {
+        sendStep(stepName, "배치 Step 실행 알림");
+    }
+
+    public void sendStepEnd(final String stepName) {
+        sendStep(stepName, "배치 Step 종료 알림");
     }
 
     @Getter
