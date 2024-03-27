@@ -24,7 +24,7 @@ public class InflearnJobExecutionListener implements JobExecutionListener {
         } else if (jobExecution.getStatus() == BatchStatus.FAILED) {
             log.error("Job FAILED");
         } else {
-            log.info("Job 종료 status :" + jobExecution.getStatus());
+            log.info("Job 종료 status : {}", jobExecution.getStatus());
         }
     }
 }
