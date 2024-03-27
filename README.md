@@ -70,8 +70,9 @@
 ![](docs/images/jdon_erd.png)
 
 ### 🏗️ Architecture
-
-![architecture](docs/images/jdon_architecture.png)
+| Back-End                                      | 운영 & 개발 환경 구축                                           |
+|---------------------------------------------|-----------------------------------------------------------|
+| ![jdon-architecture_720](https://github.com/Kernel360/f1-JDON-Backend/assets/86637372/602d3814-6a64-4e03-b676-94ed0c3814be) |![jdon-server_720](https://github.com/Kernel360/f1-JDON-Backend/assets/86637372/98dc3590-11e0-4835-81d4-83116a9e5cce)
 
 ### 📚️ 개발 기록
 
