@@ -42,7 +42,7 @@ public class PartWantedJdScrapingJobConfig {
     public Job partWantedJdScrapingJob(JobRepository jobRepository) {
         return new JobBuilder(JOB_NAME, jobRepository)
             .incrementer(new RunIdIncrementer())
-            .listener(new PartWantedJobScrapingJobListener())
+            .listener(new PartWantedJobScrapingJobListener(slackSender))
             .start(partBackendWantedJdScrapingStep(jobRepository)) // 백엔드 JD 스크래핑
             .next(partFrontendWantedJdScrapingStep(jobRepository)) // 프론트엔드 JD 스크래핑
             .build();
