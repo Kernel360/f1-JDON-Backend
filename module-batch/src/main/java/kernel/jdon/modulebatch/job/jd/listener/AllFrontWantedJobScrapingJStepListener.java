@@ -34,7 +34,6 @@ public class AllFrontWantedJobScrapingJStepListener implements StepExecutionList
         }
         if (stepExecution.getStatus() == BatchStatus.COMPLETED) {
             slackSender.sendStepEnd(STEP_NAME);
-
         }
         log.info("[AllFrontWantedJobScrapingJStepListener #afterJob] stepExecution is " + stepExecution.getStatus());
 
