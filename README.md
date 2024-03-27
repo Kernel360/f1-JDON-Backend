@@ -20,25 +20,26 @@
 
 [JDON 바로가기](https://jdon.kr) 👉🏻 https://jdon.kr
 
-| 기술스택별 인프런 강의 & JD 추천                                                                                                                 | 기술 스택 검색 페이지                                                                                                   |
+| 기술스택별 인프런 강의 & JD 추천                                                                                                                 | 검색 & 찜하기                                                                                                  |
 |--------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------|
-| ![jdon-main.png](docs%2Fimages%2Fjdon-main.png)                                                                                      | ![jdon-skill-search.png](docs%2Fimages%2Fjdon-skill-search.png)                                                |
-| 원티드에서 크롤링 해온 기술스택 키워드를 기반으로 <br> 관련있는 인프런 인기 강의와 해당 기술에 관심을 가진 회사의 Job Description을 제공합니다. <br/> JDON의 회원이 아니어도 해당 서비스를 제공받을 수 있습니다. | 검색한 기술 키워드와 관련된 인프런 인기 강의와 해당 기술에 관심을 가진 회사의 Job Description을 제공합니다. <br/> JDON의 회원이 아니어도 해당 서비스를 제공받을 수 있습니다. |
+| ![3_JD목록검색_필터검색상세](https://github.com/Kernel360/f1-JDON-Backend/assets/86637372/815f3d05-3ab0-4e13-b0cd-6e49d91adea8) | ![검색_찜](https://github.com/Kernel360/f1-JDON-Backend/assets/86637372/d121882e-92c3-492d-bed4-4dd7e498caa8) |
+| 원티드에서 크롤링 해온 기술스택 키워드를 기반으로 <br> 관련있는 인프런 인기 강의와 해당 기술에 관심을 가진 회사의 Job Description을 제공합니다. <br/>검색한 기술 키워드와 관련된 인프런 인기 강의와 해당 기술에 관심을 가진 회사의 Job Description을 제공합니다.</br> JDON의 회원이 아니어도 해당 서비스를 제공받을 수 있습니다. | 검색한 기술 키워드와 관련된 인프런 인기 강의와 해당 기술에 관심을 가진 회사의 Job Description을 제공합니다. <br/> 강의 찜하기 기능도 제공합니다. </br> JDON의 회원에게 해당 서비스를 제공합니다. |
 
-| 커피챗 커뮤니티                                                    | 커피챗 상세 조회                                                                                         |
+| 커피챗 오픈 & 상세조회                                                    | 커피챗 신청                                                                                         |
 |-------------------------------------------------------------|---------------------------------------------------------------------------------------------------|
-| ![jdon-coffeechat.png](docs%2Fimages%2Fjdon-coffeechat.png) | ![jdon-coffeechat-detail.png](docs%2Fimages%2Fjdon-coffeechat-detail.png)                         |
-| JDON 회원이 생성한 커피챗 목록을 확인할 수 있습니다.                            | JDON의 회원은 커피챗을 자유롭게 오픈할 수 있습니다. <br> 커피챗을 오픈하기 위해서는 커피챗 진행 날짜, 시간, 모임 인원 그리고 커피챗 제목과 내용을 작성해야합니다. |
+| ![5_커피챗 오픈 상세페이지 이동](https://github.com/Kernel360/f1-JDON-Backend/assets/86637372/3719380e-1a0a-4139-a175-414fd880113a) | ![6_커피챗_신청_모집상태_변경](https://github.com/Kernel360/f1-JDON-Backend/assets/86637372/9eef99f5-c54b-49d8-9e13-ff1dc58e0a47)                         |
+| JDON의 회원은 커피챗을 자유롭게 오픈할 수 있습니다. <br> 커피챗을 오픈하기 위해서는 커피챗 진행 날짜, 시간, 모임 인원 그리고 커피챗 제목과 내용을 작성해야합니다.</br> JDON 회원이 생성한 커피챗 목록을 확인할 수 있습니다.                            | JDON의 회원은 커피챗을 자유롭게 참여할 수 있습니다. |
 
-| JD-on                                       | JD 상세 조회                                                  |
+| JD-ON 조회 & 상세조회                                      | JD 리뷰                                           |
 |---------------------------------------------|-----------------------------------------------------------|
-| ![jdon-jd.png](docs%2Fimages%2Fjdon-jd.png) | ![jdon-jd-detail.png](docs%2Fimages%2Fjdon-jd-detail.png) |
-| 원티드에 게시된 JD를 조회할 수 있습니다.                    | JD의 상세 내용과 JDON 사용자가 작성한 리뷰를 확인할 수 있습니다.                  |
+| ![3_JD목록검색_필터검색상세](https://github.com/Kernel360/f1-JDON-Backend/assets/86637372/f80a531d-6e74-46cb-8d92-7360eecea329) | ![04_리뷰작성조회삭제](https://github.com/Kernel360/f1-JDON-Backend/assets/86637372/a462216c-8299-44ba-b003-767e3f48926f) |
+| 원티드에 게시된 JD를 필터 조건을 사용해서 조회할 수 있습니다.                    | JD의 상세 내용과 JDON 사용자가 작성한 리뷰를 확인할 수 있습니다.                  |
 
-| 로그인 페이지                                           | 마이페이지                                                     |
+| 로그인                                           | 회원가입                                                     |
 |---------------------------------------------------|-----------------------------------------------------------|
-| ![jdon-login.png](docs%2Fimages%2Fjdon-login.png) | ![jdon-my.png](docs%2Fimages%2Fjdon-my.png)               |
-| JDON은 카카오와 깃헙을 통해서 로그인하실 수 있습니다.                  | 마이페이지에서는 내가 찜한 강의 목록, 신청한 커피챗 목록, 오픈한 커피챗 목록을 확인할 수 있습니다. |
+| ![로그인](https://github.com/Kernel360/f1-JDON-Backend/assets/86637372/cf9fd043-1476-435f-835c-d11f9d053505) | ![회원가입](https://github.com/Kernel360/f1-JDON-Backend/assets/86637372/b30ab20f-682e-497d-a1b6-e3874ee80ab5)               |
+| JDON은 카카오와 깃헙을 통해서 로그인하실 수 있습니다.                  | JDON은 카카오와 깃헙을 통해서 회원가입하실 수 있습니다.     |
+
 
 ## 🗃️ 개발 기록
 
@@ -69,8 +70,9 @@
 ![](docs/images/jdon_erd.png)
 
 ### 🏗️ Architecture
-
-![architecture](docs/images/jdon_architecture.png)
+| Back-End                                      | 운영 & 개발 환경 구축                                           |
+|---------------------------------------------|-----------------------------------------------------------|
+| ![jdon-architecture_720](https://github.com/Kernel360/f1-JDON-Backend/assets/86637372/602d3814-6a64-4e03-b676-94ed0c3814be) |![jdon-server_720](https://github.com/Kernel360/f1-JDON-Backend/assets/86637372/98dc3590-11e0-4835-81d4-83116a9e5cce)
 
 ### 📚️ 개발 기록
 
