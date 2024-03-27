@@ -32,11 +32,11 @@ public class SkillCacheInitializer {
         List<Skill> skillList = skillRepository.findAll();
         skillList.forEach(skill -> {
             String keyword = skill.getKeyword().toLowerCase();
-            cacheKeyword(keyword);
+            loadKeywordIntoCache(keyword);
         });
     }
 
-    private void cacheKeyword(String keyword) {
+    private void loadKeywordIntoCache(String keyword) {
         hashOperations.putIfAbsent(SKILL_KEYWORDS, keyword, new HashSet<>(Set.of(keyword)));
     }
 }
