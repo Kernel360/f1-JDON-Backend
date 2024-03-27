@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import kernel.jdon.modulebatch.global.exception.BatchException;
 import kernel.jdon.modulebatch.global.exception.BatchServerErrorCode;
+import kernel.jdon.modulecommon.slack.SlackSender;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -21,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 public class InflearnScheduler {
     private final JobLauncher jobLauncher;
     private final Job inflearnCourseScrapingJob;
+    private final SlackSender slackSender;
 
     @Scheduled(cron = "3 0 0 ? * MON")
     public void runInflearnCrawlJob() {
@@ -28,9 +30,9 @@ public class InflearnScheduler {
             .addString("DATETIME", LocalDateTime.now().toString())
             .toJobParameters();
         try {
-            log.info("[인프런_강의_스크래핑_job] 스케줄러 시작");
+            slackSender.sendSchedulerStart("inflearnCrawlJob");
             jobLauncher.run(inflearnCourseScrapingJob, jobParameters);
-            log.info("[인프런_강의_스크래핑_job] 스케줄러 종료");
+            slackSender.sendSchedulerEnd("inflearnCrawlJob");
         } catch (JobExecutionException je) {
             log.error("[인프런_강의_스크래핑_job] 실행 중 에러 발생");
             log.info("JobExecution : " + je);
