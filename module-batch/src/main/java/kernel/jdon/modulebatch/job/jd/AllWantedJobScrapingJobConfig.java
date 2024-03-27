@@ -14,6 +14,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 import kernel.jdon.modulebatch.domain.wantedjd.repository.WantedJdRepository;
 import kernel.jdon.modulebatch.job.jd.listener.AllBackendWantedJobScrapingJStepListener;
+import kernel.jdon.modulebatch.job.jd.listener.AllFrontWantedJobScrapingJStepListener;
 import kernel.jdon.modulebatch.job.jd.listener.AllWantedJobScrapingJobListener;
 import kernel.jdon.modulebatch.job.jd.listener.UpdateJdStatusStepListener;
 import kernel.jdon.modulebatch.job.jd.reader.AllBackendWantedJdItemReader;
@@ -67,7 +68,7 @@ public class AllWantedJobScrapingJobConfig {
     @JobScope
     public Step allFrontendWantedJdScrapingStep(JobRepository jobRepository) {
         return new StepBuilder("allFrontendWantedJdScrapingStep", jobRepository)
-            .listener(new AllBackendWantedJobScrapingJStepListener(slackSender))
+            .listener(new AllFrontWantedJobScrapingJStepListener(slackSender))
             .<WantedJobDetailListResponse, WantedJobDetailListResponse>chunk(CHUNK_SIZE, platformTransactionManager)
             .reader(allFrontendWantedJdItemReader)
             .writer(wantedJdItemWriter)
