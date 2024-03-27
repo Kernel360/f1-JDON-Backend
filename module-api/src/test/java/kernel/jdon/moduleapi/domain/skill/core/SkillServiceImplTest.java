@@ -19,7 +19,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import kernel.jdon.moduleapi.domain.jobcategory.core.JobCategoryReader;
 import kernel.jdon.moduleapi.domain.skill.core.inflearnjd.InflearnJdSkillReader;
 import kernel.jdon.moduleapi.domain.skill.core.wantedjd.WantedJdSkillReader;
-import kernel.jdon.moduleapi.domain.skill.infrastructure.keyword.SkillKeywordCache;
 import kernel.jdon.moduledomain.jobcategory.domain.JobCategory;
 import kernel.jdon.util.JsonFileReader;
 
@@ -34,8 +33,6 @@ class SkillServiceImplTest {
     private WantedJdSkillReader wantedJdSkillReader;
     @Mock
     private InflearnJdSkillReader inflearnJdSkillReader;
-    @Mock
-    private SkillKeywordCache skillKeywordCache;
     @InjectMocks
     private SkillServiceImpl skillServiceImpl;
 

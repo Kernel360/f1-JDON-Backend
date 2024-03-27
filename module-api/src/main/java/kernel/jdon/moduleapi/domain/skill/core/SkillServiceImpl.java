@@ -50,26 +50,32 @@ public class SkillServiceImpl implements SkillService {
 
     @Override
     public SkillInfo.FindDataListBySkillResponse getDataListBySkill(final String relatedKeyword, final Long memberId) {
-        String searchKeyword = Optional.ofNullable(relatedKeyword)
+        final String searchKeyword = Optional.ofNullable(relatedKeyword)
             .map(String::trim)
             .filter(keyword -> !keyword.isEmpty())
             .orElseGet(this::getHotSkillKeyword);
 
         final List<String> findOriginSkillKeywordList = skillReader.findOriginKeywordListByKeyword(searchKeyword);
-        FindDataListDto findDataListDto = findDataListsIfKeywordExists(findOriginSkillKeywordList, memberId);
+        final List<SkillInfo.FindLecture> findLectureList = findLectureList(findOriginSkillKeywordList, memberId);
+        final List<SkillInfo.FindJd> findJdList = findJdList(findOriginSkillKeywordList);
 
-        return new SkillInfo.FindDataListBySkillResponse(searchKeyword, findDataListDto.findLectureList,
-            findDataListDto.findJdList);
+        return new SkillInfo.FindDataListBySkillResponse(searchKeyword, findLectureList, findJdList);
     }
 
-    private FindDataListDto findDataListsIfKeywordExists(List<String> keywordList, Long memberId) {
-        if (keywordList.isEmpty()) {
-            return new FindDataListDto(Collections.emptyList(), Collections.emptyList());
+    private List<SkillInfo.FindLecture> findLectureList(final List<String> findOriginSkillKeywordList,
+        final Long memberId) {
+        if (findOriginSkillKeywordList.isEmpty()) {
+            return Collections.emptyList();
         }
-        List<SkillInfo.FindJd> findJdList = wantedJdSkillReader.findWantedJdListBySkill(keywordList);
-        List<SkillInfo.FindLecture> findLectureList = inflearnJdSkillReader.findInflearnLectureListBySkill(keywordList,
+        return inflearnJdSkillReader.findInflearnLectureListBySkill(findOriginSkillKeywordList,
             memberId);
-        return new FindDataListDto(findLectureList, findJdList);
+    }
+
+    private List<SkillInfo.FindJd> findJdList(final List<String> findOriginSkillKeywordList) {
+        if (findOriginSkillKeywordList.isEmpty()) {
+            return Collections.emptyList();
+        }
+        return wantedJdSkillReader.findWantedJdListBySkill(findOriginSkillKeywordList);
     }
 
     private String getHotSkillKeyword() {
