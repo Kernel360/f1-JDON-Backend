@@ -16,5 +16,5 @@ public interface SkillReader {
 
     List<String> findOriginSkillKeywordListBySkillKeywordList(List<SkillKeyword> findSkillKeywordList);
 
-    List<String> findOriginKeywordList(String keyword);
+    List<String> findOriginKeywordListByKeyword(String keyword);
 }
