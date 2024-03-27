@@ -30,7 +30,7 @@ public class InflearnCourseClient {
     private DynamicSleepTimeManager sleepTimeManager;
 
     public InflearnCourseAndSkillKeywordInfo getInflearnDataByKeyword(String keyword) {
-        log.info("keyword:" + keyword);
+        log.info("keyword: {}", keyword);
         InflearnCourseCounter inflearnCourseCounter = new InflearnCourseCounter();
         this.sleepTimeManager = new DynamicSleepTimeManager(scrapingInflearnProperties);
         processKeyword(keyword, inflearnCourseCounter);
@@ -73,7 +73,7 @@ public class InflearnCourseClient {
         try {
             Elements scrapeCourseElements = courseScraper.scrapeCourses(currentUrl);
             int coursesCount = scrapeCourseElements.size();
-            log.info("페이지에 존재하는 강의 수: " + coursesCount);
+            log.info("페이지에 존재하는 강의 수: {}", coursesCount);
             parseAndCreateCourses(scrapeCourseElements, skillKeyword, inflearnCourseCounter);
             return true;
         } catch (Exception e) {
@@ -109,7 +109,7 @@ public class InflearnCourseClient {
             if (parsedCourse != null) {
                 inflearnCourseCounter.addNewCourse(parsedCourse);
                 inflearnCourseCounter.incrementSavedCourseCount();
-                log.info("savedCourseCount: " + inflearnCourseCounter.getSavedCourseCount());
+                log.info("savedCourseCount: {}", inflearnCourseCounter.getSavedCourseCount());
             }
         }
     }

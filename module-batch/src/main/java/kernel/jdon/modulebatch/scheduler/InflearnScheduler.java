@@ -35,7 +35,7 @@ public class InflearnScheduler {
             slackSender.sendSchedulerEnd("inflearnCrawlJob");
         } catch (JobExecutionException je) {
             log.error("[인프런_강의_스크래핑_job] 실행 중 에러 발생");
-            log.info("JobExecution : " + je);
+            log.info("JobExecution", je);
             throw new BatchException(BatchServerErrorCode.INTERNAL_SERVER_ERROR_SCHEDULER);
         }
     }
