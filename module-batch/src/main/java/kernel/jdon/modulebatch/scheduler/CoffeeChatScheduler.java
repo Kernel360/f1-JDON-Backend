@@ -17,7 +17,7 @@ public class CoffeeChatScheduler {
     private final SlackSender slackSender;
 
     @Transactional
-    @Scheduled(cron = "0 30 * * * ?")
+    @Scheduled(cron = "0 0/30 * * * ?")
     public void expirePastCoffeeChats() {
         log.info("[expirePastCoffeeChats] 스케쥴러 실행");
         slackSender.sendSchedulerStart("expirePastCoffeeChats");
