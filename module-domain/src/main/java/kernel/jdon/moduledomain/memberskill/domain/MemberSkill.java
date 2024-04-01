@@ -25,11 +25,11 @@ public class MemberSkill {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id", columnDefinition = "BIGINT")
+    @JoinColumn(name = "member_id", columnDefinition = "BIGINT", nullable = false)
     private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "skill_id", columnDefinition = "BIGINT")
+    @JoinColumn(name = "skill_id", columnDefinition = "BIGINT", nullable = false)
     private Skill skill;
 
     @Builder

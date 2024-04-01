@@ -38,11 +38,11 @@ public class Favorite {
     private LocalDateTime createdDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id", columnDefinition = "BIGINT")
+    @JoinColumn(name = "member_id", columnDefinition = "BIGINT", nullable = false)
     private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "inflearn_id", columnDefinition = "BIGINT")
+    @JoinColumn(name = "inflearn_id", columnDefinition = "BIGINT", nullable = false)
     private InflearnCourse inflearnCourse;
 
     @Builder

@@ -35,18 +35,6 @@ import lombok.NoArgsConstructor;
 @Table(name = "member")
 public class Member {
 
-    @OneToMany(mappedBy = "member")
-    private List<CoffeeChat> hostChatList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "member")
-    private List<CoffeeChatMember> guestChatList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<MemberSkill> memberSkillList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "member")
-    private List<Favorite> favoriteList = new ArrayList<>();
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -87,8 +75,20 @@ public class Member {
     private SocialProviderType socialProvider;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "job_category_id", columnDefinition = "BIGINT")
+    @JoinColumn(name = "job_category_id", columnDefinition = "BIGINT", nullable = false)
     private JobCategory jobCategory;
+
+    @OneToMany(mappedBy = "member")
+    private List<CoffeeChat> hostChatList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    private List<CoffeeChatMember> guestChatList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<MemberSkill> memberSkillList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    private List<Favorite> favoriteList = new ArrayList<>();
 
     @Builder
     public Member(Long id, String email, String nickname, String birth, Gender gender, LocalDateTime joinDate,

@@ -26,11 +26,11 @@ public class InflearnJdSkill {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "course_id", columnDefinition = "BIGINT")
+    @JoinColumn(name = "course_id", columnDefinition = "BIGINT", nullable = false)
     private InflearnCourse inflearnCourse;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "skill_id", columnDefinition = "BIGINT")
+    @JoinColumn(name = "skill_id", columnDefinition = "BIGINT", nullable = false)
     private Skill skill;
 
     @Builder

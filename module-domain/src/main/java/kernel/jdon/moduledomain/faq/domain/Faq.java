@@ -20,6 +20,7 @@ import lombok.NoArgsConstructor;
 @DynamicUpdate
 @Table(name = "faq")
 public class Faq extends AbstractEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

@@ -28,7 +28,7 @@ public class SkillKeyword {
     private String relatedKeyword;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "skill_id", referencedColumnName = "id")
+    @JoinColumn(name = "skill_id", columnDefinition = "BIGINT", nullable = false)
     private Skill skill;
 }
 
