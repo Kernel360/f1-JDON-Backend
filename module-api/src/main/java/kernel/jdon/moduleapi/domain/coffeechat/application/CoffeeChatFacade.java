@@ -68,9 +68,10 @@ public class CoffeeChatFacade {
             boolean available = lock.tryLock(lockConfig.getWaitTime(), lockConfig.getLeaseTime(),
                 TimeUnit.SECONDS);
             if (!available) {
-                log.info("커피챗 신청 중 lock 획득 실패, coffeeChatId={} memberId={}", coffeeChatId, memberId);
+                log.info("커피챗 신청 lock 획득 실패, coffeeChatId={}, memberId={}", coffeeChatId, memberId);
                 throw new ApiException(CoffeeChatErrorCode.LOCK_ACQUISITION_FAILURE);
             }
+            log.info("커피챗 신청 lock 획득 성공, coffeeChatId={}, memberId={}", coffeeChatId, memberId);
 
             return coffeeChatService.applyCoffeeChat(coffeeChatId, memberId);
 
@@ -79,6 +80,7 @@ public class CoffeeChatFacade {
             throw new ApiException(CoffeeChatErrorCode.THREAD_INTERRUPTED);
         } finally {
             lock.unlock();
+            log.info("커피챗 신청 lock 반납 성공, coffeeChatId={}, memberId={}", coffeeChatId, memberId);
         }
     }
 
