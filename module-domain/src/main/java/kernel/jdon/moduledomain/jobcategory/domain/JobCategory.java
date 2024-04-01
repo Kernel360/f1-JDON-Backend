@@ -13,6 +13,7 @@ import jakarta.persistence.Table;
 import kernel.jdon.moduledomain.base.AbstractEntity;
 import kernel.jdon.moduledomain.skill.domain.Skill;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -37,4 +38,11 @@ public class JobCategory extends AbstractEntity {
 
     @OneToMany(mappedBy = "jobCategory")
     private List<Skill> skillList = new ArrayList<>();
+
+    @Builder
+    public JobCategory(String name, String wantedCode) {
+        this.name = name;
+        this.wantedCode = wantedCode;
+    }
+
 }
