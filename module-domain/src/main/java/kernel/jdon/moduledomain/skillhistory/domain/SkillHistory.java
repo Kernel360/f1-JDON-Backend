@@ -20,6 +20,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "skill_history")
 public class SkillHistory {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,11 +29,11 @@ public class SkillHistory {
     private String keyword;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "job_category_id", columnDefinition = "BIGINT")
+    @JoinColumn(name = "job_category_id", columnDefinition = "BIGINT", nullable = false)
     private JobCategory jobCategory;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "wanted_jd_id", columnDefinition = "BIGINT")
+    @JoinColumn(name = "wanted_jd_id", columnDefinition = "BIGINT", nullable = false)
     private WantedJd wantedJd;
 
     public SkillHistory(String keyword, JobCategory jobCategory, WantedJd wantedJd) {

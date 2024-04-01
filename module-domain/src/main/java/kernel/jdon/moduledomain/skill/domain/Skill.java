@@ -37,12 +37,12 @@ public class Skill {
     @Column(name = "keyword", columnDefinition = "VARCHAR(50)", nullable = false)
     private String keyword;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "job_category_id", columnDefinition = "BIGINT", nullable = false)
+    private JobCategory jobCategory;
+    
     @OneToMany(mappedBy = "skill")
     private List<WantedJdSkill> wantedJdSkillList = new ArrayList<>();
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "job_category_id", columnDefinition = "BIGINT")
-    private JobCategory jobCategory;
 
     @OneToMany(mappedBy = "skill")
     private List<SkillKeyword> skillKeywordList = new ArrayList<>();
