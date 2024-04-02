@@ -1,12 +1,20 @@
 name: JDON-Backend PROD CI-CD
 
 on:
-  pull_request:
-    types: [ opened, closed ]
-    branches: [ main ]
-
-permissions:
-  contents: read
+  workflow_dispatch:
+    branches:
+      - main
+    inputs:
+      tags:
+        description: '배포할 서버'
+        required: true
+        type: choice
+        default: 'all'
+        options:
+          - all
+          - api
+          - batch
+          - crawler
 
 jobs:
   integration:
@@ -46,9 +54,7 @@ jobs:
   deploy:
     needs: integration
     runs-on: ubuntu-latest
-    if: >
-      github.event.pull_request.merged == true &&
-      !contains(join(github.event.pull_request.labels.*.name, ','), 'NO-Deploy')
+
     steps:
       - name: Deploy to Dev-EC2
         uses: appleboy/ssh-action@v1.0.3
@@ -57,6 +63,30 @@ jobs:
           username: ${{ secrets.AWS_PROD_USERNAME }}
           key: ${{ secrets.AWS_PROD_KEY }}
           script: |
+            echo "> Git pull"
+            cd /home/ec2-user/app/f1-JDON-Backend
+            git pull origin main
+            
+            echo "> deploy-shell-script 실행"
             cd /home/ec2-user/app
-            sh module-api-deploy.sh
+            TAGS="${{ github.event.inputs.tags }}"
+            if [ "$TAGS" = "all" ]; then
+              echo "all"
+              sh module-api-deploy.sh
+              sh module-batch-deploy.sh
+              sh module-crawler-deploy.sh
+            elif [ "$TAGS" = "api" ]; then
+              echo "api"
+              sh module-api-deploy.sh
+            elif [ "$TAGS" = "batch" ]; then
+              echo "batch"
+              sh module-batch-deploy.sh
+            elif [ "$TAGS" = "crawler" ]; then
+              echo "crawler"
+              sh module-crawler-deploy.sh
+            else
+              echo "Invalid option"
+              exit 1
+            fi
+
             echo "deploy success"
