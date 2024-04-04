@@ -28,6 +28,7 @@ import kernel.jdon.moduleapi.domain.inflearncourse.error.InflearncourseErrorCode
 import kernel.jdon.moduleapi.global.dto.SessionUserInfo;
 import kernel.jdon.moduledomain.favorite.domain.Favorite;
 import kernel.jdon.moduledomain.inflearncourse.domain.InflearnCourse;
+import kernel.jdon.moduledomain.jobcategory.domain.JobCategory;
 import kernel.jdon.moduledomain.member.domain.Gender;
 import kernel.jdon.moduledomain.member.domain.Member;
 import kernel.jdon.moduledomain.member.domain.MemberAccountStatus;
@@ -54,7 +55,9 @@ class FavoriteControllerIntegrationTest {
 
     @BeforeEach
     void setUp() {
-        Member member = mockMember();
+        JobCategory jobCategory = mockJobCategory();
+        entityManager.persist(jobCategory);
+        Member member = mockMember(jobCategory);
         entityManager.persist(member);
 
         SessionUserInfo mockUserInfo = SessionUserInfo.builder()
@@ -167,7 +170,7 @@ class FavoriteControllerIntegrationTest {
             .build();
     }
 
-    private Member mockMember() {
+    private Member mockMember(JobCategory jobCategory) {
         return Member.builder()
             .email("이메일@kakao.com")
             .nickname("닉네임")
@@ -177,10 +180,19 @@ class FavoriteControllerIntegrationTest {
             .role(MemberRole.ROLE_USER)
             .accountStatus(MemberAccountStatus.ACTIVE)
             .socialProvider(SocialProviderType.KAKAO)
+            .jobCategory(jobCategory)
+            .build();
+    }
+
+    private JobCategory mockJobCategory() {
+        return JobCategory.builder()
+            .name("jobCategory 이름")
+            .wantedCode("원티드 코드")
             .build();
     }
 
     private InflearnCourse mockInflearnCourse(Long courseId) {
+
         return InflearnCourse.builder()
             .courseId(courseId)
             .title("강의 제목")
