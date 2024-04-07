@@ -9,12 +9,14 @@ import org.springframework.stereotype.Component;
 
 import kernel.jdon.modulebatch.global.exception.BatchException;
 import kernel.jdon.modulebatch.global.exception.BatchServerErrorCode;
+import kernel.jdon.modulecommon.log.annotation.QueryCounter;
 import kernel.jdon.modulecommon.slack.SlackSender;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
+@QueryCounter
 @RequiredArgsConstructor
 public class JdScheduler {
     private final JobLauncher jobLauncher;
