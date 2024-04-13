@@ -1,4 +1,4 @@
-package kernel.jdon.modulecrawler.legacy.config;
+package kernel.jdon.modulecrawler.global.config;
 
 import java.time.Duration;
 
