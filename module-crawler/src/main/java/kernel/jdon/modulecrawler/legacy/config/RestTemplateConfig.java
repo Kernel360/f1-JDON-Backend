@@ -10,8 +10,8 @@ import org.springframework.retry.policy.SimpleRetryPolicy;
 import org.springframework.retry.support.RetryTemplate;
 import org.springframework.web.client.RestTemplate;
 
-import kernel.jdon.modulecrawler.legacy.global.error.code.CrawlerServerErrorCode;
-import kernel.jdon.modulecrawler.legacy.global.error.exception.CrawlerException;
+import kernel.jdon.modulecrawler.global.exception.CrawlerException;
+import kernel.jdon.modulecrawler.global.exception.CrawlerServerErrorCode;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -37,7 +37,7 @@ public class RestTemplateConfig {
             try {
                 return retryTemplate.execute(context -> execution.execute(request, body));
             } catch (Throwable throwable) {
-                log.error("AppConfig.clientHttpRequestInterceptor {}", "restTemplate retry 중 Error 발생");
+                log.error("RestTemplateConfig.clientHttpRequestInterceptor {}", "restTemplate retry 중 Error 발생");
                 throw new CrawlerException((CrawlerServerErrorCode.INTERNAL_SERVER_ERROR_REST_TEMPLATE_RETRY));
             }
         };

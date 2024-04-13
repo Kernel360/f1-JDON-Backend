@@ -1,4 +1,4 @@
-package kernel.jdon.modulecrawler.legacy.global.error.exception;
+package kernel.jdon.modulecrawler.global.exception;
 
 import kernel.jdon.modulecommon.error.ErrorCode;
 import lombok.Getter;

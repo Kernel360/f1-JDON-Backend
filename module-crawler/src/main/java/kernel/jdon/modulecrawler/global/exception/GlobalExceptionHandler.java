@@ -1,4 +1,4 @@
-package kernel.jdon.modulecrawler.legacy.global.error.exception;
+package kernel.jdon.modulecrawler.global.exception;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

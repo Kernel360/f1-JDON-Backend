@@ -1,15 +1,15 @@
-package kernel.jdon.modulecrawler.legacy.global.error.code;
+package kernel.jdon.modulecrawler.global.exception;
 
 import org.springframework.http.HttpStatus;
 
 import kernel.jdon.modulecommon.error.BaseThrowException;
 import kernel.jdon.modulecommon.error.ErrorCode;
-import kernel.jdon.modulecrawler.legacy.global.error.exception.CrawlerException;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public enum CrawlerServerErrorCode implements ErrorCode,
     BaseThrowException<CrawlerServerErrorCode.CrawlerServerBaseException> {
+    INTERNAL_SERVER_ERROR_THREAD_SLEEP(HttpStatus.INTERNAL_SERVER_ERROR, "Thread sleep 중 서버 에러가 발생했습니다."),
     INTERNAL_SERVER_ERROR_REST_TEMPLATE_RETRY(HttpStatus.INTERNAL_SERVER_ERROR, "RestTemplate Retry 중 서버 에러가 발생했습니다.");
 
     private final HttpStatus httpStatus;
