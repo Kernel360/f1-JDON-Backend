@@ -34,7 +34,15 @@ public class ScrapingWantedProperties {
     }
 
     public int getJobDetailDuplicateLimitCount() {
-        return this.scraping.part.jobDetailDuplicateLimitCount;
+        return this.scraping.jobDetailDuplicateLimitCount;
+    }
+
+    public int getJobListSleepCount() {
+        return this.scraping.jobListSleepCount;
+    }
+
+    public int getJobDetailSleepCount() {
+        return this.scraping.jobDetailSleepCount;
     }
 
     public int getSleepTimeMillis() {
@@ -67,20 +75,8 @@ public class ScrapingWantedProperties {
     public static class Scraping {
         private final int jobListLimit;
         private final int jobListOffset;
-        private final AllScraping all;
-        private final PartScraping part;
-    }
-
-    @Getter
-    @RequiredArgsConstructor
-    public static class AllScraping {
         private final int jobListSleepCount;
         private final int jobDetailSleepCount;
-    }
-
-    @Getter
-    @RequiredArgsConstructor
-    public static class PartScraping {
         private final int jobDetailDuplicateLimitCount;
     }
 }
