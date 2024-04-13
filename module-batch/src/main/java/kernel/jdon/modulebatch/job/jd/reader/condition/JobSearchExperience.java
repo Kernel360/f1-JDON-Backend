@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 public enum JobSearchExperience implements SearchCondition {
     EXPERIENCE_ALL("-1", "전체");
 
-    public final static String SEARCH_KEY = "years";
+    public static final String SEARCH_KEY = "years";
     private final String searchValue;
     private final String description;
 

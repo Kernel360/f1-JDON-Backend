@@ -12,7 +12,7 @@ public enum CourseSearchSort implements SearchCondition {
     SORT_RATING("rating", "별점순"),
     SORT_LIKE("famous", "좋아요순");
 
-    public final static String SEARCH_KEY = "order";
+    public static final String SEARCH_KEY = "order";
     private final String searchValue;
     private final String description;
 

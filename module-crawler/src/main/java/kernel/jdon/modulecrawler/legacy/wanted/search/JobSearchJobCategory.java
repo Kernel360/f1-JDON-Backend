@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 public enum JobSearchJobCategory implements SearchCondition {
     JOB_DEVELOPER("518", "개발");
 
-    public final static String SEARCH_KEY = "job_group_id";
+    public static final String SEARCH_KEY = "job_group_id";
     private final String searchValue;
     private final String description;
 

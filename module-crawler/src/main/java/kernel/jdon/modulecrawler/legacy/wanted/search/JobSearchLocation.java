@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 public enum JobSearchLocation implements SearchCondition {
     LOCATIONS_ALL("all", "전체");
 
-    public final static String SEARCH_KEY = "locations";
+    public static final String SEARCH_KEY = "locations";
     private final String searchValue;
     private final String description;
 
