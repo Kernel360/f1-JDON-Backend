@@ -7,8 +7,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
+import kernel.jdon.modulecrawler.global.exception.CrawlerException;
 import kernel.jdon.modulecrawler.legacy.global.error.code.InflearnErrorCode;
-import kernel.jdon.modulecrawler.legacy.global.error.exception.CrawlerException;
 
 @Service
 public class CourseScraperService {

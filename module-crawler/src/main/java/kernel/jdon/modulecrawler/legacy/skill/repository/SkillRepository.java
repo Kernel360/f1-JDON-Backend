@@ -1,4 +1,4 @@
-package kernel.jdon.modulecrawler.legacy.wanted.repository;
+package kernel.jdon.modulecrawler.legacy.skill.repository;
 
 import java.util.List;
 import java.util.Optional;

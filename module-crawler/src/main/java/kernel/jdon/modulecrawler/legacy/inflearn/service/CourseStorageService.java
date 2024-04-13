@@ -5,12 +5,12 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import kernel.jdon.modulecrawler.global.exception.CrawlerException;
 import kernel.jdon.modulecrawler.legacy.global.error.code.SkillErrorCode;
-import kernel.jdon.modulecrawler.legacy.global.error.exception.CrawlerException;
 import kernel.jdon.modulecrawler.legacy.inflearn.converter.EntityConverter;
-import kernel.jdon.modulecrawler.legacy.wanted.repository.InflearnCourseRepository;
-import kernel.jdon.modulecrawler.legacy.wanted.repository.InflearnJdSkillRepository;
-import kernel.jdon.modulecrawler.legacy.wanted.repository.SkillRepository;
+import kernel.jdon.modulecrawler.legacy.inflearn.repository.InflearnCourseRepository;
+import kernel.jdon.modulecrawler.legacy.inflearn.repository.InflearnJdSkillRepository;
+import kernel.jdon.modulecrawler.legacy.skill.repository.SkillRepository;
 import kernel.jdon.moduledomain.inflearncourse.domain.InflearnCourse;
 import kernel.jdon.moduledomain.inflearnjdskill.domain.InflearnJdSkill;
 import kernel.jdon.moduledomain.jobcategory.domain.JobCategory;

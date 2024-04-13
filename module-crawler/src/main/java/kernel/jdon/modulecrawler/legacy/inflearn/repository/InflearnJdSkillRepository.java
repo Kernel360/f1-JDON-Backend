@@ -1,4 +1,4 @@
-package kernel.jdon.modulecrawler.legacy.wanted.repository;
+package kernel.jdon.modulecrawler.legacy.inflearn.repository;
 
 import java.util.List;
 
