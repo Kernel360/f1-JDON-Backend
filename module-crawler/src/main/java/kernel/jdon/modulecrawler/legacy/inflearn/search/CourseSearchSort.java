@@ -1,6 +1,6 @@
 package kernel.jdon.modulecrawler.legacy.inflearn.search;
 
-import kernel.jdon.modulecrawler.legacy.search.SearchCondition;
+import kernel.jdon.modulecrawler.global.condition.SearchCondition;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor

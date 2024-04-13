@@ -1,4 +1,4 @@
-package kernel.jdon.modulecrawler.legacy.wanted.skill;
+package kernel.jdon.modulecrawler.legacy.skill;
 
 public interface SkillType {
     static String getOrderKeyword() {

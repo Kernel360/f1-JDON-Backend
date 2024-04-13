@@ -1,4 +1,4 @@
-package kernel.jdon.modulecrawler.legacy.wanted.skill;
+package kernel.jdon.modulecrawler.legacy.skill;
 
 import java.util.Arrays;
 import java.util.List;
