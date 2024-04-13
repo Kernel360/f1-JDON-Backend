@@ -8,8 +8,8 @@ public enum JobSearchExperience implements SearchCondition {
     EXPERIENCE_ALL("-1", "전체");
 
     public static final String SEARCH_KEY = "years";
-    private final String description;
     private final String searchValue;
+    private final String description;
 
     @Override
     public String getDescription() {
