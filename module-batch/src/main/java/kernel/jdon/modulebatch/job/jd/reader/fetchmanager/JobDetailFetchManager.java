@@ -34,11 +34,11 @@ public class JobDetailFetchManager {
     }
 
     private boolean isSleepRequired() {
-        return this.sleepCount >= scrapingWantedProperties.getScraping().getAll().getJobDetailSleepCount();
+        return this.sleepCount >= scrapingWantedProperties.getJobDetailSleepCount();
     }
 
     public boolean isDuplicateRequired(final int count) {
-        return count >= scrapingWantedProperties.getScraping().getPart().getJobDetailDuplicateLimitCount();
+        return count >= scrapingWantedProperties.getJobDetailDuplicateLimitCount();
     }
 
     private void performSleep() {

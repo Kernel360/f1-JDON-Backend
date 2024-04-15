@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
-public class WantedJdSkillDto {
+public class WantedJdSkillDao {
     private final WantedJdSkillRepository wantedJdSkillRepository;
     private final JdbcWantedJdSkillRepository jdbcWantedJdSkillRepository;
 

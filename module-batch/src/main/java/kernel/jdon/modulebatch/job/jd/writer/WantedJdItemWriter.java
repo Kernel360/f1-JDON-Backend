@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 import kernel.jdon.modulebatch.domain.skillhistory.repository.SkillHistoryDao;
 import kernel.jdon.modulebatch.domain.wantedjd.repository.WantedJdRepository;
-import kernel.jdon.modulebatch.domain.wantedjdskill.repository.WantedJdSkillDto;
+import kernel.jdon.modulebatch.domain.wantedjdskill.repository.WantedJdSkillDao;
 import kernel.jdon.modulebatch.job.jd.reader.dto.WantedJobDetailListResponse;
 import kernel.jdon.modulebatch.job.jd.reader.dto.WantedJobDetailResponse;
 import kernel.jdon.moduledomain.jobcategory.domain.JobCategory;
@@ -21,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class WantedJdItemWriter implements ItemWriter<WantedJobDetailListResponse> {
     private final WantedJdRepository wantedJdRepository;
-    private final WantedJdSkillDto wantedJdSkillDto;
+    private final WantedJdSkillDao wantedJdSkillDao;
     private final SkillHistoryDao skillHistoryDao;
 
     @Override
@@ -54,7 +54,7 @@ public class WantedJdItemWriter implements ItemWriter<WantedJobDetailListRespons
 
     private void changeWantedJdSkillList(final WantedJobDetailResponse wantedJobDetail, final WantedJd findWantedJd,
         final List<WantedJobDetailResponse.WantedSkill> wantedJdSkillList) {
-        wantedJdSkillDto.deleteAllByWantedJdId(findWantedJd.getId());
+        wantedJdSkillDao.deleteAllByWantedJdId(findWantedJd.getId());
         createWantedJdSkill(wantedJobDetail, findWantedJd, wantedJdSkillList);
     }
 
@@ -73,6 +73,6 @@ public class WantedJdItemWriter implements ItemWriter<WantedJobDetailListRespons
         final WantedJobDetailResponse wantedJobDetail,
         final WantedJd wantedJd,
         final List<WantedJobDetailResponse.WantedSkill> wantedDetailSkillList) {
-        wantedJdSkillDto.saveWantedJdSkillList(wantedJobDetail, wantedJd, wantedDetailSkillList);
+        wantedJdSkillDao.saveWantedJdSkillList(wantedJobDetail, wantedJd, wantedDetailSkillList);
     }
 }

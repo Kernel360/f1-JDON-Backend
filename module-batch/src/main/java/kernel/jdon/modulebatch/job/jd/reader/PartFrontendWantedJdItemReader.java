@@ -38,9 +38,7 @@ public class PartFrontendWantedJdItemReader implements ItemReader<WantedJobDetai
         final PartJobDetailListInfo info = wantedJdClient.getPartJobDetailList(jobPosition,
             jobListFetchManager.getOffset());
 
-        if (info.isMaxDuplicate()) {
-            isLimit = true;
-        }
+        isLimit = info.isMaxDuplicate();
 
         jobListFetchManager.incrementOffset();
 
