@@ -21,4 +21,13 @@ public class CourseScraper {
             throw new BatchException(InflearnErrorCode.NOT_FOUND_INFLEARN_URL);
         }
     }
+
+    public boolean hasNextPage(String url) {
+        try {
+            Document doc = Jsoup.connect(url).get();
+            return !doc.select("a.pagination-link.pagination-next").isEmpty();
+        } catch (IOException e) {
+            throw new BatchException(InflearnErrorCode.SCRAPE_FAILURE);
+        }
+    }
 }

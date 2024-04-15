@@ -11,23 +11,27 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import kernel.jdon.modulebatch.job.jd.listener.PartBackendWantedJobScrapingJStepListener;
+import kernel.jdon.modulebatch.job.jd.listener.PartFrontWantedJobScrapingJStepListener;
 import kernel.jdon.modulebatch.job.jd.listener.PartWantedJobScrapingJobListener;
 import kernel.jdon.modulebatch.job.jd.reader.PartBackendWantedJdItemReader;
 import kernel.jdon.modulebatch.job.jd.reader.PartFrontendWantedJdItemReader;
 import kernel.jdon.modulebatch.job.jd.reader.dto.WantedJobDetailListResponse;
 import kernel.jdon.modulebatch.job.jd.writer.WantedJdItemWriter;
+import kernel.jdon.modulecommon.slack.SlackSender;
 import lombok.RequiredArgsConstructor;
 
 @Configuration
 @RequiredArgsConstructor
 public class PartWantedJdScrapingJobConfig {
-
+    private static final String JOB_NAME = "partWantedJdScrapingJob";
     private static final int CHUNK_SIZE = 1;
 
     private final PlatformTransactionManager platformTransactionManager;
     private final PartBackendWantedJdItemReader partBackendWantedJdItemReader;
     private final PartFrontendWantedJdItemReader partFrontendWantedJdItemReader;
     private final WantedJdItemWriter wantedJdItemWriter;
+    private final SlackSender slackSender;
 
     /**
      * [부분_원티드_채용공고_스크래핑]
@@ -36,9 +40,9 @@ public class PartWantedJdScrapingJobConfig {
      */
     @Bean
     public Job partWantedJdScrapingJob(JobRepository jobRepository) {
-        return new JobBuilder("partWantedJdScrapingJob", jobRepository)
+        return new JobBuilder(JOB_NAME, jobRepository)
             .incrementer(new RunIdIncrementer())
-            .listener(new PartWantedJobScrapingJobListener())
+            .listener(new PartWantedJobScrapingJobListener(slackSender))
             .start(partBackendWantedJdScrapingStep(jobRepository)) // 백엔드 JD 스크래핑
             .next(partFrontendWantedJdScrapingStep(jobRepository)) // 프론트엔드 JD 스크래핑
             .build();
@@ -48,6 +52,7 @@ public class PartWantedJdScrapingJobConfig {
     @JobScope
     public Step partBackendWantedJdScrapingStep(JobRepository jobRepository) {
         return new StepBuilder("partBackendWantedJdScrapingStep", jobRepository)
+            .listener(new PartBackendWantedJobScrapingJStepListener(slackSender))
             .<WantedJobDetailListResponse, WantedJobDetailListResponse>chunk(CHUNK_SIZE, platformTransactionManager)
             .reader(partBackendWantedJdItemReader)
             .writer(wantedJdItemWriter)
@@ -58,6 +63,7 @@ public class PartWantedJdScrapingJobConfig {
     @JobScope
     public Step partFrontendWantedJdScrapingStep(JobRepository jobRepository) {
         return new StepBuilder("partFrontendWantedJdScrapingStep", jobRepository)
+            .listener(new PartFrontWantedJobScrapingJStepListener(slackSender))
             .<WantedJobDetailListResponse, WantedJobDetailListResponse>chunk(CHUNK_SIZE, platformTransactionManager)
             .reader(partFrontendWantedJdItemReader)
             .writer(wantedJdItemWriter)

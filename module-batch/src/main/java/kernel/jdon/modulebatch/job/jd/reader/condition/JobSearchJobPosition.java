@@ -14,7 +14,7 @@ public enum JobSearchJobPosition implements SearchCondition {
     JOB_POSITION_FRONTEND("669", "프론트엔드 개발자", Arrays.asList(FrontendSkillType.values())),
     JOB_POSITION_SERVER("872", "서버 개발자", Arrays.asList(BackendSkillType.values()));
 
-    public final static String SEARCH_KEY = "job_ids";
+    public static final String SEARCH_KEY = "job_ids";
     private final String searchValue;
     private final String description;
     private final List<SkillType> skillTypeList;

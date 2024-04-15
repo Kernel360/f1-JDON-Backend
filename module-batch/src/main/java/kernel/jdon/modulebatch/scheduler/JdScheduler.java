@@ -9,12 +9,14 @@ import org.springframework.stereotype.Component;
 
 import kernel.jdon.modulebatch.global.exception.BatchException;
 import kernel.jdon.modulebatch.global.exception.BatchServerErrorCode;
+import kernel.jdon.modulecommon.log.annotation.QueryCounter;
 import kernel.jdon.modulecommon.slack.SlackSender;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
+@QueryCounter
 @RequiredArgsConstructor
 public class JdScheduler {
     private final JobLauncher jobLauncher;
@@ -28,9 +30,7 @@ public class JdScheduler {
             .addLong("time", System.currentTimeMillis())
             .toJobParameters();
         try {
-            slackSender.sendSchedulerStart("partWantedJdScrapingJob");
             jobLauncher.run(partWantedJdScrapingJob, jobParameters);
-            slackSender.sendSchedulerEnd("partWantedJdScrapingJob");
         } catch (Exception e) {
             log.error("[partWantedJdScrapingJob] 실행중 Error 발생");
             throw new BatchException(BatchServerErrorCode.INTERNAL_SERVER_ERROR_SCHEDULER);

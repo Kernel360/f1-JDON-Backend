@@ -37,7 +37,7 @@ public class QueryCounterAspect {
         return currentLoggingForm.get();
     }
 
-    @After("within(@org.springframework.web.bind.annotation.RestController *)")
+    @After("within(@org.springframework.web.bind.annotation.RestController *) || within(@kernel.jdon.modulecommon.log.annotation.QueryCounter *)")
     public void loggingAfterApiFinish() {
         final LoggingForm loggingForm = getCurrentLoggingForm();
 

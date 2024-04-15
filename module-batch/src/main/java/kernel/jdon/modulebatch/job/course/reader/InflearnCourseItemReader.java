@@ -31,7 +31,7 @@ public class InflearnCourseItemReader implements ItemReader<String> {
         keywordList.addAll(FrontendSkillType.getAllKeywords());
         keywordList.addAll(BackendSkillType.getAllKeywords());
         this.keywordIterator = keywordList.iterator();
-        log.info("강의 수집할 기술스택 목록: " + keywordList);
+        log.info("강의 수집할 기술스택 목록: {}", keywordList);
     }
 
     @Override

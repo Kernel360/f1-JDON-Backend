@@ -23,6 +23,10 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @RequiredArgsConstructor
 public class SlackSender {
+    private static final String serverStartColor = "#439FE0";
+    private static final String activeColor = "#009000";
+    private static final String errorColor = "#FF0000";
+
     private final Slack slackClient = Slack.getInstance();
     private final SlackProperties slackProperties;
     private final ApplicationContext applicationContext;
@@ -67,8 +71,53 @@ public class SlackSender {
         final String activeProfile = String.join(", ", applicationContext.getEnvironment().getActiveProfiles());
         sendMessage(
             SlackMessage.of("서버 실행 알림")
-                .setColor("#439FE0")
+                .setColor(serverStartColor)
                 .putMessage("Start-Module-Name", moduleName)
+                .putMessage("Active-Profile", activeProfile));
+    }
+
+    public void sendJobError(final String jobName) {
+        final String activeProfile = String.join(", ", applicationContext.getEnvironment().getActiveProfiles());
+        sendMessage(
+            SlackMessage.of("Job 에러 발생 알림")
+                .setColor(errorColor)
+                .putMessage("Active-Profile", activeProfile)
+                .putMessage("Job-Name", jobName));
+    }
+
+    public void sendStepError(final String stepName) {
+        final String activeProfile = String.join(", ", applicationContext.getEnvironment().getActiveProfiles());
+        sendMessage(
+            SlackMessage.of("Step 에러 발생 알림")
+                .setColor(errorColor)
+                .putMessage("Active-Profile", activeProfile)
+                .putMessage("Step-Name", stepName));
+    }
+
+    private void sendStep(final String stepName, final String title) {
+        final String activeProfile = String.join(", ", applicationContext.getEnvironment().getActiveProfiles());
+        sendMessage(
+            SlackMessage.of(title)
+                .setColor(activeColor)
+                .putMessage("Step-Name", stepName)
+                .putMessage("Active-Profile", activeProfile));
+    }
+
+    private void sendScheduler(final String jobSchedulerName, final String title) {
+        final String activeProfile = String.join(", ", applicationContext.getEnvironment().getActiveProfiles());
+        sendMessage(
+            SlackMessage.of(title)
+                .setColor(activeColor)
+                .putMessage("Scheduler-Name", jobSchedulerName)
+                .putMessage("Active-Profile", activeProfile));
+    }
+
+    private void sendJob(final String jobName, final String title) {
+        final String activeProfile = String.join(", ", applicationContext.getEnvironment().getActiveProfiles());
+        sendMessage(
+            SlackMessage.of(title)
+                .setColor(activeColor)
+                .putMessage("Job-Name", jobName)
                 .putMessage("Active-Profile", activeProfile));
     }
 
@@ -80,13 +129,20 @@ public class SlackSender {
         sendScheduler(jobSchedulerName, "배치 스케줄러 종료 알림");
     }
 
-    private void sendScheduler(final String jobSchedulerName, final String title) {
-        final String activeProfile = String.join(", ", applicationContext.getEnvironment().getActiveProfiles());
-        sendMessage(
-            SlackMessage.of(title)
-                .setColor("#009000")
-                .putMessage("Start-Job-Scheduler-Name", jobSchedulerName)
-                .putMessage("Active-Profile", activeProfile));
+    public void sendJobStart(final String jobName) {
+        sendJob(jobName, "배치 Job 실행 알림");
+    }
+
+    public void sendJobEnd(final String jobName) {
+        sendJob(jobName, "배치 Job 종료 알림");
+    }
+
+    public void sendStepStart(final String stepName) {
+        sendStep(stepName, "배치 Step 실행 알림");
+    }
+
+    public void sendStepEnd(final String stepName) {
+        sendStep(stepName, "배치 Step 종료 알림");
     }
 
     @Getter
