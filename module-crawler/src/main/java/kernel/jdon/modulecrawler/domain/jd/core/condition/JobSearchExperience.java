@@ -1,13 +1,13 @@
-package kernel.jdon.modulebatch.job.jd.reader.condition;
+package kernel.jdon.modulecrawler.domain.jd.core.condition;
 
-import kernel.jdon.modulebatch.global.condition.SearchCondition;
+import kernel.jdon.modulecrawler.global.condition.SearchCondition;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public enum JobSearchLocation implements SearchCondition {
-    LOCATIONS_ALL("all", "전체");
+public enum JobSearchExperience implements SearchCondition {
+    EXPERIENCE_ALL("-1", "전체");
 
-    public static final String SEARCH_KEY = "locations";
+    public static final String SEARCH_KEY = "years";
     private final String searchValue;
     private final String description;
 

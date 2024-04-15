@@ -1,6 +1,6 @@
-package kernel.jdon.modulebatch.job.jd.reader.condition;
+package kernel.jdon.modulecrawler.domain.jd.core.condition;
 
-import kernel.jdon.modulebatch.global.condition.SearchCondition;
+import kernel.jdon.modulecrawler.global.condition.SearchCondition;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor

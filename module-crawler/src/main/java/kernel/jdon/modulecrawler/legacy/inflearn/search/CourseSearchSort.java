@@ -1,6 +1,6 @@
-package kernel.jdon.modulebatch.job.course.processor.condition;
+package kernel.jdon.modulecrawler.legacy.inflearn.search;
 
-import kernel.jdon.modulebatch.global.condition.SearchCondition;
+import kernel.jdon.modulecrawler.global.condition.SearchCondition;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor

@@ -1,9 +1,9 @@
-package kernel.jdon.modulebatch.job.jd.reader.condition;
+package kernel.jdon.modulecrawler.domain.jd.core.condition;
 
 import java.util.Arrays;
 import java.util.List;
 
-import kernel.jdon.modulebatch.global.condition.SearchCondition;
+import kernel.jdon.modulecrawler.global.condition.SearchCondition;
 import kernel.jdon.moduledomain.skill.domain.BackendSkillType;
 import kernel.jdon.moduledomain.skill.domain.FrontendSkillType;
 import kernel.jdon.moduledomain.skill.domain.SkillType;
