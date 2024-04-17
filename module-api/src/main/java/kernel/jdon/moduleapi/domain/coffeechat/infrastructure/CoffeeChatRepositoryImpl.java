@@ -71,8 +71,6 @@ public class CoffeeChatRepositoryImpl implements CustomCoffeeChatRepository {
         Long totalCount = jpaQueryFactory
             .select(coffeeChat.count())
             .from(coffeeChat)
-            .join(member)
-            .on(coffeeChat.member.eq(member))
             .where(
                 excludeDeleteCoffeeChat(),
                 coffeeChatTitleContains(command.getKeyword()),
