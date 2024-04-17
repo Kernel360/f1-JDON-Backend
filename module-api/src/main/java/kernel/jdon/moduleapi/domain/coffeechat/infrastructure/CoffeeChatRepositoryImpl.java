@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import kernel.jdon.moduleapi.domain.coffeechat.core.CoffeeChatCommand;
@@ -28,6 +29,22 @@ public class CoffeeChatRepositoryImpl implements CustomCoffeeChatRepository {
     @Override
     public Page<CoffeeChatReaderInfo.FindCoffeeChatListResponse> findCoffeeChatList(final Pageable pageable,
         final CoffeeChatCommand.FindCoffeeChatListRequest command) {
+
+        List<Long> ids = jpaQueryFactory
+            .select(coffeeChat.id)
+            .from(coffeeChat)
+            .where(
+                excludeDeleteCoffeeChat(),
+                coffeeChatTitleContains(command.getKeyword()),
+                memberJobCategoryEq(command.getJobCategory())
+            )
+            .orderBy(
+                coffeeChatSort(command.getSort())
+            )
+            .offset(pageable.getOffset())
+            .limit(pageable.getPageSize())
+            .fetch();
+
         List<CoffeeChatReaderInfo.FindCoffeeChatListResponse> content = jpaQueryFactory
             .select(new QCoffeeChatReaderInfo_FindCoffeeChatListResponse(
                 coffeeChat.id,
@@ -45,23 +62,15 @@ public class CoffeeChatRepositoryImpl implements CustomCoffeeChatRepository {
             .on(coffeeChat.member.eq(member))
             .join(jobCategory)
             .on(member.jobCategory.eq(jobCategory))
-            .where(
-                excludeDeleteCoffeeChat(),
-                coffeeChatTitleContains(command.getKeyword()),
-                memberJobCategoryEq(command.getJobCategory())
-            )
+            .where(coffeeChat.id.in(ids))
             .orderBy(
                 coffeeChatSort(command.getSort())
             )
-            .offset(pageable.getOffset())
-            .limit(pageable.getPageSize())
             .fetch();
 
         Long totalCount = jpaQueryFactory
             .select(coffeeChat.count())
             .from(coffeeChat)
-            .join(member)
-            .on(coffeeChat.member.eq(member))
             .where(
                 excludeDeleteCoffeeChat(),
                 coffeeChatTitleContains(command.getKeyword()),
@@ -84,7 +93,13 @@ public class CoffeeChatRepositoryImpl implements CustomCoffeeChatRepository {
     }
 
     private BooleanExpression memberJobCategoryEq(Long jobCategoryId) {
-        return jobCategoryId != null ? member.jobCategory.id.eq(jobCategoryId) : null;
+        return jobCategoryId != null ? JPAExpressions
+            .selectOne()
+            .from(member)
+            .where(
+                member.id.eq(coffeeChat.member.id),
+                member.jobCategory.id.eq(jobCategoryId)
+            ).exists() : null;
     }
 
     private BooleanExpression coffeeChatTitleContains(String keyword) {

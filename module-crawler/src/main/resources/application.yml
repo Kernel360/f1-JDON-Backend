@@ -36,22 +36,3 @@ scraping:
       max_initial: 3000
       max: 10000
       increment: 1000
-
-#  wanted:
-#    url:
-#      detail: https://www.wanted.co.kr/wd/
-#      api:
-#        detail: https://www.wanted.co.kr/api/v4/jobs/
-#        list: https://www.wanted.co.kr/api/chaos/navigation/v1/results?country=kr&
-#
-#    max_fetch_jd_list:
-#      size: 10            # 스크래핑 시 총 몇 개의 Job Description을 가져올지 설정
-#      offset: 5           # 각 스크래핑 요청 당 몇 개의 Job Description을 가져올지 설정
-#
-#    limit:
-#      fail_count: 10      # 연속으로 중복된 JD가 스크래핑될 때 제한할 개수를 설정
-#
-#    sleep:
-#      threshold_count: 10 # 지정된 개수까지 Job Description을 스크래핑한 후 해당 시간 만큼 지연하도록 설정
-#      time_millis: 1000   # 지연 시간의 길이를 밀리초 단위로 설정
-
