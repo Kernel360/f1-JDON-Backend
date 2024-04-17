@@ -18,13 +18,13 @@ public class JdFacade {
 
     private final JdService jdService;
     private final RedissonClient redissonClient;
-    private boolean isLocked = false;
 
     public void scrapeWantedJd() {
+        boolean isLocked = false;
         final RLock lock = redissonClient.getLock(LOCK_KEY);
         try {
-            final boolean isAvailable = lock.tryLock(0, TimeUnit.SECONDS);
-            if (!isAvailable) {
+            isLocked = lock.tryLock(0, TimeUnit.SECONDS);
+            if (!isLocked) {
                 throw new CrawlerException(JdErrorCode.CONFLICT_FAIL_LOCK);
             }
             jdService.scrapeWantedJd();

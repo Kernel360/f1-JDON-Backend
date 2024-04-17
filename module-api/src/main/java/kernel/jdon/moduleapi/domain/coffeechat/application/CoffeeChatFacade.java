@@ -63,11 +63,12 @@ public class CoffeeChatFacade {
     }
 
     public CoffeeChatInfo.ApplyCoffeeChatResponse applyCoffeeChat(Long coffeeChatId, Long memberId) {
+        boolean isLocked = false;
         RLock lock = redissonClient.getLock(String.format("apply:coffeeChat:%d", coffeeChatId));
         try {
-            boolean available = lock.tryLock(lockConfig.getWaitTime(), lockConfig.getLeaseTime(),
+            isLocked = lock.tryLock(lockConfig.getWaitTime(), lockConfig.getLeaseTime(),
                 TimeUnit.SECONDS);
-            if (!available) {
+            if (!isLocked) {
                 log.info("커피챗 신청 lock 획득 실패, coffeeChatId={}, memberId={}", coffeeChatId, memberId);
                 throw new ApiException(CoffeeChatErrorCode.LOCK_ACQUISITION_FAILURE);
             }
@@ -79,7 +80,9 @@ public class CoffeeChatFacade {
             log.info("커피챗 신청 lock 획득 중 thread interrupted, coffeeChatId={} memberId={}", coffeeChatId, memberId);
             throw new ApiException(CoffeeChatErrorCode.THREAD_INTERRUPTED);
         } finally {
-            lock.unlock();
+            if (isLocked) {
+                lock.unlock();
+            }
             log.info("커피챗 신청 lock 반납 성공, coffeeChatId={}, memberId={}", coffeeChatId, memberId);
         }
     }
