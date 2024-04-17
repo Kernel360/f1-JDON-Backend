@@ -88,7 +88,7 @@ class JdFacadeTest {
         for (int i = 0; i < threadCount; i++) {
             Future<?> future = futures.get(i);
             try {
-                future.get(); // 스레드가 완료될 때까지 대기하고, 발생한 예외를 검사
+                future.get();
             } catch (ExecutionException e) {
                 Throwable cause = e.getCause();
                 if (cause.getCause() instanceof CrawlerException exception) {
