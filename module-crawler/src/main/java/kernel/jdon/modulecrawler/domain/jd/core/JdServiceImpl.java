@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import kernel.jdon.modulecrawler.domain.jd.core.condition.JobSearchExperience;
@@ -30,6 +31,7 @@ import kernel.jdon.moduledomain.wantedjd.domain.WantedJd;
 import lombok.RequiredArgsConstructor;
 
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class JdServiceImpl implements JdService {
     private final RestTemplate restTemplate;
@@ -41,6 +43,7 @@ public class JdServiceImpl implements JdService {
     private final SkillHistoryStore skillHistoryStore;
 
     @Override
+    @Transactional
     public void scrapeWantedJd() {
         final JobSearchJobPosition[] allJobPositions = JobSearchJobPosition.getAllPositions();
 
