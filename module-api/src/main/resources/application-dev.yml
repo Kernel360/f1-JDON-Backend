@@ -115,3 +115,7 @@ management:
       exposure:
         include: "*"
         exclude:
+server:
+  tomcat:
+    threads:
+      min-spare: 20
