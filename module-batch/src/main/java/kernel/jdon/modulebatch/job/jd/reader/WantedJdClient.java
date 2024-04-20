@@ -40,9 +40,14 @@ public class WantedJdClient {
         final WantedJobListResponse jobList = fetchJobList(jobPosition, offset);
         final Set<Long> jobIdSet = jobList.toLinkedHashSet();
 
+        return getJobDetailList(jobPosition, jobIdSet);
+    }
+
+    private List<WantedJobDetailResponse> getJobDetailList(final JobSearchJobPosition jobPosition,
+        final Set<Long> jobIdSet) {
         return jobIdSet.stream()
             .map(jobId -> {
-                WantedJobDetailResponse jobDetail = getJobDetail(jobPosition, jobId);
+                final WantedJobDetailResponse jobDetail = getJobDetail(jobPosition, jobId);
                 jobDetailFetchManager.incrementSleepCounter();
                 return jobDetail;
             })
@@ -69,7 +74,7 @@ public class WantedJdClient {
                 return new PartJobDetailListInfo(isMaxDuplicate, jobDetailList); // 중복된 채용공고 스크래핑 시 Reader 종료
             }
 
-            WantedJobDetailResponse jobDetail = getJobDetail(jobPosition, jobDetailId);
+            final WantedJobDetailResponse jobDetail = getJobDetail(jobPosition, jobDetailId);
 
             if (isJobDetailExist(jobDetail.getJobCategory(), jobDetail.getDetailJobId())) {
                 duplicateCount++;
@@ -84,7 +89,7 @@ public class WantedJdClient {
     }
 
     private WantedJobDetailResponse getJobDetail(final JobSearchJobPosition jobPosition, final Long jobDetailId) {
-        WantedJobDetailResponse jobDetail = fetchJobDetail(jobDetailId);
+        final WantedJobDetailResponse jobDetail = fetchJobDetail(jobDetailId);
         addJobDetailInfo(jobDetail, jobPosition);
 
         return jobDetail;
