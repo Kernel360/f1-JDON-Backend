@@ -31,7 +31,7 @@ public class AllFrontendWantedJdItemReader implements ItemReader<WantedJobDetail
         ParseException,
         NonTransientResourceException {
         final JobSearchJobPosition jobPosition = JobSearchJobPosition.JOB_POSITION_FRONTEND;
-        final List<WantedJobDetailResponse> jobDetailList = wantedJdClient.getJobDetailList(jobPosition,
+        final List<WantedJobDetailResponse> jobDetailList = wantedJdClient.getJdList(jobPosition,
             jobListFetchManager.getOffset());
 
         jobListFetchManager.incrementOffset();

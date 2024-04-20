@@ -36,7 +36,7 @@ public class WantedJdClient {
     private final JobCategoryRepository jobCategoryRepository;
     private final WantedJdRepository wantedJdRepository;
 
-    public List<WantedJobDetailResponse> getJobDetailList(final JobSearchJobPosition jobPosition, final int offset) {
+    public List<WantedJobDetailResponse> getJdList(final JobSearchJobPosition jobPosition, final int offset) {
         final WantedJobListResponse jobList = fetchJobList(jobPosition, offset);
         final Set<Long> jobIdSet = jobList.toLinkedHashSet();
 
@@ -49,17 +49,17 @@ public class WantedJdClient {
             .toList();
     }
 
-    public PartJobDetailListInfo getPartJobDetailList(final JobSearchJobPosition jobPosition,
+    public PartJobDetailListInfo getPartJdList(final JobSearchJobPosition jobPosition,
         final int offset) {
         final WantedJobListResponse jobList = fetchJobList(jobPosition, offset);
         final Set<Long> jobIdSet = jobList.toLinkedHashSet();
 
-        return getJobDetailList(jobPosition, jobIdSet);
+        return getPartJobDetailList(jobPosition, jobIdSet);
     }
 
-    private PartJobDetailListInfo getJobDetailList(final JobSearchJobPosition jobPosition,
+    private PartJobDetailListInfo getPartJobDetailList(final JobSearchJobPosition jobPosition,
         final Set<Long> jobIdSet) {
-        List<WantedJobDetailResponse> jobDetailList = new ArrayList<>();
+        final List<WantedJobDetailResponse> jobDetailList = new ArrayList<>();
         int duplicateCount = 0;
         boolean isMaxDuplicate = false;
         for (Long jobDetailId : jobIdSet) {
