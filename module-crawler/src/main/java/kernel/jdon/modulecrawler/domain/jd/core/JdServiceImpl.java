@@ -109,7 +109,7 @@ public class JdServiceImpl implements JdService {
                 return new PartJobDetailListInfo(isMaxDuplicate, jobDetailList); // 중복된 채용공고 스크래핑 시 Reader 종료
             }
 
-            WantedJobDetailResponse jobDetail = getJobDetail(jobPosition, jobDetailId);
+            final WantedJobDetailResponse jobDetail = getJobDetail(jobPosition, jobDetailId);
 
             if (isJobDetailExist(jobDetail.getJobCategory(), jobDetail.getDetailJobId())) {
                 duplicateCount++;
@@ -124,7 +124,7 @@ public class JdServiceImpl implements JdService {
     }
 
     private WantedJobDetailResponse getJobDetail(final JobSearchJobPosition jobPosition, final Long jobDetailId) {
-        WantedJobDetailResponse jobDetail = fetchJobDetail(jobDetailId);
+        final WantedJobDetailResponse jobDetail = fetchJobDetail(jobDetailId);
         addJobDetailInfo(jobDetail, jobPosition);
 
         return jobDetail;
