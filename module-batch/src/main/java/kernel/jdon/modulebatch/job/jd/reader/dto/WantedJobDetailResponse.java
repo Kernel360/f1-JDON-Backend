@@ -55,7 +55,7 @@ public class WantedJobDetailResponse {
 
     @Getter
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
-    public static class JobDetail {
+    private static class JobDetail {
         private Long id;
         @JsonProperty("position")
         private String title;
@@ -75,7 +75,7 @@ public class WantedJobDetailResponse {
 
     @Getter
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
-    public static class Detail {
+    private static class Detail {
         private String requirements;
         @JsonProperty("main_tasks")
         private String mainTasks;
@@ -94,14 +94,14 @@ public class WantedJobDetailResponse {
 
     @Getter
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
-    public static class Company {
+    private static class Company {
         private String id;
         private String name;
     }
 
     @Getter
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
-    public static class CompanyImages {
+    private static class CompanyImages {
         private String url;
     }
 }

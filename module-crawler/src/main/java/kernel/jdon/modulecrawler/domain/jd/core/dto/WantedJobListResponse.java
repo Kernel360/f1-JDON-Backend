@@ -23,7 +23,7 @@ public class WantedJobListResponse {
 
     @Getter
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
-    public static class Data {
+    private static class Data {
         private Long id;
     }
 }
