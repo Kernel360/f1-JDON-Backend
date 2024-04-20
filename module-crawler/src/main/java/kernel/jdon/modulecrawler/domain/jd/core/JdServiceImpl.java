@@ -3,10 +3,8 @@ package kernel.jdon.modulecrawler.domain.jd.core;
 import static kernel.jdon.modulecommon.util.StringUtil.*;
 
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -71,7 +69,7 @@ public class JdServiceImpl implements JdService {
     public PartJobDetailListInfo getPartJobDetailList(final JobSearchJobPosition jobPosition,
         final int offset) {
         final WantedJobListResponse jobList = fetchJobList(jobPosition, offset);
-        final Set<Long> jobIdSet = getUniqueJobIdSet(jobList);
+        final Set<Long> jobIdSet = jobList.toLinkedHashSet();
 
         return getJobDetailList(jobPosition, jobIdSet);
     }
@@ -96,12 +94,6 @@ public class JdServiceImpl implements JdService {
             createQueryString("limit", String.valueOf(limit)),
             createQueryString("offset", String.valueOf(offset))
         );
-    }
-
-    private Set<Long> getUniqueJobIdSet(WantedJobListResponse jobList) {
-        return jobList.getData().stream()
-            .map(WantedJobListResponse.Data::getId)
-            .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
     private PartJobDetailListInfo getJobDetailList(final JobSearchJobPosition jobPosition,
