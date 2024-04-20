@@ -119,3 +119,5 @@ server:
   tomcat:
     threads:
       min-spare: 20
+    mbeanregistry:
+      enabled: true
