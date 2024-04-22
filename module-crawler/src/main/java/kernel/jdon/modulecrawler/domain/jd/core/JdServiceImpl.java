@@ -52,15 +52,17 @@ public class JdServiceImpl implements JdService {
 
     private void scrapeJobPositionWantedJd(final JobSearchJobPosition jobPosition) {
         final JobListFetchManager jobListFetchManager = new JobListFetchManager(scrapingWantedProperties);
-        boolean continueFetching = false;
+        boolean isContinueFetch = false;
 
-        while (!continueFetching) {
+        while (!isContinueFetch) {
             final PartJobDetailListInfo partJobDetailList = getPartJobDetailList(jobPosition,
                 jobListFetchManager.getOffset());
 
             createJobDetail(partJobDetailList.getJobDetailList());
 
-            continueFetching = partJobDetailList.isMaxDuplicate();
+            if (partJobDetailList.isMaxDuplicate() || partJobDetailList.getJobDetailList().isEmpty()) {
+                isContinueFetch = true;
+            }
 
             jobListFetchManager.incrementOffset();
         }
