@@ -31,11 +31,11 @@ public class AllBackendWantedJdItemReader implements ItemReader<WantedJobDetailL
         ParseException,
         NonTransientResourceException {
         final JobSearchJobPosition jobPosition = JobSearchJobPosition.JOB_POSITION_SERVER;
-        final List<WantedJobDetailResponse> jobDetailList = wantedJdClient.getJobDetailList(jobPosition,
+        final List<WantedJobDetailResponse> jdList = wantedJdClient.getJdList(jobPosition,
             jobListFetchManager.getOffset());
 
         jobListFetchManager.incrementOffset();
 
-        return !jobDetailList.isEmpty() ? new WantedJobDetailListResponse(jobDetailList) : null;
+        return !jdList.isEmpty() ? new WantedJobDetailListResponse(jdList) : null;
     }
 }

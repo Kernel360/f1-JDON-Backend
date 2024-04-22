@@ -3,10 +3,8 @@ package kernel.jdon.modulebatch.job.jd.reader;
 import static kernel.jdon.modulecommon.util.StringUtil.*;
 
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -38,30 +36,35 @@ public class WantedJdClient {
     private final JobCategoryRepository jobCategoryRepository;
     private final WantedJdRepository wantedJdRepository;
 
-    public List<WantedJobDetailResponse> getJobDetailList(final JobSearchJobPosition jobPosition, final int offset) {
+    public List<WantedJobDetailResponse> getJdList(final JobSearchJobPosition jobPosition, final int offset) {
         final WantedJobListResponse jobList = fetchJobList(jobPosition, offset);
-        final Set<Long> jobIdSet = getUniqueJobIdSet(jobList);
+        final Set<Long> jobIdSet = jobList.toLinkedHashSet();
 
+        return getJobDetailList(jobPosition, jobIdSet);
+    }
+
+    private List<WantedJobDetailResponse> getJobDetailList(final JobSearchJobPosition jobPosition,
+        final Set<Long> jobIdSet) {
         return jobIdSet.stream()
             .map(jobId -> {
-                WantedJobDetailResponse jobDetail = getJobDetail(jobPosition, jobId);
+                final WantedJobDetailResponse jobDetail = getJobDetail(jobPosition, jobId);
                 jobDetailFetchManager.incrementSleepCounter();
                 return jobDetail;
             })
             .toList();
     }
 
-    public PartJobDetailListInfo getPartJobDetailList(final JobSearchJobPosition jobPosition,
+    public PartJobDetailListInfo getPartJdList(final JobSearchJobPosition jobPosition,
         final int offset) {
         final WantedJobListResponse jobList = fetchJobList(jobPosition, offset);
-        final Set<Long> jobIdSet = getUniqueJobIdSet(jobList);
+        final Set<Long> jobIdSet = jobList.toLinkedHashSet();
 
-        return getJobDetailList(jobPosition, jobIdSet);
+        return getPartJobDetailList(jobPosition, jobIdSet);
     }
 
-    private PartJobDetailListInfo getJobDetailList(final JobSearchJobPosition jobPosition,
+    private PartJobDetailListInfo getPartJobDetailList(final JobSearchJobPosition jobPosition,
         final Set<Long> jobIdSet) {
-        List<WantedJobDetailResponse> jobDetailList = new ArrayList<>();
+        final List<WantedJobDetailResponse> jobDetailList = new ArrayList<>();
         int duplicateCount = 0;
         boolean isMaxDuplicate = false;
         for (Long jobDetailId : jobIdSet) {
@@ -71,7 +74,7 @@ public class WantedJdClient {
                 return new PartJobDetailListInfo(isMaxDuplicate, jobDetailList); // 중복된 채용공고 스크래핑 시 Reader 종료
             }
 
-            WantedJobDetailResponse jobDetail = getJobDetail(jobPosition, jobDetailId);
+            final WantedJobDetailResponse jobDetail = getJobDetail(jobPosition, jobDetailId);
 
             if (isJobDetailExist(jobDetail.getJobCategory(), jobDetail.getDetailJobId())) {
                 duplicateCount++;
@@ -86,7 +89,7 @@ public class WantedJdClient {
     }
 
     private WantedJobDetailResponse getJobDetail(final JobSearchJobPosition jobPosition, final Long jobDetailId) {
-        WantedJobDetailResponse jobDetail = fetchJobDetail(jobDetailId);
+        final WantedJobDetailResponse jobDetail = fetchJobDetail(jobDetailId);
         addJobDetailInfo(jobDetail, jobPosition);
 
         return jobDetail;
@@ -125,12 +128,6 @@ public class WantedJdClient {
             createQueryString("limit", String.valueOf(limit)),
             createQueryString("offset", String.valueOf(offset))
         );
-    }
-
-    private Set<Long> getUniqueJobIdSet(WantedJobListResponse jobList) {
-        return jobList.getData().stream()
-            .map(WantedJobListResponse.Data::getId)
-            .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
     private JobCategory findByJobPosition(final JobSearchJobPosition jobPosition) {
