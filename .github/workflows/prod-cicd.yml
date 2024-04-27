@@ -3,7 +3,7 @@ name: JDON-Backend PROD CI-CD
 on:
   workflow_dispatch:
     branches:
-      - main
+      - develop
     inputs:
       tags:
         description: '배포할 서버'
@@ -65,7 +65,7 @@ jobs:
           script: |
             echo "> Git pull"
             cd /home/ec2-user/app/f1-JDON-Backend
-            git pull origin main
+            git pull origin develop
             
             echo "> deploy-shell-script 실행"
             cd /home/ec2-user/app
